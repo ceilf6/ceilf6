@@ -19,17 +19,20 @@
 
 ---
 
-## 📊 GitHub 数据统计
+## 📊 GitHub 数据展示
 
-![ceilf6's GitHub Stats](https://github-readme-stats.vercel.app/api?username=ceilf6&show_icons=true&theme=vue-dark)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ceilf6&layout=compact&theme=vue-dark)
+<a href="">
+  <img height=200 align="center" src="https://github-readme-stats.vercel.app/api?username=ceilf6&include_all_commits=true&count_private=true&custom_title=ceilf6%20GitHub%20Stats&line_height=30&show_icons=true&hide_border=true&theme=vue-dark" />
+</a>
+<a href="">
+  <img height=200 align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=ceilf6&layout=compact&langs_count=8&card_width=320&hide_border=true&theme=vue-dark" />
+</a>
 
 ---
 
 ## 📈 活跃贡献图
 
-[![ceilf6's Contribution Graph](https://github-readme-activity-graph.cyclic.app/graph?username=ceilf6&theme=react-dark)](https://github.com/ashutosh00710/github-readme-activity-graph)
+![ceilf6's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=ceilf6&theme=github-compact)
 
 ---
 
