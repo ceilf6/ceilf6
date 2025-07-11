@@ -13,7 +13,7 @@
 - 🌐 前端框架：Vue / HTML / CSS / JavaScript
 - 🧰 工具平台：Git / VSCode / Node.js / SQL / Keil / CAD / MATLAB
 - 🎨 UI/动效：Element Plus
-- 💾 编程语言：Python / C / JavaScript
+- 💾 编程语言：JavaScript / Python / C 
 - 🌍 网络协议：DNS / TCP / HTTP / TLS / WebSocket
 - 🛠️ 正在学习：Vite / React
 
