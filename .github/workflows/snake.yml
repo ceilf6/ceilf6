@@ -2,18 +2,18 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # 每天自动运行一次
-  workflow_dispatch:     # 支持手动运行
+    - cron: "0 0 * * *"  # 每天自动执行一次
+  workflow_dispatch:      # 允许手动触发
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate Snake Animation
-        uses: Platane/snk@master
+      - name: Generate Snake SVG
+        uses: Platane/snk@v3  # ✅ 建议写明版本
         with:
           github_user_name: ceilf6
-          outputs: dist  # ⚠️ 注意：只写 dist，不要加 svg?raw=true
+          svg_out_path: dist/github-snake.svg  # ✅ 输出目录设置为 dist/
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v3
