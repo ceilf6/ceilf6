@@ -6,8 +6,8 @@
 ---
 
 <p align="left">
-  <img height="150" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight" />
-  <img height="150" src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ceilf6&theme=tokyonight" />
+  <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight" />
+  <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ceilf6&theme=tokyonight" />
 </p>
 
 <p align="left">
