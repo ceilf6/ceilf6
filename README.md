@@ -13,7 +13,3 @@
 <p align="left">
   <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=ceilf6&theme=tokyonight" />
 </p>
-
----
-
-<img height="180" src="https://github-readme-streak-stats.herokuapp.com/?username=ceilf6&theme=tokyonight" />
