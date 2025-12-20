@@ -1,7 +1,8 @@
 # 👋 Hi there, I'm <span style="color:#4e8cff;">ceilf6</span>!
 
-- 博客：[CSDN](https://blog.csdn.net/2301_78856868)
-- 邮箱：ceilf6@outlook.com
+- blog: [CSDN](https://blog.csdn.net/2301_78856868)
+- vlog: [bilibili](https://space.bilibili.com/3546602400647622)
+- email: ceilf6@outlook.com
 
 ---
 
