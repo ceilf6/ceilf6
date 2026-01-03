@@ -2,7 +2,6 @@
 
 - blog: [CSDN](https://blog.csdn.net/2301_78856868)
 - vlog: [bilibili](https://space.bilibili.com/3546602400647622)
-- email: ceilf6@outlook.com
 
 ---
 
