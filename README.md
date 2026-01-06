@@ -1,12 +1,10 @@
 # 👋 Hi there
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=ceilf6" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=I'm ceilf6" />
 
-## Blog
-- CSDN：https://blog.csdn.net/2301_78856868
+## Blog：https://blog.csdn.net/2301_78856868
 
-## Vlog
-- Bilibili：https://space.bilibili.com/3546602400647622
+## Vlog：https://space.bilibili.com/3546602400647622
 ---
 
 <p align="left">
