@@ -1,6 +1,6 @@
 # 👋 Hi there
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=I'm ceilf6" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=I%27m%20ceilf6" />
 
 ## Blog：https://blog.csdn.net/2301_78856868
 
