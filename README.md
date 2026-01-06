@@ -1,8 +1,12 @@
-# 👋 Hi there, I'm ![ceilf6](https://img.shields.io/badge/ceilf6-BF91F3?style=for-the-badge)
+# 👋 Hi there
 
-- blog: [CSDN](https://blog.csdn.net/2301_78856868)
-- vlog: [Bilibili](https://space.bilibili.com/3546602400647622)
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=ceilf6" />
 
+## Blog
+- CSDN：https://blog.csdn.net/2301_78856868
+
+## Vlog
+- Bilibili：https://space.bilibili.com/3546602400647622
 ---
 
 <p align="left">
