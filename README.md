@@ -1,8 +1,7 @@
-# 👋 Hi there <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&color=BF91F3&lines=I%27m%20ceilf6" />
+# 👋 Hi there, I'm <span style="color:#4e8cff;">ceilf6</span>!
 
-## Blog：[CSDN](https://blog.csdn.net/2301_78856868)
-
-## Vlog：[Bilibili](https://space.bilibili.com/3546602400647622)
+- blog: [CSDN](https://blog.csdn.net/2301_78856868)
+- vlog: [Bilibili](https://space.bilibili.com/3546602400647622)
 ---
 
 <p align="left">
