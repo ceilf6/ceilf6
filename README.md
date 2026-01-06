@@ -1,7 +1,7 @@
 # 👋 Hi there, I'm <span style="color:#BF91F3;">ceilf6</span>!
 
-## blog: [CSDN](https://blog.csdn.net/2301_78856868)
-## vlog: [Bilibili](https://space.bilibili.com/3546602400647622)
+- blog: [CSDN](https://blog.csdn.net/2301_78856868)
+- vlog: [Bilibili](https://space.bilibili.com/3546602400647622)
 
 ---
 
