@@ -5,10 +5,6 @@
 ---
 
 <p align="left">
-  <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight" />
-  <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=ceilf6&theme=tokyonight&timezone=8" />
-</p>
-
-<p align="left">
-  <img height="180" src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=ceilf6&theme=tokyonight" />
+  <img height="180" src="https://github-readme-stats.vercel.app/api?username=ceilf6&show_icons=true&theme=tokyonight&hide_border=true" />
+  <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=ceilf6&layout=compact&theme=tokyonight&hide_border=true" />
 </p>
