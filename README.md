@@ -1,4 +1,4 @@
-# 👋 Hi there, I'm <span style="color:#4e8cff;">ceilf6</span>!
+# 👋 Hi there, I'm ![ceilf6](https://img.shields.io/badge/ceilf6-8251DF?style=flat-square)
 
 - blog: [CSDN](https://blog.csdn.net/2301_78856868)
 - vlog: [Bilibili](https://space.bilibili.com/3546602400647622)
