@@ -3,8 +3,8 @@
 
 <!-- 沉淀区 -->
 <p align="left">
-  <a href="https://blog.csdn.net/2301_78856868"><img src="https://img.shields.io/badge/CSDN-Blog-FC5531?style=for-the-badge&logo=csdn&logoColor=white" alt="CSDN Blog" /></a>
-  <a href="https://space.bilibili.com/3546602400647622"><img src="https://img.shields.io/badge/Bilibili-Vlog-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white" alt="Bilibili Vlog" /></a>
+  <a href="https://blog.csdn.net/2301_78856868"><img src="https://img.shields.io/badge/CSDN-My_Blog-FC5531?style=for-the-badge&logo=csdn&logoColor=white" alt="CSDN My Blog" /></a>
+  <a href="https://space.bilibili.com/3546602400647622"><img src="https://img.shields.io/badge/Bilibili-My_Vlog-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white" alt="Bilibili My Vlog" /></a>
 </p>
 
 ---
