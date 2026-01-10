@@ -1,5 +1,5 @@
 # Hi'm ceilf6
-## [B](https://blog.csdn.net/2301_78856868)&[V](https://space.bilibili.com/3546602400647622)log
+## console.[B](https://blog.csdn.net/2301_78856868)|[V](https://space.bilibili.com/3546602400647622)log
 
 <!-- 状况 -->
 <p align="left">
