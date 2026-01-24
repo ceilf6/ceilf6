@@ -60,11 +60,11 @@ def generate_blog_card(stats):
                 style="fill: #38bdae; font-size: 14px;">Likes:</text><text x="21" y="64.4"
                 style="fill: #38bdae; font-size: 14px;">Stars:</text><text x="21" y="89.6"
                 style="fill: #38bdae; font-size: 14px;">Creation:</text><text x="21" y="114.8"
-                style="fill: #38bdae; font-size: 14px;">Views:</text><text x="130" y="14"
-                style="fill: #38bdae; font-size: 14px;">{fans}</text><text x="130" y="39.2"
-                style="fill: #38bdae; font-size: 14px;">{likes}</text><text x="130" y="64.4"
-                style="fill: #38bdae; font-size: 14px;">{collect}</text><text x="130" y="89.6"
-                style="fill: #38bdae; font-size: 14px;">{original}</text><text x="130" y="114.8"
+                style="fill: #38bdae; font-size: 14px;">Views:</text><text x="100" y="14"
+                style="fill: #38bdae; font-size: 14px;">{fans}</text><text x="100" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">{likes}</text><text x="100" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">{collect}</text><text x="100" y="89.6"
+                style="fill: #38bdae; font-size: 14px;">{original}</text><text x="100" y="114.8"
                 style="fill: #38bdae; font-size: 14px;">{views}</text>
         </g>
         <g transform="translate(220,20)">
@@ -88,7 +88,7 @@ def generate_vlog_card(stats):
 
     # 与 .ref/github-stat.html 保持一致的样式
     width = 340
-    height = 150
+    height = 200
     stroke_width = 1
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
@@ -114,14 +114,15 @@ def generate_vlog_card(stats):
                     d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z" />
             </g><text x="21" y="14" style="fill: #38bdae; font-size: 14px;">Follower:</text><text x="21" y="39.2"
                 style="fill: #38bdae; font-size: 14px;">Views:</text><text x="21" y="64.4"
-                style="fill: #38bdae; font-size: 14px;">Likes:</text><text x="130" y="14"
-                style="fill: #38bdae; font-size: 14px;">{follower}</text><text x="130" y="39.2"
-                style="fill: #38bdae; font-size: 14px;">{views}</text><text x="130" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">Likes:</text><text x="100" y="14"
+                style="fill: #38bdae; font-size: 14px;">{follower}</text><text x="100" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">{views}</text><text x="100" y="64.4"
                 style="fill: #38bdae; font-size: 14px;">{likes}</text>
         </g>
         <g transform="translate(220,20)">
             <g transform="scale(6)" style="fill: #bf91f3;">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H0V14H16V2ZM6.5 5V11H7.5L11 8L7.5 5H6.5Z" />
+                <path fill-rule="evenodd"
+                    d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zm1.75-.25a.25.25 0 00-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25v-8.5a.25.25 0 00-.25-.25H1.75zM6 6.207v3.586c0 .307.353.482.603.3L9.5 8l-2.897-2.093A.375.375 0 006 6.207z" />
             </g>
         </g>
     </g>
