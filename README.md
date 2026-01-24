@@ -6,6 +6,7 @@
     <img src="./assets/blog-card.svg" width="32%" />
   </a>
   <a href="https://space.bilibili.com/3546602400647622" target="_blank" style="text-decoration: none;">
+    <!-- a 元素下划线会导致中间有蓝色底边线 -->
     <img src="./assets/vlog-card.svg" width="32%" />
   </a>
 </div>

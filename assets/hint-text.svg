@@ -5,12 +5,23 @@
                 <animate attributeName="width" from="0" to="340" dur="2.5s" fill="freeze" />
             </rect>
         </clipPath>
+        <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#70A5FE">
+                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="3s" begin="2.5s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="50%" style="stop-color:#70A5FE">
+                <animate attributeName="stop-color" values="#70A5FE;#70A5FE;#BF91F3" dur="3s" begin="2.5s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="100%" style="stop-color:#70A5FE">
+                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="3s" begin="2.5s" repeatCount="indefinite" />
+            </stop>
+        </linearGradient>
     </defs>
     <style>
         .hint {
             font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
             font-size: 13px;
-            fill: #70A5FE;
+            fill: url(#shimmer);
         }
         .highlight {
             font-weight: 600;
