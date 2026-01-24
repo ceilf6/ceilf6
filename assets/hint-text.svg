@@ -1,28 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="340" height="24" viewBox="0 0 340 24">
     <defs>
-        <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#70A5FE">
-                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="3s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="50%" style="stop-color:#BF91F3">
-                <animate attributeName="stop-color" values="#BF91F3;#70A5FE;#BF91F3" dur="3s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" style="stop-color:#70A5FE">
-                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="3s" repeatCount="indefinite" />
-            </stop>
-        </linearGradient>
+        <clipPath id="typing">
+            <rect x="0" y="0" width="0" height="24">
+                <animate attributeName="width" from="0" to="340" dur="2.5s" fill="freeze" />
+            </rect>
+        </clipPath>
     </defs>
     <style>
         .hint {
             font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
             font-size: 13px;
-            fill: url(#shimmer);
+            fill: #70A5FE;
         }
         .highlight {
             font-weight: 600;
         }
     </style>
-    <text x="0" y="16" class="hint">
+    <text x="0" y="16" class="hint" clip-path="url(#typing)">
         <tspan>Click the </tspan>
         <tspan class="highlight">Blog</tspan>
         <tspan> / </tspan>
