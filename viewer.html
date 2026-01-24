@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看图片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: rgba(12, 25, 41, 0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .viewer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            cursor: zoom-out;
+        }
+
+        .viewer img {
+            max-width: 92vw;
+            max-height: 92vh;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow:
+                0 25px 80px rgba(56, 189, 248, 0.3),
+                0 0 60px rgba(139, 92, 246, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .error {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .nav-btn.prev { left: 20px; }
+        .nav-btn.next { right: 20px; }
+
+        .nav-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="nav-btn prev" id="prevBtn" title="上一张 (←)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </button>
+    <button class="nav-btn next" id="nextBtn" title="下一张 (→)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+        </svg>
+    </button>
+
+    <div class="viewer" id="viewer">
+        <img src="" alt="" id="viewer-img" style="display: none;">
+        <div class="error" id="error" style="display: none;">图片未找到</div>
+    </div>
+    <div class="hint">← → 切换图片 | ESC 或点击图片关闭</div>
+
+    <script src="images.js"></script>
+    <script>
+        const viewerImg = document.getElementById('viewer-img');
+        const error = document.getElementById('error');
+        const viewer = document.getElementById('viewer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // 从 URL 参数获取图片 id
+        const params = new URLSearchParams(window.location.search);
+        const imgId = params.get('img');
+
+        let currentIndex = images.findIndex(img => img.id === imgId);
+
+        function showImage(index) {
+            if (index < 0 || index >= images.length) return;
+            currentIndex = index;
+            const image = images[index];
+            viewerImg.src = image.src;
+            viewerImg.alt = image.alt;
+            viewerImg.style.display = 'block';
+            document.title = image.alt + ' - 查看图片';
+            // 更新 URL
+            history.replaceState(null, '', `?img=${image.id}`);
+        }
+
+        function prevImage() {
+            const newIndex = currentIndex <= 0 ? images.length - 1 : currentIndex - 1;
+            showImage(newIndex);
+        }
+
+        function nextImage() {
+            const newIndex = currentIndex >= images.length - 1 ? 0 : currentIndex + 1;
+            showImage(newIndex);
+        }
+
+        if (currentIndex !== -1) {
+            showImage(currentIndex);
+        } else {
+            error.style.display = 'block';
+        }
+
+        // 按钮点击
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            prevImage();
+        });
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nextImage();
+        });
+
+        // 点击图片关闭
+        viewerImg.addEventListener('click', () => {
+            window.close();
+        });
+
+        // 键盘事件
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.close();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+    </script>
+</body>
+
+</html>

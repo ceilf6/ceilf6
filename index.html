@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王景宏简历附件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c1929 0%, #1a365d 25%, #2563eb 50%, #7c3aed 75%, #1e1b4b 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.3) 0%, transparent 25%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 25%),
+                radial-gradient(circle at 40% 40%, rgba(34, 211, 238, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 60% 60%, rgba(99, 102, 241, 0.2) 0%, transparent 20%);
+            animation: floatOrbs 20s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes floatOrbs {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(2%, 3%) rotate(5deg);
+            }
+
+            50% {
+                transform: translate(-1%, 2%) rotate(-3deg);
+            }
+
+            75% {
+                transform: translate(3%, -2%) rotate(3deg);
+            }
+        }
+
+        /* 布局切换器 */
+        .layout-switcher {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+        }
+
+        .layout-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .layout-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .layout-btn.active {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .layout-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* 纯2D平面旋转 */
+        .carousel-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .carousel {
+            position: relative;
+            width: 900px;
+            height: 900px;
+            animation: carouselSpin 35s linear infinite;
+        }
+
+        .carousel:has(.card:hover) {
+            animation-play-state: paused;
+        }
+
+        .carousel:has(.card:hover) .card {
+            animation-play-state: paused;
+        }
+
+        @keyframes carouselSpin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .carousel .card {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -75px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 8px 32px rgba(31, 38, 135, 0.3),
+                0 0 20px rgba(56, 189, 248, 0.2);
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+            /* 反向旋转保持图片水平 */
+            animation: counterSpin 35s linear infinite;
+        }
+
+        @keyframes counterSpin {
+            from {
+                transform: var(--card-translate) rotate(0deg);
+            }
+
+            to {
+                transform: var(--card-translate) rotate(-360deg);
+            }
+        }
+
+        .carousel .card:hover {
+            box-shadow:
+                0 12px 40px rgba(31, 38, 135, 0.4),
+                0 0 40px rgba(56, 189, 248, 0.5),
+                0 0 60px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.8);
+            z-index: 10;
+        }
+
+        .carousel .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* 网格布局 */
+        .gallery {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            padding: 80px 100px 40px;
+        }
+
+        .gallery.active {
+            display: grid;
+        }
+
+        .gallery .card {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.3);
+            opacity: 0;
+            animation: cardIn 0.6s ease forwards;
+        }
+
+        .gallery .card:hover {
+            box-shadow:
+                0 15px 50px rgba(56, 189, 248, 0.4),
+                0 0 30px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-8px);
+        }
+
+        .gallery .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery .card:hover img {
+            transform: scale(1.05);
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 瀑布流布局 - 使用columns作为基础，masonry作为增强 */
+        .gallery.waterfall {
+            display: none;
+            column-count: 3;
+            column-gap: 24px;
+        }
+
+        .gallery.waterfall.active {
+            display: block;
+        }
+
+        .gallery.waterfall .card {
+            aspect-ratio: unset;
+            height: auto;
+            break-inside: avoid;
+            margin-bottom: 24px;
+        }
+
+        .gallery.waterfall .card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* 如果浏览器支持masonry，使用Grid masonry */
+        @supports (grid-template-rows: masonry) {
+            .gallery.waterfall {
+                display: none;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: masonry;
+                align-tracks: stretch;
+            }
+
+            .gallery.waterfall.active {
+                display: grid;
+            }
+
+            .gallery.waterfall .card {
+                margin-bottom: 0;
+            }
+        }
+
+        /* 单列布局 */
+        .gallery.single {
+            grid-template-columns: 1fr;
+            max-width: 700px;
+        }
+
+        .gallery.single .card {
+            aspect-ratio: 16/10;
+        }
+
+        /* 延迟动画 */
+        .gallery .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .gallery .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .gallery .card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .gallery .card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .gallery .card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+
+        .gallery .card:nth-child(6) {
+            animation-delay: 0.3s;
+        }
+
+        .gallery .card:nth-child(7) {
+            animation-delay: 0.35s;
+        }
+
+        .gallery .card:nth-child(8) {
+            animation-delay: 0.4s;
+        }
+
+        .gallery .card:nth-child(9) {
+            animation-delay: 0.45s;
+        }
+
+        .gallery .card:nth-child(10) {
+            animation-delay: 0.5s;
+        }
+
+        .gallery .card:nth-child(11) {
+            animation-delay: 0.55s;
+        }
+
+        /* 旋转提示 */
+        .carousel-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.3s;
+        }
+
+        .carousel-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 社交链接 */
+        .social-links {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-link {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: white;
+            transform: translateX(4px);
+            box-shadow: 0 8px 32px rgba(56, 189, 248, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 社交链接提示框 */
+        .social-tooltip {
+            position: absolute;
+            left: 64px;
+            top: 50%;
+            transform: translateY(-50%) translateX(-10px);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 10px 16px;
+            white-space: nowrap;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+        }
+
+        .social-tooltip::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-left: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .social-link:hover .social-tooltip {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .social-tooltip-label {
+            display: inline-block;
+            opacity: 0.8;
+            margin-right: 4px;
+        }
+
+        .social-tooltip-stats {
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* README 区域 */
+        .readme-section {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            background: rgba(26, 27, 39, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+            width: calc(100% - 160px);
+        }
+
+        .readme-section h1 {
+            font-size: 18px;
+            color: #70A5FE;
+            margin-bottom: 16px;
+        }
+
+        .readme-cards {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .readme-cards img {
+            height: 120px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .readme-cards img:hover {
+            transform: scale(1.02);
+        }
+
+        .readme-hint {
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .readme-hint img {
+            height: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .readme-section {
+                width: calc(100% - 40px);
+                top: 80px;
+            }
+
+            .readme-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .readme-cards img {
+                width: 100%;
+                height: auto;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .readme-section {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 80px 80px 40px;
+            }
+
+            .gallery.waterfall {
+                column-count: 2;
+            }
+
+            @supports (grid-template-rows: masonry) {
+                .gallery.waterfall {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            .carousel {
+                width: 600px;
+                height: 600px;
+            }
+
+            .carousel .card {
+                width: 150px;
+                height: 112px;
+                margin-left: -75px;
+                margin-top: -56px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 20px 20px 160px;
+            }
+
+            .gallery.waterfall {
+                column-count: 1;
+            }
+
+            @supports (grid-template-rows: masonry) {
+                .gallery.waterfall {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .carousel {
+                width: 380px;
+                height: 380px;
+            }
+
+            .carousel .card {
+                width: 100px;
+                height: 75px;
+                margin-left: -50px;
+                margin-top: -37px;
+                border-radius: 8px;
+            }
+
+            .layout-switcher {
+                top: auto;
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+                flex-direction: row;
+            }
+
+            .carousel-hint {
+                bottom: 150px;
+            }
+
+            .social-links {
+                left: 50%;
+                top: 20px;
+                /* bottom: 80px; */
+                transform: translateX(-50%);
+                flex-direction: row;
+            }
+
+            .social-link {
+                width: 44px;
+                height: 44px;
+            }
+
+            .social-link:hover {
+                transform: translateY(-4px);
+            }
+
+            .social-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- README 展示区域 -->
+    <div class="readme-section">
+        <h1>👋 Hi there, I'm <span style="color:#BF91F3;">ceilf6</span>!</h1>
+        <div class="readme-cards">
+            <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight"
+                alt="Stats" />
+            <a href="https://blog.csdn.net/2301_78856868" target="_blank"><img src="assets/blog-card.svg"
+                    alt="Blog" /></a>
+            <a href="https://space.bilibili.com/3546602400647622" target="_blank"><img src="assets/vlog-card.svg"
+                    alt="Vlog" /></a>
+        </div>
+        <div class="readme-hint">
+            <img src="assets/hint-text.svg" alt="hint" />
+        </div>
+    </div>
+
+    <!-- 布局切换器 -->
+    <div class="layout-switcher">
+        <button class="layout-btn active" data-layout="waterfall" title="瀑布流">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="10" />
+                <rect x="14" y="3" width="7" height="6" />
+                <rect x="3" y="15" width="7" height="6" />
+                <rect x="14" y="11" width="7" height="10" />
+            </svg>
+        </button>
+        <button class="layout-btn" data-layout="carousel" title="旋转">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+            </svg>
+        </button>
+        <button class="layout-btn" data-layout="grid" title="陈列">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+            </svg>
+        </button>
+        <button class="layout-btn" data-layout="single" title="单列">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="3" width="16" height="6" />
+                <rect x="4" y="11" width="16" height="6" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- 社交链接 -->
+    <div class="social-links">
+        <a href="https://github.com/ceilf6" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+            </svg>
+            <div class="social-tooltip">
+                <span class="social-tooltip-label">GitHub:</span>
+                <span class="social-tooltip-stats">1k+ Stars & 157 followers...</span>
+            </div>
+        </a>
+        <a href="https://blog.csdn.net/2301_78856868" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+            </svg>
+            <div class="social-tooltip">
+                <span class="social-tooltip-label">Blog:</span>
+                <span class="social-tooltip-stats">1634 followers & 182 blogs...</span>
+            </div>
+        </a>
+        <a href="https://space.bilibili.com/3546602400647622" target="_blank" rel="noopener noreferrer"
+            class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M23 7l-7 5 7 5V7z" />
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+            </svg>
+            <div class="social-tooltip">
+                <span class="social-tooltip-label">Vlog:</span>
+                <span class="social-tooltip-stats">127 followers & 5w+ views...</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- 3D旋转木马 -->
+    <div class="carousel-container" id="carouselContainer">
+        <div class="carousel" id="carousel"></div>
+    </div>
+
+    <!-- 提示文字 -->
+    <div class="carousel-hint" id="carouselHint">
+        <span>点击图片查看大图</span>
+    </div>
+
+    <!-- 网格/瀑布流/单列容器 -->
+    <div class="gallery" id="gallery"></div>
+
+    <script src="resume-awards/images.js"></script>
+    <script>
+        const carousel = document.getElementById('carousel');
+        const carouselContainer = document.getElementById('carouselContainer');
+        const carouselHint = document.getElementById('carouselHint');
+        const gallery = document.getElementById('gallery');
+        const layoutBtns = document.querySelectorAll('.layout-btn');
+
+        let currentLayout = 'carousel';
+
+        // 打开查看器页面
+        function openViewer(id) {
+            window.open(`viewer.html?img=${id}`, '_blank');
+        }
+
+        // 初始化纯2D平面旋转 - 多圈布局避免遮挡
+        function initCarousel() {
+            const total = images.length;
+            const screenWidth = window.innerWidth;
+
+            // 根据屏幕调整基础参数
+            let cardWidth = 200;
+            let cardGap = 30; // 卡片之间的间距
+            let baseRadius = 200;
+
+            if (screenWidth <= 640) {
+                cardWidth = 100;
+                cardGap = 15;
+                baseRadius = 100;
+            } else if (screenWidth <= 900) {
+                cardWidth = 150;
+                cardGap = 20;
+                baseRadius = 150;
+            }
+
+            // 计算每圈能放多少张图片（基于周长和卡片宽度+间距）
+            const itemSpace = cardWidth + cardGap;
+
+            // 分配图片到各圈
+            const rings = [];
+            let remainingImages = [...images];
+            let currentRadius = baseRadius;
+
+            while (remainingImages.length > 0) {
+                const circumference = 2 * Math.PI * currentRadius;
+                const maxPerRing = Math.max(1, Math.floor(circumference / itemSpace));
+                const countForThisRing = Math.min(maxPerRing, remainingImages.length);
+
+                rings.push({
+                    radius: currentRadius,
+                    images: remainingImages.slice(0, countForThisRing)
+                });
+
+                remainingImages = remainingImages.slice(countForThisRing);
+                currentRadius += cardWidth + cardGap; // 下一圈半径增加
+            }
+
+            // 创建卡片
+            rings.forEach((ring, ringIndex) => {
+                const angleStep = (2 * Math.PI) / ring.images.length;
+                // 每圈错开一点角度，更美观
+                const angleOffset = ringIndex * (Math.PI / ring.images.length);
+
+                ring.images.forEach((img, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+
+                    const angle = angleStep * i - Math.PI / 2 + angleOffset;
+                    const x = Math.cos(angle) * ring.radius;
+                    const y = Math.sin(angle) * ring.radius;
+
+                    // 用CSS变量存储位移，供反向旋转动画使用
+                    card.style.setProperty('--card-translate', `translate(${x}px, ${y}px)`);
+                    card.style.transform = `translate(${x}px, ${y}px)`;
+
+                    card.addEventListener('click', () => openViewer(img.id));
+                    carousel.appendChild(card);
+                });
+            });
+        }
+
+        // 初始化网格/瀑布流/单列
+        function initGallery() {
+            images.forEach((img, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+                card.addEventListener('click', () => openViewer(img.id));
+                gallery.appendChild(card);
+            });
+        }
+
+        // 切换布局
+        function switchLayout(layout) {
+            currentLayout = layout;
+
+            // 更新按钮状态
+            layoutBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.layout === layout);
+            });
+
+            // 隐藏所有
+            carouselContainer.style.display = 'none';
+            gallery.classList.remove('active', 'waterfall', 'single');
+            carouselHint.classList.add('hidden');
+
+            if (layout === 'carousel') {
+                carouselContainer.style.display = 'flex';
+                carouselHint.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                gallery.classList.add('active');
+                document.body.style.overflow = 'auto';
+
+                if (layout === 'waterfall') {
+                    gallery.classList.add('waterfall');
+                } else if (layout === 'single') {
+                    gallery.classList.add('single');
+                }
+
+                // 重新触发动画
+                gallery.querySelectorAll('.card').forEach((card, i) => {
+                    card.style.animation = 'none';
+                    card.offsetHeight; // 强制重绘
+                    card.style.animation = `cardIn 0.6s ease forwards ${i * 0.05}s`;
+                });
+            }
+        }
+
+        // 布局按钮点击
+        layoutBtns.forEach(btn => {
+            btn.addEventListener('click', () => switchLayout(btn.dataset.layout));
+        });
+
+        // 初始化
+        initCarousel();
+        initGallery();
+        switchLayout('waterfall');
+    </script>
+</body>
+
+</html>
