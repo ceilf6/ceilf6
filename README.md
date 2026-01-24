@@ -11,7 +11,7 @@
 <p align="left">
 
   <a href="https://space.bilibili.com/3546602400647622" target="_blank">
-    <img src="./svg/video-library-svgrepo-com.svg" width="20" height="20" align="center" alt="Vlog"/>
+    <img src="./svg/video-svgrepo-com.svg" width="20" height="20" align="center" alt="Vlog"/>
     <b>Vlog</b>
   </a>
 </p>
