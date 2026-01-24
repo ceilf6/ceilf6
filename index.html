@@ -501,10 +501,10 @@
         /* README 区域 */
         .readme-section {
             width: 100%;
-            background: rgba(26, 27, 39, 0.95);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             padding: 24px;
             text-align: center;
             flex-shrink: 0;
@@ -741,7 +741,7 @@
 
         // 打开查看器页面
         function openViewer(id) {
-            window.open(`resume-awards/viewer.html?img=${id}`, '_blank');
+            window.open(`viewer.html?img=${id}`, '_blank');
         }
 
         // 初始化纯2D平面旋转 - 多圈布局避免遮挡
