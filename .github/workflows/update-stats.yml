@@ -1,4 +1,4 @@
-name: Update Bilibili Stats
+name: Update Stats
 
 on:
   schedule:
@@ -26,6 +26,9 @@ jobs:
       - name: Fetch Bilibili stats
         run: python scripts/fetch-bilibili-stats.py
 
+      - name: Fetch CSDN stats
+        run: python scripts/fetch-csdn-stats.py
+
       - name: Update README with stats
         run: python scripts/update-readme.py
 
@@ -37,6 +40,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update bilibili stats [skip ci]"
+            git commit -m "chore: update stats [skip ci]"
             git push
           fi

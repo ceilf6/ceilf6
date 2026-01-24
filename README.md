@@ -6,6 +6,13 @@
     <img src="./svg/blog-writing-svgrepo-com.svg" width="20" height="20" align="center" alt="Blog"/>
     <b>Blog</b>
   </a>
+  <br/>
+  <span style="margin-left: 26px;">
+    <img src="https://img.shields.io/badge/粉丝-1,634-ff6b6b?style=flat-square" alt="Fans"/>
+    <img src="https://img.shields.io/badge/点赞-2,770-4dabf7?style=flat-square" alt="Likes"/>
+    <img src="https://img.shields.io/badge/收藏-1,466-ffa94d?style=flat-square" alt="Collect"/>
+    <img src="https://img.shields.io/badge/原创-182-51cf66?style=flat-square" alt="Original"/>
+  </span>
 </p>
 
 <p align="left">
