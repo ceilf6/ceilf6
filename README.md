@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/点赞-2,770-4dabf7?style=flat-square" alt="Likes"/>
     <img src="https://img.shields.io/badge/收藏-1,466-ffa94d?style=flat-square" alt="Collect"/>
     <img src="https://img.shields.io/badge/原创-182-51cf66?style=flat-square" alt="Original"/>
-    <img src="https://img.shields.io/badge/访问-12.8万?style=flat-square" alt="views"/>
+    <img src="https://img.shields.io/badge/访问-12.8万-51cf66?style=flat-square" alt="views"/>
   </span>
 </p>
 
