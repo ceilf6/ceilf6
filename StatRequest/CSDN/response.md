@@ -1,1914 +1,216 @@
 粉丝
-获得收藏
-获得点赞
-原创博客数
+点赞
+收藏
+原创
+访问量
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-
-<head>
-    <meta charset="utf-8">
-    <link rel="canonical" href="https://blog.csdn.net/2301_78856868"/>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="renderer" content="webkit"/>
-    <meta name="force-rendering" content="webkit"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="report" content='{"pid": "blog", "spm":"1001.2014"}'>
-    <meta name="referrer" content="always">
-    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
-    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
-    <meta name="applicable-device" content="pc">
-    <link  href="https://g.csdnimg.cn/static/logo/favicon32.ico"  rel="shortcut icon" type="image/x-icon" />
-    <title>ceilf6-CSDN博客</title>
-    <meta name="description" content="ceilf6擅长前端,数据结构与算法,工具,等方面的知识,ceilf6关注stm32,c++,html5,kmeans,es6,vue.js,numpy,tcp/ip,redis,sql,database,git,机器学习,霍夫曼树,linux,json,mysql,开源,macos,python,github,图搜索算法,深度学习,动态规划,网络协议,javascript,数据结构,单片机,pandas,YOLO,爬虫,django,vscode,matplotlib,http,迁移学习,css3领域.">
-        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/css/list_enter-a82992e6b1.min.css">
-        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/themesSkin/skin-whitemove/skin-whitemove-2af9149bdc.min.css">
-    <script src="https://g.csdnimg.cn/lib/jquery/1.12.4/jquery.min.js" type="text/javascript"></script>
-    <script src="https://g.csdnimg.cn/lib/jquery-migrate/1.4.1/jquery-migrate.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var isCorporate = false;
-        var username =  "2301_78856868";
-        var skinImg = "white";
-
-        var blog_address = "https://blog.csdn.net/2301_78856868";
-        var currentUserName = "2301_78856868";
-        var isOwner = true;
-        var loginUrl = "http://passport.csdn.net/account/login?from=https://blog.csdn.net/2301_78856868";
-        var blogUrl = "https://blog.csdn.net/";
-        var starMapUrl = '';
-        var inscodeHost = '';
-        var paymentBalanceUrl = '';
-        var appBlogDomain = '';
-        var avatar = "https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1";
-        var isCJBlog = false;
-        var isStarMap = false;
-        var articleTitle = "2301_78856868的博客";
-        var articleDesc = "ceilf6擅长前端,数据结构与算法,工具,等方面的知识,ceilf6关注stm32,c++,html5,kmeans,es6,vue.js,numpy,tcp/ip,redis,sql,database,git,机器学习,霍夫曼树,linux,json,mysql,开源,macos,python,github,图搜索算法,深度学习,动态规划,网络协议,javascript,数据结构,单片机,pandas,YOLO,爬虫,django,vscode,matplotlib,http,迁移学习,css3领域.";
-        var articleTitles = "ceilf6-CSDN博客";
-        var nickName = "ceilf6";
-        var articleDetailUrl = "";
-        var vipUrlV = "https://mall.csdn.net/vip?vipSource=learningVip";
-        if(window.location.host.split('.').length == 3) {
-            blog_address = blogUrl + username;
-        }
-        var skinStatus = "White";
-        var blogStaticHost = "https://csdnimg.cn/release/blogv2/"
-        var payColumn = false
-    </script>
-        <meta name="toolbar" content='{"type":"0","fixModel":"1"}'>
-    <script src="https://g.csdnimg.cn/??fixed-sidebar/1.1.7/fixed-sidebar.js" type="text/javascript"></script>
-    <script src='//g.csdnimg.cn/common/csdn-report/report.js' type='text/javascript'></script>
-    <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css">
-    <style>
-        .MathJax, .MathJax_Message, .MathJax_Preview{
-            display: none
-        }
-    </style>
-    <script src="https://dup.baidustatic.com/js/ds.js"></script>
-      <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "lgtpix6r85");
-      </script>
-    <script src="/cdn_cgi_bs_bot/static/crypto.min.js"></script>
+<!doctype html><html lang="zh" data-server-rendered="true" data-v-d00e6b46><head><title>ceilf6-CSDN博客</title> <meta name="keywords" content="前端,数据结构与算法,工具,ceilf6"> <meta name="description" content="ceilf6擅长前端,数据结构与算法,工具,等方面的知识,ceilf6关注stm32,c++,html5,kmeans,es6,vue.js,numpy,tcp/ip,redis,sql,database,git,机器学习,霍夫曼树,linux,json,mysql,开源,macos,python,github,图搜索算法,深度学习,动态规划,网络协议,javascript,数据结构,单片机,pandas,YOLO,爬虫,django,vscode,matplotlib,http,迁移学习,css3领域."> <meta http-equiv="content-type" content="text/html;charset=utf-8"> <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"> <meta name="referrer" content="always"> <meta http-equiv="Cache-Control" content="no-siteapp"> <!----> <meta name="applicable-device" content="pc"> <!----> <!----> <!----> <!----> <link rel="shortcut icon" href="https://g.csdnimg.cn/static/logo/favicon32.ico" type="image/x-icon"> <link rel="canonical" href="https://blog.csdn.net/2301_78856868"> <!----> 
+          <meta name="toolbar" content={"type":"0"} />
+       
+          <meta name="report" content={"spm":"1001.2014","pid":"blog"} />
+       <script src="https://g.csdnimg.cn/??lib/jquery/1.12.4/jquery.min.js,user-tooltip/2.7/user-tooltip.js,lib/qrcode/1.0.0/qrcode.min.js"></script> <script src='//g.csdnimg.cn/common/csdn-report/report.js' type='text/javascript'></script> <!----> <!----> 
+          <script src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js" defer></script>
+       <!----> <!----> <!----> <!----> <!----> <!----> <!----> 
+         <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" defer></script>
+       
+        <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "lgtpix6r85");
+        </script>
+      <link rel="stylesheet" href="https://csdnimg.cn/release/cmsfe/public/css/common.a1bbefb6.css"><link rel="stylesheet" href="https://csdnimg.cn/release/cmsfe/public/css/tpl/user-profile-v2/index.593bfd50.css">    <script src="/cdn_cgi_bs_bot/static/crypto.min.js"></script>
     <script src="/cdn_cgi_bs_bot/static/bot-score-v1.js"></script>
     <script src="/cdn_cgi_bs_captcha/static/js/waf_captcha_embedded_bs.js"></script>
-</head>
-  <body class="nodata  " style="">
-    <div id="toolbarBox" style="min-height: 48px;"></div>
-    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" type="text/javascript"></script>
-    <script>
-    (function(){
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        }
-        else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
-    </script>
-<link rel="stylesheet" href="https://g.csdnimg.cn/lib/cropper/3.1.6/cropper.css">
-<script src="https://g.csdnimg.cn/lib/cropper/3.1.6/cropper.js"></script>
-<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script>
-<script>
-	$("#msgToastText").hide()
-</script>
-<div class="skin-boxshadow"></div>
-<div id="userSkin">
-	<div class="user-skin-box">
-		<p class="user-skin-title">
-        <span>自定义博客皮肤<span class="vip-get">VIP专享<span></span>
-        <span class="close-bt bt-back"><svg t="1567152543821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10924" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12"><defs><style type="text/css"></style></defs><path d="M512 438.378667L806.506667 143.893333a52.032 52.032 0 1 1 73.6 73.621334L585.621333 512l294.485334 294.485333a52.074667 52.074667 0 0 1-73.6 73.642667L512 585.621333 217.514667 880.128a52.053333 52.053333 0 1 1-73.621334-73.642667L438.378667 512 143.893333 217.514667a52.053333 52.053333 0 1 1 73.621334-73.621334L512 438.378667z" fill="" p-id="10925"></path></svg></span>
-        </p>
-		<div class="user-skin-item">
-			<div class="user-skin-left"><span>*</span>博客头图：</div>
-			<div class="user-skin-right">
-				<input type="file" class="upload-skin-img" id="uploadHeaderimg" style="display:none" value="">
-				<label for="uploadHeaderimg" class="upload-img">
-					<div class="icon-box">
-					<img class="upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImage.png" alt="">
-					<img style="display:none" class="success-upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImageWhite.png" alt="">
-					<p class="tip-massage">点击选择上传的图片</p>
-					</div>
-				</label>
-                <p  class="user-skin-tip">格式为PNG、JPG，宽度*高度大于1920*100像素，不超过2MB，主视觉建议放在右侧，请参照线上博客头图</p>
-			    <p  class="user-skin-color">请上传大于1920*100像素的图片！</p>
-			</div>
-		</div>
-		<div class="user-skin-item">
-            <div class="user-skin-left"><span></span>博客底图：</div>
-			<div class="user-skin-right">
-				<input type="file" class="upload-skin-img" id="uploadBgimg" style="display:none" value="">
-				<label for="uploadBgimg" class="upload-img">
-					<div class="icon-box">
-					<img class="upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImage.png" alt="">
-					<img style="display:none" class="success-upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImageWhite.png" alt="">					
-					<p class="tip-massage">点击选择上传的图片</p>
-					</div>
-				</label>
-                <p class="user-skin-tip">图片格式为PNG、JPG，不超过1MB，可上下左右平铺至整个背景</p>
-			</div>
-		</div>
-		<div class="user-skin-item">
-            <div class="user-skin-left"><span></span>栏目图：</div>
-			<div class="user-skin-right">
-				<input type="file" class="upload-skin-img" id="uploadColumnimg" style="display:none" value="">
-				<label for="uploadColumnimg" class="upload-img">
-					<div class="icon-box">
-					<img class="upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImage.png" alt="">
-					<img style="display:none" class="success-upload-icon" src="https://csdnimg.cn/release/blogv2/dist/pc/img/upLoadImageWhite.png" alt="">					
-					<p class="tip-massage">点击选择上传的图片</p>
-					</div>
-				</label>
-                <p class="user-skin-tip">图片格式为PNG、JPG，图片宽度*高度为300*38像素，不超过0.5MB</p>
-			</div>
-			
-		</div>
-		<div class="user-skin-item user-skin-item-input">
-            <div class="user-skin-left"><span></span>主标题颜色：</div>
-			<div class="user-skin-right">
-				<input type="text" class="skin-input" id="topicColor" placeholder="#ffffff">
-                <p class="user-skin-tip">RGB颜色，例如：#AFAFAF</p>
-			</div>
-			
-		</div>
-		<div class="user-skin-item user-skin-item-input">
-            <div class="user-skin-left"><span></span>Hover：</div>
-			<div class="user-skin-right">
-				<input type="text" class="skin-input" id="topicHoverColor" placeholder="#ffffff">
-                <p class="user-skin-tip">RGB颜色，例如：#AFAFAF</p>
-			</div>
-			
-		</div>
-		<div class="user-skin-item user-skin-item-input">
-            <div class="user-skin-left"><span></span>副标题颜色：</div>
-			<div class="user-skin-right">
-				<input type="text" class="skin-input" id="subTopicColor" placeholder="#b8b8b8">
-                <p class="user-skin-tip">RGB颜色，例如：#AFAFAF</p>
-			</div>
-			
-		</div>
-		<div class="user-skin-bt">
-			<a href="javascript:;" class="user-skin-preview bt">预览</a>
-			<a href="javascript:;" class="user-skin-cancel bt bt-back">取消</a>
-			<a href="javascript:;" class="user-skin-refer bt">提交</a>
-		</div>
-	</div>
-</div>
-<div id="cropBox">
-	<div class="crop-box">
-		<p class="crop-box-title">
-        	<span>自定义博客皮肤</span>
-        	<span class="close-bt  bt-back"><svg t="1567152543821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10924" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12"><defs><style type="text/css"></style></defs><path d="M512 438.378667L806.506667 143.893333a52.032 52.032 0 1 1 73.6 73.621334L585.621333 512l294.485334 294.485333a52.074667 52.074667 0 0 1-73.6 73.642667L512 585.621333 217.514667 880.128a52.053333 52.053333 0 1 1-73.621334-73.642667L438.378667 512 143.893333 217.514667a52.053333 52.053333 0 1 1 73.621334-73.621334L512 438.378667z" fill="" p-id="10925"></path></svg></span>
-        </p>
-		<div class="crop-img-before">
-			<img src="" alt="" id="cropImg">
-		</div>
-		<div class="crop-zoom">
-			<a href="javascript:;" class="bt-reduce">-</a><a href="javascript:;" class="bt-add">+</a>
-		</div>
-		<div class="crop-img-after">
-			<div  class="final-img"></div>
-		</div>
-		<div class="crop-bt">
-			<a href="javascript:;" class="bt-prev bt-back">上一步</a><a href="javascript:;" class="bt-next">保存</a>
-		</div>
-	</div>
-</div>
-<header>
-	<div class="container d-flex clearfix">
-		<div class="header-content-box " style=" padding:0;">
-		<div class="title-box">
-			<h1 class="title-blog ">
-				<a href="https://blog.csdn.net/2301_78856868" style="">2301_78856868的博客</a>
-			</h1>
-			<p class="description " style=""></p>
-		</div>
-		<div class="opt-box d-flex justify-content-end">
-				<a class="btn btn-sm" href="https://mp.csdn.net/console/article">
-				<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/blogManageWhite.png" alt="">
-				管理博客</a>
-				<div class="skin-template-box">
- <div class="skin-template-model">
-	<div class="skin-template-left">
-		<div class="skin-template-item">
-			<a class="icon-skin">
-				<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/eyeCare.png" alt="">
-                <img class="changed" src="https://csdnimg.cn/release/blogv2/dist/pc/img/eyeCareChanged.png" alt="">
-				<p class="icon-text">护眼黑</p>
-			</a>
-		</div>
-		<div class="skin-template-item">
-			<a class="icon-skin">
-				<img class="changed" src="https://csdnimg.cn/release/blogv2/dist/pc/img/personalitySkin.png" alt="">
-                <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/personalitySkinChanged.png" alt="">
-				<p class="icon-text">个性皮肤</p>
-			</a>
-		</div>
-	</div>
-	<div class="skin-template-right">
-		<div class="skin-template-scroll">
-			<ul class="skin-list skin-list-show">
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=26" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/90cd5ba5b3324e57911a6d3f227c810c.png" alt="">
-                        <div class="skin-name">
-                            <p>岁月</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=28" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/a64d01f75a094c3a80a6e9c4f7a85d65.png" alt="">
-                        <div class="skin-name">
-                            <p>数字50</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=29" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/558a28128c8f4378a4b6553a6dd327cc.png" alt="">
-                        <div class="skin-name">
-                            <p>护眼</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=20" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/76045952ea1d414db0ff17b61e20e80e.png" alt="">
-                        <div class="skin-name">
-                            <p>我行我“速” </p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=27" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/f2b8ffc3a219463c933fead33bf6a073.png" alt="">
-                        <div class="skin-name">
-                            <p>点我我会动</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=19" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/40d6945b81cb4316a58de91edca66f9b.png" alt="">
-                        <div class="skin-name">
-                            <p>鲸</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-            </ul>
-			<ul class="skin-list">
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=16" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/883b9d3370f645888e9e89ea93820a0d.png" alt="">
-                        <div class="skin-name">
-                            <p>Age of Ai</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip.png">
-                        <div class="isvip">VIP</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=6" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/0f76d949d49e437a8234422ab5a056fe.png" alt="">
-                        <div class="skin-name">
-                            <p>深蓝海洋</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V1</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=17" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/d7adf3f2d6f4459e8e5613d6ac86f732.png" alt="">
-                        <div class="skin-name">
-                            <p>数字20</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V1</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=25" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/62c30e993f0e44f080983f4d1436c653.png" alt="">
-                        <div class="skin-name">
-                            <p>游动-白</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V1</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=76" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/273d658f54de4b899a417f2a9849098c.png" alt="">
-                        <div class="skin-name">
-                            <p>1024</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V1</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=4" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/32d05bf6a7cf4cde99227cfa971b30f3.png" alt="">
-                        <div class="skin-name">
-                            <p>创作都市</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V2</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=5" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/4bb6b9d76c0c42c9a356d3a7084aae65.png" alt="">
-                        <div class="skin-name">
-                            <p>书香水墨</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V2</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=1" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/6398e7d03e7442d099ee0380ea655afb.png" alt="">
-                        <div class="skin-name">
-                            <p>大白</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V3</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=3" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/27dd85abdcb74ba79f5c2c5f034b77a5.png" alt="">
-                        <div class="skin-name">
-                            <p>技术工厂</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V3</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=77" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/329f04dd606b4e4eabb8c52afa0d7c0a.png" alt="">
-                        <div class="skin-name">
-                            <p>黑客帝国</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V3</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=7" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/3391023ecc9646199c005ab05f409598.png" alt="">
-                        <div class="skin-name">
-                            <p>精致技术</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V4</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=9" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/9142b68a72534daba4d6555ee90aae1f.png" alt="">
-                        <div class="skin-name">
-                            <p>像素格子</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V4</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=2" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/ce9e63e84bcc4844b1f7720cab6654f7.png" alt="">
-                        <div class="skin-name">
-                            <p>技术黑板</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V5</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=10" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/161431a33fee4ec09d8df7c4c9447da3.png" alt="">
-                        <div class="skin-name">
-                            <p>终极编程指南</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V5</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=8" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/0a5f2c28f24c40779fcdacb58710bc23.png" alt="">
-                        <div class="skin-name">
-                            <p>编程工作室</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V6</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=13" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/cfd1a974b4f2436aafa1bfc63c6c88bb.png" alt="">
-                        <div class="skin-name">
-                            <p>撸撸猫</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V6</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=14" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/7f0d509336304b2aa29aaffeb9727872.png" alt="">
-                        <div class="skin-name">
-                            <p>程序猿惹谁了</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V7</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=18" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/3810011287c8462d90f2e9f0564fe87f.png" alt="">
-                        <div class="skin-name">
-                            <p>酷酷鲨</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V7</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=11" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/926693ce737e494a810af7c498ca099d.png" alt="">
-                        <div class="skin-name">
-                            <p>成长之路</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V8</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=12" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/ac06b2c0393b493398cd1edbb267ac67.png" alt="">
-                        <div class="skin-name">
-                            <p>代码科技</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V8</div>
-                    </a>
-                </li>
-                <li class="skin-item">
-                    <a href="https://blog.csdn.net/2301_78856868?assign_skin_id=15" target="_blank">
-                        <img src="https://i-operation.csdnimg.cn/images/cd8157020ab34deb9166816562a51278.png" alt="">
-                        <div class="skin-name">
-                            <p>猿与汪的秘密</p>
-                            <img class="normal-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-                            <img class="hover-eyes" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountBlue.png" alt="">
-                        </div>
-                        <img class="isvip" src="https://csdnimg.cn/release/blogv2/dist/pc/img/normal.png">
-                        <div class="isvip">V9</div>
-                    </a>
-                </li>
-            </ul>
-		</div>	
-	</div>
-</div>
-				</div>
-		</div>
-		</div>
-	</div>
-</header>
-<div class="container clearfix pt0" id="mainBox">
-    <main class="content-mian-box"> 
-    <div class="container-header">
-        <ul class="container-header-ul" id="container-header-ul">
-         <li class="active margin" id="container-header-blog" data-type="blog" data-num="182"><span  data-report-click='{"spm":"1001.2014.3001.5189"}'>博客(182)</span></li> 
-            
-<li data-num="0" data-report-click='{"spm":"1001.2014.3001.5191"}' data-type="downloadfile" class="container-header-ul-li margin"><span >资源                (0)</span></li>
-            
-<li data-num="0" data-report-click='{"spm":"1001.2014.3001.5195"}' data-type="askquestion" class="container-header-ul-li margin"><span >问答                (0)</span></li>
-            <li data-num="" data-type="shou" data-report-click='{"spm":"1001.2014.3001.5232"}' data-flag="true" id="blogCollection" class="container-header-ul-li margin"><span>收藏</span></li>
-            <li data-num="" data-type="guan" data-report-click='{"spm":"1001.2014.3001.5233"}' data-flag="true" id="blogFollow" class="container-header-ul-li margin"><span>关注</span></li>
-        </ul>
-    </div>
-<div class="articleMeList-integration" id="articleMeList-blog" style="display:block;">
-  <div class="filter-box d-flex align-items-center">
-      <form action="" id="seeOriginal">
-      <label class="chk-box" for="chkOriginal">
-        <input onchange="this.checked ? document.getElementById('seeOriginal').submit() : location.href = 'https://blog.csdn.net/2301_78856868'" type="checkbox" name="t" value="1"  id="chkOriginal" data-report-click='{"spm":"1001.2014.3001.5236","extend1":"点击选中"}'>
-        只看原创
-      </label>
-      </form>
-      <dl class="filter-sort-box d-flex align-items-center">
-        <dt>排序：</dt>
-        <dd><a href="https://blog.csdn.net/2301_78856868" data-report-query="" class="btn-filter-sort active" target="_self" data-report-click='{"spm":"1001.2014.3001.5237"}'>按最后发布时间</a></dd>
-        <dd><a href="https://blog.csdn.net/2301_78856868" data-report-query="orderby=ViewCount" class="btn-filter-sort " target="_self" data-report-click='{"spm":"1001.2014.3001.5238"}'>按访问量</a></dd>
-        <dd><a class="btn btn-sm rss" href="https://blog.csdn.net/2301_78856868/rss/list" data-report-click='{"spm":"1001.2014.3001.5239"}'>
-        <img class="rss-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/rss.png" alt="">RSS订阅</a>
-        </dd>
-    </dl>
-  </div>
-  <div class="article-list">
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156943852">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156943852"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          React 的 Fiber 是敏捷宣言的回调，为什么却晚了 18 年？
-        </a> 
-      </h4>
-      <p class="content">
-        很多人以为 Fiber 是在 React 16「完成」的，这是一个误解。React 16：Fiber 架构上线React 16.8：Hooks 发布为并发渲染清理掉与 Class 生命周期不兼容的历史包袱React 团队在2019 年为未来三年的并发渲染铺路敏捷宣言在 2001 年提出了「如何应对变化」，而前端用了将近 20 年，才第一次被变化淹没；Fiber，是 React 在运行时层面给出的答案。不是 React 落后于敏捷，而是前端世界，直到 2019 年，才真正配得上一个敏捷运行时。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2026-01-14 13:34:29</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">917</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156943852">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156367647">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156367647"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          工程级前端智能体FrontAgent
-        </a> 
-      </h4>
-      <p class="content">
-        工程级 AI Agent 系统 —— 让 AI 真正落地软件开发。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-28 22:33:28</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">977</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156367647">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156310418">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156310418"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          智能体通信协议 ANP
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是常高伟老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。老师认为的 Agentic Web 核心趋势：未来是Agent之间的连接协议是智能体交互最高效的方式。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-26 17:00:33</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">613</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156310418">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156295316">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156295316"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          端侧Agent开发
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是张熙老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-26 09:49:42</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">530</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156295316">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156280125">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156280125"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          The job is something you happened to pick by the way you learning.If you are still free, you lu
-        </a> 
-      </h4>
-      <p class="content">
-        The job is something you happened to pick by the way you learning.If you are still free, you luckily have more time to learn whatever you wanna.  Joy =&gt; LaVie += Learning =&gt; Value
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-25 23:39:15</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">71</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/156280125">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156241735">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156241735"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          Agent+MCP 开发范式
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是高大伟老师在datawhale的宣讲，精练易懂。辅以一些本人的看法，希望各位大佬一起交流指正。本人的代码实践传统智能体架构现在 Tools → MCP 进行规范MCP 改变了什么。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-24 21:17:08</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">962</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156241735">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156229411">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156229411"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          工作流应用范式
-        </a> 
-      </h4>
-      <p class="content">
-        环节出错需要有 fallback 的逻辑通过可视化和预处理把数据向量化处理到最佳的状态，方便RAG的相关性搜索然后介绍了 Dify 的插件能通过赋能提高生产力可控、标准化背景：为了提高生产效率和产量原理（~工业化）：将复杂的生产过程分解为多个标准化、重复性的简单步骤，并由不同的工人在流水线上轮流执行，从而加速产品的生产过程。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-24 11:49:50</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">834</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156229411">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156128621">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156128621"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          Agent设计模式与工程化
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。标准化之后才能规模化提炼自己的知识框架、利用好自己作为用户的差异点案例：智能客服需要数据RAG、LLM、工具插入MCP、ECS或GPU资源安全性、治理、可观测性、如何基于私有化Coze/Dify开发？对问题提炼模版化的解决方案从而实现标准化的工程化。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-21 13:49:31</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">317</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156128621">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156115672">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156115672"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          MCP原理及实践
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。同时你可以启动 Lab 仓库的 vite 开发服务器在 http://localhost:8030/wordMCP/ 检测交互效果。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-20 20:14:29</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">854</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156115672">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156060125">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156060125"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          Agent原理及实践
-        </a> 
-      </h4>
-      <p class="content">
-        本文主体是宋志学老师和锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-18 17:36:22</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">908</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156060125">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="156030299">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/156030299"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          腾讯菁英班跨端日历应用产品报告
-        </a> 
-      </h4>
-      <p class="content">
-        月视图日历：按天选择日期，查看当天日程列表。日程列表：展示当天所有事件的标题、时间范围、备注等信息。核心字段：title、startTime、endTime、allDay、reminderMinutes、category、priority、status 等。核心字段：id、date(yyyy-MM-dd)、title、startTime(HH:mm 可选)、endTime(HH:mm 可选)、notes(可选)。流程 A：新增事件（Android）用户在新增/编辑界面填写信息并保存。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-18 00:58:37</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">854</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=156030299">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155984766">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155984766"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          Agent概况
-        </a> 
-      </h4>
-      <p class="content">
-        本没有路，走的人多了便有了路定义也是从共识来的Agent 同理，目前还没有具体的共识，任何一个非单次大模型调用的系统都有可能被称为Agent看一些大厂商的定义。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-16 16:32:47</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">927</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155984766">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155965195">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155965195"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          内存管理 - 内存泄漏 - 排查、预防策略
-        </a> 
-      </h4>
-      <p class="content">
-        在浏览器环境下就是 V8引擎栈内存：存放原始类型值，生命周期短，不由GC回收而是由引擎自动弹栈堆内存：存放引用数据类型，由GC进行回收。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-16 08:18:34</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">632</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155965195">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155936175">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155936175"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          常见的设计模式
-        </a> 
-      </h4>
-      <p class="content">
-        是一种 发布-订阅 （publish,subcription) 模型的实现事件中心、事件发射器。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-15 12:52:42</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">302</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155936175">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155917883">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155917883"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          pnpm优化理念 - 幻影依赖、monorepo - 升级npm
-        </a> 
-      </h4>
-      <p class="content">
-        pnpm 通过「内容寻址同时解决了 磁盘浪费、幻影依赖、monorepo 复用 三个核心问题。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-15 11:09:52</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">1082</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155917883">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155911852">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155911852"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          前端动画的多种实现方式
-        </a> 
-      </h4>
-      <p class="content">
-        动画的本质是把内容的两个状态做平滑的过渡（中间状态的展示）
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-14 13:06:50</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">234</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155911852">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155891490">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155891490"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          视频进度控制脚本
-        </a> 
-      </h4>
-      <p class="content">
-        【代码】视频进度控制脚本。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-14 00:17:54</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">140</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/155891490">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155891071">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155891071"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          业务环境流程：开发-＞测试-＞预发布-＞灰度-＞生产
-        </a> 
-      </h4>
-      <p class="content">
-        一般是内部人员的真实数据（test是QA和研发，现在是其他例如产品等）域名、环境等等都和 prod 一样。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-13 18:44:55</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">884</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155891071">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155881077">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155881077"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          SDD规范驱动开发-与prompt区别-Agent业务场景示例
-        </a> 
-      </h4>
-      <p class="content">
-        Goal:帮助用户将自然语言需求转化为可执行的前端组件代码。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-13 11:19:45</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">870</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155881077">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155861615">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155861615"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          浏览器本地存储Cookie, local/sessionStorage - Token结合Cookie实现登录管理
-        </a> 
-      </h4>
-      <p class="content">
-        不会影响资源的加载流程。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-12 18:38:34</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">929</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155861615">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155860906">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155860906"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          模态框与DOM，及React和Vue中的优化
-        </a> 
-      </h4>
-      <p class="content">
-        为避免层级、布局和事件体系导致的副作用（例如受父元素的CSS影响）
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-12 17:46:10</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">362</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155860906">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155783371">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155783371"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          字节工程营总结
-        </a> 
-      </h4>
-      <p class="content">
-        需求：实现一个截屏工具我的目标：确保基本功能的基础上，首先优化工具的性能（因为本项目是以C++开发、如果不以性能为目标的话个人感觉用 Electron（Web+Node.js）更适合），提升工具的跨平台能力、多语言支持，优化代码的可维护性和可拓展性。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-12-10 15:37:06</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">1723</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155783371">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155108574">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155108574"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          算法OOP板子、例题解析
-        </a> 
-      </h4>
-      <p class="content">
-        也同步更新了，大家可以 git pull 一下，主要看看 ./Model 就好。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-21 20:12:03</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">800</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=155108574">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="155038429">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/155038429"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          useForm的设计理念随笔
-        </a> 
-      </h4>
-      <p class="content">
-        useForm 内部维护了两个对象，一个是字段值存储 _formValues ，还有一个是表单状态存储 formState1. **字段级**UI（例如输入框）：当用户 input 的时候，会引发 register 返回的 **onChange** 事件，其内部更新了 _formValues ， **subjects** **广播**字段级变更事件，仅订阅了相关字段的组件会调用其内部对应字段的 setState ，从而触发最小范围的 **Fiber调度**2. **表单状态级**UI（例如loadin
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-19 21:36:13</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">129</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentCountWhite.png" alt="">1</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/155038429">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154958382">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154958382"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          异步请求选项、对象选项映射、层级选择
-        </a> 
-      </h4>
-      <p class="content">
-        这个业务情景是有一个模态框，内部有很多选择器，是有层级关系的，需要异步请求选项（useAsyncList），且相应对象的时候还需要进行字段映射（通过开启labelInValue带上label后在useOptionsForSelect钩子里面进行分流处理）
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-17 20:58:44</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">185</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/154958382">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154653400">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154653400"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          算法册题面、答案及详细解析
-        </a> 
-      </h4>
-      <p class="content">
-        下载练习册题面以及想要拉到本地跑代码可以去或者终端输入命令如果翻不了墙也可以用国内平替。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-17 14:59:48</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">930</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentCountWhite.png" alt="">2</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://editor.csdn.net/md?articleId=154653400">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154600172">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154600172"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          组件value无法成功清空？
-        </a> 
-      </h4>
-      <p class="content">
-        如果您也遇到了组件value无法清空的情况，您可以看看组件的相关setValue函数是不是将undefined识别为了无效值，导致想清空时传入undefined但是被过滤了没有成功更新组件值。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-09 09:59:41</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">121</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/154600172">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154582998">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154582998"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          输入框无法onChange两种解决思路
-        </a> 
-      </h4>
-      <p class="content">
-        onBlur={(e) =&gt; handleRateChange(e.target.value)} // 只在失焦的时候处理 ，因为用户后面去填写核销金额肯定会导致失焦。如果输入框用 onChange 去同步value的话很明显会碰到例如频闪、立即格式化等问题，那么如何解决呢。一种是通过防抖或者节流，设个debance然后通过ref去处理。还有一种是只在失焦的时候再去处理。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-08 23:24:42</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">182</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/154582998">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154582881">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154582881"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          模态框的两种管理思路
-        </a> 
-      </h4>
-      <p class="content">
-        第一种思路是以功能为聚合，例如点击按钮弹出模态框的话那么就写一个按钮组件，这种思路的优点是在一处进行管理功能，用到的时候只需要将按钮嵌入页面就好，但是可能没法在同一处管理某页面用到的所有模态框。还可以进一步简化，从打开和关闭维度看只有两个action，只不过打开和关闭的是不同的模态框，即不同的ModalState中的Key。第二种思路就是通过钩子函数内部对模态框的状态进行管理，那么外部调用只需要调用方法即可。在内部管理状态用到了Reducer统一管理多种模态框时的action、state。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-11-08 23:20:21</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">300</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/154582881">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="154024048">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/154024048"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          美团内推招人
-        </a> 
-      </h4>
-      <p class="content">
-        主包是这个部门的实习生，氛围很好，有想来的可以私信我简历，可以直接内推给ld，最好有前端经验，部门会给实习生分配较核心的任务，可以在实习期间学习到很多，base成都or北京。有想来美团财务科技前端部门实习的uu吗？内推码：G25VKEL。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-10-28 17:13:50</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">152</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/154024048">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="153795372">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/153795372"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          预检查和表单提交
-        </a> 
-      </h4>
-      <p class="content">
-        今天在写一个需要预检查的表单提交页面时，我把预检查冗在了提交函数里面导致很耦合且状态不分明，后面我把预检查和提交函数分开，将precheck和submit分开那么形成层级衔接关系而不是覆盖关系，感觉明了不少，同时附着Form上的brules用bv (validation) 检查实现数据层和服务层的双保险。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-10-23 22:43:36</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">218</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/153795372">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="153773174">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/153773174"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          父子优先层级选择器-编辑及创建双状态-异步加载选项
-        </a> 
-      </h4>
-      <p class="content">
-        最主要是要想明白：如果用副作用监听，那么在编辑态的时候，从父组件加载数据会导致如果B是监听A的一个子，那么A的加载数据会引起B的加载数据被覆盖。其中，最上层的选项不受影响，所以init模式就好，但是下面的子会随着父而更变选项，所以得focus，每次聚焦的时候都出发搜索。所以最好的做法是用onChange，只在用户调起的时候才会影响，而初始化数据的话写个副作用监听visible就好。但上面的还不是最优最简洁的，其实最好是传一个异步函数进去去请求选项List，而不是自己开个状态变量去维护管理。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-10-23 10:51:21</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">308</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/153773174">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="153703168">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/153703168"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          CR后的反思、编辑表格实现
-        </a> 
-      </h4>
-      <p class="content">
-        首先很严肃的一点是我之前一直靠着Vibe Coding提高生产效率，但是通过CR发现了不少问题，虽然前期开发可能很速，但是可能一直会埋坑，会导致后面重构的过程花费时间更多，原因是因为我目前有些方面理解不到位导致了对于AI的CR没有很成功，所以目前我在尝试完全手写，虽然效率低了但是还是学到了不少东西。其次是对于数据管理的理解，之前经常还想着开一些状态变量去管理，但是这样的风险高，所以能合理对表单等数据进行封装，实现数据的点对点更新和管理是很重要的。就贴一段关于编辑表格的代码，大家一起交流指正。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-10-21 21:56:11</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">297</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/153703168">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="153041387">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/153041387"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          状态上移实现记忆化&amp;组件库兼容&amp;Disable逻辑
-        </a> 
-      </h4>
-      <p class="content">
-        首先是想实现已经点击的单据跳转后变灰色，那么就需要记忆化，需要在列配置组件的上层去设置State，并且将回调函数在父组件进行统一管理，那么就实现了解偶不需要子组件去考虑需要做什么处理。第二个问题就是组件库样式不兼容的问题，一般就是全局样式与局部的冲突，解决的话要不全局转局部，要不优先级覆盖等等，我这次遇到的问题是图片不居中，原因是盒子。太久没记了，就写两个在开发中遇到的小问题。我在app.scss里面设置了。然后在列配置里面处理样式。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-10-11 10:33:54</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">199</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/153041387">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="152273519">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/152273519"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          样式冲突修复组件
-        </a> 
-      </h4>
-      <p class="content">
-        那么解决方法就是将和扰乱样式相关的样式从 app.scss 中提取出来，单独写一个组件去实现，然后针对特定的页面进行外套，从而不影响其他页面，这个过程可以先写一个单独组件，然后去路由守卫中进行分支套层。在我写一个页面的时候分页器样式被扰乱了，通过查看元素发现样式被覆盖了，是因为有协作者在开发其他页面的时候将一些样式加在了 body 样式里面了，这个标签选择器将我的组件内部的样式覆盖了。注意要 100% 确保子组件的空间占据。那么具体使用的时候就去外面套一层例如。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-29 16:51:06</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">255</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/152273519">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="152209327">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/152209327"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          经验随笔-
-        </a> 
-      </h4>
-      <p class="content">
-        一般 api 和 constance 放一个文件夹，页面放一个文件夹，那么像 i站 和 pc端 如果有逻辑是复用的就可以从 前者文件夹 中读取，有点类似于安卓开发中的 逻辑和UI 区分开发从而实现复用。在迁移过程中可能有些类型和枚举已经前人迁移过了，但是直接搜 enum 类型名 并不一定搜得到，最好是问前人或者是顺带搜搜其属性名或值，但是其实我感觉最好是带着 注释 迁移，那么就像代码随身带着一个标签一样。- 一般很少写内敛样式，一般是用组件的属性进行定义，或者是 Tailwind 来封装。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-28 10:52:44</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">256</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/152209327">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="151965327">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/151965327"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          枚举管理-跨站统一
-        </a> 
-      </h4>
-      <p class="content">
-        像如果 i站 和 pc 都用到的就放到 business 里面，这样就实现了统一，而且到时候维护的话就去一个地方维护就好。具体使用到 react 中写胶水函数或者模块组件。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-22 15:42:18</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">306</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/151965327">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="151957302">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/151957302"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          过滤器自动搜索回调
-        </a> 
-      </h4>
-      <p class="content">
-        背景：想要实现过滤器表单字段变更时自动回调搜索更新。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-22 10:52:09</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">517</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/151957302">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="151904981">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/151904981"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          如何在接手新项目时快速上手？
-        </a> 
-      </h4>
-      <p class="content">
-        接着遇到具体问题时，很容易碰到的问题就是不知道有一些需求之前是否已经处理过了，那么最直接的办法就是去找对接人、翻对接文档，其次就是可以去搜索里面搜例如。有时候你遇到有些类型定义和你的需求接口并不是很吻合，那么可能就需要写胶水函数用于将之前的base定义转换成你现在接口需要的模样。有时候我们需要对一个项目进行迭代、重构，但是这个项目之前并不是我们经手，那么就需要对这个项目的状况进行快速了解。等等，然后就是看看依赖模块，例如我最近在迁移过程中需要一个转换为时间戳的函数，刚好看到了 dayjs 模块依赖。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-20 22:02:57</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">207</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/151904981">编辑</a>
-      </div>
-    </div>
-    <div class="article-item-box csdn-tracking-statistics" data-articleid="151355546">
-      <h4 class="">
-        <a href="https://blog.csdn.net/2301_78856868/article/details/151355546"  data-report-click='{"spm":"1001.2014.3001.5190"}' target="_blank">
-            <span class="article-type type-1 float-none">原创</span>
-          错误收集与处理
-        </a> 
-      </h4>
-      <p class="content">
-        就像 Promise 链一样，只不过不是往下等 catch或是then的rejected函数 ，而是往上，由上面收集并决策是否与 UI 层交互。
-      </p>
-      <div class="info-box d-flex align-content-center">
-        <p>
-          <span class="date">2025-09-09 10:54:25</span>
-          <span class="read-num"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">240</span>
-        </p>
-      </div>
-      <div class="opt-box">
-        <button class="btn-opt" data-type="top">置顶</button>
-        <a class="btn-opt" data-type="edit" href="https://mp.csdn.net/mp_blog/creation/editor/151355546">编辑</a>
-      </div>
-    </div>
-  </div>
-      <div class="pagination-box" id="pageBox"></div>
-</div>
-<div class="articleMeList-integration">
-  <div class="no-data d-flex flex-column justify-content-center align-items-center">
-      <p>
-        <img class="monkey-blank" src="https://csdnimg.cn/release/blogv2/dist/pc/img/monkeyNewBlank.png">
-      </p>
-      <h6>空空如也</h6>
-      <p class="remark"></p>
-      <p>
-<a href="https://mp.csdn.net/console/uploadResources?spm=1011.2124.3001.4171" class="btn btn-write-blog">上传资源</a>      </p>
-  </div>
-</div>
-<div class="articleMeList-integration">
-  <div class="no-data d-flex flex-column justify-content-center align-items-center">
-      <p>
-        <img class="monkey-blank" src="https://csdnimg.cn/release/blogv2/dist/pc/img/monkeyNewBlank.png">
-      </p>
-      <h6>空空如也</h6>
-      <p class="remark"></p>
-      <p>
-<a href="https://ask.csdn.net/questions/new" class="btn btn-write-blog">我要提问</a>      </p>
-  </div>
-</div>
+</head> <body><!----> <div id="app"><div><div class="main"><div class="page-container page-component"><div data-v-d00e6b46><div class="home_wrap" data-v-d00e6b46><div id="floor-user-profile_928" class="grey-bg" data-v-b2a1e5f0 data-v-d00e6b46><div id="userSkin" comp-data="[object Object]" floor-data="[object Object]" class="skin-whitemove user-skin-White" data-v-ad1eb2fc data-v-b2a1e5f0><div class="user-profile-head" data-v-f8205402 data-v-ad1eb2fc><!----> <div class="user-profile-head-banner" data-v-f8205402></div> <div class="user-profile-head-info" data-v-f8205402><div class="user-profile-head-info-t" data-v-f8205402><div class="user-profile-head-info-l" data-v-f8205402><div class="user-profile-head-info-ll" data-v-f8205402><div class="user-profile-avatar" data-v-f8205402><img src="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" alt data-v-f8205402> <a href="https://www.csdn.net/vip" target="_blank" class="vip-icon" data-v-f8205402><!----></a></div></div> <div class="user-profile-head-info-rr" data-v-f8205402><div class="user-profile-head-info-r-t" data-v-f8205402><div class="user-profile-head-name" data-v-f8205402><div data-v-f8205402>ceilf6</div> <div title="已加入 CSDN 3年" class="person-code-age" style="background-color:#D1DDF1;color:#455165;" data-v-f8205402><img src="https://img-home.csdnimg.cn/images/20210108035944.gif" alt data-v-f8205402> <span data-v-f8205402>码龄3年</span></div> <div class="user-profile-icon" data-v-f8205402><a href="https://blog.csdn.net/blogdevteam/article/details/103478461" target="_blank" data-v-f8205402><img src="https://csdnimg.cn/identity/blog5.png" alt title="博客等级" data-v-f8205402></a> <a href="https://i.csdn.net/#/user-center/auth" target="_blank" data-v-f8205402><!----></a> <a href="https://i.csdn.net/#/user-center/auth" target="_blank" data-v-f8205402><img src="https://csdnimg.cn/release/cmsfe/public/img/icon-cert-realName.7045f950.png" alt title="已个人实名认证" data-v-f8205402></a> <!----></div></div> <div class="user-profile-head-info-r" data-v-f8205402><div class="user-profile-operate-btn" data-v-f8205402><a href="https://i.csdn.net/#/user-center/profile" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5516&quot;}" data-report-query="spm=3001.5516" class="user-profile-black-btn" data-v-f8205402><img src="https://csdnimg.cn/release/cmsfe/public/img/icon-edit-new.065a6914.png" alt class="bt-icon" data-v-f8205402>编辑资料</a> <span data-v-47d1b7e5 data-v-f8205402><div role="tooltip" id="el-popover-7378" aria-hidden="true" class="el-popover el-popper nav-popover-box-White nav-popover-box-active" style="width:278px;display:none;"><!----><div class="nav-popover-box active" data-v-47d1b7e5><div class="nav-popover-tit" data-v-47d1b7e5><div class="nav-popover-tit-l" data-v-47d1b7e5><span class="tit" data-v-47d1b7e5>导航设置</span></div> <div class="nav-popover-tit-r" data-v-47d1b7e5>拖动调整顺序</div></div> <div class="nav-popover-list" data-v-47d1b7e5><div class="nav-popover-list-box" data-v-47d1b7e5> <div class="nav-popover-content" data-v-47d1b7e5></div></div> <div class="nav-popover-tip" data-v-47d1b7e5><p data-v-47d1b7e5><img src="https://i-operation.csdnimg.cn/images/5c53a135b73e4206b0ff4ee560074b5c.png" alt="" data-v-47d1b7e5>
+        至少保留4个公开导航
+      </p></div></div> <div class="nav-popover-btn" data-v-47d1b7e5><a href="javascript:;" class="user-profile-black-btn" data-v-47d1b7e5>重置</a> <a href="javascript:;" class="user-profile-black-btn" data-v-47d1b7e5>取消</a> <a href="javascript:;" class="user-profile-red-btn" data-v-47d1b7e5>确定</a></div></div> </div><span class="el-popover__reference-wrapper"><a href="javascript:;" data-report-click="{&quot;spm&quot;:&quot;3001.7942&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7942&quot;}" class="user-profile-black-btn nav-btn" data-v-47d1b7e5><img src="https://csdnimg.cn/release/cmsfe/public/img/icon-set.908335c1.png" alt="" class="bt-icon" data-v-47d1b7e5>导航设置</a></span></span> <a href="https://mpbeta.csdn.net/mp_blog/manage/article" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.9456&quot;}" data-report-query="spm=3001.9456" class="user-profile-black-btn" data-v-f8205402><img src="https://csdnimg.cn/release/cmsfe/public/img/icon-edit-article.80844382.png" alt class="bt-icon" data-v-f8205402>管理博文</a></div></div></div> <div class="user-profile-head-info-r-c" data-v-f8205402><ul data-v-f8205402><li data-v-f8205402><span data-v-f8205402><div role="tooltip" id="el-popover-8478" aria-hidden="true" class="el-popover el-popper White" style="width:px;display:none;"><!----><div class="user-profile-head-views-con" data-v-f8205402><div class="views-item" data-v-f8205402><span class="views-color views-color1" data-v-f8205402></span><span data-v-f8205402>博客：126,805</span></div> <!----> <!----> <div class="views-item" data-v-f8205402><span class="views-color views-color4" data-v-f8205402></span><span data-v-f8205402>动态：1,493</span></div> <!----> <!----> <!----></div> </div><span class="el-popover__reference-wrapper"><span title="" class="user-profile-statistics-views" data-v-f8205402><div class="user-profile-statistics-num" data-v-f8205402>128,298</div> <div class="user-profile-statistics-name" data-v-f8205402>总访问量</div></span></span></span> <div class="user-profile-statistics-bar" data-v-f8205402></div></li> <li data-v-f8205402><a href="javascript:;" data-v-f8205402><div class="user-profile-statistics-num" data-v-f8205402>182</div> <div class="user-profile-statistics-name" data-v-f8205402>原创</div> <div class="user-profile-statistics-bar" data-v-f8205402></div></a></li> <li data-v-f8205402><a href="https://blog.csdn.net/rank/list/total" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5476&quot;}" data-report-query="spm=3001.5476" data-v-f8205402><div class="user-profile-statistics-num" data-v-f8205402>9,382</div> <div class="user-profile-statistics-name" data-v-f8205402>排名</div> <div class="user-profile-statistics-bar" data-v-f8205402></div></a></li> <li data-v-f8205402><a href="javascript:;" data-v-f8205402><div class="user-profile-statistics-num" data-v-f8205402>1,634</div> <div class="user-profile-statistics-name" data-v-f8205402>粉丝</div> <div class="user-profile-statistics-bar" data-v-f8205402></div></a></li> <li data-v-f8205402><a href="javascript:;" data-v-f8205402><div class="user-profile-statistics-num" data-v-f8205402>15</div> <div class="user-profile-statistics-name" data-v-f8205402>关注</div></a></li></ul></div></div></div></div> <div class="user-profile-head-info-b" data-v-f8205402><div class="user-profile-head-box" data-v-f8205402><div class="user-profile-head-address" data-v-f8205402><span data-v-f8205402><div role="tooltip" id="el-popover-9362" aria-hidden="true" class="el-popover el-popper White" style="width:px;display:none;"><!----><div class="user-profile-head-address-con" data-v-f8205402>IP属地以运营商信息为准，境内显示到省（区、市），境外显示到国家（地区）</div> </div><span class="el-popover__reference-wrapper"><span title="" class="address" data-v-f8205402>IP 属地：浙江省</span></span></span></div> <!----> <div class="user-general-info-join-csdn-active" data-v-f8205402><span data-v-f8205402>加入CSDN时间：</span> <span class="user-general-info-key-word" data-v-f8205402>2023-06-23</span></div></div> <p class="introduction-fold default" data-v-f8205402><span data-v-f8205402>个人简介：</span>各平台都同名
+      </p> <div class="user-profile-head-info-b-r" data-v-f8205402><div class="user-general-info single-general-info" style="display:none;" data-v-f8205402><!----> <div class="user-profile-wrapper" data-v-f8205402><div class="user-profile-wrapper-box" data-v-f8205402><span data-v-f8205402>博客简介：</span><h1 class="user-profile-title" data-v-f8205402>2301_78856868的博客</h1></div> <!----></div></div> <span data-report-click="{&quot;spm&quot;:&quot;3001.6736&quot;}" class="show-more-introduction-fold" data-v-f8205402>
+          查看详细资料<i class="el-icon-arrow-down" data-v-f8205402></i></span></div></div></div> <!----> <!----></div> <div class="user-profile-body" data-v-2bed90c1 data-v-ad1eb2fc><div class="user-profile-body-inner" data-v-2bed90c1><div class="user-profile-body-left" data-v-2bed90c1><div class="user-profile-aside" data-v-44948729 data-v-2bed90c1><!----> <!----> <div class="user-achievement user-profile-aside-common-box" data-v-44948729><div class="aside-common-box-head" data-v-44948729>个人成就</div> <div class="aside-common-box-bottom" data-v-44948729><div class="aside-common-box-content" data-v-44948729><ul class="aside-common-box-achievement" data-v-44948729><li data-v-44948729>
+        <i style="background-image: url(https://img-home.csdnimg.cn/images/20210114022819.png)"></i>
+        <div class="aside-common-box-content-text">获得<span>2,770</span>次点赞</div>
+      </li><li data-v-44948729>
+        <i style="background-image: url(https://img-home.csdnimg.cn/images/20210114022831.png)"></i>
+        <div class="aside-common-box-content-text">内容获得<span>19</span>次评论</div>
+      </li><li data-v-44948729>
+        <i style="background-image: url(https://img-home.csdnimg.cn/images/20210114022828.png)"></i>
+        <div class="aside-common-box-content-text">获得<span>1,467</span>次收藏</div>
+      </li><li data-v-44948729>
+        <i style="background-image: url(https://img-blog.csdnimg.cn/4039019ab2e34b22b80ba351ebcff718.png)"></i>
+        <div class="aside-common-box-content-text"><em title="统计开始时间：2023年5月1日">代码片获得<span>559</span>次分享</em></div>
+      </li> <li class="user-influence-list active" data-v-44948729><div class="influence-top aside-common-box-head" style="border:none;" data-v-44948729><div class="influence-left" data-v-44948729><a href="https://bbs.csdn.net/forums/placard?typeId=17726" target="_blank" data-report-query="spm=3001.6421" data-report-click="{&quot;spm&quot;:&quot;3001.6421&quot;}" class="img-icon-active" data-v-44948729><img src="https://i-operation.csdnimg.cn/images/48863b0dc59f410185ff4307285bc7cf.png" alt data-v-44948729> <span data-v-44948729>原力等级</span></a> <!----></div></div> <div class="influence-bottom-box" data-v-44948729><div class="influence-bottom" data-v-44948729><div class="influence-left" data-v-44948729><dl data-v-44948729><dd data-v-44948729>原力等级</dd> <dt data-v-44948729>5</dt></dl> <dl data-v-44948729><dd data-v-44948729>原力分</dd> <dt data-v-44948729>1,337</dt></dl> <a href="https://blog.csdn.net/rank/list/force" target="_blank" data-report-query="spm=3001.6945" data-report-click="{&quot;spm&quot;:&quot;3001.6945&quot;}" data-v-44948729><dl data-v-44948729><dd data-v-44948729>本月获得</dd> <dt data-v-44948729>2</dt></dl></a></div></div></div></li></ul> <div class="aside-common-box-isshow" style="display:none;" data-v-44948729><div class="aside-common-box-tit creat White" data-v-44948729>创作历程</div> <ul class="aside-common-box-create" data-v-44948729><li data-v-44948729><a data-report-click="{&quot;spm&quot;:&quot;3001.6733&quot;}" data-report-query="spm=3001.6733" href="https://blog.csdn.net/2301_78856868?type=blog&amp;year=2026&amp;month=01" data-v-44948729><div class="count" data-v-44948729>1篇</div> <div class="time" data-v-44948729>2026年</div></a></li><li data-v-44948729><a data-report-click="{&quot;spm&quot;:&quot;3001.6733&quot;}" data-report-query="spm=3001.6733" href="https://blog.csdn.net/2301_78856868?type=blog&amp;year=2025&amp;month=12" data-v-44948729><div class="count" data-v-44948729>181篇</div> <div class="time" data-v-44948729>2025年</div></a></li></ul> <div class="aside-common-box-tit medal White" data-v-44948729>成就勋章</div> <ul class="aside-common-box-medal" data-v-44948729><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/medal/xinxiu@240.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/49c18dc7af8f406a90d65e8e55ed4360.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/medal/1024@240.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/eabb492c5e3343738376cdb052649492.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/c6886de8c0334a5789bfc2b9f5669100.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/70592b2299594e37aedcaa91fc52a294.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/96ac957ca0a64be3a6393da7a9474486.png" alt data-v-44948729></li><li data-nickname="ceilf6" data-username="2301_78856868" data-avatar="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" data-report-click="{&quot;spm&quot;:&quot;3001.5481&quot;}" class="csdn-user-medal-btn" data-v-44948729><img src="https://csdnimg.cn/medal/qixiebiaobing4@240.png" alt data-v-44948729></li></ul></div></div> <button data-report-click="{&quot;spm&quot;:&quot;3001.6734&quot;}" class="aside-common-box-bottom-btn" data-v-44948729><i class="el-icon-arrow-down" data-v-44948729></i></button></div></div> <!----> <div class="user-special-column user-profile-aside-common-box" data-v-44948729><div class="aside-common-box-head" data-v-44948729>TA的专栏</div> <div class="aside-common-box-bottom" data-v-44948729><div class="aside-common-box-content aside-box-fold" data-v-44948729><ul data-v-44948729><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12987750.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="JavaScript" data-v-44948729>JavaScript</span> <!----></a> <div class="special-column-num" data-v-44948729>13篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_13103650.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="Agent开发" data-v-44948729>Agent开发</span> <!----></a> <div class="special-column-num" data-v-44948729>8篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12957645.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="项目实战-以项促学-创造价值" data-v-44948729>项目实战-以项促学-创造价值</span> <!----></a> <div class="special-column-num" data-v-44948729>14篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_13102161.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="客户端" data-v-44948729>客户端</span> <!----></a> <div class="special-column-num" data-v-44948729>1篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12967670.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="前端" data-v-44948729>前端</span> <!----></a> <div class="special-column-num" data-v-44948729>70篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12965176.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756919.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="笔经" data-v-44948729>笔经</span> <!----></a> <div class="special-column-num" data-v-44948729>9篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12964334.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="面经" data-v-44948729>面经</span> <!----></a> <div class="special-column-num" data-v-44948729>4篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12962929.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="AI算法" data-v-44948729>AI算法</span> <!----></a> <div class="special-column-num" data-v-44948729>3篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12934710.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="数据结构与算法" data-v-44948729>数据结构与算法</span> <!----></a> <div class="special-column-num" data-v-44948729>21篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12962338.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="信息专业课内笔记" data-v-44948729>信息专业课内笔记</span> <!----></a> <div class="special-column-num" data-v-44948729>8篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12962039.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="网络" data-v-44948729>网络</span> <!----></a> <div class="special-column-num" data-v-44948729>2篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12962038.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="操作系统" data-v-44948729>操作系统</span> <!----></a> <div class="special-column-num" data-v-44948729>1篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12960932.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="工具" data-v-44948729>工具</span> <!----></a> <div class="special-column-num" data-v-44948729>19篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12934559.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="搜索" data-v-44948729>搜索</span> <!----></a> <div class="special-column-num" data-v-44948729>5篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12956358.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="Py" data-v-44948729>Py</span> <!----></a> <div class="special-column-num" data-v-44948729>10篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12958310.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="计算机底层原理" data-v-44948729>计算机底层原理</span> <!----></a> <div class="special-column-num" data-v-44948729>2篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12957646.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="数据" data-v-44948729>数据</span> <!----></a> <div class="special-column-num" data-v-44948729>3篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12935649.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="图论" data-v-44948729>图论</span> <!----></a> <div class="special-column-num" data-v-44948729>7篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12936221.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="字符串" data-v-44948729>字符串</span> <!----></a> <div class="special-column-num" data-v-44948729>3篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12953723.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="C++" data-v-44948729>C++</span> <!----></a> <div class="special-column-num" data-v-44948729>3篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12948456.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756919.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="VP赛" data-v-44948729>VP赛</span> <!----></a> <div class="special-column-num" data-v-44948729>12篇</div></li><li data-v-44948729><a href="https://blog.csdn.net/2301_78856868/category_12934508.html" data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" data-report-query="spm=3001.5482" class="special-column-name" data-v-44948729><div class="special-column-bar" data-v-44948729></div> <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt data-v-44948729> <!----> <span title="动态规划" data-v-44948729>动态规划</span> <!----></a> <div class="special-column-num" data-v-44948729>4篇</div></li></ul></div> <button data-report-click="{&quot;spm&quot;:&quot;3001.5482&quot;}" class="aside-common-box-bottom-btn" data-v-44948729><i class="el-icon-arrow-down" data-v-44948729></i></button></div></div> <div class="user-interactive-list-box" data-v-44948729><p data-report-click="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:0,&quot;title&quot;:&quot;TA关注的专栏&quot;}}" data-report-view="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:0,&quot;title&quot;:&quot;TA关注的专栏&quot;}}" data-v-44948729><span data-v-44948729>TA关注的专栏</span> <span data-v-44948729>2</span></p><p data-report-click="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:1,&quot;title&quot;:&quot;TA关注的收藏夹&quot;}}" data-report-view="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:1,&quot;title&quot;:&quot;TA关注的收藏夹&quot;}}" data-v-44948729><span data-v-44948729>TA关注的收藏夹</span> <span data-v-44948729>0</span></p><p data-report-click="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:2,&quot;title&quot;:&quot;TA关注的社区&quot;}}" data-report-view="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:2,&quot;title&quot;:&quot;TA关注的社区&quot;}}" data-v-44948729><span data-v-44948729>TA关注的社区</span> <span data-v-44948729>1</span></p><p data-report-click="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:3,&quot;title&quot;:&quot;TA参与的活动&quot;}}" data-report-view="{&quot;spm&quot;:&quot;3001.10639&quot;,&quot;extra&quot;:{&quot;index&quot;:3,&quot;title&quot;:&quot;TA参与的活动&quot;}}" data-v-44948729><span data-v-44948729>TA参与的活动</span> <span data-v-44948729>0</span></p></div> <!----> <div class="user-interest-area user-profile-aside-common-box" data-v-44948729><div class="aside-common-box-head" data-v-44948729>兴趣领域
+      <a rel="nofollow" href="https://i.csdn.net/#/user-center/profile?floor=interest" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.6735&quot;}" data-report-query="spm=3001.6735" class="aside-common-box-more" data-v-44948729>设置<i class="el-icon-arrow-right" data-v-44948729></i></a></div> <div class="aside-common-box-bottom" data-v-44948729><div class="aside-common-box-content aside-box-fold" data-v-44948729><ul data-v-44948729><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>Python</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=python" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>python</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=django" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>django</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=numpy" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>numpy</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=pandas" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>pandas</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=matplotlib" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>matplotlib</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>编程语言</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=python" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>python</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=c++" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>c++</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=javascript" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>javascript</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>开发工具</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=github" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>github</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=git" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>git</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=vscode" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>vscode</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=macos" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>macos</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>数据结构与算法</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=数据结构" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>数据结构</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=动态规划" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>动态规划</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=kmeans" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>kmeans</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=图搜索算法" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>图搜索算法</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=霍夫曼树" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>霍夫曼树</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>大数据</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=json" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>json</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=sql" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>sql</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=database" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>database</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=mysql" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>mysql</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=redis" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>redis</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>前端</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=json" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>json</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=html5" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>html5</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=javascript" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>javascript</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=css3" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>css3</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=vue.js" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>vue.js</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=es6" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>es6</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>后端</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=爬虫" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>爬虫</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>人工智能</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=机器学习" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>机器学习</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=深度学习" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>深度学习</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=迁移学习" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>迁移学习</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=YOLO" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>YOLO</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>网络与通信</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=http" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>http</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=网络协议" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>网络协议</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=tcp/ip" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>tcp/ip</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>嵌入式</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=单片机" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>单片机</a></span><span data-v-44948729><!----><a rel="nofollow" href="https://so.csdn.net/so/search?q=stm32" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>stm32</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>操作系统</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=linux" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>linux</a></span></div></li><li data-v-44948729><div class="interest-area-main" data-v-44948729><div class="interest-area-name" data-v-44948729>开源</div> <!----></div> <div class="interest-area-sub" data-v-44948729><span data-v-44948729><img src="https://img-blog.csdnimg.cn/3149687a216d4ed68a44832621ff5a74.png" alt data-v-44948729><a rel="nofollow" href="https://so.csdn.net/so/search?q=开源" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-view="{&quot;spm&quot;:&quot;3001.7363&quot;}" data-report-query="spm=3001.7363" data-v-44948729>开源</a></span></div></li></ul></div> <button class="aside-common-box-bottom-btn" data-v-44948729><i class="el-icon-arrow-down" data-v-44948729></i></button></div></div> <!----> <div class="user-spm-list user-profile-aside-common-box" data-v-44948729><div class="write-activity-box  user-profile-aside-common-box" data-v-14754ae0 data-v-44948729><div class="aside-common-box-head" data-v-14754ae0>
+    创作活动<a href="https://mpbeta.csdn.net/activity/writing/activity" target="_blank" data-report-view="{&quot;spm&quot;:&quot;3001.9462&quot;}" data-report-click="{&quot;spm&quot;:&quot;3001.9462&quot;}" data-report-query="spm=3001.9462" class="show-more-link aside-common-box-more" data-v-14754ae0>更多<img src="https://img-home.csdnimg.cn/images/20211026015802.png" alt class="arrow-icon" data-v-14754ae0></a></div> <div class="aside-common-box-bottom" data-v-14754ae0><div class="side-activity-box" data-v-14754ae0><div class="content-box" data-v-14754ae0><a title="Claude Code 开发者创客大赛： AI 编程实战征文计划" href="https://activity.csdn.net/writing?id=11103" class="title" data-v-14754ae0><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAA29JREFUWEe9l0+IVVUcxz+/N++e8ZkYuhDxH2USLVz5B1yIDdWMuMmgqcWYwcw7M0UgJrlQglAoaaOFuhDfGZ2oWdREC0Fo1EyILIho04AQGZEulDJFbHz3vjdH7p33pjtv7n3vzJ3yLO/9/b7fz/2dc37nXGEOI9B0WMsLXpV9MsT9LFKSJame42t6gVPAt57leRnk1mz15grwCbCjZnrZK/CMHKM8G4jMAOOax9vgCqBihieV4bWHAuBrPgVebjCzWNarQX5yhchUgXI/L4rl8yQTK5xrL7H1fwMIBthsJzgPzEsxsV6epXKCmy4Qs6qA389GLKPAohbifcpw+j8FCProsjm+AB5xEB5Whlcc4nCqQLlIjwhDgOciClxQhs54rN1Fe9IWbQnga94EjoAbbM30R2XYEAfwNcPeHXplBD/+vClAoHnbwruOXx0Pu6oMT9Qf/NPLynwbVwX2eYbDTgB+EY1QymAepowpw9pYyx4GegSu51fwmBygUn+XWIHaVrsEtGUE+EoZngtzy/0cFMs7McMuz0TbOBozAOwBcsE1fgDWZTQPVY+rEruCIvutcKhB57Ay7E0F8DWvAh9lNgcsvC+wHqbvhJrmRWV4NhWgrPlScG+lGUD/UIZVzSpwA1iSQdg15a4yLGwGEAB5V7UMcb4ytDcDCG81rXr998CmDOZhyrQeMWMX+JpfgDVp4lY4C5xOO44doM4rQ1dqBQLNiIXuJgDdYrkOfOdglhSyWxmOpk9BkT1I1PsTRyXPisJ9/gry3IZ/59IRpurBcjGECz0aM6bgXh/LvBy/pyzEwDO0C1hf8zXQ4Wg8GWYZUoPRTXpqJLfifj6zlpcSxP9WhsXhc19TBMwsAMYr8OR8w7WWAOMDrGqbYAxY0GAQeHcoyAhV+wYLAj8Se9QFQmBv40mYOAV1Mb/ITiRqydOqVIXVBcNvYVxKr5/BY2FUGbaFU9f4sul9wJ9ckOH5PRUnQqdX4kI0pXsoBHf5GVjdpApjnmVL2l9TyxtRWbNdJg+nyVJbjqhB3pqqlI4a0jcpi/bXSp6n55+Itm3iaAkQZkU7Q3gPiU7K216F5fGf0dqd8WMgF3O57OXYLif5s9kacQKoC5QHeEqqvD6R4+K8EmfiwoGm08IH4cIVy/H8Sj6M33zmVAGXVZ415gFTlfsh3Bga7QAAAABJRU5ErkJggg==" alt data-v-14754ae0> <p data-v-14754ae0>Claude Code 开发者创客大赛： AI 编程实战征文计划</p></a> <p class="desc" data-v-14754ae0>随着 Claude Code 的爆火，AI 编程助手正在彻底改变开发者的工作流。它不仅能自动补全代码、优化算法，还能理解复杂需求并生成高质量脚本。
 
-<div class="articleMeList-integration">
-  <div class="collecItem-box">
-    <p class="collecItem-type"><span class="active" data-type="collecAdd">TA创建的收藏夹  </span><span data-type="collecFan">TA关注的收藏夹</span></p>
-    <div class="collecItem-box-add blog-box-type-list rolling-load-shou active" data-page="1" data-flag="true" data-type="collecAdd"></div>
-    <div class="collecItem-box-add blog-box-type-list rolling-load-shou " data-page="1" data-flag="true" data-type="collecFan"></div>
-  </div>
-</div>
-<div class="articleMeList-integration">
-  <div class="blogFollow">
-    <p class="blogFollow-type">
-    <span class="active" data-type="FollowNum">TA关注的人 </span>
-    </p>
-    <div class="blogFollow-box rolling-load-guan blog-box-type-list active" data-page="1" data-flag="true" data-type="FollowNum"></div>
-  </div>
-</div>
-<div class="blog-footer-bottom" style="margin-top:10px;"></div>
-<script src="https://g.csdnimg.cn/common/csdn-footer/csdn-footer.js" data-isfootertrack="false" type="text/javascript"></script>
-<script type="text/javascript">
-    window.csdn.csdnFooter.options = {
-        el: '.blog-footer-bottom',
-        type: 2
-    }
-</script>    </main>
-<aside class="blog_container_aside ">
-<div id="asideProfile" class="aside-box active">
-    <div class="profile-intro d-flex">
-        <div class="avatar-box d-flex justify-content-center flex-column">
-            <a href="https://blog.csdn.net/2301_78856868" target="_blank" data-report-click='{"mod":"popu_379","spm":"3001.4121","dest":"https://blog.csdn.net/2301_78856868","ab":"new"}'>
-                <img src="https://i-avatar.csdnimg.cn/1642081f056f493d8059a62756a54955_2301_78856868.jpg!1" class="avatar_pic">
-            </a>
-        </div>
-        <div class="user-info d-flex flex-column profile-intro-name-box">
-            <div class="profile-intro-name-boxTop">
-                <a href="https://blog.csdn.net/2301_78856868" target="_blank" class="" id="uid" title="ceilf6" data-report-click='{"mod":"popu_379","spm":"3001.4122","dest":"https://blog.csdn.net/2301_78856868","ab":"new"}'>
-                    <span class="name" username="2301_78856868">ceilf6</span>
-                </a>
-            </div>
-            <div class="profile-intro-name-boxFooter-new">
-              <p class="profile-intro-name-leve">
-                <span>
-                  博客等级
-                </span>
-                  <img class="level" src="https://csdnimg.cn/identity/blog5.png">
-              </p>
-                <span class="profile-intro-name-years" title="已加入 CSDN 3年">码龄3年</span>
-               
-            </div>
-        </div>
-    </div>
-    <div class="profile-intro-rank-information">
-      <dl>
-        <a href="https://blog.csdn.net/2301_78856868" data-report-click='{"mod":"1598321000_001","spm":"3001.4310"}' data-report-query="t=1">  
-            <dd><span >182</span></dd>
-            <dt>原创</dt>
-        </a>
-      </dl>
-       <dl title="2770">
-        <dd>2770</dd>
-        <dt>点赞</dt>
-      </dl>
-       <dl title="1466">
-        <dd>1466</dd>
-        <dt>收藏</dt>
-      </dl>
-      <dl id="fanBox" title="1634">
-        <dd><span id="fan">1634</span></dd>
-        <dt>粉丝</dt>
-      </dl>
-    </div>
-</div>
+为探索 Claude Code 的潜力，CSDN 发起本次征文活动，邀请开发者分享实战经验、创新案例和技术思考，共同推动 AI 编程的普及与进化。
+
+---
+ **创作主题**：用 Claude Code 重新定义编程效率
+
+**创作方向**（供参考，鼓励自由发挥）
+
+**1. 效率革命：Claude Code 如何提升开发效率**
+- 对比传统编程 vs. Claude Code 辅助编程的耗时差异
+- 实际项目中的效率提升案例（如快速生成 API、自动化脚本等）
+
+**2. 技术深挖：Claude Code 的高级用法**
+- 如何编写精准的 Prompt 让 Claude Code 生成更符合需求的代码
+- 结合特定语言（Python/JS/Go等）的实战技巧
+- 调试与优化 Claude Code 生成代码的方法
 
 
+**3. 跨界融合：Claude Code 的创意应用**
+- 用 Claude Code 生成游戏逻辑、艺术代码（如 Processing 创意编程）
+- 结合低代码平台（如 Appsmith、Retool）快速搭建工具
+- 在数据分析、爬虫、DevOps 等领域的落地案例
 
-<div id="asideHotArticle" class="aside-box">
-	<h3 class="aside-title">热门文章</h3>
-	<div class="aside-content">
-		<ul class="hotArticle-list">
-			<li>
-				<a href="https://blog.csdn.net/2301_78856868/article/details/147782514" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/2301_78856868/article/details/147782514","ab":"new"}'>
-				Yolo迁移训练-带训练源码
-					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-					<span class="read">3006</span>
-                </a>
-			</li>
-			<li>
-				<a href="https://blog.csdn.net/2301_78856868/article/details/148291821" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/2301_78856868/article/details/148291821","ab":"new"}'>
-				TCP三次握手/四次握手-TCP/IP四层模型-SSL/TLS-HTTP-HTTPS
-					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-					<span class="read">2567</span>
-                </a>
-			</li>
-			<li>
-				<a href="https://blog.csdn.net/2301_78856868/article/details/148517352" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/2301_78856868/article/details/148517352","ab":"new"}'>
-				CSP-38th
-					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-					<span class="read">2417</span>
-                </a>
-			</li>
-			<li>
-				<a href="https://blog.csdn.net/2301_78856868/article/details/147617875" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/2301_78856868/article/details/147617875","ab":"new"}'>
-				个人简历制作以及面试技巧
-					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-					<span class="read">2400</span>
-                </a>
-			</li>
-			<li>
-				<a href="https://blog.csdn.net/2301_78856868/article/details/147714563" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/2301_78856868/article/details/147714563","ab":"new"}'>
-				项目实战-基于信号处理与SVM机器学习的声音情感识别系统
-					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
-					<span class="read">2289</span>
-                </a>
-			</li>
-		</ul>
-	</div>
-</div>
-<div id="asideCategory" class="aside-box aside-box-column flexible-box">
-    <h3 class="aside-title">分类专栏</h3>
-    <div class="aside-content" id="aside-content">
-        <ul>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12987750.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12987750.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        JavaScript
-                    </span>
-                </a>
-                <span class="special-column-num">13篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_13103650.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_13103650.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        Agent开发
-                    </span>
-                </a>
-                <span class="special-column-num">8篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12957645.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12957645.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        项目实战-以项促学-创造价值
-                    </span>
-                </a>
-                <span class="special-column-num">14篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_13102161.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_13102161.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        客户端
-                    </span>
-                </a>
-                <span class="special-column-num">1篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12967670.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12967670.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        前端
-                    </span>
-                </a>
-                <span class="special-column-num">70篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12965176.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12965176.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756919.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        笔经
-                    </span>
-                </a>
-                <span class="special-column-num">9篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12964334.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12964334.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        面经
-                    </span>
-                </a>
-                <span class="special-column-num">4篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12962929.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12962929.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        AI算法
-                    </span>
-                </a>
-                <span class="special-column-num">3篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12934710.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12934710.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        数据结构与算法
-                    </span>
-                </a>
-                <span class="special-column-num">21篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12962338.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12962338.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        信息专业课内笔记
-                    </span>
-                </a>
-                <span class="special-column-num">8篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12962039.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12962039.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756927.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        网络
-                    </span>
-                </a>
-                <span class="special-column-num">2篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12962038.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12962038.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        操作系统
-                    </span>
-                </a>
-                <span class="special-column-num">1篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12960932.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12960932.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        工具
-                    </span>
-                </a>
-                <span class="special-column-num">19篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12934559.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12934559.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        搜索
-                    </span>
-                </a>
-                <span class="special-column-num">5篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12956358.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12956358.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        Py
-                    </span>
-                </a>
-                <span class="special-column-num">10篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12958310.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12958310.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756926.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        计算机底层原理
-                    </span>
-                </a>
-                <span class="special-column-num">2篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12957646.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12957646.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756738.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        数据
-                    </span>
-                </a>
-                <span class="special-column-num">3篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12935649.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12935649.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756925.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        图论
-                    </span>
-                </a>
-                <span class="special-column-num">7篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12936221.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12936221.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        字符串
-                    </span>
-                </a>
-                <span class="special-column-num">3篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12953723.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12953723.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756780.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        C++
-                    </span>
-                </a>
-                <span class="special-column-num">3篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12948456.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12948456.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756919.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        VP赛
-                    </span>
-                </a>
-                <span class="special-column-num">12篇</span>
-            </li>
-            <li>
-                <a class="clearfix special-column-name"  href="https://blog.csdn.net/2301_78856868/category_12934508.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/2301_78856868/category_12934508.html","ab":"new"}'>
-                    <div class="special-column-bar "></div>
-                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756757.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
-                    <span class="title oneline">
-                        动态规划
-                    </span>
-                </a>
-                <span class="special-column-num">4篇</span>
-            </li>
-        </ul>
-    </div>
-    <p class="text-center">
-        <a class="flexible-btn" data-fbox="aside-archive"><img class="look-more" src="https://csdnimg.cn/release/blogv2/dist/pc/img/arrowDownWhite.png" alt=""></a>
-    </p>
-</div>
-<div id="asideNewComments" class="aside-box">
-    <h3 class="aside-title">最新评论</h3>
-    <div class="aside-content">
-        <ul class="newcomment-list">
-            <li>
-                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/2301_78856868/article/details/155038429#comments_38754333" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/155038429#comments_38754333","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/155038429#comments_38754333","ab":"new"}'>useForm的设计理念随笔</a>
-                <p class="comment ellipsis">
-                    <a href="https://blog.csdn.net/2301_78856868" class="user-name" target="_blank">ceilf6: </a>
-                    <span class="code-comments">这里的&ldquo;subjects广播事件&rdquo;我后面想了想不太对，因为它是内部自维护的一个观察者，应该称为回调观察者的update函数更好</span>
-                </p>
-            </li>
-            <li>
-                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674465" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674465","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674465","ab":"new"}'>算法册题面、答案及详细解析</a>
-                <p class="comment ellipsis">
-                    <a href="https://blog.csdn.net/2301_78856868" class="user-name" target="_blank">ceilf6: </a>
-                    <span class="code-comments">电子✌️说笑了</span>
-                </p>
-            </li>
-            <li>
-                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674460" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674460","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/154653400#comments_38674460","ab":"new"}'>算法册题面、答案及详细解析</a>
-                <p class="comment ellipsis">
-                    <a href="https://blog.csdn.net/babeijing" class="user-name" target="_blank">babeijing: </a>
-                    <span class="code-comments">有水平👍</span>
-                </p>
-            </li>
-            <li>
-                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/2301_78856868/article/details/147714563#comments_38432216" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/147714563#comments_38432216","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/147714563#comments_38432216","ab":"new"}'>项目实战-基于信号处理与SVM机器学习的声音情感识别系统</a>
-                <p class="comment ellipsis">
-                    <a href="https://blog.csdn.net/max_hhhhh" class="user-name" target="_blank">max_hhhhh: </a>
-                    <span class="code-comments">求数据集</span>
-                </p>
-            </li>
-            <li>
-                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/2301_78856868/article/details/149740112#comments_37745082" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/149740112#comments_37745082","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/2301_78856868/article/details/149740112#comments_37745082","ab":"new"}'>码蹄杯25年本科组一、二场</a>
-                <p class="comment ellipsis">
-                    <a href="https://blog.csdn.net/2301_78856868" class="user-name" target="_blank">ceilf6: </a>
-                    <span class="code-comments">你好，具体真题可以看https://www.matiji.net/exam/oj-questionbank/305EE97B0D5E361DE6A28CD18C929AF0，我只挑了一些做</span>
-                </p>
-            </li>
-        </ul>
-    </div>
-</div>
-    <div id="footerRightAds" class="isShowFooterAds">
-      <div class="aside-box">
-        <div id="kp_box_57" data-pid="57"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
-     crossorigin="anonymous"></script>
-<!-- PC-博文内页左下视窗-展示广告0707 -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:300px;height:600px"
-     data-ad-client="ca-pub-1076724771190722"
-     data-ad-slot="7538892243"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=57&adId=1082840&adBlockFlag=0&a=1082840&c=0&k=&spm=1001.2014.3001.5001&articleId=0&d=1&t=3&u=04a4a23f13dd403e9959cea3402528ec" style="display: block;width: 0px;height: 0px;"></div>
-      </div>
-    </div>
-    <!-- 详情页显示目录 -->
-</aside>
-<script>
-	$("a.flexible-btn").click(function(){
-		$(this).parents('div.aside-box').removeClass('flexible-box');
-		$(this).parents("p.text-center").remove();
-	})
-</script>
-<script type="text/javascript"  src="https://g.csdnimg.cn/user-tooltip/2.7/user-tooltip.js"></script>
-<script type="text/javascript"  src="https://g.csdnimg.cn/user-medal/2.0.0/user-medal.js"></script></div>
-<div class="mask"></div>
-<div class="promptBox clearfix">
-    <div class="title clearfix bottom-dis-16">
-        <span class="float-left">提示</span>
-        <a class="float-right Boxclose">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#csdnc-times"></use>
-            </svg>
-        </a>
-    </div>
-    <div class="text">确定要删除当前文章？</div>
-    <div class="pro-btn float-right">
-        <a class="clickNo">取消</a>
-        <a class="clickYes">删除</a>
-    </div>
-</div>
-<script  type="text/javascript">
-    var currentPage = 1;
-    var baseUrl = 'https://blog.csdn.net/2301_78856868/article/list';
-    var pageSize =40;
-    var listTotal = 182;
-    var pageQueryStr = '';
-    function getAllUrl(page) {
-        return baseUrl + "/" + page + pageQueryStr;
-    }
-</script>
-<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/common-50b21fafc8.min.js" type="text/javascript"></script>
-<script src="https://csdnimg.cn/release/blogv2/dist/pc/js/list-45c5ee7c14.min.js" type="text/javascript"></script>
-<script src="https://g.csdnimg.cn/side-toolbar/3.5/side-toolbar.js" type="text/javascript"></script>
-<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script></body>
-</html>
+**4. 硬核挑战：用 Claude Code 完成一个完整项目**
+- 从零开始，仅依赖 Claude Code 开发一个小型应用（需附代码仓库和效果演示）
+- 记录开发过程中的思考、踩坑与解决方案
+
+**5. 未来之辩：AI 编程的边界与伦理**
+- Claude Code 会取代程序员吗？职业发展的应对策略</p> <div class="info-box" data-v-14754ae0><span class="num" data-v-14754ae0>76人参与</span> <a href="https://activity.csdn.net/writing?id=11103" data-report-view="{&quot;spm&quot;:&quot;3001.9461&quot;,&quot;dest&quot;:&quot;https://activity.csdn.net/writing?id=11103&quot;}" data-report-click="{&quot;spm&quot;:&quot;3001.9461&quot;,&quot;dest&quot;:&quot;https://activity.csdn.net/writing?id=11103&quot;}" data-report-query="spm=3001.9461" class="go-write" data-v-14754ae0>去参加</a></div></div></div></div></div></div></div></div> <div class="user-profile-body-right" data-v-2bed90c1><div id="navList-box" class="navList-box" data-v-1578f874 data-v-2bed90c1><div class="navList" data-v-1578f874><ul style="display:;" data-v-1578f874><li data-report-view="{&quot;spm&quot;:&quot;3001.5484&quot;}" class="active" data-v-1578f874>
+          最近<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.5485&quot;}" data-v-1578f874>
+          文章<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.10641&quot;}" data-v-1578f874>
+          专栏<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.5487&quot;}" data-v-1578f874>
+          问答<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.5490&quot;}" data-v-1578f874>
+          帖子<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.5491&quot;}" data-v-1578f874>
+          视频<!----></li><li data-report-view="{&quot;spm&quot;:&quot;3001.5488&quot;}" data-v-1578f874>
+          收藏<!----></li></ul> <div slot="reference" class="navList-box-pover-icon" data-v-1578f874><span data-v-1578f874>更多</span> <i class="el-icon-arrow-right" data-v-1578f874></i></div> <div class="navs-scroll-list-box" style="width:calc(100% - 40px);display:none;" data-v-1578f874><div class="menus-view" style="padding-left:0;padding-right:0;" data-v-4a10038c data-v-1578f874><div class="menus-view_prev" style="display:none;" data-v-4a10038c><img src="https://i-operation.csdnimg.cn/images/449db4234d6e43eb8028ab55aaa71920.png" data-v-4a10038c></div> <div class="menus-view_next" style="display:none;" data-v-4a10038c><img src="https://i-operation.csdnimg.cn/images/449db4234d6e43eb8028ab55aaa71920.png" data-v-4a10038c></div> <div class="menus-view_content" data-v-4a10038c><ul class="menus-view_content—inner" style="transform:translateX(-0px);" data-v-4a10038c><li class="menus-item active" data-v-4a10038c><p class="navs-scroll-p active" data-v-4a10038c data-v-1578f874>最近<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>文章<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>专栏<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>问答<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>帖子<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>视频<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>收藏<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>社区<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>资源<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>课程<!----></p></li><li class="menus-item " data-v-4a10038c><p class="navs-scroll-p " data-v-4a10038c data-v-1578f874>关注/订阅/互动<!----></p></li></ul></div></div></div> <div class="m-search-input" data-v-1578f874><img src="https://img-home.csdnimg.cn/images/20220415024056.png" alt class="m-search-img-hide" style="display:none;" data-v-1578f874> <input id="mSearchInput" type="text" placeholder="搜TA的内容" value="" style="display:none;" data-v-1578f874> <div data-report-click="{&quot;spm&quot;:&quot;3001.9183&quot;}" class="m-search-btn" style="display:;" data-v-1578f874><img src="https://img-home.csdnimg.cn/images/20220415024031.png" alt class="m-search-img" data-v-1578f874> <img src="https://img-home.csdnimg.cn/images/20220415024056.png" alt class="m-search-hover-img" data-v-1578f874></div> <div class="m-search-btn-box" style="display:none;" data-v-1578f874><span class="m-search-sure" data-v-1578f874>搜索</span> <span class="m-search-cancle" data-v-1578f874>取消</span></div></div></div> <div class="mainContent" data-v-1578f874><div data-v-1578f874><div data-v-192752f1 data-v-1578f874><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156943852" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            React 的 Fiber 是敏捷宣言的回调，为什么却晚了 18 年？
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>很多人以为 Fiber 是在 React 16「完成」的，这是一个误解。React 16：Fiber 架构上线React 16.8：Hooks 发布为并发渲染清理掉与 Class 生命周期不兼容的历史包袱React 团队在2019 年为未来三年的并发渲染铺路敏捷宣言在 2001 年提出了「如何应对变化」，而前端用了将近 20 年，才第一次被变化淹没；Fiber，是 React 在运行时层面给出的答案。不是 React 落后于敏捷，而是前端世界，直到 2019 年，才真正配得上一个敏捷运行时。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2026.01.14 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>917<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>22<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>11<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156943852" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156367647" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            工程级前端智能体FrontAgent
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>工程级 AI Agent 系统 —— 让 AI 真正落地软件开发。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.28 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>977<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>38<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>22<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156367647" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156310418" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            智能体通信协议 ANP
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是常高伟老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。老师认为的 Agentic Web 核心趋势：未来是Agent之间的连接协议是智能体交互最高效的方式。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.26 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>613<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>8<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>13<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156310418" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156295316" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            端侧Agent开发
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是张熙老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.26 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>530<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>15<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>20<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156295316" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156280125" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            The job is something you happened to pick by the way you learning.If you are still free, you lu
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>The job is something you happened to pick by the way you learning.If you are still free, you luckily have more time to learn whatever you wanna.  Joy =&gt; LaVie += Learning =&gt; Value</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.25 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>71<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>1<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://mp.csdn.net/console/editor/html/156280125" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156241735" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            Agent+MCP 开发范式
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是高大伟老师在datawhale的宣讲，精练易懂。辅以一些本人的看法，希望各位大佬一起交流指正。本人的代码实践传统智能体架构现在 Tools → MCP 进行规范MCP 改变了什么。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.24 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>962<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>30<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>18<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156241735" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156229411" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            工作流应用范式
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>环节出错需要有 fallback 的逻辑通过可视化和预处理把数据向量化处理到最佳的状态，方便RAG的相关性搜索然后介绍了 Dify 的插件能通过赋能提高生产力可控、标准化背景：为了提高生产效率和产量原理（~工业化）：将复杂的生产过程分解为多个标准化、重复性的简单步骤，并由不同的工人在流水线上轮流执行，从而加速产品的生产过程。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.24 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>834<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>25<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>8<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156229411" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156128621" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            Agent设计模式与工程化
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。标准化之后才能规模化提炼自己的知识框架、利用好自己作为用户的差异点案例：智能客服需要数据RAG、LLM、工具插入MCP、ECS或GPU资源安全性、治理、可观测性、如何基于私有化Coze/Dify开发？对问题提炼模版化的解决方案从而实现标准化的工程化。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.21 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>317<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>6<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>10<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156128621" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156115672" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            MCP原理及实践
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。同时你可以启动 Lab 仓库的 vite 开发服务器在 http://localhost:8030/wordMCP/ 检测交互效果。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.20 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>854<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>14<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>17<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156115672" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156060125" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            Agent原理及实践
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本文主体是宋志学老师和锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.18 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>908<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>28<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>11<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156060125" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/156030299" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            腾讯菁英班跨端日历应用产品报告
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>月视图日历：按天选择日期，查看当天日程列表。日程列表：展示当天所有事件的标题、时间范围、备注等信息。核心字段：title、startTime、endTime、allDay、reminderMinutes、category、priority、status 等。核心字段：id、date(yyyy-MM-dd)、title、startTime(HH:mm 可选)、endTime(HH:mm 可选)、notes(可选)。流程 A：新增事件（Android）用户在新增/编辑界面填写信息并保存。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.18 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>854<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>37<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>30<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=156030299" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155984766" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            Agent概况
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>本没有路，走的人多了便有了路定义也是从共识来的Agent 同理，目前还没有具体的共识，任何一个非单次大模型调用的系统都有可能被称为Agent看一些大厂商的定义。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.16 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>927<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>31<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>15<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155984766" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155965195" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            内存管理 - 内存泄漏 - 排查、预防策略
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>在浏览器环境下就是 V8引擎栈内存：存放原始类型值，生命周期短，不由GC回收而是由引擎自动弹栈堆内存：存放引用数据类型，由GC进行回收。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.16 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>632<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>23<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>17<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155965195" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155936175" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            常见的设计模式
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>是一种 发布-订阅 （publish,subcription) 模型的实现事件中心、事件发射器。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.15 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>302<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>2<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>4<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155936175" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155917883" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            pnpm优化理念 - 幻影依赖、monorepo - 升级npm
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>pnpm 通过「内容寻址同时解决了 磁盘浪费、幻影依赖、monorepo 复用 三个核心问题。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.15 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>1082<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>21<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>22<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155917883" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155911852" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            前端动画的多种实现方式
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>动画的本质是把内容的两个状态做平滑的过渡（中间状态的展示）</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.14 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>234<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>2<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155911852" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155891490" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            视频进度控制脚本
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>【代码】视频进度控制脚本。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.14 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>140<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>2<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://mp.csdn.net/console/editor/html/155891490" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155891071" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            业务环境流程：开发-＞测试-＞预发布-＞灰度-＞生产
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>一般是内部人员的真实数据（test是QA和研发，现在是其他例如产品等）域名、环境等等都和 prod 一样。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.13 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>884<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>17<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>5<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155891071" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155881077" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            SDD规范驱动开发-与prompt区别-Agent业务场景示例
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>Goal:帮助用户将自然语言需求转化为可执行的前端组件代码。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.13 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>870<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>10<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>12<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155881077" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div><div data-v-192752f1><article class="blog-list-box" data-v-1ffb1322 data-v-192752f1><a href="https://blog.csdn.net/2301_78856868/article/details/155861615" target="_blank" data-report-click="{&quot;spm&quot;:&quot;3001.5501&quot;}" data-report-query="spm=3001.5501" data-v-1ffb1322><!----> <div class="list-box-cont" data-v-1ffb1322><div data-v-1ffb1322><div class="blog-list-box-top" data-v-1ffb1322><h4 data-v-1ffb1322>
+            浏览器本地存储Cookie, local/sessionStorage - Token结合Cookie实现登录管理
+          </h4></div> <div class="blog-list-content" data-v-1ffb1322>不会影响资源的加载流程。</div></div> <div class="blog-list-footer" data-v-1ffb1322><div class="blog-list-footer-left" data-v-1ffb1322><div class="article-type article-type-yc" data-v-1ffb1322>
+            原创
+          </div> <!----> <!----> <!----> <div class="view-time-box" data-v-1ffb1322>
+            博文更新于 2025.12.12 ·
+          </div> <div class="view-num-box" data-v-1ffb1322><span class="view-num" data-v-1ffb1322>929<span class="two-px" data-v-1ffb1322> 阅读 ·</span></span></div> <div class="give-like-box" data-v-1ffb1322><span class="give-like-num" data-v-1ffb1322>24<span class="two-px" data-v-1ffb1322> 点赞 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>0<span class="two-px" data-v-1ffb1322> 评论 ·</span></span></div> <div class="comment-box" data-v-1ffb1322><span class="comment-num" data-v-1ffb1322>25<span class="two-px" data-v-1ffb1322> 收藏</span></span></div></div> <div class="operate-box" data-v-1ffb1322><a href="https://editor.csdn.net/md?articleId=155861615" data-report-click="{&quot;spm&quot;:&quot;3001.9457&quot;}" data-report-query="spm=3001.9457" target="_blank" class="btn-edit-article" data-v-1ffb1322>编辑</a></div></div></div></a></article> <!----> <!----> <!----> <!----> <!----></div></div></div> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></div> <!----> <!----> <!----> <div data-v-ae66d4ac data-v-1578f874><div class="item-loading" data-v-ae66d4ac><a href="https://blog.csdn.net/2301_78856868/article/list/2" data-v-ae66d4ac><div data-v-ae66d4ac>加载更多</div> <!----> <!----></a></div></div></div></div></div></div></div></div></div></div></div></div> <div>
+        <script type="text/javascript" src="https://g.csdnimg.cn/common/csdn-footer/csdn-footer.js" data-isfootertrack="false" defer></script>
+      </div></div></div><script> window.__INITIAL_STATE__= {"csrf":"9ULqyvWH-TLAkhess-y440oPkGSw3w5T3Sdc","origin":"http:\u002F\u002Fcms-user.internal.csdn.net","isMobile":false,"cookie":"uuid_tt_dd=10_6637762210-1747377649891-915496; uuid_tt_dd=10_6637762210-1747377649891-915496; UN=2301_78856868; uuid_tt_dd=10_6637762210-1747377649891-915496; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=6525*1*10_6637762210-1747377649891-915496!5744*1*2301_78856868; Hm_lvt_e5ef47b9f471504959267fd614d579cd=1749543417; c_dl_um=-; c_dl_fref=https:\u002F\u002Fmp.csdn.net\u002Fmp_download\u002Fmanage\u002Fdownload\u002FUpDetailed; c_dl_fpage=\u002Fdownload\u002F2301_78856868\u002F91849749; c_dl_prid=1756803440164_778874; c_dl_rid=1756803463970_653872; fid=20_11605053208-1759762161058-544495; FCCDCF=%5Bnull%2Cnull%2Cnull%2C%5B%22CQPzfEAQPzfEAEsACBENBlFgAAAAAEPgAARoAAANVSD2F2K2kKFkHCmwXYAYBCujYAAhQgAAAkCBMACgAUgQAgFJIAgCIFAAAAAAAAAQEiCQAAQABAAAIACgAAAAAAIAAAAAAAQQAABAAIAAAAAAAAEAQAAIAAQAAAAIAABEhAAAQQAEAAAAAAAQAA%22%2C%222~~dv.70.89.93.108.122.149.184.196.236.259.311.313.314.323.358.415.442.486.494.495.540.574.609.864.981.1029.1048.1051.1095.1097.1126.1205.1276.1301.1365.1415.1449.1514.1570.1577.1598.1651.1716.1735.1753.1765.1870.1878.1889.1958.1960.2072.2253.2299.2373.2415.2506.2526.2531.2568.2571.2575.2624.2677.2778%22%2C%229080992C-1527-4160-8D43-4D2CAF70C012%22%5D%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%226c89cbf4-0dcd-41c7-ae51-5c574b7254ec%5C%22%2C%5B1762601662%2C956000000%5D%5D%22%5D%5D%5D; UserName=2301_78856868; UserInfo=ce484acbd7324606af330ca703271db5; UserToken=ce484acbd7324606af330ca703271db5; UserNick=ceilf; AU=007; BT=1762955556078; p_uid=U010000; c_segment=8; dc_sid=d1193674b952d32b017f17b31cdd0e78; HMACCOUNT=800A83A6C328D28E; csrfToken=_-sCwM8xDZvpUGC3_i3vloCj; c_ab_test=1; csdn_newcert_2301_78856868=1; historyList-new=%5B%5D; _ga=GA1.2.1486977014.1702638404; _ga_7W1N0GEY1P=GS2.1.s1768033209$o33$g1$t1768033256$j13$l0$h0; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1768107377; c_first_page=https%3A\u002F\u002Fblog.csdn.net\u002F2301_78856868; _clck=18y9crz%5E2%5Eg2p%5E0%5E1677; SESSION=4109563b-4dc5-423f-8c04-c8e930d157ff; https_waf_cookie=c4c276e6-63b5-473577f52d8be94c7d69585c9d488beb0fea; dc_session_id=10_1769189312796.423878; bc_bot_session=1769230449127cce0c8369ec37; bc_bot_token=501769230449127cce0c8369ec379ecf7b; bc_bot_rules=R61; bc_bot_score=50; creative_btn_mp=3; c_pref=default; c_ref=default; c_first_ref=default; __gads=ID=df2c9f05de65472f:T=1737289571:RT=1769231616:S=ALNI_MZgSf8_OksnSSz5HHAeFS3IhZ8ozg; __gpi=UID=00000febd666931e:T=1737289571:RT=1769231616:S=ALNI_MZ72076qVOX7r4PpIbmUgmJC6-Lfw; __eoi=ID=ae4ad32341192564:T=1768817105:RT=1769231616:S=AA-AfjYoFrW_LMgbIjfUYJ-CbzSc; bc_bot_fp=6848e95c466ff29100fb293a29bc14f5; FCNEC=%5B%5B%22AKsRol95_TPMoZCQCvbOfVtc4zvs1GWq1ZvjzDPaDF-q7AzvIjUWBOplsKDVm55QpmNw90-e4O1XnsXw-E5yzrGJHwSpj1OtpS_PvQgbwgzRMSFFtDO-xMXKJnxf-bm9TmfphkwGQ1HpVB7DOh8ilUy6b72zyGcUEg%3D%3D%22%5D%5D; c_dsid=11_1769232701456.971915; c_page_id=default; log_Id_pv=6; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1769232702; log_Id_view=81; dc_tos=t9cspd; waf_captcha_marker=e7c8e63fc5253aed4da758df02f1031b20508cdb5a07383e5acbc55755032052","ip":"39.183.146.89","test":"cms-user.internal.csdn.net-undefined","pageData":{"page":{"pageId":255,"title":"用户主页","keywords":"用户主页","description":"用户主页","ext":{"writeUrl":"https:\u002F\u002Fmpbeta.csdn.net\u002Fedit","activityMoreUrl":"https:\u002F\u002Fmpbeta.csdn.net\u002Factivity\u002Fwriting\u002Factivity","bsShow":"1","blogGuide":"https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F109119433","guide":"1"}},"template":{"templateId":171,"templateComponentName":"user-profile-v2","title":"用户主页","floorList":[{"floorId":928,"floorComponentName":"floor-user-profile","title":"","description":"","indexOrder":1,"componentList":[{"componentName":"baseInfo","componentDataId":"user-profile","componentConfigData":{},"relationType":3},{"componentName":"versionSwitchTips","componentDataId":"blog-user-version-switch","componentConfigData":{},"relationType":3},{"componentName":"blogStarInfo","componentDataId":"blog-star-2024","componentConfigData":{},"relationType":3}]}]},"data":{"baseInfo":{"basicModule":{"owner":true,"enterprise":false,"emptyImg":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20231127041620.png"},"blogModule":{"userName":"2301_78856868","level":0,"originalCount":0,"visitedTimes":0,"customCss":"","config":"\u003CConfig \u002F\u003E","createdTime":"2023-09-19T11:56:31.000+0000","title":"2301_78856868的博客","blogId":20082025,"viewCount":0,"openReward":1,"rewardDescription":"你的鼓励将是我创作的最大动力","subTitle":"","skin":null,"codeStyle":"","flag":0,"status":1,"rank":0,"skinId":25,"commentCount":0,"repostCount":0,"translatedCount":0,"point":0,"diggCount":0},"seoModule":{"title":"ceilf6-CSDN博客","description":"ceilf6擅长前端,数据结构与算法,工具,等方面的知识,ceilf6关注stm32,c++,html5,kmeans,es6,vue.js,numpy,tcp\u002Fip,redis,sql,database,git,机器学习,霍夫曼树,linux,json,mysql,开源,macos,python,github,图搜索算法,深度学习,动态规划,网络协议,javascript,数据结构,单片机,pandas,YOLO,爬虫,django,vscode,matplotlib,http,迁移学习,css3领域.","keywords":"前端,数据结构与算法,工具,ceilf6","landing":null,"jsonId":null},"userModule":{"avatar":"https:\u002F\u002Fi-avatar.csdnimg.cn\u002F1642081f056f493d8059a62756a54955_2301_78856868.jpg!1","username":"2301_78856868","nickname":"ceilf6","vip":false,"follow":false,"blogUrl":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868","imUrl":"https:\u002F\u002Fim.csdn.net\u002Fim\u002Fmain.html?userName=2301_78856868","askUrl":"https:\u002F\u002Fask.csdn.net\u002Fnew?utm_source=p_blog&expertName=2301_78856868","hasPersonal":true,"hasCompany":false,"hasEducation":true,"hasEmployee":true,"level":5,"levelIcon":"https:\u002F\u002Fcsdnimg.cn\u002Fidentity\u002Fblog5.png","introduction":"各平台都同名","school":null,"company":null,"registrationTime":"2023-06-23","codeAge":{"icon":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20210108035944.gif","background":"#D1DDF1","color":"#455165","desc":"码龄3年"},"gender":0,"defaultBackgroundImg":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20210120054229.jpg","hasShowcase":false,"hasPromotion":false,"loyalFansSwitch":false,"studyAchievementSwitch":false,"studyAchievementUrl":null,"region":{"ip":"39.187.240.235","region":"IP 属地：浙江省","msg":"IP属地以运营商信息为准，境内显示到省（区、市），境外显示到国家（地区）"},"urge":false},"companyModule":null,"achievementModule":{"originalCount":"182","rank":"9,382","fansCount":"1,634","followCount":"15","loyalFansCount":"64","achievementList":[{"icon":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20210114022819.png","template":"获得###次点赞","variable":"2,770","url":null,"sideText":null,"type":null,"click":false},{"icon":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20210114022831.png","template":"内容获得###次评论","variable":"19","url":null,"sideText":null,"type":null,"click":false},{"icon":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20210114022828.png","template":"获得###次收藏","variable":"1,467","url":null,"sideText":null,"type":null,"click":false},{"icon":"https:\u002F\u002Fimg-blog.csdnimg.cn\u002F4039019ab2e34b22b80ba351ebcff718.png","template":"\u003Cem title=\"统计开始时间：2023年5月1日\"\u003E代码片获得###次分享\u003C\u002Fem\u003E","variable":"559","url":null,"sideText":null,"type":null,"click":false}],"rankList":[],"wholeSiteViewCount":{"total":"128,298","detail":{"blog":"126,805","bbs":"0","ask":"0","edu":"0","blink":"1,493","live":"0","download":"0"}}},"medalModule":[{"name":"新秀勋章","medalId":35,"description":"用户首次发布原创文章，审核通过后即可获得","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002Fmedal\u002Fxinxiu@240.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608083591","whetherHave":true},{"name":"持之以恒","medalId":165,"description":"授予累计7个月发布8篇原创IT博文的用户","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002F49c18dc7af8f406a90d65e8e55ed4360.png","sourceUrl":"https:\u002F\u002Fmp.csdn.net\u002F","whetherHave":true},{"name":"1024勋章","medalId":26,"description":"#1024程序员节#活动勋章，当日发布原创博客即可获得","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002Fmedal\u002F1024@240.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608080586","whetherHave":true},{"name":"勤写标兵","medalId":154,"description":"授予累计10周发布3篇原创IT博文的用户","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002Feabb492c5e3343738376cdb052649492.png","sourceUrl":"https:\u002F\u002Fmp.csdn.net\u002F?spm=1038.2274.3001.8539","whetherHave":true},{"name":"128天创作纪念日","medalId":155,"description":"成为 IT 技术领域创作者128天纪念勋章","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002Fc6886de8c0334a5789bfc2b9f5669100.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608080320","whetherHave":true},{"name":"笔耕不辍","medalId":107,"description":"累计1年每年原创文章数量\u003E=20篇","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002F70592b2299594e37aedcaa91fc52a294.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608086102","whetherHave":true},{"name":"话题达人","medalId":108,"description":"参与话题个数=1","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002F96ac957ca0a64be3a6393da7a9474486.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608106782","whetherHave":true},{"name":"创作能手","medalId":28,"description":"授予每个自然周发布9篇以上（包括9篇）原创IT博文的用户","imageUrl":"https:\u002F\u002Fcsdnimg.cn\u002Fmedal\u002Fqixiebiaobing4@240.png","sourceUrl":"https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F608079883","whetherHave":true}],"interestModule":[{"id":2,"name":"Python","select":true,"together":false,"tags":[{"id":8,"name":"python","select":true,"together":false,"tags":null},{"id":6361,"name":"django","select":true,"together":false,"tags":null},{"id":400355,"name":"numpy","select":true,"together":false,"tags":null},{"id":400357,"name":"pandas","select":true,"together":false,"tags":null},{"id":400358,"name":"matplotlib","select":true,"together":false,"tags":null}]},{"id":12,"name":"编程语言","select":true,"together":false,"tags":[{"id":8,"name":"python","select":true,"together":false,"tags":null},{"id":83,"name":"c++","select":true,"together":false,"tags":null},{"id":190,"name":"javascript","select":true,"together":false,"tags":null}]},{"id":21,"name":"开发工具","select":true,"together":false,"tags":[{"id":233,"name":"github","select":true,"together":false,"tags":null},{"id":235,"name":"git","select":true,"together":false,"tags":null},{"id":86148,"name":"vscode","select":true,"together":false,"tags":null},{"id":104751,"name":"macos","select":true,"together":false,"tags":null}]},{"id":1005,"name":"数据结构与算法","select":true,"together":false,"tags":[{"id":970,"name":"数据结构","select":true,"together":false,"tags":null},{"id":10398,"name":"动态规划","select":true,"together":false,"tags":null},{"id":76792,"name":"kmeans","select":true,"together":false,"tags":null},{"id":200117,"name":"图搜索算法","select":true,"together":false,"tags":null},{"id":200135,"name":"霍夫曼树","select":true,"together":false,"tags":null}]},{"id":20,"name":"大数据","select":true,"together":false,"tags":[{"id":138,"name":"json","select":true,"together":false,"tags":null},{"id":155,"name":"sql","select":true,"together":false,"tags":null},{"id":168,"name":"database","select":true,"together":false,"tags":null},{"id":411,"name":"mysql","select":true,"together":false,"tags":null},{"id":5044,"name":"redis","select":true,"together":false,"tags":null}]},{"id":11,"name":"前端","select":true,"together":false,"tags":[{"id":138,"name":"json","select":true,"together":false,"tags":null},{"id":186,"name":"html5","select":true,"together":false,"tags":null},{"id":190,"name":"javascript","select":true,"together":false,"tags":null},{"id":72619,"name":"css3","select":true,"together":false,"tags":null},{"id":90670,"name":"vue.js","select":true,"together":false,"tags":null},{"id":300027,"name":"es6","select":true,"together":false,"tags":null}]},{"id":2001,"name":"后端","select":true,"together":false,"tags":[{"id":300012,"name":"爬虫","select":true,"together":false,"tags":null}]},{"id":14,"name":"人工智能","select":true,"together":false,"tags":[{"id":9056,"name":"机器学习","select":true,"together":false,"tags":null},{"id":75181,"name":"深度学习","select":true,"together":false,"tags":null},{"id":400024,"name":"迁移学习","select":true,"together":false,"tags":null},{"id":400604,"name":"YOLO","select":true,"together":false,"tags":null}]},{"id":1008,"name":"网络与通信","select":true,"together":false,"tags":[{"id":2,"name":"http","select":true,"together":false,"tags":null},{"id":88795,"name":"网络协议","select":true,"together":false,"tags":null},{"id":92581,"name":"tcp\u002Fip","select":true,"together":false,"tags":null}]},{"id":1009,"name":"嵌入式","select":true,"together":false,"tags":[{"id":2282,"name":"单片机","select":true,"together":false,"tags":null},{"id":2699,"name":"stm32","select":true,"together":false,"tags":null}]},{"id":1016,"name":"操作系统","select":true,"together":false,"tags":[{"id":479,"name":"linux","select":true,"together":false,"tags":null}]},{"id":3010,"name":"开源","select":true,"together":false,"tags":[{"id":400219,"name":"开源","select":true,"together":false,"tags":null}]}],"columnModule":[{"id":12987750,"app_id":0,"alias":"","username":"2301_78856868","title":"JavaScript","desc":"前端、算法","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":13,"sort":0,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-06-16T00:16:50+08:00","updated_at":"2026-01-14T13:35:31+08:00","status_count":"{\"1\":13,\"6\":2,\"64\":1}","is_free":0,"edit_title":"JavaScript","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12987750.html"},{"id":13103650,"app_id":0,"alias":"","username":"2301_78856868","title":"Agent开发","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756918.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":8,"sort":0,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-12-13T11:19:46+08:00","updated_at":"2025-12-28T22:34:15+08:00","status_count":"{\"1\":8}","is_free":0,"edit_title":"Agent开发","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_13103650.html"},{"id":12957645,"app_id":0,"alias":"","username":"2301_78856868","title":"项目实战-以项促学-创造价值","desc":"不以产品化为目的的项目就是耍流氓","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756754.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":14,"sort":0,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-25T16:20:20+08:00","updated_at":"2025-12-20T21:30:45+08:00","status_count":"{\"1\":14,\"64\":1}","is_free":0,"edit_title":"项目实战-以项促学-创造价值","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12957645.html"},{"id":13102161,"app_id":0,"alias":"","username":"2301_78856868","title":"客户端","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756925.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":1,"sort":0,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-12-10T15:37:06+08:00","updated_at":"2025-12-10T15:37:09+08:00","status_count":"{\"1\":1}","is_free":0,"edit_title":"客户端","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_13102161.html"},{"id":12967670,"app_id":0,"alias":"","username":"2301_78856868","title":"前端","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":70,"sort":1,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-13T02:07:12+08:00","updated_at":"2025-12-20T20:14:31+08:00","status_count":"{\"1\":70,\"6\":3,\"64\":2}","is_free":0,"edit_title":"前端","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12967670.html"},{"id":12965176,"app_id":0,"alias":"","username":"2301_78856868","title":"笔经","desc":"笔试经验","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756919.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":9,"sort":2,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-08T20:48:31+08:00","updated_at":"2025-09-05T22:49:05+08:00","status_count":"{\"1\":9,\"64\":1}","is_free":0,"edit_title":"笔经","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12965176.html"},{"id":12964334,"app_id":0,"alias":"","username":"2301_78856868","title":"面经","desc":"面试经历","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756738.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":4,"sort":3,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-07T19:07:32+08:00","updated_at":"2025-09-05T22:49:05+08:00","status_count":"{\"1\":4,\"64\":6}","is_free":0,"edit_title":"面经","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12964334.html"},{"id":12962929,"app_id":0,"alias":"","username":"2301_78856868","title":"AI算法","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756925.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":3,"sort":4,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-05T17:51:42+08:00","updated_at":"2025-12-18T19:44:16+08:00","status_count":"{\"1\":3}","is_free":0,"edit_title":"AI算法","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12962929.html"},{"id":12934710,"app_id":0,"alias":"","username":"2301_78856868","title":"数据结构与算法","desc":"数据结构与算法","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":21,"sort":5,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-03T00:17:01+08:00","updated_at":"2025-11-22T15:26:21+08:00","status_count":"{\"1\":21}","is_free":0,"edit_title":"数据结构与算法","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12934710.html"},{"id":12962338,"app_id":0,"alias":"","username":"2301_78856868","title":"信息专业课内笔记","desc":"信息工程电磁学、信号等课程笔记","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756918.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":8,"sort":6,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-04T09:12:31+08:00","updated_at":"2025-12-20T21:30:45+08:00","status_count":"{\"1\":8,\"6\":2,\"64\":1}","is_free":0,"edit_title":"信息专业课内笔记","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12962338.html"},{"id":12962039,"app_id":0,"alias":"","username":"2301_78856868","title":"网络","desc":"计算机网络","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756927.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":2,"sort":7,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-03T10:27:27+08:00","updated_at":"2025-08-16T16:38:32+08:00","status_count":"{\"1\":2}","is_free":0,"edit_title":"网络","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12962039.html"},{"id":12962038,"app_id":0,"alias":"","username":"2301_78856868","title":"操作系统","desc":"操作系统","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":1,"sort":8,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-05-03T10:27:07+08:00","updated_at":"2025-05-21T23:35:14+08:00","status_count":"{\"1\":1}","is_free":0,"edit_title":"操作系统","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12962038.html"},{"id":12960932,"app_id":0,"alias":"","username":"2301_78856868","title":"工具","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756923.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":19,"sort":9,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-30T14:20:04+08:00","updated_at":"2025-08-14T17:21:13+08:00","status_count":"{\"1\":19}","is_free":0,"edit_title":"工具","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12960932.html"},{"id":12934559,"app_id":0,"alias":"","username":"2301_78856868","title":"搜索","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756724.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":5,"sort":10,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-02T20:30:51+08:00","updated_at":"2025-06-07T19:49:28+08:00","status_count":"{\"1\":5}","is_free":0,"edit_title":"搜索","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12934559.html"},{"id":12956358,"app_id":0,"alias":"","username":"2301_78856868","title":"Py","desc":"Python","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":10,"sort":12,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-23T23:10:03+08:00","updated_at":"2025-07-02T00:48:14+08:00","status_count":"{\"1\":10}","is_free":0,"edit_title":"Py","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12956358.html"},{"id":12958310,"app_id":0,"alias":"","username":"2301_78856868","title":"计算机底层原理","desc":"计算机组成原理","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756926.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":2,"sort":13,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-26T20:14:42+08:00","updated_at":"2025-05-21T23:35:14+08:00","status_count":"{\"1\":2}","is_free":0,"edit_title":"计算机底层原理","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12958310.html"},{"id":12957646,"app_id":0,"alias":"","username":"2301_78856868","title":"数据","desc":"数据清理、数据处理、数学建模、可视化","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756738.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":3,"sort":14,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-25T16:20:43+08:00","updated_at":"2025-09-02T17:14:32+08:00","status_count":"{\"1\":3}","is_free":0,"edit_title":"数据","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12957646.html"},{"id":12935649,"app_id":0,"alias":"","username":"2301_78856868","title":"图论","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756925.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":7,"sort":15,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-04T15:34:25+08:00","updated_at":"2025-06-06T16:05:50+08:00","status_count":"{\"1\":7,\"32\":2}","is_free":0,"edit_title":"图论","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12935649.html"},{"id":12936221,"app_id":0,"alias":"","username":"2301_78856868","title":"字符串","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756754.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":3,"sort":16,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-05T18:06:55+08:00","updated_at":"2025-05-11T16:22:40+08:00","status_count":"{\"1\":3}","is_free":0,"edit_title":"字符串","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12936221.html"},{"id":12953723,"app_id":0,"alias":"","username":"2301_78856868","title":"C++","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756780.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":3,"sort":17,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-20T17:40:30+08:00","updated_at":"2025-05-08T20:48:34+08:00","status_count":"{\"1\":3}","is_free":0,"edit_title":"C++","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12953723.html"},{"id":12948456,"app_id":0,"alias":"","username":"2301_78856868","title":"VP赛","desc":"VP赛","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756919.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":12,"sort":18,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-13T16:56:12+08:00","updated_at":"2025-06-22T13:02:33+08:00","status_count":"{\"1\":12}","is_free":0,"edit_title":"VP赛","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12948456.html"},{"id":12934508,"app_id":0,"alias":"","username":"2301_78856868","title":"动态规划","desc":"","img_url":"https:\u002F\u002Fi-blog.csdnimg.cn\u002Fcolumns\u002Fdefault\u002F20201014180756757.png?x-oss-process=image\u002Fresize,m_fixed,h_64,w_64","channel_id":0,"sum":4,"sort":19,"is_show":1,"status":1,"is_delete":2,"created_at":"2025-04-02T19:24:31+08:00","updated_at":"2025-06-07T19:49:28+08:00","status_count":"{\"1\":4}","is_free":0,"edit_title":"动态规划","second":false,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Fcategory_12934508.html"}],"customModule":null,"latelyList":[{"type":"blog","formatTime":"2026.01.14","title":"React 的 Fiber 是敏捷宣言的回调，为什么却晚了 18 年？","description":"很多人以为 Fiber 是在 React 16「完成」的，这是一个误解。React 16：Fiber 架构上线React 16.8：Hooks 发布为并发渲染清理掉与 Class 生命周期不兼容的历史包袱React 团队在2019 年为未来三年的并发渲染铺路敏捷宣言在 2001 年提出了「如何应对变化」，而前端用了将近 20 年，才第一次被变化淹没；Fiber，是 React 在运行时层面给出的答案。不是 React 落后于敏捷，而是前端世界，直到 2019 年，才真正配得上一个敏捷运行时。","hasOriginal":true,"diggCount":22,"commentCount":0,"postTime":1768368869000,"createTime":1768368579000,"updateTime":1768368931000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156943852","articleType":1,"viewCount":917,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156943852","collectCount":11,"rtype":"article"},{"type":"blog","formatTime":"2025.12.28","title":"工程级前端智能体FrontAgent","description":"工程级 AI Agent 系统 —— 让 AI 真正落地软件开发。","hasOriginal":true,"diggCount":38,"commentCount":0,"postTime":1766932408000,"createTime":1766932408000,"updateTime":1766932455000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156367647","articleType":1,"viewCount":977,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156367647","collectCount":22,"rtype":"article"},{"type":"blog","formatTime":"2025.12.26","title":"智能体通信协议 ANP","description":"本文主体是常高伟老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。老师认为的 Agentic Web 核心趋势：未来是Agent之间的连接协议是智能体交互最高效的方式。","hasOriginal":true,"diggCount":8,"commentCount":0,"postTime":1766739633000,"createTime":1766739633000,"updateTime":1766739635000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156310418","articleType":1,"viewCount":613,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156310418","collectCount":13,"rtype":"article"},{"type":"blog","formatTime":"2025.12.26","title":"端侧Agent开发","description":"本文主体是张熙老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。","hasOriginal":true,"diggCount":15,"commentCount":0,"postTime":1766713782000,"createTime":1766713782000,"updateTime":1766713783000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156295316","articleType":1,"viewCount":530,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156295316","collectCount":20,"rtype":"article"},{"type":"blog","formatTime":"2025.12.25","title":"The job is something you happened to pick by the way you learning.If you are still free, you lu","description":"The job is something you happened to pick by the way you learning.If you are still free, you luckily have more time to learn whatever you wanna.  Joy =\u003E LaVie += Learning =\u003E Value","hasOriginal":true,"diggCount":1,"commentCount":0,"postTime":1766677155000,"createTime":1766677062000,"updateTime":1766677155000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156280125","articleType":1,"viewCount":71,"picList":[],"editUrl":"https:\u002F\u002Fmp.csdn.net\u002Fconsole\u002Feditor\u002Fhtml\u002F156280125","collectCount":0,"rtype":"article"},{"type":"blog","formatTime":"2025.12.24","title":"Agent+MCP 开发范式","description":"本文主体是高大伟老师在datawhale的宣讲，精练易懂。辅以一些本人的看法，希望各位大佬一起交流指正。本人的代码实践传统智能体架构现在 Tools → MCP 进行规范MCP 改变了什么。","hasOriginal":true,"diggCount":30,"commentCount":0,"postTime":1766582228000,"createTime":1766582228000,"updateTime":1766582230000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156241735","articleType":1,"viewCount":962,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156241735","collectCount":18,"rtype":"article"},{"type":"blog","formatTime":"2025.12.24","title":"工作流应用范式","description":"环节出错需要有 fallback 的逻辑通过可视化和预处理把数据向量化处理到最佳的状态，方便RAG的相关性搜索然后介绍了 Dify 的插件能通过赋能提高生产力可控、标准化背景：为了提高生产效率和产量原理（~工业化）：将复杂的生产过程分解为多个标准化、重复性的简单步骤，并由不同的工人在流水线上轮流执行，从而加速产品的生产过程。","hasOriginal":true,"diggCount":25,"commentCount":0,"postTime":1766548190000,"createTime":1766548190000,"updateTime":1766548215000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156229411","articleType":1,"viewCount":834,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156229411","collectCount":8,"rtype":"article"},{"type":"blog","formatTime":"2025.12.21","title":"Agent设计模式与工程化","description":"本文主体是老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。标准化之后才能规模化提炼自己的知识框架、利用好自己作为用户的差异点案例：智能客服需要数据RAG、LLM、工具插入MCP、ECS或GPU资源安全性、治理、可观测性、如何基于私有化Coze\u002FDify开发？对问题提炼模版化的解决方案从而实现标准化的工程化。","hasOriginal":true,"diggCount":6,"commentCount":0,"postTime":1766296171000,"createTime":1766296171000,"updateTime":1766296172000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156128621","articleType":1,"viewCount":317,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156128621","collectCount":10,"rtype":"article"},{"type":"blog","formatTime":"2025.12.20","title":"MCP原理及实践","description":"本文主体是锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。同时你可以启动 Lab 仓库的 vite 开发服务器在 http:\u002F\u002Flocalhost:8030\u002FwordMCP\u002F 检测交互效果。","hasOriginal":true,"diggCount":14,"commentCount":0,"postTime":1766232869000,"createTime":1766232869000,"updateTime":1766232871000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156115672","articleType":1,"viewCount":854,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156115672","collectCount":17,"rtype":"article"},{"type":"blog","formatTime":"2025.12.18","title":"Agent原理及实践","description":"本文主体是宋志学老师和锦恢老师在datawhale的宣讲。辅以一些本人的看法，希望各位大佬一起交流指正。","hasOriginal":true,"diggCount":28,"commentCount":0,"postTime":1766050582000,"createTime":1766050582000,"updateTime":1766058256000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156060125","articleType":1,"viewCount":908,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156060125","collectCount":11,"rtype":"article"},{"type":"blog","formatTime":"2025.12.18","title":"腾讯菁英班跨端日历应用产品报告","description":"月视图日历：按天选择日期，查看当天日程列表。日程列表：展示当天所有事件的标题、时间范围、备注等信息。核心字段：title、startTime、endTime、allDay、reminderMinutes、category、priority、status 等。核心字段：id、date(yyyy-MM-dd)、title、startTime(HH:mm 可选)、endTime(HH:mm 可选)、notes(可选)。流程 A：新增事件（Android）用户在新增\u002F编辑界面填写信息并保存。","hasOriginal":true,"diggCount":37,"commentCount":0,"postTime":1765990717000,"createTime":1765990656000,"updateTime":1765990720000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F156030299","articleType":1,"viewCount":854,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=156030299","collectCount":30,"rtype":"article"},{"type":"blog","formatTime":"2025.12.16","title":"Agent概况","description":"本没有路，走的人多了便有了路定义也是从共识来的Agent 同理，目前还没有具体的共识，任何一个非单次大模型调用的系统都有可能被称为Agent看一些大厂商的定义。","hasOriginal":true,"diggCount":31,"commentCount":0,"postTime":1765873967000,"createTime":1765873862000,"updateTime":1765873989000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155984766","articleType":1,"viewCount":927,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155984766","collectCount":15,"rtype":"article"},{"type":"blog","formatTime":"2025.12.16","title":"内存管理 - 内存泄漏 - 排查、预防策略","description":"在浏览器环境下就是 V8引擎栈内存：存放原始类型值，生命周期短，不由GC回收而是由引擎自动弹栈堆内存：存放引用数据类型，由GC进行回收。","hasOriginal":true,"diggCount":23,"commentCount":0,"postTime":1765844314000,"createTime":1765844307000,"updateTime":1765844315000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155965195","articleType":1,"viewCount":632,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155965195","collectCount":17,"rtype":"article"},{"type":"blog","formatTime":"2025.12.15","title":"常见的设计模式","description":"是一种 发布-订阅 （publish,subcription) 模型的实现事件中心、事件发射器。","hasOriginal":true,"diggCount":2,"commentCount":0,"postTime":1765774362000,"createTime":1765768343000,"updateTime":1765774363000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155936175","articleType":1,"viewCount":302,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155936175","collectCount":4,"rtype":"article"},{"type":"blog","formatTime":"2025.12.15","title":"pnpm优化理念 - 幻影依赖、monorepo - 升级npm","description":"pnpm 通过「内容寻址同时解决了 磁盘浪费、幻影依赖、monorepo 复用 三个核心问题。","hasOriginal":true,"diggCount":21,"commentCount":0,"postTime":1765768192000,"createTime":1765717224000,"updateTime":1765768194000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155917883","articleType":1,"viewCount":1082,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155917883","collectCount":22,"rtype":"article"},{"type":"blog","formatTime":"2025.12.14","title":"前端动画的多种实现方式","description":"动画的本质是把内容的两个状态做平滑的过渡（中间状态的展示）","hasOriginal":true,"diggCount":2,"commentCount":0,"postTime":1765688810000,"createTime":1765688810000,"updateTime":1765688867000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155911852","articleType":1,"viewCount":234,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155911852","collectCount":0,"rtype":"article"},{"type":"blog","formatTime":"2025.12.14","title":"视频进度控制脚本","description":"【代码】视频进度控制脚本。","hasOriginal":true,"diggCount":2,"commentCount":0,"postTime":1765642674000,"createTime":1765625361000,"updateTime":1765642676000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155891490","articleType":1,"viewCount":140,"picList":[],"editUrl":"https:\u002F\u002Fmp.csdn.net\u002Fconsole\u002Feditor\u002Fhtml\u002F155891490","collectCount":0,"rtype":"article"},{"type":"blog","formatTime":"2025.12.13","title":"业务环境流程：开发-＞测试-＞预发布-＞灰度-＞生产","description":"一般是内部人员的真实数据（test是QA和研发，现在是其他例如产品等）域名、环境等等都和 prod 一样。","hasOriginal":true,"diggCount":17,"commentCount":0,"postTime":1765622695000,"createTime":1765622652000,"updateTime":1765622696000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155891071","articleType":1,"viewCount":884,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155891071","collectCount":5,"rtype":"article"},{"type":"blog","formatTime":"2025.12.13","title":"SDD规范驱动开发-与prompt区别-Agent业务场景示例","description":"Goal:帮助用户将自然语言需求转化为可执行的前端组件代码。","hasOriginal":true,"diggCount":10,"commentCount":0,"postTime":1765595985000,"createTime":1765595502000,"updateTime":1765595987000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155881077","articleType":1,"viewCount":870,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155881077","collectCount":12,"rtype":"article"},{"type":"blog","formatTime":"2025.12.12","title":"浏览器本地存储Cookie, local\u002FsessionStorage - Token结合Cookie实现登录管理","description":"不会影响资源的加载流程。","hasOriginal":true,"diggCount":24,"commentCount":0,"postTime":1765535914000,"createTime":1765535737000,"updateTime":1765535915000,"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868\u002Farticle\u002Fdetails\u002F155861615","articleType":1,"viewCount":929,"picList":[],"editUrl":"https:\u002F\u002Feditor.csdn.net\u002Fmd?articleId=155861615","collectCount":25,"rtype":"article"}],"influenceModuleV2":{"icon":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20211026015802.png","background":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20211026015909.png","influenceTextPic":"https:\u002F\u002Fimg-home.csdnimg.cn\u002Fimages\u002F20211026015940.png","oldScore":"1,337","nowScore":"2","spm":"1001.2014.3001.6421","url":"https:\u002F\u002Fbbs.csdn.net\u002Fforums\u002Fplacard?typeId=17726","valid":"1","lv":"5","influenceLvUrl":"https:\u002F\u002Fbbs.csdn.net\u002Fforums\u002Fplacard?typeId=17726","currentMonthUrl":"https:\u002F\u002Fblog.csdn.net\u002Frank\u002Flist\u002Fforce","awardUrl":"https:\u002F\u002Fi.csdn.net\u002F#\u002Fuser-center\u002Fdraw"},"communityInfoModule":[],"placeOnFileModule":[{"year":"2026","months":[{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2026&month=01","count":1,"month":"01"}],"count":1,"currentYear":true},{"year":"2025","months":[{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=12","count":21,"month":"12"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=11","count":7,"month":"11"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=10","count":5,"month":"10"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=09","count":11,"month":"09"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=08","count":20,"month":"08"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=07","count":12,"month":"07"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=06","count":11,"month":"06"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=05","count":53,"month":"05"},{"url":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868?type=blog&year=2025&month=04","count":41,"month":"04"}],"count":181,"currentYear":false}],"skinModule":{"id":25,"preview":false,"name":"skin-whitemove","type":1,"model":"White","nickName":"我叫白小胖","info":null,"desc":"游动-白"},"expertPageModule":null,"blogStarModule":null,"navigationModule":{"publicList":[{"type":"lately","sort":0,"show":1,"name":"最近","num":0,"canSort":false,"pcSpm":"3001.5484","appSpm":"","appShow":true,"pcShow":true},{"type":"blog","sort":1,"show":1,"name":"文章","num":0,"canSort":true,"pcSpm":"3001.5485","appSpm":"","appShow":true,"pcShow":true},{"type":"ask","sort":2,"show":1,"name":"问答","num":0,"canSort":true,"pcSpm":"3001.5487","appSpm":"","appShow":true,"pcShow":true},{"type":"bbs","sort":3,"show":1,"name":"帖子","num":0,"canSort":true,"pcSpm":"3001.5490","appSpm":"","appShow":false,"pcShow":true},{"type":"video","sort":4,"show":1,"name":"视频","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"collect","sort":5,"show":1,"name":"收藏","num":0,"canSort":true,"pcSpm":"3001.5488","appSpm":"","appShow":false,"pcShow":true},{"type":"download","sort":6,"show":1,"name":"资源","num":0,"canSort":true,"pcSpm":"3001.5486","appSpm":"","appShow":true,"pcShow":true},{"type":"edu","sort":7,"show":1,"name":"课程","num":0,"canSort":true,"pcSpm":"3001.5489","appSpm":"","appShow":true,"pcShow":true},{"type":"sub","sort":8,"show":1,"name":"关注\u002F订阅\u002F互动","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true}],"privateList":[{"type":"gitcode","sort":9,"show":0,"name":"代码仓","num":0,"canSort":true,"pcSpm":"","appSpm":"","appShow":false,"pcShow":true}],"defaultList":[{"type":"lately","sort":0,"show":1,"name":"最近","num":0,"canSort":false,"pcSpm":"3001.5484","appSpm":"","appShow":true,"pcShow":true},{"type":"blog","sort":1,"show":1,"name":"文章","num":0,"canSort":true,"pcSpm":"3001.5485","appSpm":"","appShow":true,"pcShow":true},{"type":"gitcode","sort":2,"show":0,"name":"代码仓","num":0,"canSort":true,"pcSpm":"","appSpm":"","appShow":false,"pcShow":true},{"type":"download","sort":3,"show":1,"name":"资源","num":0,"canSort":true,"pcSpm":"3001.5486","appSpm":"","appShow":true,"pcShow":true},{"type":"ask","sort":4,"show":1,"name":"问答","num":0,"canSort":true,"pcSpm":"3001.5487","appSpm":"","appShow":true,"pcShow":true},{"type":"bbs","sort":5,"show":1,"name":"帖子","num":0,"canSort":true,"pcSpm":"3001.5490","appSpm":"","appShow":false,"pcShow":true},{"type":"video","sort":6,"show":1,"name":"视频","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"edu","sort":7,"show":1,"name":"课程","num":0,"canSort":true,"pcSpm":"3001.5489","appSpm":"","appShow":true,"pcShow":true},{"type":"sub","sort":8,"show":1,"name":"关注\u002F订阅\u002F互动","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"collect","sort":9,"show":1,"name":"收藏","num":0,"canSort":true,"pcSpm":"3001.5488","appSpm":"","appShow":false,"pcShow":true}],"defaultListV2":[{"type":"lately","sort":0,"show":1,"name":"最近","num":0,"canSort":false,"pcSpm":"3001.5484","appSpm":"","appShow":true,"pcShow":true},{"type":"blog","sort":1,"show":1,"name":"文章","num":0,"canSort":true,"pcSpm":"3001.5485","appSpm":"","appShow":true,"pcShow":true},{"type":"blogColumn","sort":2,"show":1,"name":"专栏","num":0,"canSort":true,"pcSpm":"3001.10641","appSpm":"","appShow":false,"pcShow":true},{"type":"gitcode","sort":3,"show":1,"name":"代码仓","num":0,"canSort":true,"pcSpm":"","appSpm":"","appShow":false,"pcShow":true},{"type":"download","sort":4,"show":1,"name":"资源","num":0,"canSort":true,"pcSpm":"3001.5486","appSpm":"","appShow":true,"pcShow":true},{"type":"collect","sort":5,"show":1,"name":"收藏","num":0,"canSort":true,"pcSpm":"3001.5488","appSpm":"","appShow":false,"pcShow":true},{"type":"sub","sort":6,"show":1,"name":"关注\u002F订阅\u002F互动","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"blogCommunity","sort":7,"show":1,"name":"社区","num":0,"canSort":true,"pcSpm":"3001.10642","appSpm":"","appShow":false,"pcShow":true},{"type":"bbs","sort":8,"show":1,"name":"帖子","num":0,"canSort":true,"pcSpm":"3001.5490","appSpm":"","appShow":false,"pcShow":true},{"type":"ask","sort":9,"show":1,"name":"问答","num":0,"canSort":true,"pcSpm":"3001.5487","appSpm":"","appShow":true,"pcShow":true},{"type":"edu","sort":10,"show":1,"name":"课程","num":0,"canSort":true,"pcSpm":"3001.5489","appSpm":"","appShow":true,"pcShow":true},{"type":"video","sort":11,"show":1,"name":"视频","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true}],"publicListV2":[{"type":"lately","sort":0,"show":1,"name":"最近","num":0,"canSort":false,"pcSpm":"3001.5484","appSpm":"","appShow":true,"pcShow":true},{"type":"blog","sort":1,"show":1,"name":"文章","num":0,"canSort":true,"pcSpm":"3001.5485","appSpm":"","appShow":true,"pcShow":true},{"type":"blogColumn","sort":2,"show":1,"name":"专栏","num":0,"canSort":true,"pcSpm":"3001.10641","appSpm":"","appShow":false,"pcShow":true},{"type":"ask","sort":3,"show":1,"name":"问答","num":0,"canSort":true,"pcSpm":"3001.5487","appSpm":"","appShow":true,"pcShow":true},{"type":"bbs","sort":4,"show":1,"name":"帖子","num":0,"canSort":true,"pcSpm":"3001.5490","appSpm":"","appShow":false,"pcShow":true},{"type":"video","sort":5,"show":1,"name":"视频","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"collect","sort":6,"show":1,"name":"收藏","num":0,"canSort":true,"pcSpm":"3001.5488","appSpm":"","appShow":false,"pcShow":true},{"type":"blogCommunity","sort":7,"show":1,"name":"社区","num":0,"canSort":true,"pcSpm":"3001.10642","appSpm":"","appShow":false,"pcShow":true},{"type":"download","sort":8,"show":1,"name":"资源","num":0,"canSort":true,"pcSpm":"3001.5486","appSpm":"","appShow":true,"pcShow":true},{"type":"edu","sort":9,"show":1,"name":"课程","num":0,"canSort":true,"pcSpm":"3001.5489","appSpm":"","appShow":true,"pcShow":true},{"type":"sub","sort":10,"show":1,"name":"关注\u002F订阅\u002F互动","num":0,"canSort":true,"pcSpm":"3001.5491","appSpm":"","appShow":false,"pcShow":true},{"type":"gitcode","sort":11,"show":0,"name":"代码仓","num":0,"canSort":true,"pcSpm":"","appSpm":"","appShow":false,"pcShow":true}]},"silenceAndRightsModule":{"rightsForbidInfoList":[],"silenceMessage":""},"popularActivityModule":[{"activeId":11103,"name":"Claude Code 开发者创客大赛： AI 编程实战征文计划","synopsis":"随着 Claude Code 的爆火，AI 编程助手正在彻底改变开发者的工作流。它不仅能自动补全代码、优化算法，还能理解复杂需求并生成高质量脚本。\n\n为探索 Claude Code 的潜力，CSDN 发起本次征文活动，邀请开发者分享实战经验、创新案例和技术思考，共同推动 AI 编程的普及与进化。\n\n---\n **创作主题**：用 Claude Code 重新定义编程效率\n\n**创作方向**（供参考，鼓励自由发挥）\n\n**1. 效率革命：Claude Code 如何提升开发效率**\n- 对比传统编程 vs. Claude Code 辅助编程的耗时差异\n- 实际项目中的效率提升案例（如快速生成 API、自动化脚本等）\n\n**2. 技术深挖：Claude Code 的高级用法**\n- 如何编写精准的 Prompt 让 Claude Code 生成更符合需求的代码\n- 结合特定语言（Python\u002FJS\u002FGo等）的实战技巧\n- 调试与优化 Claude Code 生成代码的方法\n\n\n**3. 跨界融合：Claude Code 的创意应用**\n- 用 Claude Code 生成游戏逻辑、艺术代码（如 Processing 创意编程）\n- 结合低代码平台（如 Appsmith、Retool）快速搭建工具\n- 在数据分析、爬虫、DevOps 等领域的落地案例\n\n**4. 硬核挑战：用 Claude Code 完成一个完整项目**\n- 从零开始，仅依赖 Claude Code 开发一个小型应用（需附代码仓库和效果演示）\n- 记录开发过程中的思考、踩坑与解决方案\n\n**5. 未来之辩：AI 编程的边界与伦理**\n- Claude Code 会取代程序员吗？职业发展的应对策略","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11103","attendUserNum":76,"attendArticleNum":123,"hasExternalLink":false},{"activeId":11102,"name":"AI视频生成新时代：Wan2.2-T2V-A5B 文本转视频实战","synopsis":"文本生成视频技术近年来快速崛起，Wan2.2-T2V-A5B 作为其中的代表性工具，为内容创作者提供了全新的视频生成方式。为了探索这一技术的应用潜力，CSDN 发起本次征文活动，鼓励创作者分享实战经验与创新案例，推动文本生成视频技术的普及与创新。\n\n\u003Cfont color=red\u003E*另外，按照官方指定镜像任务创作，单个社区镜像奖励 30-80元现金 ，创作越多可获得现金奖励越多！详情可见：\n[创作即收益！CSDN 社区镜像单个最高得 80 元，收益上不封顶，轻松躺赚！_算力镜像市场-CSDN博客](https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F155983325)*\u003Cfont color=red\u003E","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11102","attendUserNum":12,"attendArticleNum":13,"hasExternalLink":false},{"activeId":11101,"name":"PaddlePaddle-v3.3：国产深度学习框架的全新突破","synopsis":"PaddlePaddle-v3.3 作为国产领先的深度学习框架，为 AI 开发提供了强大的技术支持。为了更好地推广 PaddlePaddle 的应用，CSDN 发起本次征文活动，鼓励开发者分享在实际项目中的经验与创新，推动国产技术的发展与普及。\n\n\u003Cfont color=red\u003E*另外，按照官方指定镜像任务创作，单个社区镜像奖励 30-80元现金 ，创作越多可获得现金奖励越多！详情可见：\n[创作即收益！CSDN 社区镜像单个最高得 80 元，收益上不封顶，轻松躺赚！_算力镜像市场-CSDN博客](https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F155983325)*\u003Cfont color=red\u003E","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11101","attendUserNum":11,"attendArticleNum":12,"hasExternalLink":false},{"activeId":11100,"name":"ComfyUI：AI绘画与图像生成的高效工作流","synopsis":"ComfyUI 作为 Stable Diffusion 的高效用户界面，为 AI 绘画与图像生成提供了便捷的操作体验。为了帮助开发者更好地掌握这一工具，CSDN 发起本次征文活动，旨在通过实战分享与创新探索，推动 ComfyUI 技术的普及与应用。\n\n\u003Cfont color=red\u003E*另外，按照官方指定镜像任务创作，单个社区镜像奖励 30-80元现金 ，创作越多可获得现金奖励越多！详情可见：\n[创作即收益！CSDN 社区镜像单个最高得 80 元，收益上不封顶，轻松躺赚！_算力镜像市场-CSDN博客](https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F155983325)*\u003Cfont color=red\u003E","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11100","attendUserNum":15,"attendArticleNum":17,"hasExternalLink":false},{"activeId":11099,"name":"AI换脸新纪元：Facefusion 人脸融合实战探索","synopsis":"AI 换脸技术近年来迅速发展，Facefusion 作为其中的佼佼者，为人脸融合应用提供了强大的技术支持。\n\n为了更好地探索 Facefusion 的应用潜力，CSDN 发起本次征文活动，鼓励创作者分享实战经验与创新案例，推动 AI 换脸技术在娱乐、教育、广告等领域的广泛应用。\n\n\u003Cfont color=red\u003E*另外，按照官方指定镜像任务创作，单个社区镜像奖励 30-80元现金 ，创作越多可获得现金奖励越多！详情可见：\n[创作即收益！CSDN 社区镜像单个最高得 80 元，收益上不封顶，轻松躺赚！_算力镜像市场-CSDN博客](https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F155983325)*\u003Cfont color=red\u003E\n","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11099","attendUserNum":11,"attendArticleNum":13,"hasExternalLink":false},{"activeId":11098,"name":"AI音效新征程：HunyuanVideo-Foley 视频配音实战","synopsis":"随着视频内容的多样化发展，音效和配音成为视频创作中不可或缺的重要元素。HunyuanVideo-Foley 作为先进的 AI 音效生成工具，为视频创作者提供了高效、高质量的配音解决方案。\n\n为了帮助创作者更好地掌握这一工具，我们特此 发起本次征文活动，诚邀广大开发者通过实战经验分享，推动视频配音技术的普及与创新。\n\n\u003Cfont color=red\u003E*另外，按照官方指定镜像任务创作，单个社区镜像奖励 30-80元现金 ，创作越多可获得现金奖励越多！详情可见：\n[创作即收益！CSDN 社区镜像单个最高得 80 元，收益上不封顶，轻松躺赚！_算力镜像市场-CSDN博客](https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F155983325)*\u003Cfont color=red\u003E","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11098","attendUserNum":7,"attendArticleNum":11,"hasExternalLink":false},{"activeId":11097,"name":"编程达人挑战赛·第7期","synopsis":"作为写代码的你，是否也渴望被更多人看到？技术人员普遍有一个共性——明明技术很强，却没人知道你做了什么；花了很多时间踩坑，却没人因你少走弯路；脑子里有一堆干货，但却不懂如何有效地输出。\n\n在如今写代码的人越来越多的时代，能够清晰表达自己思路与技术的人却少之又少。\n\n因此，我们发起了这个【编程达人挑战赛】——帮助你将代码变成作品，将技术转化为真正的价值，同时激励更多的人坚持写作与分享。\n\n\n注：活动细则介绍请看此贴：[https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F619791811](https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F619791811)。","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11097","attendUserNum":207,"attendArticleNum":612,"hasExternalLink":false},{"activeId":11096,"name":"新星杯·14天创作挑战营·第19期","synopsis":"这是一个以写作博客为目的的创作活动，旨在鼓励大学生博主们挖掘自己的创作潜能，展现自己的写作才华。如果你是一位热爱写作的、想要展现自己创作才华的小伙伴，那么，快来参加吧！我们一起发掘写作的魅力，书写出属于我们的故事。我们诚挚邀请你们参加为期14天的创作挑战赛！注：\n\n1、参赛者可以进入活动群进行交流、互相鼓励与支持（开卷），虚竹哥会分享创作心得和涨粉心得，答疑及活动群请见：【下面活动群二维码】\n\n2、文章质量分查询：https:\u002F\u002Fwww.csdn.net\u002Fqc\n\n我们诚挚邀请你们参加为期14天的创作挑战赛！","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11096","attendUserNum":374,"attendArticleNum":923,"hasExternalLink":false},{"activeId":11083,"name":"『AI先锋杯·14天征文挑战第10期』","synopsis":"在人工智能技术爆发的时代，AI工具、大模型及行业应用正深刻改变开发者的工作模式与各领域的发展格局。从智能编码助手到自动化测试平台，从大模型落地实践到垂直行业解决方案，AI正成为提升效率、驱动创新的核心引擎。\n\n本次征文邀请开发者、行业从业者分享AI技术落地的实战经验，探讨AI工具如何优化开发流程、大模型如何重塑行业场景，以及AI在编程、测试、数据分析等领域的前沿应用。\n\n让我们共同挖掘AI技术的无限可能，解锁效率提升与产业升级的密码！","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11083","attendUserNum":344,"attendArticleNum":968,"hasExternalLink":false},{"activeId":11082,"name":"VibeCoding·一月创作之星挑战赛","synopsis":"一月的风一吹，灵感反而更清晰了。当城市进入“保温模式”，正适合把注意力收回来——给自己一次专注创作、集中输出的机会。\n\n猫头虎邀请您加入**「VibeCoding·一月创作之星挑战赛」**：\n用AI编程、VibeCoding、开源实践，把你这一月的思考、项目、经验，写成能被看见的作品。\n\n无论你是刚开始接触AI的新手，还是经常输出的技术创作者，都能在这里找到属于自己的赛道：\n把“想法”变成“文章”，把“经验”变成“影响力”，把“一月”写成你的成长记录。\n###你可以写什么？\n\n1.**追热点、讲趋势**：拆解AI与编程领域的新技术、新工具、新玩法\n\n2.**讲落地、讲实战**：分享你在工作\u002F学习项目中用AI解决问题的真实方案\n\n3.**开源故事、踩坑经验**：记录你在开源社区的参与心得、方法论与成长路径\n\n---\n\n**活动须知：**\n\n1.参赛者可加入专属活动围观交流群，和其他创作者互动交流，分享心得，互相激励与支持。答疑与围观群请点击右侧群链接：[https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F619770678](https:\u002F\u002Fbbs.csdn.net\u002Ftopics\u002F619770678)\n\n2.文章质量评分查询入口：[点击查看评分入口](https:\u002F\u002Fwww.csdn.net\u002Fqc)\n\n**我们诚挚邀请您参加「VibeCoding·一月创作之星挑战赛」！**\n\n这个一月，别让灵感冻住，让一月的每一次敲键，都离“创作之星”更近一步！","descUrl":"https:\u002F\u002Factivity.csdn.net\u002Fwriting?id=11082","attendUserNum":439,"attendArticleNum":1089,"hasExternalLink":false}],"interactionDataModule":[{"name":"TA关注的专栏","amount":2,"type":"sub","subType":"column"},{"name":"TA关注的收藏夹","amount":0,"type":"sub","subType":"folder"},{"name":"TA关注的社区","amount":1,"type":"sub","subType":"community"},{"name":"TA参与的活动","amount":0,"type":"sub","subType":"activity"}]},"versionSwitchTips":[{"itemType":"","description":"1. 新版持续迭代中，用以满足大家的需求和体验；\n2. 若对新版有想法或建议，欢迎随时进行反馈！","title":"您即将切换至旧版个人主页","url":"","images":[""],"ext":{}}],"blogStarInfo":[{"itemType":"","description":"2024 个人主页博客之星入口数据-文案","title":"2024 个人主页博客之星入口数据-文案","url":"","images":[""],"ext":{"THEME_ARTICLE_CREATE_1":"主题文章创作正在进行中","THEME_ARTICLE_CREATE_0":"主题文章创作正在进行中\u003Cbr\u002F\u003E创作者嘉年华，大奖等你来拿","ANNOUNCE_SELECTED":"年度创作影响力评审正在进行中\u003Cbr\u002F\u003E入围名单即将公布","FINAL_ANNOUNCE":"获奖榜单公布","PRIZE_MAIL":"获奖榜单公布","CREATE_CREATIVE_EVALUATION":"年度创作影响力评审正在进行中\u003Cbr\u002F\u003E入围名单即将公布","FINISHED":"获奖榜单公布","THEME_ARTICLE_REVIEW":"主题文章创作评审正在进行中","APPLY":"报名开启\u003Cbr\u002F\u003E创作者嘉年华，大奖等你来拿","ARTICLE_PUBLICITY_0":"主题文章创作正在进行中\u003Cbr\u002F\u003E创作者嘉年华，大奖等你来拿","VOTE_0":"正在火热投票中\u003Cbr\u002F\u003E创作者嘉年华，大奖等你来拿","ARTICLE_PUBLICITY_1":"主题文章创作正在进行中","VOTE_2":"正在火热投票中\u003Cbr\u002F\u003E请为你喜爱的博主投票","VOTE_1":"正在火热投票中","ARTICLE_SCORE_ANNOUNCE":"主题文章创作评审正在进行中"}},{"itemType":"","description":"2024 个人主页博客之星入口数据-跳转链接","title":"2024 个人主页博客之星入口数据-跳转链接","url":"","images":[""],"ext":{"writeUrl":"https:\u002F\u002Fmp.csdn.net\u002Fedit?activity_id=10817","blogUrl":"https:\u002F\u002Fblogdev.blog.csdn.net\u002Farticle\u002Fdetails\u002F145749812","url":"https:\u002F\u002Fwww.csdn.net\u002Fblogstar2025\u002FvoteList"}}]}},"CFG":{"ALIPLAYER_VERSION":"v4","ALIPLAYER_H5_VERSION":"mobile_v1","ENV":"prod","ROOT_URL":"https:\u002F\u002Fcms-mall.csdn.net\u002F","VUE_APP_API_URL_SERVER":"http:\u002F\u002Fcms-community-api.internal.csdn.net\u002F","VUE_APP_API_URL":"https:\u002F\u002Fcms-api.csdn.net\u002F","LOGIN_URL":"https:\u002F\u002Fpassport.csdn.net\u002Faccount\u002Flogin","VUE_APP_COMMUNITY_API_URL":"https:\u002F\u002Fcommunity-api.csdn.net\u002F","VUE_APP_CCLOUD_API_URL":"http:\u002F\u002Fcommunity-cloud-api.csdn.net\u002F","VUE_APP_COMMUNITY_ASK_API_URL":"https:\u002F\u002Fmp-ask.csdn.net\u002F","VUE_APP_ME_URL":"https:\u002F\u002Fme.csdn.net\u002F","SENTRY_URL":"https:\u002F\u002Fecf38ba949474cb891ff04c224d990dd@sentry.csdn.net\u002F20","VUE_USER_PROFILE":"https:\u002F\u002Fblog.csdn.net\u002F","VUE_GITCODE_API":"https:\u002F\u002Fclink-api.gitcode.com\u002F","VUE_MINI_SHOP":"https:\u002F\u002Fmall.csdn.net\u002F"},"queries":{"pageId":[],"domain":["blog.csdn.net\u002Fuser"],"username":["2301_78856868"],"hostname":["blog.csdn.net"],"size":20,"page":1,"abTestSwitch":true,"deviceType":"pc"},"basePath":"cms-user.internal.csdn.net\u002Fuser\u002F2301_78856868","canonical":"https:\u002F\u002Fblog.csdn.net\u002F2301_78856868","uaInfo":{"isMobile":false,"isWeixin":false,"isCsdnApp":false,"isCsdnEduApp":false,"isBaiduApp":false,"isSpider":false},"active":0,"navBarFixed":false};</script><script type="text/javascript" src="https://csdnimg.cn/release/cmsfe/public/js/runtime.425411eb.js"></script><script type="text/javascript" src="https://csdnimg.cn/release/cmsfe/public/js/chunk/common.573671aa.js"></script><script type="text/javascript" src="https://csdnimg.cn/release/cmsfe/public/js/chunk/tpl/user-profile-v2/index.d20c7feb.js"></script></body> <!----> <!----> <!----> <!----> 
+        <script src="https://g.csdnimg.cn/extension-box/1.1.6/extension-box.js"></script>
+       <!----> <!----> <!----> <!----> <!----> 
+        <script>
+          window.csdn.sideToolbar = {
+            options: {
+              contentEl: document.getElementsByClassName("user-profile-body-right")[0]
+            }
+          };
+        </script>
+       <!----> 
+        <script src="https://g.csdnimg.cn/user-login/3.0.0/user-login.js"></script>
+       <!----> <!----> <!----> 
+        <script src="https://g.csdnimg.cn/user-medal/2.0.0/user-medal.js"></script>
+       <!----> <script src="https://g.csdnimg.cn/side-toolbar/3.0/side-toolbar.js" ></script></html>
