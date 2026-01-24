@@ -10,4 +10,6 @@
   </a>
 </div>
 
-<img src="./assets/hint-text.svg" />
+<div style="text-align: center;">
+  <img src="./assets/hint-text.svg" />
+</div>
