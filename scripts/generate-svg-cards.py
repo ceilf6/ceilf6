@@ -9,8 +9,8 @@ from pathlib import Path
 
 def format_number(num):
     """格式化数字"""
-    if num >= 10000:
-        return f"{num/10000:.1f}万"
+    if num >= 1000:
+        return f"{num/1000:.1f}k"
     return f"{num:,}"
 
 
