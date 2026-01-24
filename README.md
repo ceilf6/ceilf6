@@ -9,3 +9,5 @@
     <img src="./assets/vlog-card.svg" width="32%" />
   </a>
 </div>
+
+<img src="./assets/hint-text.svg" />
