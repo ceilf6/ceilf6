@@ -1,4 +1,4 @@
-<svg width="450" height="160" xmlns="http://www.w3.org/2000/svg">
+<svg width="450" height="180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       .card { fill: #1a1b27; }
@@ -10,22 +10,25 @@
   </defs>
 
   <!-- Background -->
-  <rect class="card" x="0" y="0" width="450" height="160" rx="10" />
+  <rect class="card" x="0" y="0" width="450" height="180" rx="10" />
 
   <!-- Title -->
-  <text class="title" x="20" y="35">🎬 Vlog</text>
+  <text class="title" x="20" y="35">Vlog</text>
 
   <!-- Stats -->
-  <text class="label" x="20" y="70">👥 粉丝:</text>
-  <text class="value" x="100" y="70">129</text>
+  <text class="label" x="20" y="75">粉丝:</text>
+  <text class="value" x="100" y="75">129</text>
 
-  <text class="label" x="20" y="100">▶️ 播放:</text>
-  <text class="value" x="100" y="100">5.1万</text>
+  <text class="label" x="20" y="107">播放:</text>
+  <text class="value" x="100" y="107">5.1万</text>
 
-  <text class="label" x="20" y="130">💖 获赞:</text>
-  <text class="value" x="100" y="130">945</text>
+  <text class="label" x="20" y="139">获赞:</text>
+  <text class="value" x="100" y="139">945</text>
 
   <!-- Icon Background -->
-  <circle class="icon" cx="380" cy="80" r="45" fill="#bf91f3" />
-  <text class="icon" x="360" y="100" font-size="45">🎬</text>
+  <circle class="icon" cx="380" cy="90" r="50" fill="#bf91f3" />
+  <g class="icon" transform="translate(348, 58)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H0V14H16V2ZM6.5 5V11H7.5L11 8L7.5 5H6.5Z"
+          fill="#bf91f3" transform="scale(4)" />
+  </g>
 </svg>

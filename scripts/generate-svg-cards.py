@@ -22,7 +22,7 @@ def generate_blog_card(stats):
     original = format_number(stats.get('original', 0))
     views = format_number(stats.get('views', 0))
 
-    svg = f'''<svg width="450" height="200" xmlns="http://www.w3.org/2000/svg">
+    svg = f'''<svg width="450" height="180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       .card {{ fill: #1a1b27; }}
@@ -34,30 +34,33 @@ def generate_blog_card(stats):
   </defs>
 
   <!-- Background -->
-  <rect class="card" x="0" y="0" width="450" height="200" rx="10" />
+  <rect class="card" x="0" y="0" width="450" height="180" rx="10" />
 
   <!-- Title -->
-  <text class="title" x="20" y="35">📝 Blog</text>
+  <text class="title" x="20" y="35">Blog</text>
 
   <!-- Stats -->
-  <text class="label" x="20" y="65">👥 粉丝:</text>
-  <text class="value" x="100" y="65">{fans}</text>
+  <text class="label" x="20" y="60">粉丝:</text>
+  <text class="value" x="100" y="60">{fans}</text>
 
-  <text class="label" x="20" y="90">👍 点赞:</text>
-  <text class="value" x="100" y="90">{likes}</text>
+  <text class="label" x="20" y="82">点赞:</text>
+  <text class="value" x="100" y="82">{likes}</text>
 
-  <text class="label" x="20" y="115">⭐ 收藏:</text>
-  <text class="value" x="100" y="115">{collect}</text>
+  <text class="label" x="20" y="104">收藏:</text>
+  <text class="value" x="100" y="104">{collect}</text>
 
-  <text class="label" x="20" y="140">📄 原创:</text>
-  <text class="value" x="100" y="140">{original}</text>
+  <text class="label" x="20" y="126">原创:</text>
+  <text class="value" x="100" y="126">{original}</text>
 
-  <text class="label" x="20" y="165">👁️ 访问:</text>
-  <text class="value" x="100" y="165">{views}</text>
+  <text class="label" x="20" y="148">访问:</text>
+  <text class="value" x="100" y="148">{views}</text>
 
   <!-- Icon Background -->
-  <circle class="icon" cx="380" cy="100" r="50" fill="#bf91f3" />
-  <text class="icon" x="360" y="120" font-size="50">📝</text>
+  <circle class="icon" cx="380" cy="90" r="50" fill="#bf91f3" />
+  <g class="icon" transform="translate(340, 50)">
+    <path d="M421.073,221.719c-0.578,11.719-9.469,26.188-23.797,40.094v183.25c-0.016,4.719-1.875,8.719-5.016,11.844 c-3.156,3.063-7.25,4.875-12.063,4.906H81.558c-4.781-0.031-8.891-1.844-12.047-4.906c-3.141-3.125-4.984-7.125-5-11.844V152.219 c0.016-4.703,1.859-8.719,5-11.844c3.156-3.063,7.266-4.875,12.047-4.906h158.609c12.828-16.844,27.781-34.094,44.719-49.906 c0.078-0.094,0.141-0.188,0.219-0.281H81.558c-18.75-0.016-35.984,7.531-48.25,19.594c-12.328,12.063-20.016,28.938-20,47.344 v292.844c-0.016,18.406,7.672,35.313,20,47.344C45.573,504.469,62.808,512,81.558,512h298.641c18.781,0,36.016-7.531,48.281-19.594 c12.297-12.031,20-28.938,19.984-47.344V203.469c0,0-0.125-0.156-0.328-0.313C440.37,209.813,431.323,216.156,421.073,221.719z M498.058,0c0,0-15.688,23.438-118.156,58.109C275.417,93.469,211.104,237.313,211.104,237.313 c-15.484,29.469-76.688,151.906-76.688,151.906c-16.859,31.625,14.031,50.313,32.156,17.656 c34.734-62.688,57.156-119.969,109.969-121.594c77.047-2.375,129.734-69.656,113.156-66.531c-21.813,9.5-69.906,0.719-41.578-3.656 c68-5.453,109.906-56.563,96.25-60.031c-24.109,9.281-46.594,0.469-51-2.188C513.386,138.281,498.058,0,498.058,0z"
+          fill="#bf91f3" transform="scale(0.16)" />
+  </g>
 </svg>'''
 
     return svg
@@ -69,7 +72,7 @@ def generate_vlog_card(stats):
     views = format_number(stats.get('views', 0))
     likes = format_number(stats.get('likes', 0))
 
-    svg = f'''<svg width="450" height="160" xmlns="http://www.w3.org/2000/svg">
+    svg = f'''<svg width="450" height="180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       .card {{ fill: #1a1b27; }}
@@ -81,24 +84,27 @@ def generate_vlog_card(stats):
   </defs>
 
   <!-- Background -->
-  <rect class="card" x="0" y="0" width="450" height="160" rx="10" />
+  <rect class="card" x="0" y="0" width="450" height="180" rx="10" />
 
   <!-- Title -->
-  <text class="title" x="20" y="35">🎬 Vlog</text>
+  <text class="title" x="20" y="35">Vlog</text>
 
   <!-- Stats -->
-  <text class="label" x="20" y="70">👥 粉丝:</text>
-  <text class="value" x="100" y="70">{follower}</text>
+  <text class="label" x="20" y="75">粉丝:</text>
+  <text class="value" x="100" y="75">{follower}</text>
 
-  <text class="label" x="20" y="100">▶️ 播放:</text>
-  <text class="value" x="100" y="100">{views}</text>
+  <text class="label" x="20" y="107">播放:</text>
+  <text class="value" x="100" y="107">{views}</text>
 
-  <text class="label" x="20" y="130">💖 获赞:</text>
-  <text class="value" x="100" y="130">{likes}</text>
+  <text class="label" x="20" y="139">获赞:</text>
+  <text class="value" x="100" y="139">{likes}</text>
 
   <!-- Icon Background -->
-  <circle class="icon" cx="380" cy="80" r="45" fill="#bf91f3" />
-  <text class="icon" x="360" y="100" font-size="45">🎬</text>
+  <circle class="icon" cx="380" cy="90" r="50" fill="#bf91f3" />
+  <g class="icon" transform="translate(348, 58)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2H0V14H16V2ZM6.5 5V11H7.5L11 8L7.5 5H6.5Z"
+          fill="#bf91f3" transform="scale(4)" />
+  </g>
 </svg>'''
 
     return svg
