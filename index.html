@@ -82,161 +82,35 @@
             }
         }
 
-        /* 布局切换器 */
-        .layout-switcher {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 8px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-        }
-
-        .layout-btn {
-            width: 44px;
-            height: 44px;
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.6);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .layout-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .layout-btn.active {
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
-            color: white;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-        }
-
-        .layout-btn svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        /* 纯2D平面旋转 */
-        .carousel-container {
-            width: 100%;
-            height: calc(100vh - 300px);
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .carousel {
-            position: relative;
-            width: 900px;
-            height: 900px;
-            animation: carouselSpin 35s linear infinite;
-        }
-
-        .carousel:has(.card:hover) {
-            animation-play-state: paused;
-        }
-
-        .carousel:has(.card:hover) .card {
-            animation-play-state: paused;
-        }
-
-        @keyframes carouselSpin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .carousel .card {
-            position: absolute;
-            width: 200px;
-            height: 150px;
-            left: 50%;
-            top: 50%;
-            margin-left: -100px;
-            margin-top: -75px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 8px 32px rgba(31, 38, 135, 0.3),
-                0 0 20px rgba(56, 189, 248, 0.2);
-            transition: box-shadow 0.4s ease, border-color 0.4s ease;
-            /* 反向旋转保持图片水平 */
-            animation: counterSpin 35s linear infinite;
-        }
-
-        @keyframes counterSpin {
-            from {
-                transform: var(--card-translate) rotate(0deg);
-            }
-
-            to {
-                transform: var(--card-translate) rotate(-360deg);
-            }
-        }
-
-        .carousel .card:hover {
-            box-shadow:
-                0 12px 40px rgba(31, 38, 135, 0.4),
-                0 0 40px rgba(56, 189, 248, 0.5),
-                0 0 60px rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.8);
-            z-index: 10;
-        }
-
-        .carousel .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        /* 网格布局 */
+        /* 瀑布流布局 */
         .gallery {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            display: block;
+            column-count: 3;
+            column-gap: 24px;
             max-width: 1400px;
             width: 100%;
             position: relative;
             z-index: 1;
-            padding: 80px 100px 40px;
+            padding: 40px 100px;
         }
 
-        .gallery.active {
-            display: grid;
+        /* 如果浏览器支持masonry，使用Grid masonry */
+        @supports (grid-template-rows: masonry) {
+            .gallery {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: masonry;
+                align-tracks: stretch;
+                gap: 24px;
+            }
         }
 
         .gallery .card {
+            aspect-ratio: unset;
+            height: auto;
+            break-inside: avoid;
+            margin-bottom: 24px;
             position: relative;
-            aspect-ratio: 4/3;
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
@@ -251,6 +125,12 @@
             animation: cardIn 0.6s ease forwards;
         }
 
+        @supports (grid-template-rows: masonry) {
+            .gallery .card {
+                margin-bottom: 0;
+            }
+        }
+
         .gallery .card:hover {
             box-shadow:
                 0 15px 50px rgba(56, 189, 248, 0.4),
@@ -261,8 +141,8 @@
 
         .gallery .card img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
             border-radius: 18px;
             transition: transform 0.6s ease;
         }
@@ -281,58 +161,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        /* 瀑布流布局 - 使用columns作为基础，masonry作为增强 */
-        .gallery.waterfall {
-            display: none;
-            column-count: 3;
-            column-gap: 24px;
-        }
-
-        .gallery.waterfall.active {
-            display: block;
-        }
-
-        .gallery.waterfall .card {
-            aspect-ratio: unset;
-            height: auto;
-            break-inside: avoid;
-            margin-bottom: 24px;
-        }
-
-        .gallery.waterfall .card img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        /* 如果浏览器支持masonry，使用Grid masonry */
-        @supports (grid-template-rows: masonry) {
-            .gallery.waterfall {
-                display: none;
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: masonry;
-                align-tracks: stretch;
-            }
-
-            .gallery.waterfall.active {
-                display: grid;
-            }
-
-            .gallery.waterfall .card {
-                margin-bottom: 0;
-            }
-        }
-
-        /* 单列布局 */
-        .gallery.single {
-            grid-template-columns: 1fr;
-            max-width: 700px;
-        }
-
-        .gallery.single .card {
-            aspect-ratio: 16/10;
         }
 
         /* 延迟动画 */
@@ -378,124 +206,6 @@
 
         .gallery .card:nth-child(11) {
             animation-delay: 0.55s;
-        }
-
-        /* 旋转提示 */
-        .carousel-hint {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.3s;
-        }
-
-        .carousel-hint.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* 社交链接 */
-        .social-links {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .social-link {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .social-link:hover {
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
-            color: white;
-            transform: translateX(4px);
-            box-shadow: 0 8px 32px rgba(56, 189, 248, 0.4);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .social-link svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* 社交链接提示框 */
-        .social-tooltip {
-            position: absolute;
-            left: 64px;
-            top: 50%;
-            transform: translateY(-50%) translateX(-10px);
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
-            padding: 10px 16px;
-            white-space: nowrap;
-            color: white;
-            font-size: 13px;
-            font-weight: 500;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            z-index: 100;
-        }
-
-        .social-tooltip::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
-            width: 12px;
-            height: 12px;
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-left: 1px solid rgba(255, 255, 255, 0.4);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .social-link:hover .social-tooltip {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
-        }
-
-        .social-tooltip-label {
-            display: inline-block;
-            opacity: 0.8;
-            margin-right: 4px;
-        }
-
-        .social-tooltip-stats {
-            display: inline-block;
-            font-weight: 600;
         }
 
         /* README 区域 */
@@ -546,6 +256,17 @@
             .readme-cards img {
                 height: 150px;
             }
+
+            .gallery {
+                padding: 40px 60px;
+                column-count: 2;
+            }
+
+            @supports (grid-template-rows: masonry) {
+                .gallery {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
         }
 
         @media (max-width: 640px) {
@@ -556,107 +277,16 @@
             .readme-cards img {
                 height: 120px;
             }
-        }
 
-        @media (max-width: 900px) {
             .gallery {
-                grid-template-columns: 1fr;
-                padding: 80px 80px 40px;
-            }
-
-            .gallery.waterfall {
-                column-count: 2;
-            }
-
-            @supports (grid-template-rows: masonry) {
-                .gallery.waterfall {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
-
-            .carousel-container {
-                height: calc(100vh - 240px);
-                min-height: 400px;
-            }
-
-            .carousel {
-                width: 600px;
-                height: 600px;
-            }
-
-            .carousel .card {
-                width: 150px;
-                height: 112px;
-                margin-left: -75px;
-                margin-top: -56px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .gallery {
-                grid-template-columns: 1fr;
-                padding: 20px 20px 160px;
-            }
-
-            .gallery.waterfall {
+                padding: 20px;
                 column-count: 1;
             }
 
             @supports (grid-template-rows: masonry) {
-                .gallery.waterfall {
+                .gallery {
                     grid-template-columns: 1fr;
                 }
-            }
-
-            .carousel-container {
-                height: calc(100vh - 200px);
-                min-height: 350px;
-            }
-
-            .carousel {
-                width: 380px;
-                height: 380px;
-            }
-
-            .carousel .card {
-                width: 100px;
-                height: 75px;
-                margin-left: -50px;
-                margin-top: -37px;
-                border-radius: 8px;
-            }
-
-            .layout-switcher {
-                top: auto;
-                bottom: 20px;
-                right: 50%;
-                transform: translateX(50%);
-                flex-direction: row;
-            }
-
-            .carousel-hint {
-                bottom: 150px;
-            }
-
-            .social-links {
-                left: 50%;
-                top: 20px;
-                /* bottom: 80px; */
-                transform: translateX(-50%);
-                flex-direction: row;
-            }
-
-            .social-link {
-                width: 44px;
-                height: 44px;
-            }
-
-            .social-link:hover {
-                transform: translateY(-4px);
-            }
-
-            .social-tooltip {
-                display: none;
             }
         }
     </style>
@@ -680,195 +310,29 @@
         </div>
     </div>
 
-    <!-- 布局切换器 -->
-    <div class="layout-switcher">
-        <button class="layout-btn active" data-layout="waterfall" title="瀑布流">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="10" />
-                <rect x="14" y="3" width="7" height="6" />
-                <rect x="3" y="15" width="7" height="6" />
-                <rect x="14" y="11" width="7" height="10" />
-            </svg>
-        </button>
-        <button class="layout-btn" data-layout="carousel" title="旋转">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
-            </svg>
-        </button>
-        <button class="layout-btn" data-layout="grid" title="陈列">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-            </svg>
-        </button>
-        <button class="layout-btn" data-layout="single" title="单列">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="4" y="3" width="16" height="6" />
-                <rect x="4" y="11" width="16" height="6" />
-            </svg>
-        </button>
-    </div>
-
-    <!-- 社交链接 - 已移除 -->
-
     <!-- 主内容区域 -->
     <div class="main-content">
-        <!-- 3D旋转木马 -->
-        <div class="carousel-container" id="carouselContainer">
-            <div class="carousel" id="carousel"></div>
-        </div>
-
-        <!-- 提示文字 -->
-        <div class="carousel-hint" id="carouselHint">
-            <!-- <span>点击图片查看大图</span> -->
-        </div>
-
-        <!-- 网格/瀑布流/单列容器 -->
-        <div class="gallery" id="gallery"></div>
+        <!-- 瀑布流容器 -->
+        <div class="gallery waterfall active" id="gallery"></div>
     </div>
 
     <script src="resume-awards/images.js"></script>
     <script>
-        const carousel = document.getElementById('carousel');
-        const carouselContainer = document.getElementById('carouselContainer');
-        const carouselHint = document.getElementById('carouselHint');
         const gallery = document.getElementById('gallery');
-        const layoutBtns = document.querySelectorAll('.layout-btn');
-
-        let currentLayout = 'carousel';
 
         // 打开查看器页面
         function openViewer(id) {
-            window.open(`viewer.html?img=${id}`, '_blank');
+            window.open(`resume-awards/viewer.html?img=${id}`, '_blank');
         }
 
-        // 初始化纯2D平面旋转 - 多圈布局避免遮挡
-        function initCarousel() {
-            const total = images.length;
-            const screenWidth = window.innerWidth;
-
-            // 根据屏幕调整基础参数
-            let cardWidth = 200;
-            let cardGap = 30; // 卡片之间的间距
-            let baseRadius = 200;
-
-            if (screenWidth <= 640) {
-                cardWidth = 100;
-                cardGap = 15;
-                baseRadius = 100;
-            } else if (screenWidth <= 900) {
-                cardWidth = 150;
-                cardGap = 20;
-                baseRadius = 150;
-            }
-
-            // 计算每圈能放多少张图片（基于周长和卡片宽度+间距）
-            const itemSpace = cardWidth + cardGap;
-
-            // 分配图片到各圈
-            const rings = [];
-            let remainingImages = [...images];
-            let currentRadius = baseRadius;
-
-            while (remainingImages.length > 0) {
-                const circumference = 2 * Math.PI * currentRadius;
-                const maxPerRing = Math.max(1, Math.floor(circumference / itemSpace));
-                const countForThisRing = Math.min(maxPerRing, remainingImages.length);
-
-                rings.push({
-                    radius: currentRadius,
-                    images: remainingImages.slice(0, countForThisRing)
-                });
-
-                remainingImages = remainingImages.slice(countForThisRing);
-                currentRadius += cardWidth + cardGap; // 下一圈半径增加
-            }
-
-            // 创建卡片
-            rings.forEach((ring, ringIndex) => {
-                const angleStep = (2 * Math.PI) / ring.images.length;
-                // 每圈错开一点角度，更美观
-                const angleOffset = ringIndex * (Math.PI / ring.images.length);
-
-                ring.images.forEach((img, i) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
-
-                    const angle = angleStep * i - Math.PI / 2 + angleOffset;
-                    const x = Math.cos(angle) * ring.radius;
-                    const y = Math.sin(angle) * ring.radius;
-
-                    // 用CSS变量存储位移，供反向旋转动画使用
-                    card.style.setProperty('--card-translate', `translate(${x}px, ${y}px)`);
-                    card.style.transform = `translate(${x}px, ${y}px)`;
-
-                    card.addEventListener('click', () => openViewer(img.id));
-                    carousel.appendChild(card);
-                });
-            });
-        }
-
-        // 初始化网格/瀑布流/单列
-        function initGallery() {
-            images.forEach((img, i) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
-                card.addEventListener('click', () => openViewer(img.id));
-                gallery.appendChild(card);
-            });
-        }
-
-        // 切换布局
-        function switchLayout(layout) {
-            currentLayout = layout;
-
-            // 更新按钮状态
-            layoutBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.layout === layout);
-            });
-
-            // 隐藏所有
-            carouselContainer.style.display = 'none';
-            gallery.classList.remove('active', 'waterfall', 'single');
-            carouselHint.classList.add('hidden');
-
-            if (layout === 'carousel') {
-                carouselContainer.style.display = 'flex';
-                carouselHint.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                gallery.classList.add('active');
-                document.body.style.overflow = 'auto';
-
-                if (layout === 'waterfall') {
-                    gallery.classList.add('waterfall');
-                } else if (layout === 'single') {
-                    gallery.classList.add('single');
-                }
-
-                // 重新触发动画
-                gallery.querySelectorAll('.card').forEach((card, i) => {
-                    card.style.animation = 'none';
-                    card.offsetHeight; // 强制重绘
-                    card.style.animation = `cardIn 0.6s ease forwards ${i * 0.05}s`;
-                });
-            }
-        }
-
-        // 布局按钮点击
-        layoutBtns.forEach(btn => {
-            btn.addEventListener('click', () => switchLayout(btn.dataset.layout));
+        // 初始化瀑布流
+        images.forEach((img, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+            card.addEventListener('click', () => openViewer(img.id));
+            gallery.appendChild(card);
         });
-
-        // 初始化
-        initCarousel();
-        initGallery();
-        switchLayout('waterfall');
     </script>
 </body>
 
