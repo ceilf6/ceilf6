@@ -22,7 +22,7 @@ def generate_blog_card(stats):
     original = format_number(stats.get('original', 0))
     views = format_number(stats.get('views', 0))
 
-    # 与 .ref/github-stat.html 保持一致的样式
+    # 340px 宽度与 Stats 卡片一致，README 中通过 width="32%" 控制显示大小
     width = 340
     height = 200
     stroke_width = 1
@@ -86,7 +86,7 @@ def generate_vlog_card(stats):
     views = format_number(stats.get('views', 0))
     likes = format_number(stats.get('likes', 0))
 
-    # 与 .ref/github-stat.html 保持一致的样式
+    # 340px 宽度与 Stats 卡片一致，README 中通过 width="32%" 控制显示大小
     width = 340
     height = 200
     stroke_width = 1
