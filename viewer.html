@@ -46,6 +46,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -90,8 +91,13 @@
             color: white;
         }
 
-        .nav-btn.prev { left: 20px; }
-        .nav-btn.next { right: 20px; }
+        .nav-btn.prev {
+            left: 20px;
+        }
+
+        .nav-btn.next {
+            right: 20px;
+        }
 
         .nav-btn svg {
             width: 24px;
@@ -103,12 +109,12 @@
 <body>
     <button class="nav-btn prev" id="prevBtn" title="上一张 (←)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6"/>
+            <path d="M15 18l-6-6 6-6" />
         </svg>
     </button>
     <button class="nav-btn next" id="nextBtn" title="下一张 (→)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
+            <path d="M9 18l6-6-6-6" />
         </svg>
     </button>
 
@@ -116,9 +122,9 @@
         <img src="" alt="" id="viewer-img" style="display: none;">
         <div class="error" id="error" style="display: none;">图片未找到</div>
     </div>
-    <div class="hint">← → 切换图片 | ESC 或点击图片关闭</div>
+    <!-- <div class="hint">← → 切换图片 | ESC 或点击图片关闭</div> -->
 
-    <script src="images.js"></script>
+    <script src="resume-awards/images.js"></script>
     <script>
         const viewerImg = document.getElementById('viewer-img');
         const error = document.getElementById('error');
