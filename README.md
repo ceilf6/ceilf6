@@ -1,4 +1,4 @@
-# 👋 Hi there, I'm <span style="color:#4e8cff;">ceilf6</span>!
+# 👋 Hi there, I'm <span style="color:#BF91F3;">ceilf6</span>!
 
 <p align="left">
 
@@ -14,6 +14,12 @@
     <img src="./svg/video-svgrepo-com.svg" width="20" height="20" align="center" alt="Vlog"/>
     <b>Vlog</b>
   </a>
+  <br/>
+  <span style="margin-left: 26px;">
+    <img src="https://img.shields.io/badge/粉丝-129-ff69b4?style=flat-square" alt="Followers"/>
+    <img src="https://img.shields.io/badge/播放-5.1万-00a1d6?style=flat-square" alt="Views"/>
+    <img src="https://img.shields.io/badge/获赞-945-fb7299?style=flat-square" alt="Likes"/>
+  </span>
 </p>
 
 ---
