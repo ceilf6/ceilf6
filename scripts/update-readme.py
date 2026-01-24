@@ -63,6 +63,7 @@ def update_readme():
         csdn_likes = csdn_stats.get('likes', 0)
         collect = csdn_stats.get('collect', 0)
         original = csdn_stats.get('original', 0)
+        views = csdn_stats.get('views', 0)
 
         readme_content = readme_content.replace(
             '<!--CSDN_FANS-->',
@@ -79,6 +80,10 @@ def update_readme():
         readme_content = readme_content.replace(
             '<!--CSDN_ORIGINAL-->',
             format_number(original)
+        )
+        readme_content = readme_content.replace(
+            '<!--CSDN_VIEWS-->',
+            format_number(views)
         )
 
         print(f"\nCSDN stats:")

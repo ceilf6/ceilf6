@@ -12,6 +12,7 @@
     <img src="https://img.shields.io/badge/点赞-2,770-4dabf7?style=flat-square" alt="Likes"/>
     <img src="https://img.shields.io/badge/收藏-1,466-ffa94d?style=flat-square" alt="Collect"/>
     <img src="https://img.shields.io/badge/原创-182-51cf66?style=flat-square" alt="Original"/>
+    <img src="https://img.shields.io/badge/访问-12.8万?style=flat-square" alt="views"/>
   </span>
 </p>
 
@@ -24,7 +25,7 @@
   <br/>
   <span style="margin-left: 26px;">
     <img src="https://img.shields.io/badge/粉丝-129-ff69b4?style=flat-square" alt="Followers"/>
-    <img src="https://img.shields.io/badge/播放-5.1万-00a1d6?style=flat-square" alt="Views"/>
+    <img src="https://img.shields.io/badge/访问-5.1万-00a1d6?style=flat-square" alt="Views"/>
     <img src="https://img.shields.io/badge/获赞-945-fb7299?style=flat-square" alt="Likes"/>
   </span>
 </p>
