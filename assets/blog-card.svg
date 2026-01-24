@@ -1,0 +1,37 @@
+<svg width="450" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .card { fill: #1A1B27; }
+      .title { fill: #70A5FE; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .label { fill: #9f9f9f; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .value { fill: #fff; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .icon { opacity: 0.15; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="card" x="0" y="0" width="450" height="200" rx="10" />
+
+  <!-- Title -->
+  <text class="title" x="20" y="35">📝 Blog</text>
+
+  <!-- Stats -->
+  <text class="label" x="20" y="65">👥 粉丝:</text>
+  <text class="value" x="100" y="65">1,634</text>
+
+  <text class="label" x="20" y="90">👍 点赞:</text>
+  <text class="value" x="100" y="90">2,770</text>
+
+  <text class="label" x="20" y="115">⭐ 收藏:</text>
+  <text class="value" x="100" y="115">1,467</text>
+
+  <text class="label" x="20" y="140">📄 原创:</text>
+  <text class="value" x="100" y="140">182</text>
+
+  <text class="label" x="20" y="165">👁️ 访问:</text>
+  <text class="value" x="100" y="165">12.8万</text>
+
+  <!-- Icon Background -->
+  <circle class="icon" cx="380" cy="100" r="50" fill="#70A5FE" />
+  <text class="icon" x="360" y="120" font-size="50">📝</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg width="450" height="160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .card { fill: #1A1B27; }
+      .title { fill: #70A5FE; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .label { fill: #9f9f9f; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .value { fill: #fff; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }
+      .icon { opacity: 0.15; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="card" x="0" y="0" width="450" height="160" rx="10" />
+
+  <!-- Title -->
+  <text class="title" x="20" y="35">🎬 Vlog</text>
+
+  <!-- Stats -->
+  <text class="label" x="20" y="70">👥 粉丝:</text>
+  <text class="value" x="100" y="70">129</text>
+
+  <text class="label" x="20" y="100">▶️ 播放:</text>
+  <text class="value" x="100" y="100">5.1万</text>
+
+  <text class="label" x="20" y="130">💖 获赞:</text>
+  <text class="value" x="100" y="130">945</text>
+
+  <!-- Icon Background -->
+  <circle class="icon" cx="380" cy="80" r="45" fill="#70A5FE" />
+  <text class="icon" x="360" y="100" font-size="45">🎬</text>
+</svg>
