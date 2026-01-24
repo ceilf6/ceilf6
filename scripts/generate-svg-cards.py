@@ -15,7 +15,7 @@ def format_number(num):
 
 
 def generate_blog_card(stats):
-    """生成Blog统计SVG卡片"""
+    """生成Blog统计SVG卡片 - Tokyo Night主题"""
     fans = format_number(stats.get('fans', 0))
     likes = format_number(stats.get('likes', 0))
     collect = format_number(stats.get('collect', 0))
@@ -25,10 +25,10 @@ def generate_blog_card(stats):
     svg = f'''<svg width="450" height="200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .card {{ fill: #1A1B27; }}
-      .title {{ fill: #70A5FE; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
-      .label {{ fill: #9f9f9f; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
-      .value {{ fill: #fff; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .card {{ fill: #1a1b27; }}
+      .title {{ fill: #70a5fd; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .label {{ fill: #38bdae; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .value {{ fill: #38bdae; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
       .icon {{ opacity: 0.15; }}
     </style>
   </defs>
@@ -56,7 +56,7 @@ def generate_blog_card(stats):
   <text class="value" x="100" y="165">{views}</text>
 
   <!-- Icon Background -->
-  <circle class="icon" cx="380" cy="100" r="50" fill="#70A5FE" />
+  <circle class="icon" cx="380" cy="100" r="50" fill="#bf91f3" />
   <text class="icon" x="360" y="120" font-size="50">📝</text>
 </svg>'''
 
@@ -64,7 +64,7 @@ def generate_blog_card(stats):
 
 
 def generate_vlog_card(stats):
-    """生成Vlog统计SVG卡片"""
+    """生成Vlog统计SVG卡片 - Tokyo Night主题"""
     follower = format_number(stats.get('follower', 0))
     views = format_number(stats.get('views', 0))
     likes = format_number(stats.get('likes', 0))
@@ -72,10 +72,10 @@ def generate_vlog_card(stats):
     svg = f'''<svg width="450" height="160" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .card {{ fill: #1A1B27; }}
-      .title {{ fill: #70A5FE; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
-      .label {{ fill: #9f9f9f; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
-      .value {{ fill: #fff; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .card {{ fill: #1a1b27; }}
+      .title {{ fill: #70a5fd; font-size: 20px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .label {{ fill: #38bdae; font-size: 14px; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
+      .value {{ fill: #38bdae; font-size: 14px; font-weight: bold; font-family: 'Segoe UI', Ubuntu, Sans-Serif; }}
       .icon {{ opacity: 0.15; }}
     </style>
   </defs>
@@ -97,7 +97,7 @@ def generate_vlog_card(stats):
   <text class="value" x="100" y="130">{likes}</text>
 
   <!-- Icon Background -->
-  <circle class="icon" cx="380" cy="80" r="45" fill="#70A5FE" />
+  <circle class="icon" cx="380" cy="80" r="45" fill="#bf91f3" />
   <text class="icon" x="360" y="100" font-size="45">🎬</text>
 </svg>'''
 
