@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 Fetch Bilibili statistics and update data/bilibili-stats.json
+
+通过配置 Repository secrets -> Cookie
 """
 
 import json

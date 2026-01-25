@@ -137,7 +137,7 @@ def fetch_csdn_stats():
 
 
 def update_stats_file(stats):
-    """更新stats JSON文件"""
+    """更新stats JSON文件，只有值>0时才覆盖"""
     if not stats:
         print("No stats to update")
         return False
@@ -151,8 +151,19 @@ def update_stats_file(stats):
     else:
         existing_data = {}
 
-    # Update with new values
-    existing_data.update(stats)
+    # Update with new values only if > 0
+    updated_fields = []
+    for key, value in stats.items():
+        if isinstance(value, int) and value > 0:
+            existing_data[key] = value
+            updated_fields.append(key)
+        else:
+            print(f"Skipping {key}: value {value} is not > 0")
+
+    if not updated_fields:
+        print("No valid stats to update (all values <= 0)")
+        return False
+
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Write back to file
@@ -161,6 +172,7 @@ def update_stats_file(stats):
         json.dump(existing_data, f, ensure_ascii=False, indent=2)
 
     print(f"\nStats file updated successfully!")
+    print(f"Updated fields: {', '.join(updated_fields)}")
     print(f"Last Updated: {existing_data['last_updated']}")
     return True
 
