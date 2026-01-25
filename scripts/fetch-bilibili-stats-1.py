@@ -44,7 +44,7 @@ def fetch_follower_count():
         data = response.json()
 
         if data.get('code') == 0:
-            return data.get('data', {}).get('followers', 0)
+            return data.get('data', {}).get('follower', 0)
         else:
             print(f"Error fetching followers count: {data.get('message')}")
             return None
