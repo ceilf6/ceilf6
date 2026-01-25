@@ -25,9 +25,11 @@ jobs:
 
       - name: Fetch Bilibili stats
         run: python scripts/fetch-bilibili-stats.py
+        continue-on-error: true  # 即使失败也继续执行后续步骤
 
       - name: Fetch CSDN stats
         run: python scripts/fetch-csdn-stats-2.py
+        continue-on-error: true  # 即使失败也继续执行后续步骤
 
       - name: Generate SVG cards
         run: python scripts/generate-svg-cards.py
