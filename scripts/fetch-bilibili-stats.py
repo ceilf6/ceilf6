@@ -4,6 +4,7 @@ Fetch Bilibili statistics and update data/bilibili-stats.json
 """
 
 import json
+import os
 import requests
 from datetime import datetime
 from pathlib import Path
@@ -22,7 +23,14 @@ HEADERS = {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
     'Origin': 'https://space.bilibili.com',
     'Referer': f'https://space.bilibili.com/{BILIBILI_UID}',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site',
 }
+
+# 从环境变量获取 Cookie（用于需要登录态的 API）
+BILI_SESSDATA = os.environ.get('BILI_SESSDATA', '')
+BILI_BILI_JCT = os.environ.get('BILI_BILI_JCT', '')
 
 
 def fetch_follower_count():
@@ -43,9 +51,16 @@ def fetch_follower_count():
 
 
 def fetch_views_and_likes():
-    """获取播放数和获赞数"""
+    """获取播放数和获赞数（需要登录态）"""
     try:
-        response = requests.get(STATS_API, headers=HEADERS, timeout=10)
+        # 构建 Cookie 字符串
+        cookies = {}
+        if BILI_SESSDATA:
+            cookies['SESSDATA'] = BILI_SESSDATA
+        if BILI_BILI_JCT:
+            cookies['bili_jct'] = BILI_BILI_JCT
+
+        response = requests.get(STATS_API, headers=HEADERS, cookies=cookies, timeout=10)
         response.raise_for_status()
         data = response.json()
 
@@ -55,10 +70,15 @@ def fetch_views_and_likes():
             likes = stats_data.get('likes', 0)
             return views, likes
         else:
-            print(f"Error fetching views and likes: {data.get('message')}")
+            error_msg = data.get('message', 'Unknown error')
+            print(f"Error fetching views and likes: {error_msg}")
+            if data.get('code') == -101:
+                print("Tip: This API requires login. Please set BILI_SESSDATA and BILI_BILI_JCT environment variables.")
             return None, None
     except Exception as e:
         print(f"Exception when fetching views and likes: {e}")
+        import traceback
+        traceback.print_exc()
         return None, None
 
 

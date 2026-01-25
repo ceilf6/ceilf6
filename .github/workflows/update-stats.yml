@@ -26,6 +26,9 @@ jobs:
       - name: Fetch Bilibili stats
         run: python scripts/fetch-bilibili-stats.py
         continue-on-error: true  # 即使失败也继续执行后续步骤
+        env:
+          BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
+          BILI_BILI_JCT: ${{ secrets.BILI_BILI_JCT }}
 
       - name: Fetch CSDN stats
         run: python scripts/fetch-csdn-stats-2.py
