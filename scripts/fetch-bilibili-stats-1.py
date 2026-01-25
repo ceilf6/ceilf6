@@ -7,6 +7,7 @@ Fetch Bilibili statistics and update data/bilibili-stats.json
 
 import json
 import os
+import re
 import requests
 from datetime import datetime
 from pathlib import Path
@@ -32,8 +33,9 @@ HEADERS = {
 }
 
 # 从环境变量获取 Cookie（用于需要登录态的 API）
-BILI_SESSDATA = os.environ.get('BILI_SESSDATA', '')
-BILI_BILI_JCT = os.environ.get('BILI_BILI_JCT', '')
+# 清理可能存在的空格、制表符、换行符（包括中间的）
+BILI_SESSDATA = re.sub(r'\s+', '', os.environ.get('BILI_SESSDATA', ''))
+BILI_BILI_JCT = re.sub(r'\s+', '', os.environ.get('BILI_BILI_JCT', ''))
 
 
 def fetch_follower_count():
