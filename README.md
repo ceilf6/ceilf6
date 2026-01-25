@@ -5,5 +5,5 @@
 </div>
 
 <p align="center">
-  <img src="./assets/hint-text.svg" />
+  <img src="./assets/hint-text-for-index.svg" />
 </p>
