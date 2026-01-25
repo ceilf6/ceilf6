@@ -24,7 +24,7 @@ jobs:
           pip install requests cloudscraper
 
       - name: Fetch Bilibili stats
-        run: python scripts/fetch-bilibili-stats.py
+        run: python scripts/fetch-bilibili-stats-1.py
         continue-on-error: true  # 即使失败也继续执行后续步骤
         env:
           BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
