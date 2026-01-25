@@ -1,0 +1,16 @@
+curl 'https://api.bilibili.com/x/space/navnum?mid=3546602400647622&web_location=333.1387' \
+  -H 'accept: */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \
+  -b $'buvid3=F1948FD3-304C-24ED-A3B3-B77B1C7131FF13907infoc; b_nut=1742817613; _uuid=DD9DEBC2-3278-10E39-1465-33F127B7B24A14804infoc; buvid4=A55FD4EA-ADB4-8099-D7E6-ADEA69F9B87B81389-024021813-lYiQwl8uxER9d2w7huwGmQ%3D%3D; rpdid=|(YYJ~~YuYR0J\'u~RJluJlRl; header_theme_version=CLOSE; enable_web_push=DISABLE; enable_feed_channel=ENABLE; DedeUserID=3546602400647622; DedeUserID__ckMd5=0882b7852109a537; CURRENT_QUALITY=120; theme-tip-show=SHOWED; theme-avatar-tip-show=SHOWED; bsource=search_google; hit-dyn-v2=1; theme-switch-show=SHOWED; LIVE_BUVID=AUTO2017680298415885; CURRENT_FNVAL=2000; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk0MjEyNTksImlhdCI6MTc2OTE2MTk5OSwicGx0IjotMX0.K7BFu253OlAVg-lwKcmMVVh-2a2YMlEqdx8a1LQwFmQ; bili_ticket_expires=1769421199; bp_t_offset_3546602400647622=1161394298260815872; home_feed_column=5; browser_resolution=1480-700; fingerprint=f0d04a95118d4ca1b6a6a9acfe1aff72; buvid_fp_plain=undefined; SESSDATA=05ae8e13%2C1784891411%2C2fd13%2A11CjATjEG__j8cYYOPC8DUZ5P1NlUtcqSUzBW4EFkSqyv9OUrtCDThyJvweLQRD96N_hcSVi13eFVDNFlIb3N2clpJVnk2WUtNY0cwZ05iaXhma2lDak5oeE45MVhfd2tMcHZQQW84bUxrOTZ1cGd6bC13cDdsSHBoMkExUFhZNDExUkFkU0hDM1V3IIEC; bili_jct=39dd2300b6e2262f3834ddcf81ef3d8c; sid=hfg6yp1y; buvid_fp=eeeab37ffaaf5ed3ca10beb6441cfe16; b_lsid=2FD06541_19BF4D95D6A' \
+  -H 'dnt: 1' \
+  -H 'origin: https://space.bilibili.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://space.bilibili.com/3546602400647622' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'swimlane: 1989-znpok' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'

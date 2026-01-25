@@ -17,6 +17,7 @@ BILIBILI_UID = "3546602400647622"
 # API Endpoints
 FOLLOWER_API = f"https://api.bilibili.com/x/relation/stat?vmid={BILIBILI_UID}&web_location=333.1387"
 STATS_API = f"https://api.bilibili.com/x/space/upstat?mid={BILIBILI_UID}&web_location=333.1387"
+CREATIONS_API = f"https://api.bilibili.com/x/space/navnum?mid={BILIBILI_UID}&web_location=333.1387"
 
 # Headers for requests
 HEADERS = {
@@ -43,12 +44,12 @@ def fetch_follower_count():
         data = response.json()
 
         if data.get('code') == 0:
-            return data.get('data', {}).get('follower', 0)
+            return data.get('data', {}).get('followers', 0)
         else:
-            print(f"Error fetching follower count: {data.get('message')}")
+            print(f"Error fetching followers count: {data.get('message')}")
             return None
     except Exception as e:
-        print(f"Exception when fetching follower count: {e}")
+        print(f"Exception when fetching followers count: {e}")
         return None
 
 
@@ -84,7 +85,38 @@ def fetch_views_and_likes():
         return None, None
 
 
-def update_stats_file(follower, views, likes):
+def fetch_creations_count():
+    """获取作品数量（需要登录态）"""
+    try:
+        # 构建 Cookie 字符串
+        cookies = {}
+        if BILI_SESSDATA:
+            cookies['SESSDATA'] = BILI_SESSDATA
+        if BILI_BILI_JCT:
+            cookies['bili_jct'] = BILI_BILI_JCT
+
+        response = requests.get(CREATIONS_API, headers=HEADERS, cookies=cookies, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+
+        if data.get('code') == 0:
+            creations_data = data.get('data', {})
+            video_count = creations_data.get('video', 0)
+            return video_count
+        else:
+            error_msg = data.get('message', 'Unknown error')
+            print(f"Error fetching creations count: {error_msg}")
+            if data.get('code') == -101:
+                print("Tip: This API requires login. Please set BILI_SESSDATA and BILI_BILI_JCT environment variables.")
+            return None
+    except Exception as e:
+        print(f"Exception when fetching creations count: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def update_stats_file(followers, views, likes, creations):
     """更新stats JSON文件（只在值有效且>0时更新）"""
     stats_file = Path(__file__).parent.parent / 'data' / 'bilibili-stats.json'
 
@@ -96,11 +128,11 @@ def update_stats_file(follower, views, likes):
         existing_data = {}
 
     # Update with new values (only if valid and > 0)
-    if follower is not None and follower > 0:
-        existing_data['follower'] = follower
-        print(f"✓ Updated follower: {follower}")
-    elif follower is not None and follower <= 0:
-        print(f"⚠ Skipped invalid follower value: {follower}, keeping existing: {existing_data.get('follower', 'N/A')}")
+    if followers is not None and followers > 0:
+        existing_data['followers'] = followers
+        print(f"✓ Updated followers: {followers}")
+    elif followers is not None and followers <= 0:
+        print(f"⚠ Skipped invalid followers value: {followers}, keeping existing: {existing_data.get('followers', 'N/A')}")
 
     if views is not None and views > 0:
         existing_data['views'] = views
@@ -114,6 +146,12 @@ def update_stats_file(follower, views, likes):
     elif likes is not None and likes <= 0:
         print(f"⚠ Skipped invalid likes value: {likes}, keeping existing: {existing_data.get('likes', 'N/A')}")
 
+    if creations is not None and creations > 0:
+        existing_data['creations'] = creations
+        print(f"✓ Updated creations: {creations}")
+    elif creations is not None and creations <= 0:
+        print(f"⚠ Skipped invalid creations value: {creations}, keeping existing: {existing_data.get('creations', 'N/A')}")
+
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Write back to file
@@ -122,9 +160,10 @@ def update_stats_file(follower, views, likes):
         json.dump(existing_data, f, ensure_ascii=False, indent=2)
 
     print(f"\nStats updated successfully!")
-    print(f"Follower: {existing_data.get('follower', 'N/A')}")
+    print(f"followers: {existing_data.get('followers', 'N/A')}")
     print(f"Views: {existing_data.get('views', 'N/A')}")
     print(f"Likes: {existing_data.get('likes', 'N/A')}")
+    print(f"Creations: {existing_data.get('creations', 'N/A')}")
     print(f"Last Updated: {existing_data['last_updated']}")
 
 
@@ -132,12 +171,13 @@ def main():
     print("Fetching Bilibili statistics...")
 
     # Fetch data
-    follower = fetch_follower_count()
+    followers = fetch_follower_count()
     views, likes = fetch_views_and_likes()
+    creations = fetch_creations_count()
 
     # Update file
-    if follower is not None or views is not None or likes is not None:
-        update_stats_file(follower, views, likes)
+    if followers is not None or views is not None or likes is not None or creations is not None:
+        update_stats_file(followers, views, likes, creations)
     else:
         print("Failed to fetch any data. No updates made.")
         exit(1)
