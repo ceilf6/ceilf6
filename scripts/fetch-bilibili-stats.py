@@ -83,7 +83,7 @@ def fetch_views_and_likes():
 
 
 def update_stats_file(follower, views, likes):
-    """更新stats JSON文件"""
+    """更新stats JSON文件（只在值有效且>0时更新）"""
     stats_file = Path(__file__).parent.parent / 'data' / 'bilibili-stats.json'
 
     # Read existing data
@@ -93,13 +93,24 @@ def update_stats_file(follower, views, likes):
     else:
         existing_data = {}
 
-    # Update with new values (only if successfully fetched)
-    if follower is not None:
+    # Update with new values (only if valid and > 0)
+    if follower is not None and follower > 0:
         existing_data['follower'] = follower
-    if views is not None:
+        print(f"✓ Updated follower: {follower}")
+    elif follower is not None and follower <= 0:
+        print(f"⚠ Skipped invalid follower value: {follower}, keeping existing: {existing_data.get('follower', 'N/A')}")
+
+    if views is not None and views > 0:
         existing_data['views'] = views
-    if likes is not None:
+        print(f"✓ Updated views: {views}")
+    elif views is not None and views <= 0:
+        print(f"⚠ Skipped invalid views value: {views}, keeping existing: {existing_data.get('views', 'N/A')}")
+
+    if likes is not None and likes > 0:
         existing_data['likes'] = likes
+        print(f"✓ Updated likes: {likes}")
+    elif likes is not None and likes <= 0:
+        print(f"⚠ Skipped invalid likes value: {likes}, keeping existing: {existing_data.get('likes', 'N/A')}")
 
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -108,7 +119,7 @@ def update_stats_file(follower, views, likes):
     with open(stats_file, 'w', encoding='utf-8') as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=2)
 
-    print(f"Stats updated successfully!")
+    print(f"\nStats updated successfully!")
     print(f"Follower: {existing_data.get('follower', 'N/A')}")
     print(f"Views: {existing_data.get('views', 'N/A')}")
     print(f"Likes: {existing_data.get('likes', 'N/A')}")
