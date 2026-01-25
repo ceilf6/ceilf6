@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests cloudscraper
 
       - name: Fetch Bilibili stats
         run: python scripts/fetch-bilibili-stats.py

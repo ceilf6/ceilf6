@@ -1,0 +1,37 @@
+# 1.25
+curl 'https://blog.csdn.net/2301_78856868' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Connection: keep-alive' \
+  -b $'UN=2301_78856868; uuid_tt_dd=10_6637762210-1747377649891-915496; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=6525*1*10_6637762210-1747377649891-915496\u00215744*1*2301_78856868; Hm_lvt_e5ef47b9f471504959267fd614d579cd=1749543417; c_dl_um=-; c_dl_fref=https://mp.csdn.net/mp_download/manage/download/UpDetailed; c_dl_fpage=/download/2301_78856868/91849749; c_dl_prid=1756803440164_778874; c_dl_rid=1756803463970_653872; fid=20_11605053208-1759762161058-544495; FCCDCF=%5Bnull%2Cnull%2Cnull%2C%5B%22CQPzfEAQPzfEAEsACBENBlFgAAAAAEPgAARoAAANVSD2F2K2kKFkHCmwXYAYBCujYAAhQgAAAkCBMACgAUgQAgFJIAgCIFAAAAAAAAAQEiCQAAQABAAAIACgAAAAAAIAAAAAAAQQAABAAIAAAAAAAAEAQAAIAAQAAAAIAABEhAAAQQAEAAAAAAAQAA%22%2C%222~~dv.70.89.93.108.122.149.184.196.236.259.311.313.314.323.358.415.442.486.494.495.540.574.609.864.981.1029.1048.1051.1095.1097.1126.1205.1276.1301.1365.1415.1449.1514.1570.1577.1598.1651.1716.1735.1753.1765.1870.1878.1889.1958.1960.2072.2253.2299.2373.2415.2506.2526.2531.2568.2571.2575.2624.2677.2778%22%2C%229080992C-1527-4160-8D43-4D2CAF70C012%22%5D%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%226c89cbf4-0dcd-41c7-ae51-5c574b7254ec%5C%22%2C%5B1762601662%2C956000000%5D%5D%22%5D%5D%5D; UserName=2301_78856868; UserInfo=ce484acbd7324606af330ca703271db5; UserToken=ce484acbd7324606af330ca703271db5; UserNick=ceilf; AU=007; BT=1762955556078; p_uid=U010000; c_segment=8; dc_sid=d1193674b952d32b017f17b31cdd0e78; HMACCOUNT=800A83A6C328D28E; csrfToken=_-sCwM8xDZvpUGC3_i3vloCj; c_ab_test=1; csdn_newcert_2301_78856868=1; historyList-new=%5B%5D; _ga=GA1.2.1486977014.1702638404; _ga_7W1N0GEY1P=GS2.1.s1768033209$o33$g1$t1768033256$j13$l0$h0; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1768107377; c_first_page=https%3A//blog.csdn.net/2301_78856868; _clck=18y9crz%5E2%5Eg2p%5E0%5E1677; SESSION=4109563b-4dc5-423f-8c04-c8e930d157ff; https_waf_cookie=c4c276e6-63b5-473577f52d8be94c7d69585c9d488beb0fea; creative_btn_mp=3; __gads=ID=df2c9f05de65472f:T=1737289571:RT=1769231616:S=ALNI_MZgSf8_OksnSSz5HHAeFS3IhZ8ozg; __gpi=UID=00000febd666931e:T=1737289571:RT=1769231616:S=ALNI_MZ72076qVOX7r4PpIbmUgmJC6-Lfw; __eoi=ID=ae4ad32341192564:T=1768817105:RT=1769231616:S=AA-AfjYoFrW_LMgbIjfUYJ-CbzSc; FCNEC=%5B%5B%22AKsRol95_TPMoZCQCvbOfVtc4zvs1GWq1ZvjzDPaDF-q7AzvIjUWBOplsKDVm55QpmNw90-e4O1XnsXw-E5yzrGJHwSpj1OtpS_PvQgbwgzRMSFFtDO-xMXKJnxf-bm9TmfphkwGQ1HpVB7DOh8ilUy6b72zyGcUEg%3D%3D%22%5D%5D; c_pref=default; c_ref=default; c_first_ref=default; dc_session_id=10_1769310891263.827795; bc_bot_session=17693108910244993dacd73e8e; bc_bot_token=5017693108910244993dacd73e8e42c984; bc_bot_rules=R61; bc_bot_score=50; bc_bot_fp=6719f34aed3bb6ebf524c72d8d2a5dbe; waf_captcha_marker=14f64a052c6e3a8eeddd81011b3a8bc7ab93794e3fd1c1a9c37a10c00d629706; c_dsid=11_1769311490809.243537; c_page_id=default; log_Id_pv=4; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1769311491; log_Id_view=75; dc_tos=t9ehkq' \
+  -H 'DNT: 1' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: cross-site' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'swimlane: 1989-znpok'
+
+# 1.24
+curl 'https://blog.csdn.net/2301_78856868' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Connection: keep-alive' \
+  -b $'UN=2301_78856868; uuid_tt_dd=10_6637762210-1747377649891-915496; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=6525*1*10_6637762210-1747377649891-915496\u00215744*1*2301_78856868; Hm_lvt_e5ef47b9f471504959267fd614d579cd=1749543417; c_dl_um=-; c_dl_fref=https://mp.csdn.net/mp_download/manage/download/UpDetailed; c_dl_fpage=/download/2301_78856868/91849749; c_dl_prid=1756803440164_778874; c_dl_rid=1756803463970_653872; fid=20_11605053208-1759762161058-544495; FCCDCF=%5Bnull%2Cnull%2Cnull%2C%5B%22CQPzfEAQPzfEAEsACBENBlFgAAAAAEPgAARoAAANVSD2F2K2kKFkHCmwXYAYBCujYAAhQgAAAkCBMACgAUgQAgFJIAgCIFAAAAAAAAAQEiCQAAQABAAAIACgAAAAAAIAAAAAAAQQAABAAIAAAAAAAAEAQAAIAAQAAAAIAABEhAAAQQAEAAAAAAAQAA%22%2C%222~~dv.70.89.93.108.122.149.184.196.236.259.311.313.314.323.358.415.442.486.494.495.540.574.609.864.981.1029.1048.1051.1095.1097.1126.1205.1276.1301.1365.1415.1449.1514.1570.1577.1598.1651.1716.1735.1753.1765.1870.1878.1889.1958.1960.2072.2253.2299.2373.2415.2506.2526.2531.2568.2571.2575.2624.2677.2778%22%2C%229080992C-1527-4160-8D43-4D2CAF70C012%22%5D%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%226c89cbf4-0dcd-41c7-ae51-5c574b7254ec%5C%22%2C%5B1762601662%2C956000000%5D%5D%22%5D%5D%5D; UserName=2301_78856868; UserInfo=ce484acbd7324606af330ca703271db5; UserToken=ce484acbd7324606af330ca703271db5; UserNick=ceilf; AU=007; BT=1762955556078; p_uid=U010000; c_segment=8; dc_sid=d1193674b952d32b017f17b31cdd0e78; HMACCOUNT=800A83A6C328D28E; csrfToken=_-sCwM8xDZvpUGC3_i3vloCj; c_ab_test=1; csdn_newcert_2301_78856868=1; historyList-new=%5B%5D; _ga=GA1.2.1486977014.1702638404; _ga_7W1N0GEY1P=GS2.1.s1768033209$o33$g1$t1768033256$j13$l0$h0; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1768107377; c_first_page=https%3A//blog.csdn.net/2301_78856868; _clck=18y9crz%5E2%5Eg2p%5E0%5E1677; SESSION=4109563b-4dc5-423f-8c04-c8e930d157ff; https_waf_cookie=c4c276e6-63b5-473577f52d8be94c7d69585c9d488beb0fea; dc_session_id=10_1769189312796.423878; bc_bot_session=1769230449127cce0c8369ec37; bc_bot_token=501769230449127cce0c8369ec379ecf7b; bc_bot_rules=R61; bc_bot_score=50; creative_btn_mp=3; c_pref=default; c_ref=default; c_first_ref=default; __gads=ID=df2c9f05de65472f:T=1737289571:RT=1769231616:S=ALNI_MZgSf8_OksnSSz5HHAeFS3IhZ8ozg; __gpi=UID=00000febd666931e:T=1737289571:RT=1769231616:S=ALNI_MZ72076qVOX7r4PpIbmUgmJC6-Lfw; __eoi=ID=ae4ad32341192564:T=1768817105:RT=1769231616:S=AA-AfjYoFrW_LMgbIjfUYJ-CbzSc; bc_bot_fp=6848e95c466ff29100fb293a29bc14f5; FCNEC=%5B%5B%22AKsRol95_TPMoZCQCvbOfVtc4zvs1GWq1ZvjzDPaDF-q7AzvIjUWBOplsKDVm55QpmNw90-e4O1XnsXw-E5yzrGJHwSpj1OtpS_PvQgbwgzRMSFFtDO-xMXKJnxf-bm9TmfphkwGQ1HpVB7DOh8ilUy6b72zyGcUEg%3D%3D%22%5D%5D; c_dsid=11_1769232701456.971915; c_page_id=default; log_Id_pv=6; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1769232702; log_Id_view=81; dc_tos=t9cspd; waf_captcha_marker=e7c8e63fc5253aed4da758df02f1031b20508cdb5a07383e5acbc55755032052' \
+  -H 'DNT: 1' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: cross-site' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'swimlane: 1989-znpok'
