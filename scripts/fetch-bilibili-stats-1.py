@@ -129,38 +129,69 @@ def update_stats_file(followers, views, likes, creations):
     else:
         existing_data = {}
 
+    # Check for data regression (indicates possible cookie expiration)
+    has_regression = False
+    regression_details = []
+
+    if followers is not None:
+        existing_followers = existing_data.get('followers', 0)
+        if followers < existing_followers:
+            has_regression = True
+            regression_details.append(f"followers: {followers} < {existing_followers}")
+
+    if views is not None:
+        existing_views = existing_data.get('views', 0)
+        if views < existing_views:
+            has_regression = True
+            regression_details.append(f"views: {views} < {existing_views}")
+
+    if likes is not None:
+        existing_likes = existing_data.get('likes', 0)
+        if likes < existing_likes:
+            has_regression = True
+            regression_details.append(f"likes: {likes} < {existing_likes}")
+
+    if creations is not None:
+        existing_creations = existing_data.get('creations', 0)
+        if creations < existing_creations:
+            has_regression = True
+            regression_details.append(f"creations: {creations} < {existing_creations}")
+
+    # If any data regressed, fail immediately
+    if has_regression:
+        print(f"❌ Data regression detected (possible cookie expiration):")
+        for detail in regression_details:
+            print(f"  - {detail}")
+        print("\nThis usually indicates:")
+        print("  1. Cookie (SESSDATA/bili_jct) has expired")
+        print("  2. API returned incorrect data")
+        print("\nPlease check and update your cookies in repository secrets.")
+        exit(1)
+
     # Update with new values (only if >= existing value)
     if followers is not None:
         existing_followers = existing_data.get('followers', 0)
         if followers >= existing_followers:
             existing_data['followers'] = followers
             print(f"✓ Updated followers: {followers}")
-        else:
-            print(f"⚠ Skipped followers: new value {followers} < existing value {existing_followers}")
 
     if views is not None:
         existing_views = existing_data.get('views', 0)
         if views >= existing_views:
             existing_data['views'] = views
             print(f"✓ Updated views: {views}")
-        else:
-            print(f"⚠ Skipped views: new value {views} < existing value {existing_views}")
 
     if likes is not None:
         existing_likes = existing_data.get('likes', 0)
         if likes >= existing_likes:
             existing_data['likes'] = likes
             print(f"✓ Updated likes: {likes}")
-        else:
-            print(f"⚠ Skipped likes: new value {likes} < existing value {existing_likes}")
 
     if creations is not None:
         existing_creations = existing_data.get('creations', 0)
         if creations >= existing_creations:
             existing_data['creations'] = creations
             print(f"✓ Updated creations: {creations}")
-        else:
-            print(f"⚠ Skipped creations: new value {creations} < existing value {existing_creations}")
 
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 

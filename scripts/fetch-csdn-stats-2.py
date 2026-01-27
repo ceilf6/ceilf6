@@ -151,6 +151,28 @@ def update_stats_file(stats):
     else:
         existing_data = {}
 
+    # Check for data regression first
+    has_regression = False
+    regression_details = []
+
+    for key, value in stats.items():
+        if isinstance(value, int):
+            existing_value = existing_data.get(key, 0)
+            if value < existing_value:
+                has_regression = True
+                regression_details.append(f"{key}: {value} < {existing_value}")
+
+    # If any data regressed, fail immediately
+    if has_regression:
+        print(f"❌ Data regression detected:")
+        for detail in regression_details:
+            print(f"  - {detail}")
+        print("\nThis usually indicates:")
+        print("  1. Network error or Cloudflare blocking")
+        print("  2. CSDN page structure changed")
+        print("  3. Data fetching failed")
+        exit(1)
+
     # Update with new values only if >= existing value
     updated_fields = []
     for key, value in stats.items():
@@ -159,11 +181,9 @@ def update_stats_file(stats):
             if value >= existing_value:
                 existing_data[key] = value
                 updated_fields.append(key)
-            else:
-                print(f"Skipping {key}: new value {value} < existing value {existing_value}")
 
     if not updated_fields:
-        print("No stats to update (all new values < existing values)")
+        print("No stats to update (all new values == existing values)")
         return False
 
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
