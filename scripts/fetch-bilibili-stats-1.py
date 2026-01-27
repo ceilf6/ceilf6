@@ -119,7 +119,7 @@ def fetch_creations_count():
 
 
 def update_stats_file(followers, views, likes, creations):
-    """更新stats JSON文件（只在值有效且>0时更新）"""
+    """更新stats JSON文件，只有当新值>=旧值时才覆盖"""
     stats_file = Path(__file__).parent.parent / 'data' / 'bilibili-stats.json'
 
     # Read existing data
@@ -129,30 +129,38 @@ def update_stats_file(followers, views, likes, creations):
     else:
         existing_data = {}
 
-    # Update with new values (only if valid and > 0)
-    if followers is not None and followers > 0:
-        existing_data['followers'] = followers
-        print(f"✓ Updated followers: {followers}")
-    elif followers is not None and followers <= 0:
-        print(f"⚠ Skipped invalid followers value: {followers}, keeping existing: {existing_data.get('followers', 'N/A')}")
+    # Update with new values (only if >= existing value)
+    if followers is not None:
+        existing_followers = existing_data.get('followers', 0)
+        if followers >= existing_followers:
+            existing_data['followers'] = followers
+            print(f"✓ Updated followers: {followers}")
+        else:
+            print(f"⚠ Skipped followers: new value {followers} < existing value {existing_followers}")
 
-    if views is not None and views > 0:
-        existing_data['views'] = views
-        print(f"✓ Updated views: {views}")
-    elif views is not None and views <= 0:
-        print(f"⚠ Skipped invalid views value: {views}, keeping existing: {existing_data.get('views', 'N/A')}")
+    if views is not None:
+        existing_views = existing_data.get('views', 0)
+        if views >= existing_views:
+            existing_data['views'] = views
+            print(f"✓ Updated views: {views}")
+        else:
+            print(f"⚠ Skipped views: new value {views} < existing value {existing_views}")
 
-    if likes is not None and likes > 0:
-        existing_data['likes'] = likes
-        print(f"✓ Updated likes: {likes}")
-    elif likes is not None and likes <= 0:
-        print(f"⚠ Skipped invalid likes value: {likes}, keeping existing: {existing_data.get('likes', 'N/A')}")
+    if likes is not None:
+        existing_likes = existing_data.get('likes', 0)
+        if likes >= existing_likes:
+            existing_data['likes'] = likes
+            print(f"✓ Updated likes: {likes}")
+        else:
+            print(f"⚠ Skipped likes: new value {likes} < existing value {existing_likes}")
 
-    if creations is not None and creations > 0:
-        existing_data['creations'] = creations
-        print(f"✓ Updated creations: {creations}")
-    elif creations is not None and creations <= 0:
-        print(f"⚠ Skipped invalid creations value: {creations}, keeping existing: {existing_data.get('creations', 'N/A')}")
+    if creations is not None:
+        existing_creations = existing_data.get('creations', 0)
+        if creations >= existing_creations:
+            existing_data['creations'] = creations
+            print(f"✓ Updated creations: {creations}")
+        else:
+            print(f"⚠ Skipped creations: new value {creations} < existing value {existing_creations}")
 
     existing_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
