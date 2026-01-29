@@ -74,6 +74,12 @@ def fetch_csdn_stats():
         return None
 
     try:
+        # Debug: Save HTML content to file for inspection
+        debug_file = Path(__file__).parent.parent / 'StatRequest' / 'CSDN' / 'version2' / 'debug_csdn_page.html'
+        debug_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(debug_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print(f"Debug: HTML content saved to {debug_file}")
 
         # 使用正则表达式提取数据
         stats = {}
