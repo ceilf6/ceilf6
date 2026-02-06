@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '30 3/6 * * *'
+    - cron: "30 3/6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -46,6 +46,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update stats [skip ci]"
-            git push
-          fi
+            git commit -m "chore: update stats [skip ci]
+
+Co-authored-by: ceilf6 <ceilf6@users.noreply.github.com>"
+  git push
+  fi
