@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 import cloudscraper
+from bs4 import BeautifulSoup
 
 # CSDN User ID
 CSDN_USERNAME = "2301_78856868"
@@ -80,51 +81,104 @@ def fetch_csdn_stats():
         with open(debug_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
         print(f"Debug: HTML content saved to {debug_file}")
+        print(f"Debug: HTML length = {len(html_content)} bytes")
 
-        # 使用正则表达式提取数据
         stats = {}
+        soup = BeautifulSoup(html_content, 'html.parser')
 
-        # 提取总访问量
-        # 匹配模式: <div class="user-profile-statistics-num"...>数字</div> <div class="user-profile-statistics-name"...>总访问量</div>
-        views_match = re.search(
-            r'<div[^>]*class="user-profile-statistics-num"[^>]*>([0-9,]+)</div>\s*<div[^>]*class="user-profile-statistics-name"[^>]*>总访问量</div>',
-            html_content
-        )
-        if views_match:
-            views_str = views_match.group(1).replace(',', '')
-            stats['views'] = int(views_str)
+        # ── 方式1: BeautifulSoup 解析 user-profile-statistics-num/name ──
+        # 页面结构：<div class="user-profile-statistics-num">数值</div>
+        #           <div class="user-profile-statistics-name">标签</div>
+        label_map = {
+            '总访问量': 'views',
+            '原创': 'original',
+            '粉丝': 'fans',
+        }
+        num_divs = soup.find_all('div', class_='user-profile-statistics-num')
+        print(f"Debug: Found {len(num_divs)} user-profile-statistics-num divs")
+        for num_div in num_divs:
+            # 找紧跟的 sibling
+            name_div = num_div.find_next_sibling('div', class_='user-profile-statistics-name')
+            if name_div:
+                label = name_div.get_text(strip=True)
+                key = label_map.get(label)
+                if key:
+                    raw = num_div.get_text(strip=True).replace(',', '')
+                    if raw.isdigit():
+                        stats[key] = int(raw)
+                        print(f"Debug: Parsed {key} = {stats[key]} (label='{label}')")
 
-        # 提取原创数量
-        original_match = re.search(
-            r'<div[^>]*class="user-profile-statistics-num"[^>]*>([0-9,]+)</div>\s*<div[^>]*class="user-profile-statistics-name"[^>]*>原创</div>',
-            html_content
-        )
-        if original_match:
-            original_str = original_match.group(1).replace(',', '')
-            stats['original'] = int(original_str)
+        # ── 方式2: 正则兜底（兼容新旧两种 HTML 格式） ──
+        # 新格式：class 属性在前，后跟 data-v-* 等属性
+        # 旧格式：<div class="user-profile-statistics-num">数字</div> 无额外属性
+        _regex_patterns = {
+            'views':    (r'总访问量', 'views'),
+            'original': (r'原创',    'original'),
+            'fans':     (r'粉丝',    'fans'),
+        }
+        for field, (label, key) in _regex_patterns.items():
+            if key in stats:
+                continue
+            # 宽松写法：兼容 class 前后有其他属性、数字前后有空白
+            m = re.search(
+                r'class="user-profile-statistics-num"[^>]*>\s*([0-9,]+)\s*</div>\s*'
+                r'<div[^>]*class="user-profile-statistics-name"[^>]*>\s*' + label + r'\s*</div>',
+                html_content, re.UNICODE)
+            if m:
+                stats[key] = int(m.group(1).replace(',', ''))
+                print(f"Debug: {key} via regex (new-format) = {stats[key]}")
+                continue
+            # 原始写法（旧格式保留）：<div[^>]*class=...>数字</div>
+            m = re.search(
+                r'<div[^>]*class="user-profile-statistics-num"[^>]*>([0-9,]+)</div>\s*'
+                r'<div[^>]*class="user-profile-statistics-name"[^>]*>' + label + r'</div>',
+                html_content, re.UNICODE)
+            if m:
+                stats[key] = int(m.group(1).replace(',', ''))
+                print(f"Debug: {key} via regex (old-format) = {stats[key]}")
+            else:
+                print(f"Debug: {key} all regex patterns failed")
 
-        # 提取粉丝数
-        fans_match = re.search(
-            r'<div[^>]*class="user-profile-statistics-num"[^>]*>([0-9,]+)</div>\s*<div[^>]*class="user-profile-statistics-name"[^>]*>粉丝</div>',
-            html_content
-        )
-        if fans_match:
-            fans_str = fans_match.group(1).replace(',', '')
-            stats['fans'] = int(fans_str)
+        # ── 点赞 / 收藏：个人成就区段文本 ──
+        # 结构: <div class="aside-common-box-content-text">获得<span>N</span>次点赞</div>
+        achievement_texts = soup.find_all('div', class_='aside-common-box-content-text')
+        print(f"Debug: Found {len(achievement_texts)} aside-common-box-content-text divs")
+        for div in achievement_texts:
+            text = div.get_text(strip=True)
+            span = div.find('span')
+            if not span:
+                continue
+            val_str = span.get_text(strip=True).replace(',', '')
+            if not val_str.isdigit():
+                continue
+            val = int(val_str)
+            if '次点赞' in text and 'likes' not in stats:
+                stats['likes'] = val
+                print(f"Debug: Parsed likes = {val}")
+            elif '次收藏' in text and 'collect' not in stats:
+                stats['collect'] = val
+                print(f"Debug: Parsed collect = {val}")
 
-        # 提取点赞数
-        # 匹配模式: 获得<span>数字</span>次点赞
-        likes_match = re.search(r'获得<span>([0-9,]+)</span>次点赞', html_content)
-        if likes_match:
-            likes_str = likes_match.group(1).replace(',', '')
-            stats['likes'] = int(likes_str)
-
-        # 提取收藏数
-        # 匹配模式: 获得<span>数字</span>次收藏
-        collect_match = re.search(r'获得<span>([0-9,]+)</span>次收藏', html_content)
-        if collect_match:
-            collect_str = collect_match.group(1).replace(',', '')
-            stats['collect'] = int(collect_str)
+        # 正则兜底 likes/collect（新旧格式一致，均为原始正则）
+        if 'likes' not in stats:
+            m = re.search(r'获得<span>([0-9,]+)</span>次点赞', html_content, re.UNICODE)
+            if not m:
+                # 兼容 span 含其他属性的情况
+                m = re.search(r'获得<span[^>]*>([0-9,]+)</span>次点赞', html_content, re.UNICODE)
+            if m:
+                stats['likes'] = int(m.group(1).replace(',', ''))
+                print(f"Debug: likes via regex fallback = {stats['likes']}")
+            else:
+                print("Debug: likes all regex patterns failed")
+        if 'collect' not in stats:
+            m = re.search(r'获得<span>([0-9,]+)</span>次收藏', html_content, re.UNICODE)
+            if not m:
+                m = re.search(r'获得<span[^>]*>([0-9,]+)</span>次收藏', html_content, re.UNICODE)
+            if m:
+                stats['collect'] = int(m.group(1).replace(',', ''))
+                print(f"Debug: collect via regex fallback = {stats['collect']}")
+            else:
+                print("Debug: collect all regex patterns failed")
 
         print(f"Successfully fetched CSDN stats:")
         print(f"Views: {stats.get('views', 'N/A')}")
