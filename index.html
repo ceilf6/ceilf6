@@ -338,7 +338,7 @@
       function resizeCard(card, imgEl) {
         const ratio = imgEl.naturalHeight / imgEl.naturalWidth;
         const height = card.offsetWidth * ratio;
-        card.style.gridRowEnd = 'span ' + Math.ceil(height + 24);
+        card.style.gridRowEnd = "span " + Math.ceil(height + 24);
       }
 
       // 初始化瀑布流
@@ -356,7 +356,7 @@
 
       // 窗口缩放时重新计算
       window.addEventListener("resize", () => {
-        document.querySelectorAll(".gallery .card").forEach(card => {
+        document.querySelectorAll(".gallery .card").forEach((card) => {
           const imgEl = card.querySelector("img");
           if (imgEl && imgEl.complete) resizeCard(card, imgEl);
         });
