@@ -24,18 +24,22 @@ CSDN_USERNAME = "2301_78856868"
 CSDN_BLOG_URL = f"https://blog.csdn.net/{CSDN_USERNAME}"
 
 
+def _parse_cookies(cookie_str: str) -> dict:
+    """将 'key=val; key2=val2' 解析为字典。"""
+    cookies = {}
+    for part in cookie_str.split(';'):
+        part = part.strip()
+        if '=' in part:
+            k, v = part.split('=', 1)
+            cookies[k.strip()] = v.strip()
+    return cookies
+
+
 def _make_session(cookie_str: str | None):
     """根据是否有 cookie 字符串，返回 (session, use_cookies) 元组。"""
     if cookie_str:
         session = requests.Session()
-        # 将 "key=val; key2=val2" 格式解析为字典
-        cookies = {}
-        for part in cookie_str.split(';'):
-            part = part.strip()
-            if '=' in part:
-                k, v = part.split('=', 1)
-                cookies[k.strip()] = v.strip()
-        session.cookies.update(cookies)
+        session.cookies.update(_parse_cookies(cookie_str))
         return session, True
     else:
         return cloudscraper.create_scraper(
@@ -62,11 +66,59 @@ _BROWSER_HEADERS = {
 }
 
 
+# CSDN JSON API — 比 HTML 页走不同的 CDN 路径，在 GitHub Actions 环境下更易通过 WAF
+_CSDN_API_URL = f"https://blog.csdn.net/community/home-api/v1/get-business-card?username={CSDN_USERNAME}"
+
+_API_HEADERS = {
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'Connection': 'keep-alive',
+    'DNT': '1',
+    'Referer': f'https://blog.csdn.net/{CSDN_USERNAME}',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"macOS"',
+    'X-Requested-With': 'XMLHttpRequest',
+}
+
+
+def fetch_via_api(cookie_str: str | None) -> dict | None:
+    """通过 CSDN JSON API 获取统计数据，成功返回 stats dict，失败返回 None。"""
+    try:
+        session = requests.Session()
+        if cookie_str:
+            session.cookies.update(_parse_cookies(cookie_str))
+        resp = session.get(_CSDN_API_URL, headers=_API_HEADERS, timeout=30)
+        resp.raise_for_status()
+        body = resp.json()
+        if body.get('code') != 200:
+            print(f"API returned code={body.get('code')}: {body.get('msg', '')}")
+            return None
+        d = body.get('data', {})
+        # 字段映射
+        mapping = {
+            'visitCount':    'views',
+            'followerCount': 'fans',
+            'likeCount':     'likes',
+            'favoriteCount': 'collect',
+            'blogCount':     'original',
+        }
+        stats = {}
+        for api_key, stat_key in mapping.items():
+            if api_key in d and d[api_key] is not None:
+                stats[stat_key] = int(d[api_key])
+        print(f"API fetch succeeded: {stats}")
+        return stats if stats else None
+    except Exception as e:
+        print(f"API fetch failed: {e}")
+        return None
+
+
 def fetch_csdn_stats():
     """获取CSDN统计数据（包含访问量）。
 
-    优先使用环境变量 CSDN_COOKIES 中的真实会话 cookie 访问，
-    若未设置则回退到 cloudscraper 自动绕过。
+    优先使用 JSON API（绕过 HTML 页 WAF 限制），失败再回退 HTML 抓取。
     """
     max_retries = 3
     retry_delay = 5  # seconds
@@ -76,6 +128,14 @@ def fetch_csdn_stats():
         print("Using CSDN_COOKIES from environment variable.")
     else:
         print("CSDN_COOKIES not set, falling back to cloudscraper.")
+
+    # ── 第一步：尝试 JSON API ──
+    print(f"Trying CSDN API: {_CSDN_API_URL} ...")
+    api_stats = fetch_via_api(cookie_str)
+    if api_stats and len(api_stats) >= 3:
+        return api_stats
+    print("API fetch insufficient, falling back to HTML scraping...")
+
 
     session, use_cookies = _make_session(cookie_str)
 
@@ -310,8 +370,10 @@ def main():
     if stats and len(stats) > 0:
         update_stats_file(stats)
     else:
-        print("Failed to fetch data. No updates made.")
-        exit(1)
+        print("⚠️  Failed to fetch CSDN data (likely network block on GitHub Actions IPs). No updates made.")
+        # 不使用 exit(1)，避免 workflow 因 CSDN 网络封锁而整体失败
+        # 已有数据保持不变，下次 workflow 触发时再重试
+        exit(0)
 
 
 if __name__ == '__main__':
