@@ -3,20 +3,17 @@
 Fetch CSDN statistics (v2) and update data/csdn-stats.json
 包含访问量统计
 使用 cloudscraper 自动绕过 bot 检测。
-注：CSDN_COOKIES 环境变量已停用——GitHub Actions 的 IP 在 CDN 层被封 (521)，
-    cookies 传不进服务器，无实际效果。
 """
 
 import json
-# import os  # 已停用：不再读取 CSDN_COOKIES 环境变量
 import re
 import time
 from datetime import datetime
 from pathlib import Path
 
-import requests
 import cloudscraper
 from bs4 import BeautifulSoup
+
 
 # CSDN User ID
 CSDN_USERNAME = "2301_78856868"
@@ -27,13 +24,7 @@ CSDN_BLOG_URL = f"https://blog.csdn.net/{CSDN_USERNAME}"
 
 # # 已停用：CSDN CDN 在 IP 层封锁 GitHub Actions 机房，cookies 无法绕过 521 错误
 # def _parse_cookies(cookie_str: str) -> dict:
-#     cookies = {}
-#     for part in cookie_str.split(';'):
-#         part = part.strip()
-#         if '=' in part:
-#             k, v = part.split('=', 1)
-#             cookies[k.strip()] = v.strip()
-#     return cookies
+#     ...
 
 
 def _make_session():
@@ -44,77 +35,13 @@ def _make_session():
 
 
 # # 已停用：cookies 无法绕过 CDN IP 封锁，不再使用
-# _BROWSER_HEADERS = {
-#     'Accept': 'text/html,application/xhtml+xml,...',
-#     ...
-# }
-
-
-# CSDN JSON API — 比 HTML 页走不同的 CDN 路径，在 GitHub Actions 环境下更易通过 WAF
-_CSDN_API_URL = f"https://blog.csdn.net/community/home-api/v1/get-business-card?username={CSDN_USERNAME}"
-
-_API_HEADERS = {
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Connection': 'keep-alive',
-    'DNT': '1',
-    'Referer': f'https://blog.csdn.net/{CSDN_USERNAME}',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"macOS"',
-    'X-Requested-With': 'XMLHttpRequest',
-}
-
-
-def fetch_via_api() -> dict | None:
-    """通过 CSDN JSON API 获取统计数据，成功返回 stats dict，失败返回 None。"""
-    try:
-        session = requests.Session()
-        resp = session.get(_CSDN_API_URL, headers=_API_HEADERS, timeout=30)
-        resp.raise_for_status()
-        body = resp.json()
-        if body.get('code') != 200:
-            print(f"API returned code={body.get('code')}: {body.get('msg', '')}")
-            return None
-        d = body.get('data', {})
-        # 字段映射
-        mapping = {
-            'visitCount':    'views',
-            'followerCount': 'fans',
-            'likeCount':     'likes',
-            'favoriteCount': 'collect',
-            'blogCount':     'original',
-        }
-        stats = {}
-        for api_key, stat_key in mapping.items():
-            if api_key in d and d[api_key] is not None:
-                stats[stat_key] = int(d[api_key])
-        print(f"API fetch succeeded: {stats}")
-        return stats if stats else None
-    except Exception as e:
-        print(f"API fetch failed: {e}")
-        return None
+# _BROWSER_HEADERS = { ... }
 
 
 def fetch_csdn_stats():
-    """获取CSDN统计数据（包含访问量）。
-
-    优先使用 JSON API，失败再回退 HTML 抓取（cloudscraper）。
-    """
+    """获取CSDN统计数据（包含访问量），使用 cloudscraper 抓取 HTML。"""
     max_retries = 3
     retry_delay = 5  # seconds
-
-    # # 已停用：读取 CSDN_COOKIES 环境变量
-    # # GitHub Actions IP 在 CDN 层被封 (HTTP 521)，cookies 传不进服务器
-    # cookie_str = os.environ.get('CSDN_COOKIES', '').strip() or None
-
-    # ── 第一步：尝试 JSON API ──
-    print(f"Trying CSDN API: {_CSDN_API_URL} ...")
-    api_stats = fetch_via_api()
-    if api_stats and len(api_stats) >= 3:
-        return api_stats
-    print("API fetch insufficient, falling back to HTML scraping...")
 
     session = _make_session()
 
