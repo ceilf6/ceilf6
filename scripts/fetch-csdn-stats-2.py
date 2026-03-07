@@ -2,7 +2,7 @@
 """
 Fetch CSDN statistics (v2) and update data/csdn-stats.json
 包含访问量统计
-使用 cloudscraper 自动绕过 bot 检测。
+使用 cloudscraper 绕过 Cloudflare 保护
 """
 
 import json
@@ -14,7 +14,6 @@ from pathlib import Path
 import cloudscraper
 from bs4 import BeautifulSoup
 
-
 # CSDN User ID
 CSDN_USERNAME = "2301_78856868"
 
@@ -22,42 +21,40 @@ CSDN_USERNAME = "2301_78856868"
 CSDN_BLOG_URL = f"https://blog.csdn.net/{CSDN_USERNAME}"
 
 
-# # 已停用：CSDN CDN 在 IP 层封锁 GitHub Actions 机房，cookies 无法绕过 521 错误
-# def _parse_cookies(cookie_str: str) -> dict:
-#     ...
-
-
-def _make_session():
-    """返回 cloudscraper session。"""
-    return cloudscraper.create_scraper(
-        browser={'browser': 'chrome', 'platform': 'darwin', 'desktop': True}
-    )
-
-
-# # 已停用：cookies 无法绕过 CDN IP 封锁，不再使用
-# _BROWSER_HEADERS = { ... }
-
-
 def fetch_csdn_stats():
-    """获取CSDN统计数据（包含访问量），使用 cloudscraper 抓取 HTML。"""
+    """获取CSDN统计数据（包含访问量）- 使用 cloudscraper 绕过 Cloudflare"""
     max_retries = 3
     retry_delay = 5  # seconds
 
-    session = _make_session()
+    # 创建 cloudscraper 实例
+    scraper = cloudscraper.create_scraper(
+        browser={
+            'browser': 'chrome',
+            'platform': 'darwin',
+            'desktop': True
+        }
+    )
 
     for attempt in range(max_retries):
         try:
             if attempt > 0:
                 print(f"Retry attempt {attempt + 1}/{max_retries} after {retry_delay}s delay...")
                 time.sleep(retry_delay)
-                session = _make_session()
+                # 每次重试创建新的 scraper 实例
+                scraper = cloudscraper.create_scraper(
+                    browser={
+                        'browser': 'chrome',
+                        'platform': 'darwin',
+                        'desktop': True
+                    }
+                )
 
             print(f"Fetching {CSDN_BLOG_URL} ...")
-            response = session.get(CSDN_BLOG_URL, timeout=30)
+            response = scraper.get(CSDN_BLOG_URL, timeout=30)
             response.raise_for_status()
             html_content = response.text
 
-            # 检查是否被 Cloudflare / bot 检测拦截
+            # 检查是否被 Cloudflare 拦截
             if 'Just a moment' in html_content or 'Checking your browser' in html_content:
                 print(f"Cloudflare challenge detected on attempt {attempt + 1}")
                 if attempt == max_retries - 1:
@@ -272,10 +269,8 @@ def main():
     if stats and len(stats) > 0:
         update_stats_file(stats)
     else:
-        print("⚠️  Failed to fetch CSDN data (likely network block on GitHub Actions IPs). No updates made.")
-        # 不使用 exit(1)，避免 workflow 因 CSDN 网络封锁而整体失败
-        # 已有数据保持不变，下次 workflow 触发时再重试
-        exit(0)
+        print("Failed to fetch data. No updates made.")
+        exit(1)
 
 
 if __name__ == '__main__':

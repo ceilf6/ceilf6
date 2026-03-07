@@ -34,8 +34,6 @@ jobs:
 
       - name: Fetch CSDN stats
         run: python scripts/fetch-csdn-stats-2.py
-        continue-on-error: true
-        # CSDN_COOKIES 已停用：GitHub Actions IP 在 CDN 层被封 (HTTP 521)，cookies 无效
 
       - name: Generate SVG cards
         run: python scripts/generate-svg-cards.py
