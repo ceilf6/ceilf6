@@ -1,6 +1,6 @@
 const images = [
   { src: "resume-awards/imgs/0004-字节工训营.JPG", alt: "字节工训营" },
-  { src: "resume-awards/imgs/腾讯青科实训营.png", alt: "腾讯青科实训营" },
+  { src: "resume-awards/imgs/腾讯青科实训营.PNG", alt: "腾讯青科实训营" },
   { src: "resume-awards/imgs/0003-腾讯开源.jpg", alt: "腾讯开源" },
   { src: "resume-awards/imgs/0010-百度之星.JPG", alt: "百度之星" },
   {
