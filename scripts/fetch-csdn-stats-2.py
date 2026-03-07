@@ -2,15 +2,18 @@
 """
 Fetch CSDN statistics (v2) and update data/csdn-stats.json
 包含访问量统计
-使用 cloudscraper 绕过 Cloudflare 保护
+优先使用环境变量 CSDN_COOKIES 携带真实会话 cookie（绕过 bot 检测），
+否则回退到 cloudscraper 自动绕过。
 """
 
 import json
+import os
 import re
 import time
 from datetime import datetime
 from pathlib import Path
 
+import requests
 import cloudscraper
 from bs4 import BeautifulSoup
 
@@ -21,40 +24,78 @@ CSDN_USERNAME = "2301_78856868"
 CSDN_BLOG_URL = f"https://blog.csdn.net/{CSDN_USERNAME}"
 
 
+def _make_session(cookie_str: str | None):
+    """根据是否有 cookie 字符串，返回 (session, use_cookies) 元组。"""
+    if cookie_str:
+        session = requests.Session()
+        # 将 "key=val; key2=val2" 格式解析为字典
+        cookies = {}
+        for part in cookie_str.split(';'):
+            part = part.strip()
+            if '=' in part:
+                k, v = part.split('=', 1)
+                cookies[k.strip()] = v.strip()
+        session.cookies.update(cookies)
+        return session, True
+    else:
+        return cloudscraper.create_scraper(
+            browser={'browser': 'chrome', 'platform': 'darwin', 'desktop': True}
+        ), False
+
+
+# 与 request.md 一致的浏览器请求头（不含 Cookie，由 session 携带）
+_BROWSER_HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+    'DNT': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'cross-site',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"macOS"',
+}
+
+
 def fetch_csdn_stats():
-    """获取CSDN统计数据（包含访问量）- 使用 cloudscraper 绕过 Cloudflare"""
+    """获取CSDN统计数据（包含访问量）。
+
+    优先使用环境变量 CSDN_COOKIES 中的真实会话 cookie 访问，
+    若未设置则回退到 cloudscraper 自动绕过。
+    """
     max_retries = 3
     retry_delay = 5  # seconds
 
-    # 创建 cloudscraper 实例
-    scraper = cloudscraper.create_scraper(
-        browser={
-            'browser': 'chrome',
-            'platform': 'darwin',
-            'desktop': True
-        }
-    )
+    cookie_str = os.environ.get('CSDN_COOKIES', '').strip() or None
+    if cookie_str:
+        print("Using CSDN_COOKIES from environment variable.")
+    else:
+        print("CSDN_COOKIES not set, falling back to cloudscraper.")
+
+    session, use_cookies = _make_session(cookie_str)
 
     for attempt in range(max_retries):
         try:
             if attempt > 0:
                 print(f"Retry attempt {attempt + 1}/{max_retries} after {retry_delay}s delay...")
                 time.sleep(retry_delay)
-                # 每次重试创建新的 scraper 实例
-                scraper = cloudscraper.create_scraper(
-                    browser={
-                        'browser': 'chrome',
-                        'platform': 'darwin',
-                        'desktop': True
-                    }
-                )
+                # 每次重试重建 session
+                session, use_cookies = _make_session(cookie_str)
 
             print(f"Fetching {CSDN_BLOG_URL} ...")
-            response = scraper.get(CSDN_BLOG_URL, timeout=30)
+            if use_cookies:
+                response = session.get(CSDN_BLOG_URL, headers=_BROWSER_HEADERS, timeout=30)
+            else:
+                response = session.get(CSDN_BLOG_URL, timeout=30)
             response.raise_for_status()
             html_content = response.text
 
-            # 检查是否被 Cloudflare 拦截
+            # 检查是否被 Cloudflare / bot 检测拦截
             if 'Just a moment' in html_content or 'Checking your browser' in html_content:
                 print(f"Cloudflare challenge detected on attempt {attempt + 1}")
                 if attempt == max_retries - 1:
