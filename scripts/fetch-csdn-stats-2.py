@@ -2,12 +2,13 @@
 """
 Fetch CSDN statistics (v2) and update data/csdn-stats.json
 包含访问量统计
-优先使用环境变量 CSDN_COOKIES 携带真实会话 cookie（绕过 bot 检测），
-否则回退到 cloudscraper 自动绕过。
+使用 cloudscraper 自动绕过 bot 检测。
+注：CSDN_COOKIES 环境变量已停用——GitHub Actions 的 IP 在 CDN 层被封 (521)，
+    cookies 传不进服务器，无实际效果。
 """
 
 import json
-import os
+# import os  # 已停用：不再读取 CSDN_COOKIES 环境变量
 import re
 import time
 from datetime import datetime
@@ -24,46 +25,29 @@ CSDN_USERNAME = "2301_78856868"
 CSDN_BLOG_URL = f"https://blog.csdn.net/{CSDN_USERNAME}"
 
 
-def _parse_cookies(cookie_str: str) -> dict:
-    """将 'key=val; key2=val2' 解析为字典。"""
-    cookies = {}
-    for part in cookie_str.split(';'):
-        part = part.strip()
-        if '=' in part:
-            k, v = part.split('=', 1)
-            cookies[k.strip()] = v.strip()
-    return cookies
+# # 已停用：CSDN CDN 在 IP 层封锁 GitHub Actions 机房，cookies 无法绕过 521 错误
+# def _parse_cookies(cookie_str: str) -> dict:
+#     cookies = {}
+#     for part in cookie_str.split(';'):
+#         part = part.strip()
+#         if '=' in part:
+#             k, v = part.split('=', 1)
+#             cookies[k.strip()] = v.strip()
+#     return cookies
 
 
-def _make_session(cookie_str: str | None):
-    """根据是否有 cookie 字符串，返回 (session, use_cookies) 元组。"""
-    if cookie_str:
-        session = requests.Session()
-        session.cookies.update(_parse_cookies(cookie_str))
-        return session, True
-    else:
-        return cloudscraper.create_scraper(
-            browser={'browser': 'chrome', 'platform': 'darwin', 'desktop': True}
-        ), False
+def _make_session():
+    """返回 cloudscraper session。"""
+    return cloudscraper.create_scraper(
+        browser={'browser': 'chrome', 'platform': 'darwin', 'desktop': True}
+    )
 
 
-# 与 request.md 一致的浏览器请求头（不含 Cookie，由 session 携带）
-_BROWSER_HEADERS = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Cache-Control': 'max-age=0',
-    'Connection': 'keep-alive',
-    'DNT': '1',
-    'Sec-Fetch-Dest': 'document',
-    'Sec-Fetch-Mode': 'navigate',
-    'Sec-Fetch-Site': 'cross-site',
-    'Sec-Fetch-User': '?1',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"macOS"',
-}
+# # 已停用：cookies 无法绕过 CDN IP 封锁，不再使用
+# _BROWSER_HEADERS = {
+#     'Accept': 'text/html,application/xhtml+xml,...',
+#     ...
+# }
 
 
 # CSDN JSON API — 比 HTML 页走不同的 CDN 路径，在 GitHub Actions 环境下更易通过 WAF
@@ -83,12 +67,10 @@ _API_HEADERS = {
 }
 
 
-def fetch_via_api(cookie_str: str | None) -> dict | None:
+def fetch_via_api() -> dict | None:
     """通过 CSDN JSON API 获取统计数据，成功返回 stats dict，失败返回 None。"""
     try:
         session = requests.Session()
-        if cookie_str:
-            session.cookies.update(_parse_cookies(cookie_str))
         resp = session.get(_CSDN_API_URL, headers=_API_HEADERS, timeout=30)
         resp.raise_for_status()
         body = resp.json()
@@ -118,40 +100,33 @@ def fetch_via_api(cookie_str: str | None) -> dict | None:
 def fetch_csdn_stats():
     """获取CSDN统计数据（包含访问量）。
 
-    优先使用 JSON API（绕过 HTML 页 WAF 限制），失败再回退 HTML 抓取。
+    优先使用 JSON API，失败再回退 HTML 抓取（cloudscraper）。
     """
     max_retries = 3
     retry_delay = 5  # seconds
 
-    cookie_str = os.environ.get('CSDN_COOKIES', '').strip() or None
-    if cookie_str:
-        print("Using CSDN_COOKIES from environment variable.")
-    else:
-        print("CSDN_COOKIES not set, falling back to cloudscraper.")
+    # # 已停用：读取 CSDN_COOKIES 环境变量
+    # # GitHub Actions IP 在 CDN 层被封 (HTTP 521)，cookies 传不进服务器
+    # cookie_str = os.environ.get('CSDN_COOKIES', '').strip() or None
 
     # ── 第一步：尝试 JSON API ──
     print(f"Trying CSDN API: {_CSDN_API_URL} ...")
-    api_stats = fetch_via_api(cookie_str)
+    api_stats = fetch_via_api()
     if api_stats and len(api_stats) >= 3:
         return api_stats
     print("API fetch insufficient, falling back to HTML scraping...")
 
-
-    session, use_cookies = _make_session(cookie_str)
+    session = _make_session()
 
     for attempt in range(max_retries):
         try:
             if attempt > 0:
                 print(f"Retry attempt {attempt + 1}/{max_retries} after {retry_delay}s delay...")
                 time.sleep(retry_delay)
-                # 每次重试重建 session
-                session, use_cookies = _make_session(cookie_str)
+                session = _make_session()
 
             print(f"Fetching {CSDN_BLOG_URL} ...")
-            if use_cookies:
-                response = session.get(CSDN_BLOG_URL, headers=_BROWSER_HEADERS, timeout=30)
-            else:
-                response = session.get(CSDN_BLOG_URL, timeout=30)
+            response = session.get(CSDN_BLOG_URL, timeout=30)
             response.raise_for_status()
             html_content = response.text
 
