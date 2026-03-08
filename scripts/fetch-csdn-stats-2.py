@@ -62,6 +62,14 @@ def fetch_csdn_stats():
                     return None
                 continue
 
+            # 检查页面内容是否完整（关键 div 必须存在）
+            if 'user-profile-statistics-num' not in html_content:
+                print(f"Incomplete page on attempt {attempt + 1} ({len(html_content)} bytes, missing key elements)")
+                if attempt == max_retries - 1:
+                    print("All retry attempts returned incomplete page.")
+                    return None
+                continue
+
             # 如果成功获取，跳出重试循环
             break
 
