@@ -99,6 +99,38 @@
         right: 20px;
       }
 
+      @media (max-width: 768px) {
+        .nav-btn {
+          width: 44px;
+          height: 44px;
+          background: rgba(0, 0, 0, 0.55);
+          border: 2px solid rgba(255, 255, 255, 0.6);
+          color: #fff;
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-btn:active {
+          background: rgba(56, 189, 248, 0.45);
+          border-color: rgba(56, 189, 248, 0.9);
+          transform: translateY(-50%) scale(0.93);
+        }
+
+        .nav-btn.prev {
+          left: 12px;
+        }
+
+        .nav-btn.next {
+          right: 12px;
+        }
+
+        .nav-btn svg {
+          width: 22px;
+          height: 22px;
+        }
+      }
+
       .nav-btn svg {
         width: 24px;
         height: 24px;
@@ -205,6 +237,36 @@
           nextImage();
         }
       });
+
+      // 触摸滑动切换
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      document.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        },
+        { passive: true },
+      );
+
+      document.addEventListener(
+        "touchend",
+        (e) => {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          // 水平滑动距离 > 50px 且水平位移大于垂直位移才触发
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+            if (dx < 0) {
+              nextImage();
+            } else {
+              prevImage();
+            }
+          }
+        },
+        { passive: true },
+      );
     </script>
   </body>
 </html>
