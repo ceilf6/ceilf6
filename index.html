@@ -3,34 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ceilf6 | 代码、内容与奖项展墙</title>
+    <title>ceilf6 | README Cards &amp; Awards Gallery</title>
     <meta
       name="description"
-      content="ceilf6 的个人主页：GitHub、博客、Vlog 与 resume-awards 奖项图片展墙。"
+      content="ceilf6 的静态主页：展示 README 中的三张入口卡片，以及 resume-awards/imgs 的奖项图片展墙。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&amp;family=Noto+Serif+SC:wght@500;700;800&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --bg: #071217;
-        --bg-soft: #10202a;
-        --panel: rgba(11, 25, 32, 0.84);
-        --panel-strong: rgba(8, 18, 24, 0.96);
-        --line: rgba(255, 244, 225, 0.13);
-        --text: #f8f0e3;
-        --muted: #b7c3c9;
-        --warm: #f4b27c;
-        --warm-deep: #b76f3f;
-        --cool: #84d2f6;
-        --cool-deep: #315f73;
-        --shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
-        --radius-xl: 32px;
-        --radius-lg: 24px;
-        --radius-md: 18px;
+        --paper: #f3eee4;
+        --paper-strong: #fcf8f1;
+        --card: rgba(255, 252, 247, 0.82);
+        --card-strong: #fffdf8;
+        --ink: #1b1813;
+        --muted: #6d655a;
+        --line: rgba(27, 24, 19, 0.11);
+        --accent: #9d6e42;
+        --accent-soft: #eadbc7;
+        --shadow: 0 24px 70px rgba(36, 26, 16, 0.08);
+        --radius-xl: 36px;
+        --radius-lg: 28px;
+        --radius-md: 20px;
+        --content-width: min(1240px, calc(100vw - 40px));
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
@@ -45,67 +44,58 @@
       body {
         margin: 0;
         min-height: 100vh;
-        color: var(--text);
+        color: var(--ink);
         font-family: "Noto Sans SC", sans-serif;
         background:
           radial-gradient(
-            circle at top left,
-            rgba(132, 210, 246, 0.18),
-            transparent 30%
+            circle at 12% 10%,
+            rgba(157, 110, 66, 0.14),
+            transparent 22%
           ),
           radial-gradient(
-            circle at 85% 15%,
-            rgba(244, 178, 124, 0.16),
-            transparent 28%
+            circle at 88% 8%,
+            rgba(46, 76, 69, 0.08),
+            transparent 18%
           ),
-          radial-gradient(
-            circle at 50% 100%,
-            rgba(103, 150, 172, 0.12),
-            transparent 36%
-          ),
-          linear-gradient(180deg, #09161c 0%, #071217 56%, #04090c 100%);
+          linear-gradient(180deg, #f8f4ed 0%, #f3eee4 48%, #ede6da 100%);
       }
 
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0.12;
-        background:
-          linear-gradient(
-            115deg,
-            transparent 0%,
-            transparent 48%,
-            rgba(255, 255, 255, 0.08) 49%,
-            transparent 50%,
-            transparent 100%
-          ),
-          repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 56px,
-            rgba(255, 255, 255, 0.03) 57px,
-            transparent 58px
-          );
-        mix-blend-mode: screen;
-      }
-
+      body::before,
       body::after {
         content: "";
         position: fixed;
         inset: 0;
         pointer-events: none;
-        opacity: 0.08;
+      }
+
+      body::before {
+        opacity: 0.14;
         background-image:
-          radial-gradient(rgba(255, 255, 255, 0.8) 0.7px, transparent 0.7px),
-          radial-gradient(rgba(255, 255, 255, 0.8) 0.7px, transparent 0.7px);
-        background-size:
-          24px 24px,
-          24px 24px;
-        background-position:
-          0 0,
-          12px 12px;
+          linear-gradient(rgba(27, 24, 19, 0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(27, 24, 19, 0.18) 1px, transparent 1px);
+        background-size: 48px 48px;
+        -webkit-mask-image: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.7),
+          transparent 72%
+        );
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 72%);
+      }
+
+      body::after {
+        opacity: 0.08;
+        background:
+          linear-gradient(
+            130deg,
+            rgba(255, 255, 255, 0.5),
+            transparent 46%,
+            rgba(157, 110, 66, 0.12)
+          ),
+          radial-gradient(
+            circle at 50% 120%,
+            rgba(27, 24, 19, 0.24),
+            transparent 46%
+          );
       }
 
       a {
@@ -113,378 +103,393 @@
         text-decoration: none;
       }
 
-      button {
-        border: 0;
-        font: inherit;
-        color: inherit;
-        background: none;
-        padding: 0;
-      }
-
       img {
         display: block;
         max-width: 100%;
       }
 
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+      }
+
       code {
-        padding: 0.12em 0.42em;
+        padding: 0.15em 0.45em;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.06);
-        color: #ffe5cc;
+        background: rgba(27, 24, 19, 0.06);
         font-size: 0.92em;
       }
 
-      .shell {
+      .page {
         position: relative;
-        width: min(1180px, calc(100vw - 32px));
+        width: var(--content-width);
         margin: 0 auto;
-        padding: 28px 0 84px;
+        padding: 30px 0 72px;
       }
 
-      .hero,
-      .section-panel {
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        text-transform: none;
+      }
+
+      .topbar a {
         position: relative;
-        overflow: hidden;
+      }
+
+      .topbar a::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -4px;
+        left: 0;
+        height: 1px;
+        transform: scaleX(0);
+        transform-origin: left;
+        background: rgba(157, 110, 66, 0.7);
+        transition: transform 0.35s var(--ease);
+      }
+
+      .topbar a:hover::after,
+      .topbar a:focus-visible::after {
+        transform: scaleX(1);
+      }
+
+      .frame {
         border: 1px solid var(--line);
-        border-radius: var(--radius-xl);
-        background:
-          linear-gradient(145deg, rgba(255, 244, 225, 0.03), transparent 38%),
-          linear-gradient(180deg, rgba(9, 23, 30, 0.92), rgba(7, 18, 23, 0.78));
+        background: var(--card);
         box-shadow: var(--shadow);
         backdrop-filter: blur(16px);
       }
 
       .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.82fr);
-        gap: 28px;
-        padding: 30px;
+        position: relative;
+        overflow: hidden;
+        padding: 38px;
+        border-radius: var(--radius-xl);
       }
 
-      .hero::before,
-      .section-panel::before {
+      .hero::before {
         content: "";
         position: absolute;
-        inset: auto auto -90px -80px;
-        width: 260px;
-        height: 260px;
+        top: -86px;
+        right: -72px;
+        width: 320px;
+        height: 320px;
+        border: 1px solid rgba(157, 110, 66, 0.18);
         border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(244, 178, 124, 0.24),
-          transparent 72%
-        );
-        filter: blur(10px);
       }
 
       .hero::after {
         content: "";
         position: absolute;
-        top: -60px;
-        right: -20px;
-        width: 340px;
-        height: 220px;
-        background:
-          linear-gradient(120deg, rgba(132, 210, 246, 0.18), transparent 54%),
-          linear-gradient(180deg, rgba(255, 244, 225, 0.08), transparent);
-        clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 68%);
-        opacity: 0.9;
+        left: 38px;
+        bottom: 30px;
+        width: 180px;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(157, 110, 66, 0.45), transparent);
       }
 
-      .hero-copy,
-      .hero-aside {
+      .hero-grid {
         position: relative;
         z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.78fr);
+        gap: 32px;
       }
 
       .eyebrow,
       .section-kicker {
-        margin: 0 0 14px;
-        color: var(--cool);
+        margin: 0 0 16px;
+        color: var(--accent);
         font-size: 13px;
         font-weight: 700;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
       }
 
-      .hero h1 {
+      .hero h1,
+      .section-head h2 {
         margin: 0;
-        max-width: 10ch;
-        font-family: "Noto Serif SC", serif;
-        font-size: clamp(3rem, 7.2vw, 5.2rem);
-        line-height: 0.98;
+        font-family: "Cormorant Garamond", "Noto Serif SC", serif;
+        font-weight: 600;
+        line-height: 0.94;
         letter-spacing: 0.02em;
       }
 
+      .hero h1 {
+        max-width: 8.4ch;
+        font-size: clamp(3.8rem, 8vw, 6.2rem);
+      }
+
       .hero h1 span {
-        color: rgba(248, 240, 227, 0.64);
+        display: block;
+        margin-top: 18px;
+        font-family: "Noto Serif SC", serif;
+        font-size: clamp(1.5rem, 2.2vw, 2rem);
+        line-height: 1.35;
+        letter-spacing: 0.08em;
+        color: var(--muted);
       }
 
       .hero-lead {
-        max-width: 58ch;
-        margin: 18px 0 0;
+        max-width: 60ch;
+        margin: 24px 0 0;
         color: var(--muted);
-        font-size: clamp(1rem, 1.6vw, 1.08rem);
-        line-height: 1.9;
+        font-size: 1rem;
+        line-height: 1.95;
       }
 
-      .meta-row,
-      .action-row,
-      .aside-grid,
-      .contact-strip {
+      .hero-actions,
+      .hero-meta {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
       }
 
-      .meta-row {
-        margin-top: 24px;
+      .hero-actions {
+        margin-top: 28px;
       }
 
-      .meta-pill {
-        padding: 9px 14px;
-        border: 1px solid rgba(255, 244, 225, 0.12);
+      .hero-meta {
+        margin-top: 22px;
+      }
+
+      .pill,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 13px 18px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.03);
-        color: rgba(248, 240, 227, 0.86);
+        border: 1px solid var(--line);
+      }
+
+      .pill {
+        background: rgba(255, 255, 255, 0.56);
+        color: rgba(27, 24, 19, 0.82);
         font-size: 13px;
       }
 
-      .action-row {
-        margin-top: 26px;
-      }
-
-      .action-btn {
-        padding: 13px 18px;
-        border-radius: 999px;
+      .button {
         transition:
           transform 0.35s var(--ease),
           border-color 0.35s var(--ease),
           background 0.35s var(--ease);
       }
 
-      .action-btn.primary {
-        background: linear-gradient(135deg, var(--warm), #f7d2ab);
-        color: #1d1208;
-        font-weight: 800;
+      .button.primary {
+        background: #1c1a17;
+        border-color: #1c1a17;
+        color: #faf6ef;
       }
 
-      .action-btn.secondary {
-        border: 1px solid rgba(132, 210, 246, 0.28);
-        background: rgba(132, 210, 246, 0.08);
-        color: var(--cool);
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.72);
       }
 
-      .action-btn:hover,
-      .platform-card:hover,
+      .button:hover,
+      .button:focus-visible,
+      .entry-card:hover,
+      .entry-card:focus-visible,
       .award-card:hover,
-      .lightbox__control:hover,
-      .lightbox__close:hover {
-        transform: translateY(-4px);
+      .award-card:focus-visible,
+      .lightbox__close:hover,
+      .lightbox__control:hover {
+        transform: translateY(-3px);
       }
 
-      .hero-aside {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 18px;
+      .button:hover,
+      .button:focus-visible,
+      .entry-card:hover,
+      .entry-card:focus-visible,
+      .award-card:hover,
+      .award-card:focus-visible,
+      .lightbox__close:hover,
+      .lightbox__control:hover {
+        border-color: rgba(157, 110, 66, 0.34);
       }
 
-      .aside-card {
-        padding: 18px;
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        border-radius: var(--radius-lg);
-        background:
-          linear-gradient(160deg, rgba(255, 255, 255, 0.05), transparent 55%),
-          rgba(7, 18, 23, 0.56);
+      .facts {
+        display: grid;
+        gap: 14px;
       }
 
-      .aside-label {
+      .fact-card {
+        padding: 20px 22px;
+        border: 1px solid rgba(27, 24, 19, 0.08);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .fact-label {
         margin: 0;
-        color: rgba(248, 240, 227, 0.54);
+        color: var(--muted);
         font-size: 12px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
-      .aside-value {
+      .fact-value {
         margin: 10px 0 0;
-        font-family: "Noto Serif SC", serif;
-        font-size: clamp(1.7rem, 4vw, 2.8rem);
+        font-family: "Cormorant Garamond", "Noto Serif SC", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
         line-height: 1;
       }
 
-      .aside-value strong {
-        color: var(--warm);
-        font-weight: 800;
-      }
-
-      .aside-copy {
+      .fact-copy {
         margin: 10px 0 0;
         color: var(--muted);
         font-size: 14px;
-        line-height: 1.75;
+        line-height: 1.8;
       }
 
-      .aside-grid {
-        gap: 14px;
-      }
-
-      .aside-grid .aside-card {
-        flex: 1 1 180px;
-      }
-
-      .contact-strip {
-        margin-top: 24px;
-      }
-
-      .contact-item {
-        padding: 10px 14px;
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        color: rgba(248, 240, 227, 0.78);
-        font-size: 13px;
-      }
-
-      .section-panel {
+      .section {
         margin-top: 26px;
-        padding: 28px;
+        padding: 30px;
+        border-radius: 32px;
       }
 
       .section-head {
-        position: relative;
-        z-index: 1;
         display: flex;
         align-items: end;
         justify-content: space-between;
-        gap: 18px;
+        gap: 26px;
         margin-bottom: 22px;
       }
 
       .section-head h2 {
-        margin: 0;
-        font-family: "Noto Serif SC", serif;
-        font-size: clamp(2rem, 4vw, 3rem);
-        line-height: 1.08;
+        font-size: clamp(2.5rem, 4vw, 4rem);
       }
 
       .section-copy {
-        max-width: 34ch;
+        max-width: 36ch;
         margin: 0;
         color: var(--muted);
-        line-height: 1.8;
+        line-height: 1.85;
       }
 
-      .platform-grid {
-        position: relative;
-        z-index: 1;
+      .entry-grid {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         gap: 18px;
       }
 
-      .platform-card {
+      .entry-card {
         display: flex;
         flex-direction: column;
         gap: 14px;
         min-width: 0;
-        padding: 16px;
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        border-radius: 24px;
-        background:
-          linear-gradient(155deg, rgba(255, 255, 255, 0.06), transparent 46%),
-          rgba(8, 19, 25, 0.78);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        padding: 18px;
+        border: 1px solid rgba(27, 24, 19, 0.08);
+        border-radius: var(--radius-lg);
+        background: var(--card-strong);
+        box-shadow: 0 16px 38px rgba(36, 26, 16, 0.05);
         transition:
           transform 0.4s var(--ease),
           border-color 0.4s var(--ease),
           box-shadow 0.4s var(--ease);
       }
 
-      .platform-card:hover,
-      .award-card:hover {
-        border-color: rgba(244, 178, 124, 0.4);
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.08),
-          0 18px 50px rgba(0, 0, 0, 0.28);
+      .entry-card:hover,
+      .entry-card:focus-visible,
+      .award-card:hover,
+      .award-card:focus-visible {
+        box-shadow: 0 24px 50px rgba(36, 26, 16, 0.08);
       }
 
-      .platform-card--primary {
+      .entry-card--wide {
         grid-column: span 6;
       }
 
-      .platform-card--secondary {
+      .entry-card--narrow {
         grid-column: span 3;
       }
 
-      .platform-meta {
+      .entry-meta {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        color: rgba(248, 240, 227, 0.72);
-        font-size: 13px;
       }
 
-      .platform-title {
+      .entry-title {
         margin: 0;
         font-family: "Noto Serif SC", serif;
-        font-size: 1.25rem;
+        font-size: 1.12rem;
       }
 
-      .platform-badge {
+      .entry-badge {
         padding: 6px 10px;
         border-radius: 999px;
-        color: #0d1920;
+        background: var(--accent-soft);
+        color: #5d3d20;
         font-size: 12px;
-        font-weight: 800;
-        background: linear-gradient(135deg, #f5d2a8, #f1ad74);
+        font-weight: 700;
+        letter-spacing: 0.08em;
       }
 
-      .platform-card img {
+      .entry-media {
+        display: grid;
+        place-items: center;
+        padding: 14px;
+        border: 1px solid rgba(27, 24, 19, 0.08);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #fcfaf5, #f2ebdf);
+        overflow: hidden;
+      }
+
+      .entry-card--wide .entry-media {
+        min-height: 220px;
+      }
+
+      .entry-card--narrow .entry-media {
+        min-height: 220px;
+      }
+
+      .entry-media img {
         width: 100%;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 244, 225, 0.08);
-        background: rgba(255, 255, 255, 0.02);
+        height: 100%;
+        object-fit: contain;
       }
 
-      .platform-description {
+      .entry-description {
         margin: 0;
         color: var(--muted);
         font-size: 14px;
-        line-height: 1.75;
+        line-height: 1.85;
       }
 
-      .stats-strip {
+      .hint-strip {
         display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 22px;
+        justify-content: flex-end;
+        margin-top: 18px;
       }
 
-      .stats-chip {
-        padding: 11px 14px;
-        min-width: 138px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .stats-chip strong {
-        display: block;
-        margin-bottom: 4px;
-        font-size: 1.15rem;
-      }
-
-      .stats-chip span {
-        color: var(--muted);
-        font-size: 13px;
+      .hint-strip img {
+        width: min(100%, 530px);
+        opacity: 0.9;
       }
 
       .gallery-toolbar {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
@@ -495,12 +500,15 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 15px;
+        padding: 11px 14px;
+        border: 1px solid rgba(27, 24, 19, 0.08);
         border-radius: 999px;
-        border: 1px solid rgba(132, 210, 246, 0.22);
-        background: rgba(132, 210, 246, 0.08);
-        color: var(--cool);
-        font-weight: 700;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .gallery-count strong {
+        font-family: "Cormorant Garamond", "Noto Serif SC", serif;
+        font-size: 1.4rem;
       }
 
       .gallery-note {
@@ -511,90 +519,75 @@
 
       .gallery {
         column-gap: 18px;
-        columns: 4 260px;
+        columns: 3 300px;
       }
 
       .award-card {
-        position: relative;
         width: 100%;
-        margin-bottom: 18px;
-        break-inside: avoid;
-        overflow: hidden;
+        margin: 0 0 18px;
         padding: 12px;
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        border-radius: 24px;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 52%),
-          rgba(7, 18, 23, 0.82);
+        border: 1px solid rgba(27, 24, 19, 0.08);
+        border-radius: 26px;
+        background: var(--card-strong);
+        box-shadow: 0 16px 38px rgba(36, 26, 16, 0.05);
         cursor: pointer;
+        break-inside: avoid;
         text-align: left;
         transition:
           transform 0.4s var(--ease),
           border-color 0.4s var(--ease),
           box-shadow 0.4s var(--ease);
-        animation: rise 0.9s var(--ease) both;
-        animation-delay: var(--delay, 0ms);
       }
 
-      .award-card::after {
-        content: "";
-        position: absolute;
-        inset: auto 12px 12px;
-        height: 44%;
-        border-radius: 0 0 18px 18px;
-        background: linear-gradient(
-          180deg,
-          transparent 0%,
-          rgba(5, 11, 16, 0.62) 100%
-        );
-        pointer-events: none;
-      }
-
-      .award-card img {
-        position: relative;
-        z-index: 1;
-        width: 100%;
+      .award-media {
+        overflow: hidden;
         border-radius: 18px;
+        background: #f4efe7;
       }
 
-      .award-card__meta {
-        position: absolute;
-        right: 22px;
-        bottom: 24px;
-        left: 22px;
-        z-index: 2;
+      .award-media img {
+        width: 100%;
+        transition: transform 0.5s var(--ease);
+      }
+
+      .award-card:hover .award-media img,
+      .award-card:focus-visible .award-media img {
+        transform: scale(1.025);
+      }
+
+      .award-meta {
         display: flex;
         align-items: end;
         justify-content: space-between;
-        gap: 12px;
+        gap: 16px;
+        margin-top: 12px;
       }
 
-      .award-card__title {
+      .award-title {
         margin: 0;
-        max-width: 14ch;
         font-family: "Noto Serif SC", serif;
-        font-size: 1.1rem;
-        line-height: 1.35;
+        font-size: 1.06rem;
+        line-height: 1.45;
       }
 
-      .award-card__index {
-        color: rgba(248, 240, 227, 0.56);
+      .award-index {
+        color: rgba(109, 101, 90, 0.8);
         font-size: 12px;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
       .gallery-empty {
-        padding: 28px;
-        border: 1px dashed rgba(255, 244, 225, 0.18);
+        padding: 30px;
+        border: 1px dashed rgba(27, 24, 19, 0.16);
         border-radius: 24px;
         color: var(--muted);
         text-align: center;
       }
 
-      .footer-note {
-        margin-top: 22px;
-        color: rgba(248, 240, 227, 0.52);
+      .section-footnote {
+        margin-top: 18px;
+        color: rgba(109, 101, 90, 0.92);
         font-size: 13px;
         line-height: 1.8;
       }
@@ -607,40 +600,42 @@
         position: fixed;
         inset: 0;
         z-index: 30;
+        padding: 24px;
       }
 
       .lightbox__backdrop {
         position: absolute;
         inset: 0;
-        background: rgba(2, 7, 10, 0.88);
-        backdrop-filter: blur(12px);
+        background: rgba(17, 13, 10, 0.82);
+        backdrop-filter: blur(14px);
       }
 
-      .lightbox__frame {
+      .lightbox__panel {
         position: relative;
         z-index: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
-        min-height: 100vh;
-        padding: 24px;
+        min-height: calc(100vh - 48px);
       }
 
       .lightbox__figure {
-        margin: 0;
         width: min(1080px, calc(100vw - 120px));
+        margin: 0;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 28px;
+        background: rgba(36, 28, 20, 0.78);
+        box-shadow: 0 28px 100px rgba(0, 0, 0, 0.32);
       }
 
       .lightbox__figure img {
         width: 100%;
-        max-height: calc(100vh - 150px);
+        max-height: calc(100vh - 180px);
         object-fit: contain;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 244, 225, 0.1);
-        box-shadow:
-          0 24px 90px rgba(0, 0, 0, 0.44),
-          0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+        border-radius: 20px;
+        background: #140f0c;
       }
 
       .lightbox__caption {
@@ -649,21 +644,22 @@
         justify-content: space-between;
         gap: 18px;
         margin-top: 16px;
+        color: #f7efe1;
       }
 
       .lightbox__caption p {
         margin: 0;
         font-family: "Noto Serif SC", serif;
-        font-size: clamp(1.25rem, 3vw, 1.8rem);
+        font-size: clamp(1.2rem, 2.4vw, 1.8rem);
       }
 
       .lightbox__caption span {
-        color: rgba(248, 240, 227, 0.68);
+        color: rgba(247, 239, 225, 0.72);
         font-size: 14px;
       }
 
-      .lightbox__control,
-      .lightbox__close {
+      .lightbox__close,
+      .lightbox__control {
         position: absolute;
         z-index: 2;
         display: inline-flex;
@@ -671,9 +667,9 @@
         justify-content: center;
         width: 52px;
         height: 52px;
-        border: 1px solid rgba(255, 244, 225, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.16);
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.08);
         cursor: pointer;
         transition:
           transform 0.35s var(--ease),
@@ -681,23 +677,22 @@
           background 0.35s var(--ease);
       }
 
-      .lightbox__control:hover,
-      .lightbox__close:hover {
-        border-color: rgba(244, 178, 124, 0.4);
-        background: rgba(244, 178, 124, 0.12);
-      }
-
       .lightbox__close {
-        top: 24px;
-        right: 24px;
+        top: 26px;
+        right: 26px;
       }
 
       .lightbox__control--prev {
-        left: 26px;
+        left: 28px;
       }
 
       .lightbox__control--next {
-        right: 26px;
+        right: 28px;
+      }
+
+      .lightbox__close:hover,
+      .lightbox__control:hover {
+        background: rgba(157, 110, 66, 0.18);
       }
 
       .lightbox__icon {
@@ -705,30 +700,26 @@
         height: 22px;
       }
 
-      .no-scroll {
+      .is-locked {
         overflow: hidden;
       }
 
       .reveal {
-        animation: rise 0.9s var(--ease) both;
+        animation: rise 0.8s var(--ease) both;
       }
 
-      .reveal.delay-1 {
-        animation-delay: 80ms;
+      .delay-1 {
+        animation-delay: 90ms;
       }
 
-      .reveal.delay-2 {
-        animation-delay: 160ms;
-      }
-
-      .reveal.delay-3 {
-        animation-delay: 240ms;
+      .delay-2 {
+        animation-delay: 180ms;
       }
 
       @keyframes rise {
         from {
           opacity: 0;
-          transform: translateY(26px);
+          transform: translateY(24px);
         }
 
         to {
@@ -738,48 +729,54 @@
       }
 
       @media (max-width: 980px) {
-        .hero {
+        .hero-grid,
+        .section-head {
           grid-template-columns: 1fr;
         }
 
-        .platform-card--primary,
-        .platform-card--secondary {
+        .section-head {
+          display: grid;
+          align-items: start;
+        }
+
+        .entry-card--wide,
+        .entry-card--narrow {
           grid-column: span 6;
         }
 
-        .section-head {
-          align-items: start;
-          flex-direction: column;
-        }
-
         .lightbox__figure {
-          width: min(920px, calc(100vw - 80px));
+          width: min(960px, calc(100vw - 88px));
         }
       }
 
       @media (max-width: 720px) {
-        .shell {
-          width: min(100vw - 20px, 1180px);
-          padding-top: 12px;
-          padding-bottom: 56px;
+        .page {
+          width: min(100vw - 20px, 1240px);
+          padding-top: 16px;
+          padding-bottom: 52px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: start;
         }
 
         .hero,
-        .section-panel {
-          padding: 20px;
-          border-radius: 24px;
+        .section {
+          padding: 22px;
+          border-radius: 26px;
         }
 
         .hero h1 {
           max-width: none;
         }
 
-        .platform-grid {
+        .entry-grid {
           grid-template-columns: 1fr;
         }
 
-        .platform-card--primary,
-        .platform-card--secondary {
+        .entry-card--wide,
+        .entry-card--narrow {
           grid-column: auto;
         }
 
@@ -787,42 +784,45 @@
           columns: 1;
         }
 
-        .lightbox__frame {
-          padding: 18px;
-        }
-
-        .lightbox__figure {
-          width: calc(100vw - 28px);
-        }
-
-        .lightbox__figure img {
-          max-height: calc(100vh - 180px);
-          border-radius: 18px;
-        }
-
+        .gallery-toolbar,
         .lightbox__caption {
           flex-direction: column;
           align-items: start;
         }
 
+        .lightbox {
+          padding: 14px;
+        }
+
+        .lightbox__figure {
+          width: calc(100vw - 28px);
+          padding: 12px;
+          border-radius: 20px;
+        }
+
+        .lightbox__figure img {
+          max-height: calc(100vh - 210px);
+          border-radius: 14px;
+        }
+
         .lightbox__close {
-          top: 14px;
-          right: 14px;
+          top: 12px;
+          right: 12px;
         }
 
         .lightbox__control {
-          bottom: 26px;
+          bottom: 20px;
           top: auto;
           width: 46px;
           height: 46px;
         }
 
         .lightbox__control--prev {
-          left: calc(50% - 56px);
+          left: calc(50% - 54px);
         }
 
         .lightbox__control--next {
-          right: calc(50% - 56px);
+          right: calc(50% - 54px);
         }
       }
 
@@ -841,175 +841,165 @@
     </style>
   </head>
   <body>
-    <main class="shell">
-      <section class="hero reveal">
-        <div class="hero-copy">
-          <p class="eyebrow">ceilf6 / digital showcase</p>
-          <h1>代码有迹，<span>创作有声。</span></h1>
-          <p class="hero-lead">
-            这一页把 GitHub、博客、Vlog
-            和本仓库里的奖项图片集中排成一面可浏览的展墙。
-            上半部分是入口卡片，下半部分是来自
-            <code>resume-awards/imgs</code>
-            的真实图片展示，适合直接放到仓库根目录打开或部署。
-          </p>
-          <div class="meta-row">
-            <span class="meta-pill">上海大学 27 届</span>
-            <span class="meta-pill">2005 年生</span>
-            <span class="meta-pill">Code / Blog / Video</span>
-          </div>
-          <div class="action-row">
-            <a class="action-btn primary" href="#platforms">查看入口卡片</a>
-            <a class="action-btn secondary" href="#awards">浏览奖项展墙</a>
-          </div>
-          <div class="contact-strip">
-            <span class="contact-item">联系邮箱：3506456886@qq.com</span>
-            <span class="contact-item"
-              >如果想了解更多，点击下方对应卡片跳转</span
-            >
-          </div>
-        </div>
+    <main class="page">
+      <div class="topbar reveal">
+        <span>ceilf6 / static showcase</span>
+        <nav>
+          <a href="#entry">README Cards</a>
+          <a href="#awards">Awards Gallery</a>
+        </nav>
+      </div>
 
-        <aside class="hero-aside">
-          <div class="aside-card reveal delay-1">
-            <p class="aside-label">Personal Signal</p>
-            <p class="aside-value">
-              <strong id="portalCount">03</strong> 个主入口
+      <section class="hero frame reveal">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">README + resume-awards</p>
+            <h1>把经历排成一面展墙<span>简洁、安静，但让图片自己说话。</span></h1>
+            <p class="hero-lead">
+              这一页只保留两块核心内容：README
+              里的三张入口卡片，以及
+              <code>resume-awards/imgs</code>
+              对应的图片展墙。整体用更克制的留白、偏编辑感的排版和浅色材质感背景，把视觉重心尽量让给图像本身。
             </p>
-            <p class="aside-copy">
-              GitHub 用来展示代码轨迹，CSDN 记录写作输出，Bilibili
-              放置视频内容。
-            </p>
-          </div>
-          <div class="aside-grid">
-            <div class="aside-card reveal delay-2">
-              <p class="aside-label">Award Archive</p>
-              <p class="aside-value">
-                <strong id="awardCountHero">00</strong> 张图片
-              </p>
-              <p class="aside-copy">页面会自动读取本仓库的奖项图片数据。</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#entry">先看入口卡片</a>
+              <a class="button secondary" href="#awards">直接浏览图片</a>
             </div>
-            <div class="aside-card reveal delay-3">
-              <p class="aside-label">Viewing Mode</p>
-              <p class="aside-value">Masonry</p>
-              <p class="aside-copy">
-                缩略图瀑布流 + 弹层预览，桌面和手机都能顺手浏览。
-              </p>
+            <div class="hero-meta">
+              <span class="pill">上海大学 27 届</span>
+              <span class="pill">2005 年生</span>
+              <span class="pill">联系邮箱：3506456886@qq.com</span>
             </div>
           </div>
-        </aside>
+
+          <aside class="facts">
+            <div class="fact-card reveal delay-1">
+              <p class="fact-label">README Cards</p>
+              <p class="fact-value" id="entryCount">03</p>
+              <p class="fact-copy">
+                保留 README 中的三张卡片，作为最直接的外链入口。
+              </p>
+            </div>
+            <div class="fact-card reveal delay-2">
+              <p class="fact-label">Award Images</p>
+              <p class="fact-value" id="awardCountHero">00</p>
+              <p class="fact-copy">
+                自动读取现有图片数据，生成一面可以点击放大的展墙。
+              </p>
+            </div>
+          </aside>
+        </div>
       </section>
 
-      <section class="section-panel reveal delay-1" id="platforms">
+      <section class="section frame reveal delay-1" id="entry">
         <div class="section-head">
           <div>
-            <p class="section-kicker">Entry Cards</p>
-            <h2>三个入口，三个侧面</h2>
+            <p class="section-kicker">README Cards</p>
+            <h2>三个入口，直接展开。</h2>
           </div>
           <p class="section-copy">
-            保留你指定的三张卡片资源，让它们作为主页上方最直接的跳转入口。
+            顶部区域保留 README 里的三张主卡片，同时把间距、边框和承载容器统一，让它们更像一组完整的作品入口。
           </p>
         </div>
 
-        <div class="platform-grid">
+        <div class="entry-grid">
           <a
-            class="platform-card platform-card--primary"
-            href="https://github.com/ceilf6"
+            class="entry-card entry-card--wide"
+            href="https://ceilf6.github.io/ceilf6/"
             target="_blank"
             rel="noreferrer"
           >
-            <div class="platform-meta">
-              <p class="platform-title">GitHub Stats</p>
-              <span class="platform-badge">OPEN</span>
+            <div class="entry-meta">
+              <p class="entry-title">GitHub Stats</p>
+              <span class="entry-badge">OPEN</span>
             </div>
-            <img
-              src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&amp;theme=tokyonight"
-              alt="Stats"
-            />
-            <p class="platform-description">
-              代码活跃度、提交习惯与仓库输出，作为主页最核心的技术信号卡。
+            <div class="entry-media">
+              <img
+                src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&amp;theme=tokyonight"
+                alt="ceilf6 GitHub stats card"
+              />
+            </div>
+            <p class="entry-description">
+              从代码维度进入，作为这组入口里最偏“技术轨迹”的一张卡。
             </p>
           </a>
 
           <a
-            class="platform-card platform-card--secondary"
+            class="entry-card entry-card--narrow"
             href="https://blog.csdn.net/2301_78856868"
             target="_blank"
             rel="noreferrer"
           >
-            <div class="platform-meta">
-              <p class="platform-title">Blog / CSDN</p>
-              <span class="platform-badge">READ</span>
+            <div class="entry-meta">
+              <p class="entry-title">Blog / CSDN</p>
+              <span class="entry-badge">READ</span>
             </div>
-            <img src="assets/blog-card.svg" alt="Blog" />
-            <p class="platform-description">
-              技术文章、学习记录与整理输出，适合快速理解知识结构和表达方式。
+            <div class="entry-media">
+              <img src="assets/blog-card.svg" alt="博客卡片" />
+            </div>
+            <p class="entry-description">
+              用文章和笔记补足表达层，让页面不只停留在图片展示。
             </p>
           </a>
 
           <a
-            class="platform-card platform-card--secondary"
+            class="entry-card entry-card--narrow"
             href="https://space.bilibili.com/3546602400647622"
             target="_blank"
             rel="noreferrer"
           >
-            <div class="platform-meta">
-              <p class="platform-title">Vlog / Bilibili</p>
-              <span class="platform-badge">WATCH</span>
+            <div class="entry-meta">
+              <p class="entry-title">Vlog / Bilibili</p>
+              <span class="entry-badge">WATCH</span>
             </div>
-            <img src="assets/vlog-card.svg" alt="Vlog" />
-            <p class="platform-description">
-              视频内容与动态表达，和文字输出形成补充，能更直观看到创作节奏。
+            <div class="entry-media">
+              <img src="assets/vlog-card.svg" alt="视频卡片" />
+            </div>
+            <p class="entry-description">
+              视频内容作为动态补充，让主页有更完整的个人输出侧面。
             </p>
           </a>
         </div>
 
-        <div class="stats-strip">
-          <div class="stats-chip">
-            <strong>GitHub</strong>
-            <span>技术轨迹与仓库活跃度</span>
-          </div>
-          <div class="stats-chip">
-            <strong>CSDN</strong>
-            <span>文章沉淀与知识表达</span>
-          </div>
-          <div class="stats-chip">
-            <strong>Bilibili</strong>
-            <span>视频记录与创作延展</span>
-          </div>
+        <div class="hint-strip">
+          <img
+            src="assets/hint-text-for-index.svg"
+            alt="All cards are clickable. Feel free to explore and learn more about me."
+          />
         </div>
       </section>
 
-      <section class="section-panel reveal delay-2" id="awards">
+      <section class="section frame reveal delay-2" id="awards">
         <div class="section-head">
           <div>
             <p class="section-kicker">resume-awards / imgs</p>
-            <h2>获奖与实践展墙</h2>
+            <h2>获奖与实践图片展墙。</h2>
           </div>
           <p class="section-copy">
-            直接读取仓库里的图片索引，生成一面可点击的大图画廊，不需要再手动维护列表。
+            这里直接读取现有图片索引，缩略图尽量做大，只保留最轻的标题信息。点击任意图片即可进入大图预览。
           </p>
         </div>
 
         <div class="gallery-toolbar">
-          <div class="gallery-count" id="galleryCount">00 items loaded</div>
-          <p class="gallery-note">
-            点击任意缩略图可进入大图预览，支持左右切换和键盘操作。
-          </p>
+          <div class="gallery-count" id="galleryCount">
+            <strong>00</strong>
+            <span>张图片已载入</span>
+          </div>
+          <p class="gallery-note">支持点击放大、键盘左右切换和 ESC 关闭。</p>
         </div>
 
         <div class="gallery" id="gallery"></div>
 
-        <p class="footer-note">
-          页面数据来源于本仓库中的
-          <code>resume-awards/images.js</code> 与对应图片文件。
+        <p class="section-footnote">
+          页面图片数据来自 <code>resume-awards/images.js</code>，素材文件来自
+          <code>resume-awards/imgs</code>。
         </p>
       </section>
     </main>
 
     <div class="lightbox" id="lightbox" hidden aria-hidden="true">
       <div class="lightbox__backdrop" data-close="true"></div>
-      <div class="lightbox__frame">
+      <div class="lightbox__panel">
         <button
           class="lightbox__close"
           id="lightboxClose"
@@ -1076,7 +1066,7 @@
       const gallery = document.getElementById("gallery");
       const galleryCount = document.getElementById("galleryCount");
       const awardCountHero = document.getElementById("awardCountHero");
-      const portalCount = document.getElementById("portalCount");
+      const entryCount = document.getElementById("entryCount");
       const lightbox = document.getElementById("lightbox");
       const lightboxImage = document.getElementById("lightboxImage");
       const lightboxTitle = document.getElementById("lightboxTitle");
@@ -1092,15 +1082,16 @@
       }
 
       function updateCounters() {
-        const countText = `${padNumber(awardData.length)} items loaded`;
-        galleryCount.textContent = countText;
-        awardCountHero.textContent = padNumber(awardData.length);
-        portalCount.textContent = padNumber(
-          document.querySelectorAll(".platform-card").length,
+        const total = awardData.length;
+        galleryCount.innerHTML = `<strong>${padNumber(total)}</strong><span>张图片已载入</span>`;
+        awardCountHero.textContent = padNumber(total);
+        entryCount.textContent = padNumber(
+          document.querySelectorAll(".entry-card").length,
         );
       }
 
-      function showLightbox(index) {
+      function openLightbox(index) {
+        if (!awardData.length) return;
         currentIndex = (index + awardData.length) % awardData.length;
         const item = awardData[currentIndex];
         lightboxImage.src = item.src;
@@ -1111,13 +1102,17 @@
         )}`;
         lightbox.hidden = false;
         lightbox.setAttribute("aria-hidden", "false");
-        document.body.classList.add("no-scroll");
+        document.body.classList.add("is-locked");
       }
 
       function closeLightbox() {
         lightbox.hidden = true;
         lightbox.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("no-scroll");
+        document.body.classList.remove("is-locked");
+      }
+
+      function moveLightbox(step) {
+        openLightbox(currentIndex + step);
       }
 
       function renderGallery() {
@@ -1137,8 +1132,10 @@
           const button = document.createElement("button");
           button.type = "button";
           button.className = "award-card";
-          button.style.setProperty("--delay", `${120 + index * 45}ms`);
           button.setAttribute("aria-label", `查看 ${item.alt}`);
+
+          const media = document.createElement("div");
+          media.className = "award-media";
 
           const image = document.createElement("img");
           image.src = item.src;
@@ -1146,19 +1143,20 @@
           image.loading = "lazy";
 
           const meta = document.createElement("div");
-          meta.className = "award-card__meta";
+          meta.className = "award-meta";
 
           const title = document.createElement("p");
-          title.className = "award-card__title";
+          title.className = "award-title";
           title.textContent = item.alt;
 
           const serial = document.createElement("span");
-          serial.className = "award-card__index";
+          serial.className = "award-index";
           serial.textContent = `No. ${padNumber(index + 1)}`;
 
+          media.appendChild(image);
           meta.append(title, serial);
-          button.append(image, meta);
-          button.addEventListener("click", () => showLightbox(index));
+          button.append(media, meta);
+          button.addEventListener("click", () => openLightbox(index));
           fragment.appendChild(button);
         });
 
@@ -1166,18 +1164,11 @@
         updateCounters();
       }
 
-      function moveLightbox(step) {
-        if (!awardData.length) return;
-        showLightbox(currentIndex + step);
-      }
-
       lightboxClose.addEventListener("click", closeLightbox);
       lightboxPrev.addEventListener("click", () => moveLightbox(-1));
       lightboxNext.addEventListener("click", () => moveLightbox(1));
       lightbox.addEventListener("click", (event) => {
-        if (event.target.dataset.close === "true") {
-          closeLightbox();
-        }
+        if (event.target.dataset.close === "true") closeLightbox();
       });
 
       document.addEventListener("keydown", (event) => {
