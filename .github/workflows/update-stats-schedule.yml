@@ -46,6 +46,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update stats [skip ci]"
+            git commit -m "chore: update stats [skip ci]" -m "Co-authored-by: ceilf6 <3506456886@qq.com>"
             git push
           fi
