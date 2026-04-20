@@ -12,7 +12,9 @@
   05年生人，上海大学27届，联系 => 3506456886@qq.com
 </p>
 
-## 我的一些探索
+<h2 align="center">
+  我的一些探索
+</h2>
 
 - **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 前端智能体
 - **[Lab](https://github.com/ceilf6/Lab)** - 个人沉淀知识库供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
