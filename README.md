@@ -11,3 +11,18 @@
 <p align="center">
   05年生人，上海大学27届，联系 => 3506456886@qq.com
 </p>
+
+## 我的一些探索
+
+- **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 前端智能体
+- **[Lab](https://github.com/ceilf6/Lab)** - 个人沉淀知识库供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
+- **[skills](https://github.com/ceilf6/ceilf6-skills)** - 实用技能包
+- **[DayMate](https://github.com/ceilf6/DayMate)** - 日历应用
+- **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
+- **[operating-system](https://ceilf6.github.io/operating-system/)** - 操作系统课程学习网站
+- **[Auto courseGrabber](https://github.com/ceilf6/Auto_courseGrabber)** - 实用脚本
+- **[CPlusPlus](https://github.com/ceilf6/CPlusPlus)** - 算法课程 C++ 资料
+- **[dataStructure](https://github.com/ceilf6/dataStructure)** - 数据结构课程资料
+- **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
+- **[Mathematical Modeling](https://github.com/ceilf6/Mathematical-Modeling)** - 数学建模资料
+- **[ScreenSniper](https://github.com/ceilf6/ScreenSniper)** - 截屏工具
