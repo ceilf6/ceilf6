@@ -13,7 +13,7 @@
 </p>
 
 <h2 align="center">
-  我的一些探索
+  <code>我的一些探索</code>
 </h2>
 
 - **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 前端智能体
@@ -28,3 +28,13 @@
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[Mathematical Modeling](https://github.com/ceilf6/Mathematical-Modeling)** - 数学建模资料
 - **[ScreenSniper](https://github.com/ceilf6/ScreenSniper)** - 截屏工具
+
+<h3 align="center">
+  <code>同时持续为社区贡献</code>
+</h3>
+
+- **[Tencent/cherry-markdown](https://github.com/Tencent/cherry-markdown)** - markdown editor
+- **[XBuilder](https://github.com/goplus/builder)** - 游戏开发平台
+- **[utseus-competences.github.io](https://github.com/utseus-competences/utseus-competences.github.io)** - 学生职业规划网站
+- **[pua](https://github.com/tanweai/pua)** - pua skill
+- **[immersive-translate](https://github.com/immersive-translate/immersive-translate)** - 翻译插件
