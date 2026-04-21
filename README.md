@@ -34,7 +34,7 @@
 </h3>
 
 - **[Tencent/cherry-markdown](https://github.com/Tencent/cherry-markdown)** - markdown editor
-- **[XBuilder](https://github.com/goplus/builder)** - 游戏开发平台
+- **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
 - **[utseus-competences.github.io](https://github.com/utseus-competences/utseus-competences.github.io)** - 学生职业规划网站
 - **[pua](https://github.com/tanweai/pua)** - pua skill
 - **[immersive-translate](https://github.com/immersive-translate/immersive-translate)** - 翻译插件
