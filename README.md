@@ -17,7 +17,7 @@
 </h2>
 
 - **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 前端智能体
-- **[Lab](https://github.com/ceilf6/Lab)** - 个人沉淀知识库供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
+- **[Wiki](https://github.com/ceilf6/Wiki)** - 个人沉淀知识库供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
 - **[skills](https://github.com/ceilf6/ceilf6-skills)** - 实用技能包
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 日历应用
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
