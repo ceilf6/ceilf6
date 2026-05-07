@@ -18,7 +18,7 @@
 
 - **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 通过多种适配前端工程的技术进行赋能的智能体，支持通过
   - CLI: `npm install -g frontagent`
-  - VSCode插件: [一键安装](vscode:extension/ceilf6.frontagent)
+  - VSCode插件: <a href="vscode:extension/ceilf6.frontagent"><button>一键安装</button></a>
 - **[Wiki](https://github.com/ceilf6/Wiki)** - 与 LLM 一起维护的知识库，供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
   - 目前正在考虑往 OpenViking 迁移，方便 LLM 渐进式检索
 - **[ceilf6-skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
