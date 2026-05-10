@@ -19,7 +19,7 @@
 - **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 通过多种适配前端工程的技术进行赋能的智能体，目前开发有
   1. CLI `npm install -g frontagent`
   2. [VSCode插件](https://marketplace.visualstudio.com/items?itemName=ceilf6.frontagent) `vscode:extension/ceilf6.frontagent`
-  3. [Claude 蒸馏 Qwen 进行 SFT 的 LoRA 模型](https://huggingface.co/ceilf6/frontagent-planner-7B-lora) `frontagent-planner-7B-lora`
+  3. [Claude 蒸馏了 Qwen 进行 SFT 的 LoRA 模型](https://huggingface.co/ceilf6/frontagent-planner-7B-lora) `frontagent-planner-7B-lora`
 - **[Wiki](https://github.com/ceilf6/Wiki)** - 与 LLM 一起维护的知识库，供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
   - 目前正在考虑往 OpenViking 迁移，方便 LLM 渐进式检索
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
