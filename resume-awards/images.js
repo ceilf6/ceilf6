@@ -19,4 +19,5 @@ const images = [
   { src: "resume-awards/imgs/1003-上大科创奖学金.JPG", alt: "科创奖学金" },
   { src: "resume-awards/imgs/1004-上大科创奖学金2.JPG", alt: "科创奖学金2" },
   { src: "resume-awards/imgs/1005-企创大赛特等奖.jpg", alt: "企创大赛特等奖" },
+  { src: "resume-awards/imgs/CSP证书.png", alt: "CSP证书" },
 ];
