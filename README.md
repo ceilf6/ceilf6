@@ -24,7 +24,7 @@
 - **[Wiki](https://github.com/ceilf6/Wiki)** - 与 LLM 一起维护的知识库，供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
   - 目前正在考虑往 OpenViking 迁移，方便 LLM 渐进式检索
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
-- **[DayMate](https://github.com/ceilf6/DayMate)** - 日历应用
+- **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
 - **[operating system](https://ceilf6.github.io/operating-system/)** - 操作系统课程学习网站
 - **[Auto courseGrabber](https://github.com/ceilf6/Auto_courseGrabber)** - 实用脚本
