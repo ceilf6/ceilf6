@@ -25,13 +25,15 @@
   - 目前正在考虑往 OpenViking 迁移，方便 LLM 渐进式检索
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
+- **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
 - **[operating system](https://ceilf6.github.io/operating-system/)** - 操作系统课程学习网站
+- **[imdb sentiment roberta](https://github.com/ceilf6/imdb-sentiment-roberta)** - 一个端到端的 NLP 模型交付样例：使用 RoBERTa 完成 IMDB 情感分类，并通过 CI/CD 自动评估、质量门控与 Hugging Face 发布，评测准确率 `98.4%`
+  - [Hugging Face](https://huggingface.co/ceilf6/imdb-sentiment-roberta) `imdb-sentiment-roberta`
 - **[Auto courseGrabber](https://github.com/ceilf6/Auto_courseGrabber)** - 实用脚本
 - **[machine learning](https://github.com/ceilf6/machine-learning)** - 机器学习资料
 - **[CPlusPlus](https://github.com/ceilf6/CPlusPlus)** - 算法资料
-- **[dataStructure](https://github.com/ceilf6/dataStructure)** - 数据结构课程资料
-- **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
+- **[dataStructure](https://github.com/ceilf6/dataStructure)** - 数据结构资料
 - **[Mathematical Modeling](https://github.com/ceilf6/Mathematical-Modeling)** - 数学建模资料
 - **[ScreenSniper](https://github.com/ceilf6/ScreenSniper)** - 截屏工具
 
