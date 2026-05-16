@@ -28,7 +28,7 @@
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
 - **[operating system](https://ceilf6.github.io/operating-system/)** - 操作系统课程学习网站
-- **[imdb sentiment roberta](https://github.com/ceilf6/imdb-sentiment-roberta)** - 一个端到端的 NLP 模型交付样例：使用 RoBERTa 完成 IMDB 情感分类，并通过 CI/CD 自动评估、质量门控与 Hugging Face 发布，评测准确率 `98.4%`
+- **[imdb sentiment roberta](https://github.com/ceilf6/imdb-sentiment-roberta)** - 一个端到端的 NLP 模型交付样例，评测准确率 `98.4%`
   - [Hugging Face](https://huggingface.co/ceilf6/imdb-sentiment-roberta) `imdb-sentiment-roberta`
 - **[Auto courseGrabber](https://github.com/ceilf6/Auto_courseGrabber)** - 实用脚本
 - **[machine learning](https://github.com/ceilf6/machine-learning)** - 机器学习资料
