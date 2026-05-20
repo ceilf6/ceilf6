@@ -25,6 +25,7 @@
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
 - **[filesense](https://github.com/ceilf6/filesense)** - 智能体友好的环境感知工具
 - **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆
+- **[repo guard](https://github.com/ceilf6/repo-guard)** - 仓库智能守卫，自动评审 issue 和 PR
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
