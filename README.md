@@ -21,7 +21,11 @@
   2. [VSCode插件](https://marketplace.visualstudio.com/items?itemName=ceilf6.frontagent) `vscode:extension/ceilf6.frontagent`
   3. Opus 蒸馏了 Qwen 进行 SFT 的 [LoRA 模型](https://huggingface.co/collections/ceilf6/frontagent-frontend-engineering-agent) `frontagent-planner` 现已支持 14b、7b
   4. [MCP Server](https://github.com/ceilf6/FrontAgent/blob/develop/README.md#mcp-server) 提供定制能力 `fa mcp serve`
-- **[Wiki](https://github.com/ceilf6/Wiki)** - 与 LLM 一起维护的知识库，供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成
+- **[Wiki](https://github.com/ceilf6/Wiki)** - 与 LLM 一起维护的知识库，供 [FrontAgent](https://github.com/ceilf6/FrontAgent) RAG增强检索生成，目前集成
+  - GitNexus: 感知代码变更的级联反应，辅助 SDD 规范驱动开发
+  - OpenViking: 方面 LLM 进行渐进式探索，节省上下文以及 Token 消耗
+  - CodeGraphContext: 底层代码图谱索引
+  - DeepWiki: 用于和外部对接
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
 - **[repo guard](https://github.com/ceilf6/repo-guard)** - 仓库智能守卫，使用 [ceilf6 skills](https://github.com/ceilf6/ceilf6-skills) 自动评审 issue 和 PR
   - [marketplace](https://github.com/marketplace/actions/repo-guard-ai) 一键配置
