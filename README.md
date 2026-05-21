@@ -44,5 +44,5 @@
   <code>同时持续为社区贡献</code>
 </h3>
 
-- **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown editor
+- **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown 编辑器
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
