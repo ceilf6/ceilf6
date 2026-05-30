@@ -29,7 +29,7 @@
 - **[ceilf6 skills](https://github.com/ceilf6/ceilf6-skills)** - 极大增强 LLM 生成质量与效率的实用技能包
 - **[repo guard](https://github.com/ceilf6/repo-guard)** - 仓库智能守卫，使用 [ceilf6 skills](https://github.com/ceilf6/ceilf6-skills) 自动评审 issue 和 PR
   - [marketplace](https://github.com/marketplace/actions/repo-guard-ai) 一键配置
-- **[code tape](https://github.com/ceilf6/code-tape)** - 代码讲解工具
+- **[code tape](https://github.com/ceilf6/code-tape)** - 代码讲解工具，支持代码编辑、音视频收集、云端备份、面试模式、AI字幕校验等
   - 遵守 **Harness** 开发范式以一周的时间敏捷开发完成
 - **[filesense](https://github.com/ceilf6/filesense)** - 智能体友好的环境感知工具，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆
