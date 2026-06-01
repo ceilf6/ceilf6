@@ -16,7 +16,7 @@
   <code>我的一些探索</code>
 </h2>
 
-- **[FrontAgent](https://github.com/ceilf6/FrontAgent)** - 通过多种适配前端工程的技术进行赋能的智能体，目前开发有
+- **[FrontAgent](https://github.com/FrontAgent/FrontAgent)** - 通过多种适配前端工程的技术进行赋能的智能体，目前开发有
   1. CLI `npm install -g frontagent`
   2. [VSCode插件](https://marketplace.visualstudio.com/items?itemName=ceilf6.frontagent) `vscode:extension/ceilf6.frontagent`
   3. Opus 蒸馏了 Qwen 进行 SFT 的 [LoRA 模型](https://huggingface.co/collections/ceilf6/frontagent-frontend-engineering-agent) `frontagent-planner` 现已支持 14b、7b
