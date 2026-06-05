@@ -32,8 +32,7 @@
 - **[code tape](https://github.com/ceilf6/code-tape)** - 代码讲解工具，支持代码编辑、音视频收集、云端备份、面试模式、AI字幕校验等
   - 遵守 **Harness** 开发范式以一周的时间敏捷开发完成
 - **[filesense](https://github.com/ceilf6/filesense)** - 智能体友好的环境感知工具，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
-- **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆
-  - 准备集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
+- **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[claude code source](https://ceilf6.github.io/cc-source/)** - claude code 源码学习网站
