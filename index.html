@@ -287,7 +287,6 @@
 
       /* README 区域 */
       .readme-section {
-        width: 100%;
         background: var(--panel-bg);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
@@ -496,8 +495,10 @@
         card.className = "card";
         card.style.setProperty("--i", i);
         const imgEl = document.createElement("img");
-        imgEl.src = img.src;
+        imgEl.src = img.thumb || img.src;
         imgEl.alt = img.alt;
+        imgEl.loading = "lazy";
+        imgEl.decoding = "async";
         imgEl.addEventListener("load", () => resizeCard(card, imgEl));
         card.appendChild(imgEl);
         card.addEventListener("click", () => openViewer(i));
