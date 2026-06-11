@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./assets/Profile.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap"
+      rel="stylesheet"
+    />
+    <title>王景宏简历附件</title>
+    <style>
+      :root {
+        --paper: #f4edde;
+        --paper-card: #fbf6ea;
+        --paper-deep: #e9dfc8;
+        --ink: #2b2620;
+        --ink-soft: #7a6f5e;
+        --rule: rgba(43, 38, 32, 0.22);
+        --rule-faint: rgba(43, 38, 32, 0.12);
+        --vermilion: #b13a28;
+        --vermilion-deep: #8e2a1c;
+        --gap: 26px;
+        --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      ::selection {
+        background: var(--vermilion);
+        color: var(--paper);
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            120% 90% at 50% 0%,
+            rgba(255, 252, 242, 0.9) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            130% 110% at 50% 110%,
+            rgba(190, 168, 124, 0.28) 0%,
+            transparent 60%
+          ),
+          var(--paper);
+        color: var(--ink);
+        font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* 纸张颗粒 */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: var(--noise);
+        opacity: 0.1;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        z-index: 40;
+      }
+
+      /* 档案纸左侧装订红线 */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: clamp(20px, 4.5vw, 76px);
+        width: 7px;
+        background:
+          linear-gradient(var(--vermilion), var(--vermilion)) left / 1px 100%
+            no-repeat,
+          linear-gradient(var(--vermilion), var(--vermilion)) right / 1px 100%
+            no-repeat;
+        opacity: 0.34;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* 右侧竖排水印 */
+      .watermark {
+        position: fixed;
+        top: 50%;
+        right: clamp(4px, 1.6vw, 26px);
+        transform: translateY(-50%);
+        writing-mode: vertical-rl;
+        font-family: "ZCOOL XiaoWei", "Kaiti SC", "KaiTi", serif;
+        font-size: clamp(30px, 4vw, 54px);
+        letter-spacing: 0.5em;
+        color: var(--ink);
+        opacity: 0.06;
+        user-select: none;
+        pointer-events: none;
+        z-index: 0;
+        white-space: nowrap;
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        width: min(1240px, 100%);
+        margin: 0 auto;
+        padding: 0 clamp(20px, 6vw, 96px) 64px;
+      }
+
+      /* ============ 卷首 ============ */
+      .dossier {
+        padding-top: 34px;
+      }
+
+      .dossier-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        border-top: 3px double var(--ink);
+        padding-top: 10px;
+        font-family: "Courier Prime", monospace;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        animation: rise 0.7s ease both;
+      }
+
+      .dossier-meta .no {
+        color: var(--vermilion);
+        font-weight: 700;
+      }
+
+      .dossier-title {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: clamp(28px, 4.5vw, 52px);
+        animation: rise 0.7s ease 0.12s both;
+      }
+
+      .eyebrow {
+        font-family: "Courier Prime", monospace;
+        font-size: 12px;
+        letter-spacing: 0.34em;
+        color: var(--vermilion);
+        margin-bottom: 14px;
+      }
+
+      .eyebrow::after {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 64px;
+        height: 1px;
+        background: var(--vermilion);
+        margin-left: 14px;
+        opacity: 0.6;
+      }
+
+      h1 {
+        font-family: "ZCOOL XiaoWei", "Kaiti SC", "KaiTi", serif;
+        font-weight: 400;
+        font-size: clamp(42px, 7.2vw, 84px);
+        line-height: 1.05;
+        letter-spacing: 0.14em;
+        color: var(--ink);
+      }
+
+      .subtitle {
+        margin-top: 16px;
+        max-width: 56ch;
+        font-size: 14.5px;
+        line-height: 1.9;
+        color: var(--ink-soft);
+      }
+
+      .subtitle b {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .subtitle .en {
+        font-family: "Courier Prime", monospace;
+        font-size: 13px;
+        color: var(--vermilion);
+      }
+
+      /* 印章 */
+      .seal {
+        flex-shrink: 0;
+        width: clamp(76px, 9vw, 104px);
+        aspect-ratio: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        place-items: center;
+        padding: 8px;
+        border-radius: 10px;
+        background:
+          var(--noise),
+          radial-gradient(circle at 32% 28%, #c64a31, var(--vermilion-deep));
+        background-blend-mode: overlay, normal;
+        box-shadow: inset 0 0 14px rgba(96, 16, 8, 0.55);
+        color: #f6efdd;
+        font-family: "ZCOOL XiaoWei", "Kaiti SC", "KaiTi", serif;
+        font-size: clamp(22px, 2.6vw, 32px);
+        line-height: 1;
+        transform: rotate(3.5deg);
+        mix-blend-mode: multiply;
+        opacity: 0.92;
+        user-select: none;
+        animation: stamp 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) 0.85s both;
+      }
+
+      @keyframes stamp {
+        from {
+          transform: rotate(8deg) scale(1.7);
+          opacity: 0;
+        }
+        to {
+          transform: rotate(3.5deg) scale(1);
+          opacity: 0.92;
+        }
+      }
+
+      /* ============ 装裱卡片（外链） ============ */
+      .mounts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(18px, 3vw, 34px);
+        justify-content: center;
+        margin-top: clamp(34px, 5vw, 56px);
+        padding: clamp(22px, 3vw, 34px) 16px 18px;
+        border-top: 1px solid var(--rule-faint);
+        border-bottom: 1px solid var(--rule-faint);
+        animation: rise 0.7s ease 0.24s both;
+      }
+
+      .mount {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 9px;
+        text-decoration: none;
+        padding: 9px 9px 6px;
+        background: var(--paper-card);
+        border: 1px solid var(--rule);
+        box-shadow:
+          0 1px 2px rgba(58, 44, 22, 0.12),
+          0 14px 26px rgba(58, 44, 22, 0.14);
+        transition:
+          transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.4s ease;
+      }
+
+      .mount:nth-child(1) {
+        transform: rotate(-1.3deg);
+      }
+      .mount:nth-child(2) {
+        transform: rotate(0.7deg) translateY(6px);
+      }
+      .mount:nth-child(3) {
+        transform: rotate(-0.6deg);
+      }
+
+      .mount:hover {
+        transform: rotate(0deg) translateY(-6px);
+        box-shadow:
+          0 2px 3px rgba(58, 44, 22, 0.12),
+          0 22px 38px rgba(58, 44, 22, 0.2);
+        z-index: 2;
+      }
+
+      /* 胶带 */
+      .mount::before {
+        content: "";
+        position: absolute;
+        top: -11px;
+        left: 50%;
+        width: 78px;
+        height: 24px;
+        transform: translateX(-50%) rotate(-2deg);
+        background: rgba(233, 222, 192, 0.72);
+        border-left: 1px dashed rgba(43, 38, 32, 0.18);
+        border-right: 1px dashed rgba(43, 38, 32, 0.18);
+        box-shadow: 0 1px 2px rgba(58, 44, 22, 0.14);
+        z-index: 3;
+      }
+
+      .mount img {
+        display: block;
+        height: 188px;
+        width: auto;
+        max-width: 100%;
+      }
+
+      .mount-label {
+        font-family: "Courier Prime", monospace;
+        font-size: 10px;
+        letter-spacing: 0.3em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+      }
+
+      .mount:hover .mount-label {
+        color: var(--vermilion);
+      }
+
+      /* 打字提示 */
+      .hint {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+        animation: rise 0.7s ease 0.3s both;
+      }
+
+      .hint span {
+        font-family: "Courier Prime", monospace;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        color: var(--ink-soft);
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 6px solid var(--vermilion);
+        padding-right: 6px;
+        width: 46ch;
+        animation:
+          typing 2.3s steps(46) 1s both,
+          caret 0.9s step-end 1s 8;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 46ch;
+        }
+      }
+
+      @keyframes caret {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      /* ============ 陈列区 ============ */
+      .exhibits {
+        margin-top: clamp(44px, 6vw, 72px);
+      }
+
+      .section-rule {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: clamp(28px, 4vw, 44px);
+      }
+
+      .section-rule::before,
+      .section-rule::after {
+        content: "";
+        flex: 1;
+        height: 3px;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule-faint);
+      }
+
+      .section-label {
+        font-family: "ZCOOL XiaoWei", "Kaiti SC", "KaiTi", serif;
+        font-size: clamp(19px, 2.2vw, 26px);
+        letter-spacing: 0.3em;
+        white-space: nowrap;
+      }
+
+      .section-label .en {
+        font-family: "Courier Prime", monospace;
+        font-size: 11px;
+        letter-spacing: 0.26em;
+        color: var(--vermilion);
+        vertical-align: 0.35em;
+        margin-left: 10px;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: var(--gap);
+        grid-auto-rows: 1px;
+      }
+
+      .card {
+        height: max-content;
+        margin-bottom: var(--gap);
+        position: relative;
+        background: var(--paper-card);
+        border: 1px solid var(--rule);
+        padding: 10px 10px 0;
+        cursor: zoom-in;
+        box-shadow:
+          0 1px 2px rgba(58, 44, 22, 0.1),
+          0 14px 30px rgba(58, 44, 22, 0.13);
+        opacity: 0;
+        translate: 0 28px;
+        animation: cardIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: calc(var(--i) * 70ms);
+        transition:
+          transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 0.35s ease,
+          box-shadow 0.45s ease;
+      }
+
+      @keyframes cardIn {
+        to {
+          opacity: 1;
+          translate: 0 0;
+        }
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          translate: 0 18px;
+        }
+        to {
+          opacity: 1;
+          translate: 0 0;
+        }
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(177, 58, 40, 0.55);
+        box-shadow:
+          0 2px 3px rgba(58, 44, 22, 0.1),
+          0 24px 44px rgba(58, 44, 22, 0.2);
+        z-index: 2;
+      }
+
+      /* 四角裁切标记，悬停浮现 */
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 5px;
+        pointer-events: none;
+        background:
+          linear-gradient(var(--vermilion), var(--vermilion)) top left / 13px
+            1px,
+          linear-gradient(var(--vermilion), var(--vermilion)) top left / 1px
+            13px,
+          linear-gradient(var(--vermilion), var(--vermilion)) top right / 13px
+            1px,
+          linear-gradient(var(--vermilion), var(--vermilion)) top right / 1px
+            13px,
+          linear-gradient(var(--vermilion), var(--vermilion)) bottom left / 13px
+            1px,
+          linear-gradient(var(--vermilion), var(--vermilion)) bottom left / 1px
+            13px,
+          linear-gradient(var(--vermilion), var(--vermilion)) bottom right /
+            13px 1px,
+          linear-gradient(var(--vermilion), var(--vermilion)) bottom right / 1px
+            13px;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+
+      .card:hover::after {
+        opacity: 0.85;
+      }
+
+      .card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--rule-faint);
+        background: #fff;
+        opacity: 0;
+        transition:
+          opacity 0.5s ease,
+          filter 0.5s ease;
+      }
+
+      .card img.loaded {
+        opacity: 1;
+      }
+
+      .card:hover img {
+        filter: saturate(1.06) contrast(1.03);
+      }
+
+      .card figcaption {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        padding: 9px 2px 10px;
+      }
+
+      .card-no {
+        font-family: "Courier Prime", monospace;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--vermilion);
+        border: 1px solid rgba(177, 58, 40, 0.5);
+        padding: 1px 6px;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      .card:hover .card-no {
+        background: var(--vermilion);
+        color: var(--paper-card);
+      }
+
+      .card-name {
+        font-size: 12.5px;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* 卷尾 */
+      .endmark {
+        margin-top: 26px;
+        text-align: center;
+        font-family: "Courier Prime", monospace;
+        font-size: 11px;
+        letter-spacing: 0.42em;
+        color: var(--ink-soft);
+      }
+
+      .endmark b {
+        color: var(--vermilion);
+        font-family: "ZCOOL XiaoWei", "Kaiti SC", "KaiTi", serif;
+        font-size: 15px;
+        letter-spacing: 0.42em;
+        font-weight: 400;
+      }
+
+      /* ============ 响应式 ============ */
+      @media (max-width: 980px) {
+        .gallery {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .watermark {
+          display: none;
+        }
+
+        .dossier-title {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 620px) {
+        :root {
+          --gap: 18px;
+        }
+
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .mount img {
+          height: 140px;
+        }
+
+        .hint span {
+          white-space: normal;
+          width: auto;
+          border-right: none;
+          padding-right: 0;
+          text-align: center;
+          animation: rise 0.7s ease 0.3s both;
+        }
+
+        body::before {
+          left: 12px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-delay: 0ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="watermark" aria-hidden="true">王景宏 · 简历附件 · 荣誉存档</div>
+
+    <div class="page">
+      <!-- 卷首 -->
+      <header class="dossier">
+        <div class="dossier-meta">
+          <span>档案编号 <span class="no">№ CEILF6-2026</span></span>
+          <span>RESUME APPENDIX · CREDENTIALS FILE</span>
+        </div>
+
+        <div class="dossier-title">
+          <div>
+            <p class="eyebrow">WANG JINGHONG / CEILF6</p>
+            <h1>荣誉档案</h1>
+            <p class="subtitle">
+              你好，我是
+              <b>王景宏（ceilf6）</b>。本卷收录获奖证书与证明材料原件影印，
+              点击任意展品可查看大图。
+              <span class="en">Hi there, nice to meet you.</span>
+            </p>
+          </div>
+          <div class="seal" aria-hidden="true">
+            <span>宏</span><span>王</span><span>印</span><span>景</span>
+          </div>
+        </div>
+
+        <!-- 外链装裱区 -->
+        <nav class="mounts">
+          <a
+            class="mount"
+            href="https://github.com/ceilf6"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight"
+              alt="GitHub Stats"
+            />
+            <span class="mount-label">GitHub · Stats</span>
+          </a>
+          <a
+            class="mount"
+            href="https://blog.csdn.net/2301_78856868"
+            target="_blank"
+            rel="noopener"
+          >
+            <img src="assets/blog-card.svg" alt="Blog" />
+            <span class="mount-label">CSDN · Blog</span>
+          </a>
+          <a
+            class="mount"
+            href="https://space.bilibili.com/3546602400647622"
+            target="_blank"
+            rel="noopener"
+          >
+            <img src="assets/vlog-card.svg" alt="Vlog" />
+            <span class="mount-label">Bilibili · Vlog</span>
+          </a>
+        </nav>
+
+        <p class="hint">
+          <span>ALL CARDS ARE CLICKABLE — FEEL FREE TO EXPLORE</span>
+        </p>
+      </header>
+
+      <!-- 证书陈列 -->
+      <main class="exhibits">
+        <div class="section-rule">
+          <h2 class="section-label">
+            证书陈列<span class="en">THE EXHIBITS</span>
+          </h2>
+        </div>
+
+        <div class="gallery" id="gallery"></div>
+
+        <p class="endmark">—— <b>卷终</b> · END OF FILE ——</p>
+      </main>
+    </div>
+
+    <script src="resume-awards/images.js"></script>
+    <script>
+      const gallery = document.getElementById("gallery");
+      const GAP = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue("--gap"),
+      );
+
+      function openViewer(id) {
+        window.open(`viewer.html?img=${id}`, "_blank");
+      }
+
+      // 瀑布流：按卡片实际内容高度（图片 + 题签）计算行跨度
+      function resizeCard(card) {
+        card.style.gridRowEnd = "span 1";
+        card.style.gridRowEnd = "span " + Math.ceil(card.scrollHeight + GAP);
+      }
+
+      images.forEach((img, i) => {
+        const card = document.createElement("figure");
+        card.className = "card";
+        card.style.setProperty("--i", i);
+
+        const imgEl = document.createElement("img");
+        imgEl.src = img.src;
+        imgEl.alt = img.alt;
+        imgEl.decoding = "async";
+        imgEl.addEventListener("load", () => {
+          imgEl.classList.add("loaded");
+          resizeCard(card);
+        });
+
+        const cap = document.createElement("figcaption");
+        const no = document.createElement("span");
+        no.className = "card-no";
+        no.textContent = "№ " + String(i + 1).padStart(2, "0");
+        const name = document.createElement("span");
+        name.className = "card-name";
+        name.textContent = img.alt;
+        cap.append(no, name);
+
+        card.append(imgEl, cap);
+        card.addEventListener("click", () => openViewer(i));
+        gallery.appendChild(card);
+      });
+
+      window.addEventListener("resize", () => {
+        document.querySelectorAll(".gallery .card").forEach((card) => {
+          const imgEl = card.querySelector("img");
+          if (imgEl && imgEl.complete) resizeCard(card);
+        });
+      });
+    </script>
+  </body>
+</html>
