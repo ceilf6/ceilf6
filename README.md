@@ -49,3 +49,16 @@
 
 - **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown 编辑器
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
+
+<h2 align="center">
+  <code>我的一些荣誉</code>
+</h2>
+
+- **[天梯程序设计赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=5)**
+- **[睿抗开发者大赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=6)**
+- **[ByteDance 工程营优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=0)**
+- **[Tencent 技术菁英班](https://ceilf6.github.io/ceilf6/viewer.html?img=1)**
+- **[Tencent Open Source](https://ceilf6.github.io/ceilf6/viewer.html?img=2)**
+- **[Datawhale 优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=4)**
+- **[Baidu Star 金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=3)**
+- **[码蹄杯 MATI GEEK 金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=7)**
