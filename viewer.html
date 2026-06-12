@@ -206,6 +206,33 @@
         showImage(newIndex);
       }
 
+      function canCloseToOpener() {
+        try {
+          return (
+            window.opener &&
+            !window.opener.closed &&
+            window.opener.location.origin === window.location.origin
+          );
+        } catch {
+          return false;
+        }
+      }
+
+      function returnToIndex() {
+        const homeUrl = "./";
+        if (canCloseToOpener()) {
+          window.close();
+          window.setTimeout(() => {
+            if (!window.closed) {
+              window.location.href = homeUrl;
+            }
+          }, 100);
+          return;
+        }
+
+        window.location.href = homeUrl;
+      }
+
       if (currentIndex !== -1) {
         showImage(currentIndex);
       } else {
@@ -224,13 +251,13 @@
 
       // 点击图片关闭
       viewerImg.addEventListener("click", () => {
-        window.close();
+        returnToIndex();
       });
 
       // 键盘事件
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          window.close();
+          returnToIndex();
         } else if (e.key === "ArrowLeft") {
           prevImage();
         } else if (e.key === "ArrowRight") {
