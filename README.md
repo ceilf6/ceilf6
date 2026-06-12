@@ -56,9 +56,9 @@
 
 - **[天梯程序设计赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=5)**
 - **[睿抗开发者大赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=6)**
-- **[ByteDance 工程营优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=0)**
-- **[Tencent 技术菁英班](https://ceilf6.github.io/ceilf6/viewer.html?img=1)**
-- **[Tencent Open Source](https://ceilf6.github.io/ceilf6/viewer.html?img=2)**
+- **[字节跳动工程营优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=0)**
+- **[腾讯技术菁英班优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=1)**
+- **[腾讯开源优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=2)**
 - **[Datawhale 优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=4)**
-- **[Baidu Star 金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=3)**
-- **[码蹄杯 MATI GEEK 金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=7)**
+- **[百度之星金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=3)**
+- **[码蹄杯金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=7)**
