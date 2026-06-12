@@ -51,6 +51,7 @@ function loadViewer({ opener = null } = {}) {
   const elements = {
     "viewer-img": createElement(),
     error: createElement(),
+    loading: createElement(),
     viewer: createElement(),
     prevBtn: createElement(),
     nextBtn: createElement(),
@@ -153,4 +154,38 @@ test("cross-origin opener windows return home instead of closing back to the ope
 
   assert.equal(window.closeCalls, 0);
   assert.equal(window.location.href, "https://ceilf6.github.io/ceilf6/");
+});
+
+test("award image stays hidden until it finishes loading", () => {
+  const { elements } = loadViewer();
+
+  assert.equal(elements["viewer-img"].src, "award-5.jpg");
+  assert.equal(elements["viewer-img"].style.display, "none");
+  assert.notEqual(elements.loading.style.display, "none");
+
+  elements["viewer-img"].dispatchEventType("load");
+
+  assert.equal(elements["viewer-img"].style.display, "block");
+  assert.equal(elements.loading.style.display, "none");
+});
+
+test("switching awards restores loading state before the next image appears", () => {
+  const { elements } = loadViewer();
+
+  elements["viewer-img"].dispatchEventType("load");
+  elements.nextBtn.dispatchEventType("click", { stopPropagation() {} });
+
+  assert.equal(elements["viewer-img"].src, "award-6.jpg");
+  assert.equal(elements["viewer-img"].style.display, "none");
+  assert.notEqual(elements.loading.style.display, "none");
+});
+
+test("failed image loads hide the native broken-image placeholder", () => {
+  const { elements } = loadViewer();
+
+  elements["viewer-img"].dispatchEventType("error");
+
+  assert.equal(elements["viewer-img"].style.display, "none");
+  assert.equal(elements.loading.style.display, "none");
+  assert.notEqual(elements.error.style.display, "none");
 });

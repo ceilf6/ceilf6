@@ -31,6 +31,7 @@
       }
 
       .viewer img {
+        display: none;
         max-width: 92vw;
         max-height: 92vh;
         object-fit: contain;
@@ -57,6 +58,33 @@
         color: rgba(255, 255, 255, 0.7);
         font-size: 18px;
         text-align: center;
+      }
+
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        color: rgba(238, 244, 255, 0.72);
+        font-size: 15px;
+        letter-spacing: 0;
+      }
+
+      .loading::before {
+        content: "";
+        width: 42px;
+        height: 42px;
+        border: 2px solid rgba(238, 244, 255, 0.18);
+        border-top-color: rgba(87, 227, 207, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 0 30px rgba(87, 227, 207, 0.22);
+        animation: spin 0.9s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .hint {
@@ -162,6 +190,7 @@
 
     <div class="viewer" id="viewer">
       <img src="" alt="" id="viewer-img" style="display: none" />
+      <div class="loading" id="loading">加载奖状中</div>
       <div class="error" id="error" style="display: none">图片未找到</div>
     </div>
     <!-- <div class="hint">← → 切换图片 | ESC 或点击图片关闭</div> -->
@@ -170,6 +199,7 @@
     <script>
       const viewerImg = document.getElementById("viewer-img");
       const error = document.getElementById("error");
+      const loading = document.getElementById("loading");
       const viewer = document.getElementById("viewer");
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
@@ -186,13 +216,27 @@
         if (index < 0 || index >= images.length) return;
         currentIndex = index;
         const image = images[index];
+        viewerImg.style.display = "none";
+        error.style.display = "none";
+        loading.style.display = "flex";
         viewerImg.src = image.src;
         viewerImg.alt = image.alt;
-        viewerImg.style.display = "block";
         document.title = image.alt + " - 查看图片";
         // 更新 URL
         history.replaceState(null, "", `?img=${index}`);
       }
+
+      viewerImg.addEventListener("load", () => {
+        loading.style.display = "none";
+        error.style.display = "none";
+        viewerImg.style.display = "block";
+      });
+
+      viewerImg.addEventListener("error", () => {
+        loading.style.display = "none";
+        viewerImg.style.display = "none";
+        error.style.display = "block";
+      });
 
       function prevImage() {
         const newIndex =
