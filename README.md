@@ -12,10 +12,6 @@
   05年生人，上海大学27届，联系 => 3506456886@qq.com
 </p>
 
-<p align="center">
-  <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
-</p>
-
 <h2 align="center">
   <code>我的一些荣誉</code>
 </h2>
@@ -46,6 +42,10 @@
     <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=7" target="_blank">码蹄杯金奖</a>
   </li>
 </ul>
+
+<p align="center">
+  <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
+</p>
 
 <h2 align="center">
   <code>我的一些探索</code>
