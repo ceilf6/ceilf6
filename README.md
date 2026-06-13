@@ -34,9 +34,11 @@
   <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=7" target="_blank">码&#x2060;蹄&#x2060;杯&#x2060;金&#x2060;奖</a></strong>
 </p>
 
-<p align="center">
-  <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
-</p>
+<a href="https://ceilf6.github.io/ceilf6/" target="_blank">
+  <p align="center">
+    <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
+  </p>
+</a>
 
 <h2 align="center">
   <code>我的一些探索</code>
