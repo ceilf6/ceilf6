@@ -21,7 +21,7 @@ BACKGROUND = "#1a1b27"
 TITLE = "#70a5fd"
 TEXT = "#38bdae"
 MUTED = "#565f89"
-CELL_TEXT = "#d8eaff"
+CELL_TEXT = "#1a1b27"
 LEVEL_COLORS = ["#202a3d", "#24515f", "#38bdae", "#70a5fd", "#bf91f3"]
 
 
@@ -112,13 +112,12 @@ def render_svg(data):
             count = day["contribution_count"]
             color = color_for_count(count, max_count)
             label = escape(f'{count} contributions on {day["date"]}')
-            text_color = MUTED if count == 0 else CELL_TEXT
             text_size = cell_text_size(count)
             day_cells.append(
                 f'<rect x="{x}" y="{y}" width="{cell}" height="{cell}" rx="2" fill="{color}">'
                 f"<title>{label}</title></rect>"
                 f'<text x="{x + cell / 2}" y="{y + cell / 2 + 2.4}" text-anchor="middle" '
-                f'style="font-size: {text_size}; font-weight: 700; fill: {text_color}; pointer-events: none;">'
+                f'style="font-size: {text_size}; font-weight: 800; fill: {CELL_TEXT}; pointer-events: none;">'
                 f"{escape(format_cell_count(count))}</text>"
             )
 

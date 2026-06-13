@@ -111,6 +111,8 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   assert.match(svg, /#70a5fd/);
   assert.match(svg, /#38bdae/);
   assert.match(svg, /#bf91f3/);
+  assert.match(svg, /font-weight: 800; fill: #1a1b27; pointer-events: none/);
+  assert.doesNotMatch(svg, /fill: #bf91f3; stroke:/);
   assert.doesNotMatch(svg, /ceilf6/);
   assert.doesNotMatch(svg, /last 12 months/);
   assert.doesNotMatch(svg, /26 contributions/);
@@ -189,6 +191,7 @@ The generator must:
 - render a `1020x184` contribution graph SVG
 - render each day's contribution count inside the heatmap cell
 - use `#1a1b27`, `#70a5fd`, `#38bdae`, `#bf91f3`
+- keep the original cell color scale and render cell numbers in `#1a1b27` for a cutout-like effect
 - render the visible `GitHub Contribution Graph` title and `active ... days` stat
 - omit aggregate contribution totals, username/range metadata, generated time, month labels, weekday labels, and the legend
 - render the last 53 weeks at most

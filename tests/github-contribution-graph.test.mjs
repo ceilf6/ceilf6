@@ -108,6 +108,8 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   assert.match(svg, /#70a5fd/);
   assert.match(svg, /#38bdae/);
   assert.match(svg, /#bf91f3/);
+  assert.match(svg, /font-weight: 800; fill: #1a1b27; pointer-events: none/);
+  assert.doesNotMatch(svg, /fill: #bf91f3; stroke:/);
   assert.doesNotMatch(svg, /ceilf6/);
   assert.doesNotMatch(svg, /last 12 months/);
   assert.doesNotMatch(svg, /26 contributions/);
