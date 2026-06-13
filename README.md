@@ -16,32 +16,23 @@
   <code>我的一些荣誉</code>
 </h2>
 
-<ul>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=5" target="_blank">天梯程序设计赛国家级二等奖</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=6" target="_blank">睿抗开发者大赛国家级二等奖</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=0" target="_blank">字节跳动工程营优秀学员</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=1" target="_blank">腾讯技术菁英班优秀学员</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=2" target="_blank">腾讯开源优秀学员</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=4" target="_blank">Datawhale 优秀学员</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=3" target="_blank">百度之星金奖</a>
-  </li>
-  <li>
-    <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=7" target="_blank">码蹄杯金奖</a>
-  </li>
-</ul>
+<p align="center">
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=5" target="_blank">天梯程序设计赛国家级二等奖</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=6" target="_blank">睿抗开发者大赛国家级二等奖</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=0" target="_blank">字节跳动工程营优秀学员</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=1" target="_blank">腾讯技术菁英班优秀学员</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=2" target="_blank">腾讯开源优秀学员</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=4" target="_blank">Datawhale 优秀学员</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=3" target="_blank">百度之星金奖</a>
+  &nbsp;&nbsp;&nbsp;
+  • <a href="https://ceilf6.github.io/ceilf6/viewer.html?img=7" target="_blank">码蹄杯金奖</a>
+</p>
 
 <p align="center">
   <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
