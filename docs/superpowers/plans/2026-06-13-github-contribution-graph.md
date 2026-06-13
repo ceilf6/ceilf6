@@ -102,12 +102,21 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   runPython(graphScript, ["--input", input, "--output", output]);
   const svg = readFileSync(output, "utf8");
 
-  assert.match(svg, /GitHub Contribution Graph/);
-  assert.match(svg, /ceilf6 · last 12 months/);
+  assert.match(svg, /Daily GitHub contributions/);
+  assert.match(svg, /width="1020" height="136"/);
+  assert.match(svg, />15<\/text>/);
   assert.match(svg, /#1a1b27/);
   assert.match(svg, /#70a5fd/);
   assert.match(svg, /#38bdae/);
   assert.match(svg, /#bf91f3/);
+  assert.doesNotMatch(svg, /GitHub Contribution Graph/);
+  assert.doesNotMatch(svg, /ceilf6/);
+  assert.doesNotMatch(svg, /last 12 months/);
+  assert.doesNotMatch(svg, /generated/i);
+  assert.doesNotMatch(svg, />Jun</);
+  assert.doesNotMatch(svg, />Mon</);
+  assert.doesNotMatch(svg, />Less</);
+  assert.doesNotMatch(svg, />More</);
   assert.doesNotMatch(svg, /#216e39/i);
 });
 
@@ -175,8 +184,10 @@ Expected: generator tests still fail because the generator does not exist; cutof
 The generator must:
 
 - fail on empty data
-- render `700x200`
+- render a `1020x136` pure contribution-grid SVG
+- render each day's contribution count inside the heatmap cell
 - use `#1a1b27`, `#70a5fd`, `#38bdae`, `#bf91f3`
+- omit visible title text, aggregate stats, username/range metadata, generated time, month labels, weekday labels, and the legend
 - render the last 53 weeks at most
 - escape user-controlled text
 - avoid scripts, external assets, external fonts, and default GitHub green
@@ -216,7 +227,7 @@ Insert after the contact paragraph and before `<h2 align="center">`:
 
 ```html
 <p align="center">
-  <img src="./assets/github-contribution-graph.svg" width="100%" alt="GitHub Contribution Graph" />
+  <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
 </p>
 ```
 

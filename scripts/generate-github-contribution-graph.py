@@ -15,13 +15,11 @@ from pathlib import Path
 DEFAULT_INPUT = Path(__file__).parent.parent / "data" / "github-contributions.json"
 DEFAULT_OUTPUT = Path(__file__).parent.parent / "assets" / "github-contribution-graph.svg"
 
-WIDTH = 700
-HEIGHT = 200
+WIDTH = 1020
+HEIGHT = 136
 BACKGROUND = "#1a1b27"
-TITLE = "#70a5fd"
-TEXT = "#38bdae"
-ACCENT = "#bf91f3"
 MUTED = "#565f89"
+CELL_TEXT = "#d8eaff"
 LEVEL_COLORS = ["#202a3d", "#24515f", "#38bdae", "#70a5fd", "#bf91f3"]
 
 
@@ -72,16 +70,18 @@ def color_for_count(count, max_count):
     return LEVEL_COLORS[level]
 
 
-def format_number(value):
-    if value >= 1000:
-        return f"{value / 1000:.1f}k"
+def format_cell_count(value):
     return f"{value:,}"
 
 
-def format_date_range(start, end):
-    if not start or not end:
-        return "last 12 months"
-    return f"{start} to {end}"
+def cell_text_size(value):
+    if value >= 10000:
+        return "4.2px"
+    if value >= 1000:
+        return "5.4px"
+    if value >= 100:
+        return "6.2px"
+    return "7.4px"
 
 
 def render_svg(data):
@@ -89,24 +89,16 @@ def render_svg(data):
     if not days:
         raise ValueError("No contribution days found")
 
-    username = escape(str(data.get("username", "github")))
-    total = int(data.get("total_contributions", sum(day["contribution_count"] for day in days)))
-    end = str(data.get("to", days[-1]["date"]))
-    start = str(data.get("from", days[0]["date"]))
-    source = escape(str(data.get("source", "github")))
-    generated_at = escape(str(data.get("generated_at", "")))
-    max_day = max(days, key=lambda day: day["contribution_count"])
     max_count = max(day["contribution_count"] for day in days)
-    active_days = sum(1 for day in days if day["contribution_count"] > 0)
     weeks = group_days_by_week(days)
 
-    graph_x = 32
-    graph_y = 78
-    cell = 8
+    cell = 15
     gap = 3
-    month_labels = []
-    seen_months = set()
-    day_rects = []
+    graph_width = len(weeks) * cell + max(0, len(weeks) - 1) * gap
+    graph_height = 7 * cell + 6 * gap
+    graph_x = max(6, (WIDTH - graph_width) // 2)
+    graph_y = max(6, (HEIGHT - graph_height) // 2)
+    day_cells = []
 
     for week_index, week in enumerate(weeks):
         for day in week:
@@ -117,49 +109,26 @@ def render_svg(data):
             count = day["contribution_count"]
             color = color_for_count(count, max_count)
             label = escape(f'{count} contributions on {day["date"]}')
-            day_rects.append(
+            text_color = MUTED if count == 0 else CELL_TEXT
+            text_size = cell_text_size(count)
+            day_cells.append(
                 f'<rect x="{x}" y="{y}" width="{cell}" height="{cell}" rx="2" fill="{color}">'
                 f"<title>{label}</title></rect>"
+                f'<text x="{x + cell / 2}" y="{y + cell / 2 + 2.4}" text-anchor="middle" '
+                f'style="font-size: {text_size}; font-weight: 700; fill: {text_color}; pointer-events: none;">'
+                f"{escape(format_cell_count(count))}</text>"
             )
-            month_key = (date.year, date.month)
-            if date.day <= 7 and month_key not in seen_months:
-                seen_months.add(month_key)
-                month_labels.append(
-                    f'<text x="{x}" y="70" style="font-size: 9px; fill: {MUTED};">{date.strftime("%b")}</text>'
-                )
-
-    legend_x = 560
-    legend_y = 168
-    legend = []
-    for index, color in enumerate(LEVEL_COLORS):
-        x = legend_x + index * 15
-        legend.append(f'<rect x="{x}" y="{legend_y}" width="8" height="8" rx="2" fill="{color}" />')
-
-    subtitle = f"{username} · last 12 months"
-    range_text = escape(format_date_range(start, end))
-    generated_text = escape(generated_at.replace("T", " ").replace("Z", " UTC"))
-    source_text = escape(source)
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-labelledby="title desc">
-    <title id="title">GitHub Contribution Graph</title>
-    <desc id="desc">{username} contribution graph from {escape(start)} to {escape(end)}</desc>
+    <title id="title">Daily GitHub contributions</title>
+    <desc id="desc">Daily contribution counts rendered as a heatmap grid.</desc>
     <style>
         * {{
             font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
         }}
     </style>
     <rect x="1" y="1" rx="5" ry="5" width="{WIDTH - 2}" height="{HEIGHT - 2}" stroke="{BACKGROUND}" stroke-width="1" fill="{BACKGROUND}" />
-    <text x="30" y="40" style="font-size: 22px; fill: {TITLE};">GitHub Contribution Graph</text>
-    <text x="30" y="60" style="font-size: 12px; fill: {TEXT};">{subtitle}</text>
-    <text x="535" y="35" text-anchor="start" style="font-size: 13px; fill: {ACCENT};">{format_number(total)} contributions</text>
-    <text x="535" y="53" text-anchor="start" style="font-size: 11px; fill: {TEXT};">active {active_days} days · best {max_day["contribution_count"]}</text>
-    {''.join(month_labels)}
-    {''.join(day_rects)}
-    <text x="32" y="168" style="font-size: 10px; fill: {MUTED};">{range_text}</text>
-    <text x="32" y="184" style="font-size: 10px; fill: {MUTED};">generated {generated_text} · {source_text}</text>
-    <text x="500" y="176" style="font-size: 9px; fill: {MUTED};">Less</text>
-    {''.join(legend)}
-    <text x="638" y="176" style="font-size: 9px; fill: {MUTED};">More</text>
+    {''.join(day_cells)}
 </svg>'''
 
 

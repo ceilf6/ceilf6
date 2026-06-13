@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="./assets/github-contribution-graph.svg" width="100%" alt="GitHub Contribution Graph" />
+  <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
 </p>
 
 <h2 align="center">
