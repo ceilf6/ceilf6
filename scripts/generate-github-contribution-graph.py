@@ -16,8 +16,10 @@ DEFAULT_INPUT = Path(__file__).parent.parent / "data" / "github-contributions.js
 DEFAULT_OUTPUT = Path(__file__).parent.parent / "assets" / "github-contribution-graph.svg"
 
 WIDTH = 1020
-HEIGHT = 136
+HEIGHT = 184
 BACKGROUND = "#1a1b27"
+TITLE = "#70a5fd"
+TEXT = "#38bdae"
 MUTED = "#565f89"
 CELL_TEXT = "#d8eaff"
 LEVEL_COLORS = ["#202a3d", "#24515f", "#38bdae", "#70a5fd", "#bf91f3"]
@@ -71,17 +73,17 @@ def color_for_count(count, max_count):
 
 
 def format_cell_count(value):
-    return f"{value:,}"
+    return str(value)
 
 
 def cell_text_size(value):
     if value >= 10000:
-        return "4.2px"
+        return "4.8px"
     if value >= 1000:
-        return "5.4px"
+        return "5.9px"
     if value >= 100:
-        return "6.2px"
-    return "7.4px"
+        return "6.7px"
+    return "8px"
 
 
 def render_svg(data):
@@ -90,14 +92,15 @@ def render_svg(data):
         raise ValueError("No contribution days found")
 
     max_count = max(day["contribution_count"] for day in days)
+    active_days = sum(1 for day in days if day["contribution_count"] > 0)
     weeks = group_days_by_week(days)
 
-    cell = 15
+    cell = 16
     gap = 3
     graph_width = len(weeks) * cell + max(0, len(weeks) - 1) * gap
     graph_height = 7 * cell + 6 * gap
     graph_x = max(6, (WIDTH - graph_width) // 2)
-    graph_y = max(6, (HEIGHT - graph_height) // 2)
+    graph_y = 42
     day_cells = []
 
     for week_index, week in enumerate(weeks):
@@ -120,14 +123,16 @@ def render_svg(data):
             )
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-labelledby="title desc">
-    <title id="title">Daily GitHub contributions</title>
-    <desc id="desc">Daily contribution counts rendered as a heatmap grid.</desc>
+    <title id="title">GitHub Contribution Graph</title>
+    <desc id="desc">Daily contribution counts rendered as a heatmap grid with {active_days} active days.</desc>
     <style>
         * {{
             font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
         }}
     </style>
     <rect x="1" y="1" rx="5" ry="5" width="{WIDTH - 2}" height="{HEIGHT - 2}" stroke="{BACKGROUND}" stroke-width="1" fill="{BACKGROUND}" />
+    <text x="22" y="30" style="font-size: 22px; fill: {TITLE};">GitHub Contribution Graph</text>
+    <text x="998" y="30" text-anchor="end" style="font-size: 14px; fill: {TEXT};">active {active_days} days</text>
     {''.join(day_cells)}
 </svg>'''
 

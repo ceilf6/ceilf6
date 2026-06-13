@@ -99,16 +99,18 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   runPython(graphScript, ["--input", input, "--output", output]);
   const svg = readFileSync(output, "utf8");
 
-  assert.match(svg, /Daily GitHub contributions/);
-  assert.match(svg, /width="1020" height="136"/);
+  assert.match(svg, /GitHub Contribution Graph/);
+  assert.match(svg, /width="1020" height="184"/);
+  assert.match(svg, /active 4 days/);
   assert.match(svg, />15<\/text>/);
+  assert.match(svg, /font-size: 22px; fill: #70a5fd/);
   assert.match(svg, /#1a1b27/);
   assert.match(svg, /#70a5fd/);
   assert.match(svg, /#38bdae/);
   assert.match(svg, /#bf91f3/);
-  assert.doesNotMatch(svg, /GitHub Contribution Graph/);
   assert.doesNotMatch(svg, /ceilf6/);
   assert.doesNotMatch(svg, /last 12 months/);
+  assert.doesNotMatch(svg, /26 contributions/);
   assert.doesNotMatch(svg, /generated/i);
   assert.doesNotMatch(svg, />Jun</);
   assert.doesNotMatch(svg, />Mon</);
