@@ -17,6 +17,19 @@
 </p>
 
 <h2 align="center">
+  <code>我的一些荣誉</code>
+</h2>
+
+- **[天梯程序设计赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=5)**
+- **[睿抗开发者大赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=6)**
+- **[字节跳动工程营优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=0)**
+- **[腾讯技术菁英班优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=1)**
+- **[腾讯开源优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=2)**
+- **[Datawhale 优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=4)**
+- **[百度之星金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=3)**
+- **[码蹄杯金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=7)**
+
+<h2 align="center">
   <code>我的一些探索</code>
 </h2>
 
@@ -53,16 +66,3 @@
 
 - **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown 编辑器
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
-
-<h2 align="center">
-  <code>我的一些荣誉</code>
-</h2>
-
-- **[天梯程序设计赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=5)**
-- **[睿抗开发者大赛国家级二等奖](https://ceilf6.github.io/ceilf6/viewer.html?img=6)**
-- **[字节跳动工程营优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=0)**
-- **[腾讯技术菁英班优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=1)**
-- **[腾讯开源优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=2)**
-- **[Datawhale 优秀学员](https://ceilf6.github.io/ceilf6/viewer.html?img=4)**
-- **[百度之星金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=3)**
-- **[码蹄杯金奖](https://ceilf6.github.io/ceilf6/viewer.html?img=7)**
