@@ -60,6 +60,7 @@
 - **[code tape](https://github.com/ceilf6/code-tape)** - 代码讲解工具，支持代码编辑、音视频收集、云端备份、面试模式、AI字幕校验等
   - 遵守 **Harness** 开发范式以一周的时间敏捷开发完成
 - **[filesense](https://github.com/ceilf6/filesense)** - 智能体友好的环境感知工具，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
+- **[websense](https://github.com/ceilf6/websense)** - 智能体友好的在线资源感知工具，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[IP USA](https://github.com/ceilf6/IP-USA)** - 纯净美国 IP 获取
 - **[cc hooks](https://github.com/ceilf6/cc-hooks)** - 极致利用你的智能体。例如在完成任务/ goal 之后立马通知，通过你的 claw 继续发布下个阶段任务
