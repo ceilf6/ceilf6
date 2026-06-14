@@ -62,6 +62,7 @@
 - **[filesense](https://github.com/ceilf6/filesense)** - 智能体友好的环境感知工具，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[open memory gateway](https://github.com/ceilf6/open-memory-gateway)** - 轻便管理 Agent 长期记忆，已集成入 [FrontAgent](https://github.com/ceilf6/FrontAgent)
 - **[IP USA](https://github.com/ceilf6/IP-USA)** - 纯净美国 IP 获取
+- **[cc hooks](https://github.com/ceilf6/cc-hooks)** - 极致利用你的智能体。例如在完成任务/ goal 之后立马通知，通过你的 claw 继续发布下个阶段任务
 - **[Study4ExamAgent](https://github.com/ceilf6/Study4ExamAgent)** - 应试教育复习仓库的冷启动基建
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
