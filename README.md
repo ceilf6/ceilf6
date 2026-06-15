@@ -77,5 +77,10 @@
   <code>同时持续为社区贡献</code>
 </h3>
 
+- **[openai/codex](https://github.com/openai/codex)** - 智能体 GUI 工具
+- **[anthropics/claude-code](https://github.com/anthropics/claude-code)** - 智能体 CLI 工具
 - **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown 编辑器
+- **[XiaomiMiMo/MiMo-Code](https://github.com/XiaomiMiMo/MiMo-Code)** - 小米 Mimo Code 智能体 CLI 工具
+- **[abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus)** - 知识库工具: 感知代码变更的级联反应，辅助 SDD 规范驱动开发
+- **[farion1231/cc-switch](https://github.com/farion1231/cc-switch)** - 各种智能体的全方位管理工具
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
