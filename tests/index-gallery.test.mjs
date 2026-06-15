@@ -63,6 +63,10 @@ function createElement(tagName) {
       if (selector === "img") {
         return element.children.find((child) => child.tagName === "IMG") ?? null;
       }
+      if (selector.startsWith(".")) {
+        const className = selector.slice(1);
+        return element.children.find((child) => child.classList.contains(className)) ?? null;
+      }
       return null;
     },
     setAttribute(name, value) {
@@ -88,6 +92,19 @@ function runIndexScript() {
 
   const gallery = createElement("div");
   gallery.id = "gallery";
+  const readmeCards = [createElement("a"), createElement("a"), createElement("a")];
+  for (const [index, card] of readmeCards.entries()) {
+    card.className = "readme-card is-loading";
+    const loader = createElement("span");
+    loader.className = "readme-card-loader";
+    loader.textContent = "加载中";
+    const image = createElement("img");
+    image.alt = `readme-card-${index}`;
+    image.complete = false;
+    image.naturalWidth = 0;
+    card.appendChild(loader);
+    card.appendChild(image);
+  }
   const openedUrls = [];
   const resizeListeners = [];
   const document = {
@@ -97,8 +114,9 @@ function runIndexScript() {
       return gallery;
     },
     querySelectorAll(selector) {
-      assert.equal(selector, ".gallery .card");
-      return gallery.children;
+      if (selector === ".gallery .card") return gallery.children;
+      if (selector === ".readme-card") return readmeCards;
+      throw new Error(`unexpected selector: ${selector}`);
     },
   };
   const window = {
@@ -127,7 +145,7 @@ function runIndexScript() {
     window,
   });
 
-  return { gallery, openedUrls, resizeListeners };
+  return { gallery, openedUrls, readmeCards, resizeListeners };
 }
 
 test("gallery cards reserve metadata-based masonry space before thumbnails load", () => {
@@ -154,4 +172,36 @@ test("gallery cards hide loading state after thumbnail load", () => {
   assert.ok(!card.classList.contains("is-loading"));
   assert.ok(card.classList.contains("is-loaded"));
   assert.equal(card.style.gridRowEnd, "span 324");
+});
+
+test("README cards use the shared loading state before their images load", () => {
+  const { readmeCards } = runIndexScript();
+  const card = readmeCards[0];
+  const image = card.querySelector("img");
+
+  assert.ok(card.classList.contains("is-loading"));
+  assert.ok(!card.classList.contains("is-loaded"));
+  assert.equal(image.style.opacity, "0");
+
+  image.complete = true;
+  image.naturalWidth = 340;
+  image.dispatchEventType("load");
+
+  assert.ok(!card.classList.contains("is-loading"));
+  assert.ok(card.classList.contains("is-loaded"));
+  assert.equal(image.style.opacity, "1");
+});
+
+test("README cards show an error loading state without exposing broken images", () => {
+  const { readmeCards } = runIndexScript();
+  const card = readmeCards[0];
+  const image = card.querySelector("img");
+  const loader = card.querySelector(".readme-card-loader");
+
+  image.dispatchEventType("error");
+
+  assert.ok(!card.classList.contains("is-loading"));
+  assert.ok(card.classList.contains("is-error"));
+  assert.equal(image.style.opacity, "0");
+  assert.equal(loader.textContent, "加载失败");
 });

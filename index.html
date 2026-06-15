@@ -235,7 +235,8 @@
         animation-delay: calc(var(--i, 0) * 60ms);
       }
 
-      .gallery .card-loader {
+      .gallery .card-loader,
+      .readme-card-loader {
         position: absolute;
         inset: 0;
         z-index: 3;
@@ -259,7 +260,8 @@
         transition: opacity 0.32s ease;
       }
 
-      .gallery .card-loader::before {
+      .gallery .card-loader::before,
+      .readme-card-loader::before {
         content: "";
         width: 34px;
         height: 34px;
@@ -270,16 +272,19 @@
         animation: loaderSpin 0.9s linear infinite;
       }
 
-      .gallery .card.is-loaded .card-loader {
+      .gallery .card.is-loaded .card-loader,
+      .readme-card.is-loaded .readme-card-loader {
         opacity: 0;
         pointer-events: none;
       }
 
-      .gallery .card.is-error .card-loader {
+      .gallery .card.is-error .card-loader,
+      .readme-card.is-error .readme-card-loader {
         color: rgba(255, 178, 98, 0.88);
       }
 
-      .gallery .card.is-error .card-loader::before {
+      .gallery .card.is-error .card-loader::before,
+      .readme-card.is-error .readme-card-loader::before {
         display: none;
       }
 
@@ -410,10 +415,20 @@
         flex-wrap: wrap;
       }
 
-      .readme-cards img {
+      .readme-card {
+        position: relative;
+        display: block;
+        flex: 0 1 340px;
         height: 200px;
+        aspect-ratio: 340 / 200;
+        overflow: hidden;
         border-radius: 12px;
         border: 1px solid rgba(194, 220, 245, 0.34);
+        background: linear-gradient(
+          160deg,
+          rgba(10, 24, 42, 0.92),
+          rgba(15, 33, 56, 0.68)
+        );
         box-shadow: 0 14px 30px rgba(3, 10, 24, 0.3);
         transition:
           transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
@@ -421,12 +436,31 @@
           border-color 0.35s ease;
       }
 
-      .readme-cards img:hover {
+      .readme-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition:
+          opacity 0.36s ease,
+          filter 0.45s ease;
+      }
+
+      .readme-card.is-loaded img {
+        opacity: 1;
+      }
+
+      .readme-card:hover {
         transform: translateY(-4px);
         border-color: rgba(87, 227, 207, 0.45);
         box-shadow:
           0 18px 34px rgba(3, 10, 24, 0.44),
           0 0 0 1px rgba(87, 227, 207, 0.35);
+      }
+
+      .readme-card:hover img {
+        filter: saturate(1.08) contrast(1.04) brightness(1.04);
       }
 
       .readme-cards a:focus-visible {
@@ -451,7 +485,8 @@
           border-radius: 20px;
         }
 
-        .readme-cards img {
+        .readme-card {
+          flex-basis: 255px;
           height: 150px;
         }
 
@@ -474,7 +509,8 @@
           border-radius: 16px;
         }
 
-        .readme-cards img {
+        .readme-card {
+          flex-basis: 204px;
           height: 120px;
         }
 
@@ -511,16 +547,33 @@
     <div class="readme-section">
       <h1>👋 Hi there, I'm <span class="accent">ceilf6</span>!</h1>
       <div class="readme-cards">
-        <a href="https://github.com/ceilf6" target="_blank"
+        <a
+          class="readme-card is-loading"
+          href="https://github.com/ceilf6"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span class="readme-card-loader" aria-hidden="true">加载中</span
           ><img
             src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=ceilf6&theme=tokyonight"
             alt="Stats"
+            width="340"
+            height="200"
         /></a>
-        <a href="https://blog.csdn.net/2301_78856868" target="_blank"
-          ><img src="assets/blog-card.svg" alt="Blog"
+        <a
+          class="readme-card is-loading"
+          href="https://blog.csdn.net/2301_78856868"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span class="readme-card-loader" aria-hidden="true">加载中</span
+          ><img src="assets/blog-card.svg" alt="Blog" width="340" height="200"
         /></a>
-        <a href="https://space.bilibili.com/3546602400647622" target="_blank"
-          ><img src="assets/vlog-card.svg" alt="Vlog"
+        <a
+          class="readme-card is-loading"
+          href="https://space.bilibili.com/3546602400647622"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span class="readme-card-loader" aria-hidden="true">加载中</span
+          ><img src="assets/vlog-card.svg" alt="Vlog" width="340" height="200"
         /></a>
       </div>
       <div class="readme-hint">
@@ -542,6 +595,35 @@
       function openViewer(id) {
         window.open(`viewer.html?img=${id}`, "_blank");
       }
+
+      function setupReadmeCardLoading(card) {
+        const imgEl = card.querySelector("img");
+        const loader = card.querySelector(".readme-card-loader");
+        if (!imgEl) return;
+
+        function markLoaded() {
+          card.classList.remove("is-loading", "is-error");
+          card.classList.add("is-loaded");
+          imgEl.style.opacity = "1";
+        }
+
+        function markError() {
+          card.classList.remove("is-loading", "is-loaded");
+          card.classList.add("is-error");
+          imgEl.style.opacity = "0";
+          if (loader) loader.textContent = "加载失败";
+        }
+
+        imgEl.style.opacity = "0";
+        if (imgEl.complete && imgEl.naturalWidth > 0) {
+          markLoaded();
+        } else {
+          imgEl.addEventListener("load", markLoaded);
+          imgEl.addEventListener("error", markError);
+        }
+      }
+
+      document.querySelectorAll(".readme-card").forEach(setupReadmeCardLoading);
 
       function getDisplaySize(image, imgEl) {
         const width = image?.thumbWidth || image?.width || imgEl.awardWidth;
