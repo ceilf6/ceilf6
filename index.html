@@ -56,6 +56,11 @@
         box-sizing: border-box;
       }
 
+      html {
+        min-height: 100%;
+        background: var(--bg-void);
+      }
+
       body {
         min-height: 100vh;
         background:
@@ -80,6 +85,7 @@
             var(--bg-deep) 44%,
             var(--bg-midnight) 100%
           );
+        background-color: var(--bg-void);
         color: var(--text-main);
         display: flex;
         flex-direction: column;
