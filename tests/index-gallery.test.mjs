@@ -4,9 +4,19 @@ import test from "node:test";
 import vm from "node:vm";
 
 const indexHtml = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const styleMatch = indexHtml.match(/<style>([\s\S]*?)<\/style>/i);
+assert.ok(styleMatch, "index.html should include an inline style block");
+const indexStyles = styleMatch[1];
 const inlineScripts = [...indexHtml.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map(
   (match) => match[1],
 );
+
+function getCssRule(selector) {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = indexStyles.match(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\n\\s*\\}`));
+  assert.ok(match, `${selector} rule should exist`);
+  return match[1];
+}
 
 function createClassList(element) {
   const classes = new Set();
@@ -147,6 +157,26 @@ function runIndexScript() {
 
   return { gallery, openedUrls, readmeCards, resizeListeners };
 }
+
+test("page background uses fixed visual layers instead of a body paint fallback", () => {
+  const htmlRule = getCssRule("html");
+  const bodyRule = getCssRule("body");
+  const bodyBeforeRule = getCssRule("body::before");
+  const bodyAfterRule = getCssRule("body::after");
+  const htmlAfterRule = getCssRule("html::after");
+
+  assert.match(indexStyles, /--page-background:\s*[\s\S]*linear-gradient\(/);
+  assert.match(htmlRule, /background-color:\s*var\(--bg-void\);/);
+  assert.match(bodyRule, /background:\s*transparent;/);
+  assert.doesNotMatch(bodyRule, /background-color:/);
+  assert.match(bodyBeforeRule, /position:\s*fixed;/);
+  assert.match(bodyBeforeRule, /background:\s*var\(--page-background\);/);
+  assert.match(bodyBeforeRule, /z-index:\s*-3;/);
+  assert.match(bodyAfterRule, /position:\s*fixed;/);
+  assert.match(bodyAfterRule, /z-index:\s*-2;/);
+  assert.match(htmlAfterRule, /position:\s*fixed;/);
+  assert.match(htmlAfterRule, /background-image:[\s\S]*linear-gradient\([\s\S]*feTurbulence/);
+});
 
 test("gallery cards reserve metadata-based masonry space before thumbnails load", () => {
   const { gallery } = runIndexScript();
