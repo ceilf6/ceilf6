@@ -84,3 +84,4 @@
 - **[abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus)** - 知识库工具: 感知代码变更的级联反应，辅助 SDD 规范驱动开发
 - **[farion1231/cc-switch](https://github.com/farion1231/cc-switch)** - 各种智能体的全方位管理工具
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
+- **[SHUOSC-11-1126/overlap-aware-speaker-asr](https://github.com/SHUOSC-11-1126/overlap-aware-speaker-asr)** - 多人情景下的 ASR 模型识别
