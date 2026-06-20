@@ -2,7 +2,9 @@ _CONFIG.sh
 
 .claude/
 
-.ref/
+# .ref/
+
+github-profile-summary-cards/
 
 ptr.md
 
