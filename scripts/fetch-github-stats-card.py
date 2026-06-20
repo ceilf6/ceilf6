@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""Fetch the upstream GitHub stats SVG and replace its GitHub mark with an S badge."""
+
+import argparse
+import os
+import sys
+import xml.etree.ElementTree as ElementTree
+from datetime import datetime, timezone
+from pathlib import Path
+from tempfile import NamedTemporaryFile
+from urllib.request import Request, urlopen
+
+
+DEFAULT_URL = (
+    "https://github-profile-summary-cards.vercel.app/api/cards/stats?"
+    "username=ceilf6&theme=tokyonight"
+)
+DEFAULT_OUTPUT = Path(__file__).parent.parent / "assets" / "github-stats-card.svg"
+RIGHT_SIDE_TRANSFORM = "translate(220,20)"
+LEFT_SIDE_TRANSFORM = "translate(30,20)"
+EXPECTED_LABELS = (
+    "Total Stars:",
+    f"{datetime.now(timezone.utc).year} Commits:",
+    "Total PRs:",
+    "Total Issues:",
+    "Contributed to:",
+)
+
+
+def local_name(tag):
+    return tag.rsplit("}", 1)[-1]
+
+
+def qualified_tag(root, name):
+    if root.tag.startswith("{"):
+        return f"{root.tag.split('}', 1)[0]}}}{name}"
+    return name
+
+
+def register_default_namespace(root):
+    if root.tag.startswith("{"):
+        ElementTree.register_namespace("", root.tag[1:].split("}", 1)[0])
+
+
+def load_source(input_path, url):
+    if input_path is not None:
+        return input_path.read_bytes()
+
+    request = Request(url, headers={"User-Agent": "ceilf6-github-stats-card"})
+    with urlopen(request, timeout=30) as response:
+        return response.read()
+
+
+def find_right_side_group(root):
+    matches = []
+    for parent in root.iter():
+        for child in parent:
+            if local_name(child.tag) == "g" and child.get("transform") == RIGHT_SIDE_TRANSFORM:
+                matches.append((parent, child))
+    if len(matches) != 1:
+        raise ValueError("Could not find the expected right-side group")
+    return matches[0]
+
+
+def text_values(element):
+    return {
+        "".join(child.itertext()).strip()
+        for child in element.iter()
+        if local_name(child.tag) == "text"
+    }
+
+
+def validate_card(root):
+    if local_name(root.tag) != "svg":
+        raise ValueError("Upstream card root is not an SVG")
+
+    dimensions = (root.get("width"), root.get("height"), root.get("viewBox"))
+    if dimensions != ("340", "200", "0 0 340 200"):
+        raise ValueError("Upstream card dimensions do not match the expected 340x200 layout")
+
+    if "Stats" not in text_values(root):
+        raise ValueError("Upstream card title does not match the expected Stats title")
+
+    label_groups = [
+        element
+        for element in root.iter()
+        if local_name(element.tag) == "g" and element.get("transform") == LEFT_SIDE_TRANSFORM
+    ]
+    if len(label_groups) != 1 or not set(EXPECTED_LABELS).issubset(text_values(label_groups[0])):
+        raise ValueError("Upstream card field labels do not match the expected stats layout")
+
+    parent, target = find_right_side_group(root)
+    if list(parent)[-1] is not target:
+        raise ValueError("Upstream card right-side group is not the final group")
+    return parent, target
+
+
+def replace_right_side_group(root, parent, target):
+    replacement = ElementTree.Element(
+        qualified_tag(root, "g"), {"transform": RIGHT_SIDE_TRANSFORM}
+    )
+    ElementTree.SubElement(
+        replacement,
+        qualified_tag(root, "circle"),
+        {"cx": "48", "cy": "48", "r": "48", "fill": "#bf91f3"},
+    )
+    badge_text = ElementTree.SubElement(
+        replacement,
+        qualified_tag(root, "text"),
+        {
+            "x": "48",
+            "y": "72",
+            "text-anchor": "middle",
+            "style": "font-size: 76px; font-weight: 800; fill: #1a1b27;",
+        },
+    )
+    badge_text.text = "S"
+
+    parent.insert(list(parent).index(target), replacement)
+    parent.remove(target)
+
+
+def write_atomically(output, content):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+        handle.write(content)
+        temporary_path = Path(handle.name)
+    try:
+        os.replace(temporary_path, output)
+    except Exception:
+        temporary_path.unlink(missing_ok=True)
+        raise
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", type=Path, help="Use a local upstream SVG instead of downloading it.")
+    parser.add_argument("--url", default=DEFAULT_URL, help="Upstream stats card URL.")
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
+    try:
+        root = ElementTree.fromstring(load_source(args.input, args.url))
+        parent, target = validate_card(root)
+        replace_right_side_group(root, parent, target)
+        register_default_namespace(root)
+        write_atomically(args.output, ElementTree.tostring(root, encoding="unicode"))
+        print(f"GitHub stats card written to {args.output}")
+        return 0
+    except Exception as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

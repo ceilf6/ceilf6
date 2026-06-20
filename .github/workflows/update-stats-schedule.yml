@@ -43,6 +43,9 @@ jobs:
       - name: Fetch CSDN stats
         run: python scripts/fetch-csdn-stats-2.py
 
+      - name: Fetch GitHub stats card
+        run: python scripts/fetch-github-stats-card.py
+
       - name: Generate SVG cards
         run: python scripts/generate-svg-cards.py
 
