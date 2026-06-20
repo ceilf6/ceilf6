@@ -102,16 +102,24 @@ def replace_right_side_group(root, parent, target):
     ElementTree.SubElement(
         replacement,
         qualified_tag(root, "circle"),
-        {"cx": "48", "cy": "48", "r": "48", "fill": "#bf91f3"},
+        {
+            "cx": "48",
+            "cy": "48",
+            "r": "40",
+            "fill": "none",
+            "stroke": "#bf91f3",
+            "stroke-width": "6",
+        },
     )
     badge_text = ElementTree.SubElement(
         replacement,
         qualified_tag(root, "text"),
         {
-            "x": "48",
-            "y": "72",
+            "x": "47",
+            "y": "58",
             "text-anchor": "middle",
-            "style": "font-size: 76px; font-weight: 800; fill: #1a1b27;",
+            "transform": "translate(-3.76 0) scale(1.08 1)",
+            "style": "font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;",
         },
     )
     badge_text.text = "S"

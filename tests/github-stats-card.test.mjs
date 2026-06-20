@@ -61,8 +61,14 @@ test("generator preserves upstream stats while replacing the GitHub group with a
   ]) {
     assert.match(svg, new RegExp(`>${value}<`));
   }
-  assert.match(svg, /<circle[^>]*fill="#bf91f3"/);
-  assert.match(svg, />S<\/text>/);
+  assert.match(
+    svg,
+    /<circle(?=[^>]*cx="48")(?=[^>]*cy="48")(?=[^>]*r="40")(?=[^>]*fill="none")(?=[^>]*stroke="#bf91f3")(?=[^>]*stroke-width="6")[^>]*\/>/,
+  );
+  assert.match(
+    svg,
+    /<text[^>]*x="47"[^>]*y="58"[^>]*transform="translate\(-3\.76 0\) scale\(1\.08 1\)"[^>]*style="font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;">S<\/text>/,
+  );
   assert.doesNotMatch(svg, /github-mark/);
 });
 
@@ -123,6 +129,12 @@ test("README and Update Stats workflow use the repository-owned stats card", () 
   );
   assert.equal(existsSync(generatedCard), true);
   const svg = readFileSync(generatedCard, "utf8");
-  assert.match(svg, /<circle[^>]*fill="#bf91f3"/);
-  assert.match(svg, />S<\/text>/);
+  assert.match(
+    svg,
+    /<circle(?=[^>]*cx="48")(?=[^>]*cy="48")(?=[^>]*r="40")(?=[^>]*fill="none")(?=[^>]*stroke="#bf91f3")(?=[^>]*stroke-width="6")[^>]*\/>/,
+  );
+  assert.match(
+    svg,
+    /<text[^>]*x="47"[^>]*y="58"[^>]*transform="translate\(-3\.76 0\) scale\(1\.08 1\)"[^>]*style="font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;">S<\/text>/,
+  );
 });
