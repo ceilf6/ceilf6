@@ -47,7 +47,7 @@ test("generator preserves upstream stats while replacing the GitHub group with a
   assert.match(svg, /height="200"/);
   assert.match(svg, /viewBox="0 0 340 200"/);
   for (const value of [
-    "Stats",
+    "ceilf6's Github Stats",
     "Total Stars:",
     `${currentYear} Commits:`,
     "Total PRs:",
@@ -61,6 +61,11 @@ test("generator preserves upstream stats while replacing the GitHub group with a
   ]) {
     assert.match(svg, new RegExp(`>${value}<`));
   }
+  assert.match(
+    svg,
+    /<text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">ceilf6's Github Stats<\/text>/,
+  );
+  assert.doesNotMatch(svg, />Stats<\/text>/);
   assert.match(
     svg,
     /<circle(?=[^>]*cx="48")(?=[^>]*cy="48")(?=[^>]*r="40")(?=[^>]*fill="none")(?=[^>]*stroke="#bf91f3")(?=[^>]*stroke-width="6")[^>]*\/>/,
@@ -129,6 +134,10 @@ test("README and Update Stats workflow use the repository-owned stats card", () 
   );
   assert.equal(existsSync(generatedCard), true);
   const svg = readFileSync(generatedCard, "utf8");
+  assert.match(
+    svg,
+    /<text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">ceilf6's Github Stats<\/text>/,
+  );
   assert.match(
     svg,
     /<circle(?=[^>]*cx="48")(?=[^>]*cy="48")(?=[^>]*r="40")(?=[^>]*fill="none")(?=[^>]*stroke="#bf91f3")(?=[^>]*stroke-width="6")[^>]*\/>/,

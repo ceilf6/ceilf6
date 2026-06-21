@@ -97,6 +97,48 @@ test("renderer creates the 340×200 card with five totals and an embedded mark",
   );
 });
 
+test("all profile card renderers use 18px titles", () => {
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      [
+        "import importlib.util, sys",
+        "spec = importlib.util.spec_from_file_location('cards', sys.argv[1])",
+        "cards = importlib.util.module_from_spec(spec)",
+        "spec.loader.exec_module(cards)",
+        "print(cards.generate_blog_card({'fans': 1, 'likes': 2, 'views': 3, 'original': 4, 'collect': 5}))",
+        "print(cards.generate_vlog_card({'followers': 1, 'likes': 2, 'views': 3, 'creations': 4}))",
+        "print(cards.generate_huggingface_card({'numFollowers': 1, 'numLikes': 2, 'numModels': 3, 'numDatasets': 4, 'numSpaces': 5}))",
+      ].join("; "),
+      generatorScript.pathname,
+    ],
+    { cwd: repoRoot, encoding: "utf8" },
+  );
+
+  assert.equal(result.status, 0, result.stderr);
+  for (const title of ["Blog", "Vlog", "Hugging Face"]) {
+    assert.match(
+      result.stdout,
+      new RegExp(`<text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">${title}<`),
+    );
+  }
+});
+
+test("generated profile card assets use 18px titles", () => {
+  for (const [file, title] of [
+    ["../assets/blog-card.svg", "Blog"],
+    ["../assets/vlog-card.svg", "Vlog"],
+    ["../assets/huggingface-card.svg", "Hugging Face"],
+  ]) {
+    const svg = readFileSync(new URL(file, import.meta.url), "utf8");
+    assert.match(
+      svg,
+      new RegExp(`<text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">${title}<`),
+    );
+  }
+});
+
 test("README and daily workflow publish the ordered two-by-two card layout", () => {
   const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
   const workflow = readFileSync(

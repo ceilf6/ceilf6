@@ -25,6 +25,8 @@ EXPECTED_LABELS = (
     "Total Issues:",
     "Contributed to:",
 )
+OUTPUT_TITLE = "ceilf6's Github Stats"
+OUTPUT_TITLE_STYLE = "font-size: 18px; fill: #70a5fd;"
 
 
 def local_name(tag):
@@ -78,7 +80,12 @@ def validate_card(root):
     if dimensions != ("340", "200", "0 0 340 200"):
         raise ValueError("Upstream card dimensions do not match the expected 340x200 layout")
 
-    if "Stats" not in text_values(root):
+    title_matches = [
+        element
+        for element in root.iter()
+        if local_name(element.tag) == "text" and "".join(element.itertext()).strip() == "Stats"
+    ]
+    if len(title_matches) != 1:
         raise ValueError("Upstream card title does not match the expected Stats title")
 
     label_groups = [
@@ -92,7 +99,12 @@ def validate_card(root):
     parent, target = find_right_side_group(root)
     if list(parent)[-1] is not target:
         raise ValueError("Upstream card right-side group is not the final group")
-    return parent, target
+    return title_matches[0], parent, target
+
+
+def replace_title(title):
+    title.text = OUTPUT_TITLE
+    title.set("style", OUTPUT_TITLE_STYLE)
 
 
 def replace_right_side_group(root, parent, target):
@@ -152,7 +164,8 @@ def main():
     args = build_parser().parse_args()
     try:
         root = ElementTree.fromstring(load_source(args.input, args.url))
-        parent, target = validate_card(root)
+        title, parent, target = validate_card(root)
+        replace_title(title)
         replace_right_side_group(root, parent, target)
         register_default_namespace(root)
         write_atomically(args.output, ElementTree.tostring(root, encoding="unicode"))

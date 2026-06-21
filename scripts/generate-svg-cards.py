@@ -35,7 +35,7 @@ def generate_blog_card(stats):
         }}
     </style>
     <rect x="1" y="1" rx="5" ry="5" height="99%" width="{((width - 2 * stroke_width) / width) * 100}%" stroke="#1a1b27" stroke-width="1"
-        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 22px; fill: #70a5fd;">Blog</text>
+        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Blog</text>
     <g transform="translate(0,40)">
         <g transform="translate(30,20)">
             <g transform="translate(0,0)" width="14" height="14" fill="#bf91f3">
@@ -100,7 +100,7 @@ def generate_vlog_card(stats):
         }}
     </style>
     <rect x="1" y="1" rx="5" ry="5" height="99%" width="{((width - 2 * stroke_width) / width) * 100}%" stroke="#1a1b27" stroke-width="1"
-        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 22px; fill: #70a5fd;">Vlog</text>
+        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Vlog</text>
     <g transform="translate(0,40)">
         <g transform="translate(30,20)">
             <g transform="translate(0,0)" width="14" height="14" fill="#bf91f3">
@@ -163,7 +163,7 @@ def generate_huggingface_card(stats):
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="340" height="200" viewBox="0 0 340 200">
     <style>* {{ font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif }}</style>
     <rect x="1" y="1" rx="5" ry="5" height="99%" width="99.41176470588235%" stroke="#1a1b27" stroke-width="1" fill="#1a1b27" stroke-opacity="1" />
-    <text x="30" y="40" style="font-size: 22px; fill: #70a5fd;">Hugging Face</text>
+    <text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Hugging Face</text>
     <g transform="translate(30,60)">{row_svg}</g>
     <g transform="translate(220,67) scale(0.08)" data-hugging-face-mark="true">{mark_paths}</g>
 </svg>'''
