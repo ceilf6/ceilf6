@@ -46,6 +46,9 @@ jobs:
       - name: Fetch GitHub stats card
         run: python scripts/fetch-github-stats-card.py
 
+      - name: Fetch Hugging Face stats
+        run: python scripts/fetch-huggingface-stats.py
+
       - name: Generate SVG cards
         run: python scripts/generate-svg-cards.py
 

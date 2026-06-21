@@ -1,9 +1,16 @@
 <h1 align="center">
   <code>Hi👋,我是&nbsp;ceilf6&nbsp;!</code>
 </h1>
-<div>
-  <a href="https://ceilf6.github.io/ceilf6/" target="_blank"><img width="33%" src="./assets/github-stats-card.svg" /></a><a href="https://blog.csdn.net/2301_78856868" target="_blank"><img src="./assets/blog-card.svg" width="33%" /></a><a href="https://ceilf6.github.io/ceilf6/vlog.html" target="_blank"><img src="./assets/vlog-card.svg" width="33%" /></a>
-</div>
+<table>
+  <tr>
+    <td width="50%" align="center"><a href="https://ceilf6.github.io/ceilf6/" target="_blank"><img width="100%" src="./assets/github-stats-card.svg" /></a></td>
+    <td width="50%" align="center"><a href="https://huggingface.co/ceilf6" target="_blank"><img width="100%" src="./assets/huggingface-card.svg" /></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><a href="https://ceilf6.github.io/ceilf6/vlog.html" target="_blank"><img width="100%" src="./assets/vlog-card.svg" /></a></td>
+    <td width="50%" align="center"><a href="https://blog.csdn.net/2301_78856868" target="_blank"><img width="100%" src="./assets/blog-card.svg" /></a></td>
+  </tr>
+</table>
 <p align="center">
   <!-- <img src="./assets/hint-text-for-index.svg" /> -->
   如果想了解更多，点击上面👆对应卡片跳转

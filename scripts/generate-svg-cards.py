@@ -5,6 +5,7 @@ Generate SVG cards for Blog and Vlog stats
 
 import json
 from pathlib import Path
+import xml.etree.ElementTree as ElementTree
 
 
 def format_number(num):
@@ -138,6 +139,36 @@ def generate_vlog_card(stats):
     return svg
 
 
+def generate_huggingface_card(stats):
+    """生成 Hugging Face 统计 SVG 卡片。"""
+    rows = (
+        ("Followers:", format_number(stats["numFollowers"]), "M5.5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.507 5.507 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4.001 4.001 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.49 3.49 0 0 1 2 5.5zM11 4a.75.75 0 1 0 0 1.5 1.5 1.5 0 0 1 .666 2.844.75.75 0 0 0-.416.672v.352a.75.75 0 0 0 .574.73c1.2.289 2.162 1.2 2.522 2.372a.75.75 0 1 0 1.434-.44 5.01 5.01 0 0 0-2.56-3.012A3 3 0 0 0 11 4z"),
+        ("Likes:", format_number(stats["numLikes"]), "M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"),
+        ("Models:", format_number(stats["numModels"]), "M1.75 1.5A1.75 1.75 0 0 0 0 3.25v7.5c0 .966.784 1.75 1.75 1.75h4.5v1H4.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5H9.75v-1h4.5A1.75 1.75 0 0 0 16 10.75v-7.5A1.75 1.75 0 0 0 14.25 1.5H1.75zm0 1.5h12.5a.25.25 0 0 1 .25.25v7.5a.25.25 0 0 1-.25.25H1.75a.25.25 0 0 1-.25-.25v-7.5A.25.25 0 0 1 1.75 3z"),
+        ("Datasets:", format_number(stats["numDatasets"]), "M2 1.25A1.75 1.75 0 0 0 .25 3v10A1.75 1.75 0 0 0 2 14.75h12A1.75 1.75 0 0 0 15.75 13V3A1.75 1.75 0 0 0 14 1.25H2zm0 1.5h12a.25.25 0 0 1 .25.25v2.25h-13V3A.25.25 0 0 1 2 2.75zm-.75 4h13v2.5h-13v-2.5zm0 4h13V13a.25.25 0 0 1-.25.25H2a.25.25 0 0 1-.25-.25v-2.25z"),
+        ("Spaces:", format_number(stats["numSpaces"]), "M1.5 1.5h5v5h-5v-5zm1.5 1.5V5h2V3H3zm6.5-1.5h5v5h-5v-5zM11 3v2h2V3h-2zM1.5 9.5h5v5h-5v-5zM3 11v2h2v-2H3zm6.5-1.5h5v5h-5v-5zM11 11v2h2v-2h-2z"),
+    )
+    row_svg = "".join(
+        f'<g transform="translate(0,{index * 25.2})"><path fill="#bf91f3" d="{icon}" /><text x="21" y="14" style="fill: #38bdae; font-size: 14px;">{label}</text><text x="100" y="14" style="fill: #38bdae; font-size: 14px;">{value}</text></g>'
+        for index, (label, value, icon) in enumerate(rows)
+    )
+    mark_source = Path(__file__).parent.parent / "svg" / "hugging_face_high_contrast.svg"
+    mark_root = ElementTree.parse(mark_source).getroot()
+    mark_paths = "".join(
+        ElementTree.tostring(path, encoding="unicode")
+        for path in mark_root.iter()
+        if path.tag.rsplit("}", 1)[-1] == "path"
+    ).replace("#BF91F3", "#bf91f3")
+
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="340" height="200" viewBox="0 0 340 200">
+    <style>* {{ font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif }}</style>
+    <rect x="1" y="1" rx="5" ry="5" height="99%" width="99.41176470588235%" stroke="#1a1b27" stroke-width="1" fill="#1a1b27" stroke-opacity="1" />
+    <text x="30" y="40" style="font-size: 22px; fill: #70a5fd;">Hugging Face</text>
+    <g transform="translate(30,60)">{row_svg}</g>
+    <g transform="translate(220,20) scale(0.08)" data-hugging-face-mark="true">{mark_paths}</g>
+</svg>'''
+
+
 def main():
     # 读取数据
     csdn_stats_file = Path(__file__).parent.parent / 'data' / 'csdn-stats.json'
@@ -170,6 +201,21 @@ def main():
             f.write(vlog_svg)
 
         print("Vlog card generated successfully!")
+
+    # 生成 Hugging Face 卡片
+    huggingface_stats_file = Path(__file__).parent.parent / 'data' / 'huggingface-stats.json'
+    if huggingface_stats_file.exists():
+        with open(huggingface_stats_file, 'r', encoding='utf-8') as f:
+            huggingface_stats = json.load(f)
+
+        huggingface_svg = generate_huggingface_card(huggingface_stats)
+        huggingface_svg_file = Path(__file__).parent.parent / 'assets' / 'huggingface-card.svg'
+        huggingface_svg_file.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(huggingface_svg_file, 'w', encoding='utf-8') as f:
+            f.write(huggingface_svg)
+
+        print("Hugging Face card generated successfully!")
 
 
 if __name__ == '__main__':
