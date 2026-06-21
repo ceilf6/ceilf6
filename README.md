@@ -37,7 +37,7 @@
   <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=6" target="_blank">睿&#x2060;抗&#x2060;开&#x2060;发&#x2060;者&#x2060;大&#x2060;赛&#x2060;国&#x2060;家&#x2060;级&#x2060;二&#x2060;等&#x2060;奖</a></strong>
 </p>
 
-<a href="https://ceilf6.github.io/ceilf6/" target="_blank">
+<a href="https://linux.do/u/ceilf6/summary" target="_blank">
   <p align="center">
     <img src="./assets/github-contribution-graph.svg" width="100%" alt="GitHub contributions" />
   </p>
