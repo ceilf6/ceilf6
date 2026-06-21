@@ -127,10 +127,13 @@ def replace_right_side_group(root, parent, target):
         replacement,
         qualified_tag(root, "text"),
         {
-            "x": "47",
-            "y": "58",
+            # Center the badge glyph on the ring's exact center (cx=48, cy=48):
+            # text-anchor centers horizontally, dominant-baseline centers vertically.
+            # No manual translate/scale nudges, so it cannot drift off-center.
+            "x": "48",
+            "y": "48",
             "text-anchor": "middle",
-            "transform": "translate(-3.76 0) scale(1.08 1)",
+            "dominant-baseline": "central",
             "style": "font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;",
         },
     )
