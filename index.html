@@ -396,18 +396,18 @@
       }
 
       .readme-cards {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 14px;
-        justify-content: center;
-        flex-wrap: wrap;
       }
 
       .readme-card {
         position: relative;
         display: block;
-        flex: 0 1 340px;
-        height: 200px;
+        width: 100%;
+        height: auto;
         aspect-ratio: 340 / 200;
+        min-width: 0;
         overflow: hidden;
         border-radius: 12px;
         border: 1px solid rgba(194, 220, 245, 0.34);
@@ -472,9 +472,8 @@
           border-radius: 20px;
         }
 
-        .readme-card {
-          flex-basis: 255px;
-          height: 150px;
+        .readme-cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .gallery {
@@ -496,9 +495,8 @@
           border-radius: 16px;
         }
 
-        .readme-card {
-          flex-basis: 204px;
-          height: 120px;
+        .readme-cards {
+          grid-template-columns: 1fr;
         }
 
         .gallery {
@@ -548,11 +546,15 @@
         /></a>
         <a
           class="readme-card is-loading"
-          href="https://blog.csdn.net/2301_78856868"
+          href="https://huggingface.co/ceilf6"
           target="_blank"
           rel="noopener noreferrer"
           ><span class="readme-card-loader" aria-hidden="true">加载中</span
-          ><img src="assets/blog-card.svg" alt="Blog" width="340" height="200"
+          ><img
+            src="./assets/huggingface-card.svg"
+            alt="Hugging Face"
+            width="340"
+            height="200"
         /></a>
         <a
           class="readme-card is-loading"
@@ -561,6 +563,14 @@
           rel="noopener noreferrer"
           ><span class="readme-card-loader" aria-hidden="true">加载中</span
           ><img src="assets/vlog-card.svg" alt="Vlog" width="340" height="200"
+        /></a>
+        <a
+          class="readme-card is-loading"
+          href="https://blog.csdn.net/2301_78856868"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span class="readme-card-loader" aria-hidden="true">加载中</span
+          ><img src="assets/blog-card.svg" alt="Blog" width="340" height="200"
         /></a>
       </div>
       <div class="readme-hint">

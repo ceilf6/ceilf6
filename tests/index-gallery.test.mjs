@@ -102,7 +102,12 @@ function runIndexScript() {
 
   const gallery = createElement("div");
   gallery.id = "gallery";
-  const readmeCards = [createElement("a"), createElement("a"), createElement("a")];
+  const readmeCards = [
+    createElement("a"),
+    createElement("a"),
+    createElement("a"),
+    createElement("a"),
+  ];
   for (const [index, card] of readmeCards.entries()) {
     card.className = "readme-card is-loading";
     const loader = createElement("span");
@@ -176,6 +181,37 @@ test("page background uses fixed visual layers instead of a body paint fallback"
   assert.match(bodyAfterRule, /z-index:\s*-2;/);
   assert.match(htmlAfterRule, /position:\s*fixed;/);
   assert.match(htmlAfterRule, /background-image:[\s\S]*linear-gradient\([\s\S]*feTurbulence/);
+});
+
+test("homepage uses an ordered responsive four-card grid", () => {
+  const cardSources = [
+    "./assets/github-stats-card.svg",
+    "./assets/huggingface-card.svg",
+    "assets/vlog-card.svg",
+    "assets/blog-card.svg",
+  ];
+  let position = -1;
+  for (const source of cardSources) {
+    const next = indexHtml.indexOf(`src="${source}"`);
+    assert.ok(next > position, `${source} is not in the required order`);
+    position = next;
+  }
+  assert.match(indexHtml, /href="https:\/\/huggingface\.co\/ceilf6"/);
+  assert.match(getCssRule(".readme-cards"), /display:\s*grid;/);
+  assert.match(
+    getCssRule(".readme-cards"),
+    /grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\);/,
+  );
+  assert.match(getCssRule(".readme-card"), /width:\s*100%;/);
+  assert.match(
+    indexStyles,
+    /@media \(max-width: 900px\) \{[\s\S]*?\.readme-cards\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/,
+  );
+  assert.match(
+    indexStyles,
+    /@media \(max-width: 640px\) \{[\s\S]*?\.readme-cards\s*\{[\s\S]*?grid-template-columns:\s*1fr;/,
+  );
+  assert.equal(runIndexScript().readmeCards.length, 4);
 });
 
 test("gallery cards reserve metadata-based masonry space before thumbnails load", () => {
