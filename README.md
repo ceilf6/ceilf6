@@ -2,10 +2,10 @@
   <code>Hi👋,我是&nbsp;ceilf6&nbsp;!</code>
 </h1>
 <p align="center">
-  <a href="https://ceilf6.github.io/ceilf6/" target="_blank"><img width="39%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="39%" src="./assets/huggingface-card.svg" /></a>
+  <a href="https://ceilf6.github.io/ceilf6/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="36%" src="./assets/huggingface-card.svg" /></a>
 </p>
 <p align="center">
-  <a href="https://ceilf6.github.io/ceilf6/vlog.html" target="_blank"><img width="39%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://blog.csdn.net/2301_78856868" target="_blank"><img width="39%" src="./assets/blog-card.svg" /></a>
+  <a href="https://ceilf6.github.io/ceilf6/vlog.html" target="_blank"><img width="36%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://blog.csdn.net/2301_78856868" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
 </p>
 <p align="center">
   <!-- <img src="./assets/hint-text-for-index.svg" /> -->
