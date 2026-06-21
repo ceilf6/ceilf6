@@ -165,7 +165,7 @@ def generate_huggingface_card(stats):
     <rect x="1" y="1" rx="5" ry="5" height="99%" width="99.41176470588235%" stroke="#1a1b27" stroke-width="1" fill="#1a1b27" stroke-opacity="1" />
     <text x="30" y="40" style="font-size: 22px; fill: #70a5fd;">Hugging Face</text>
     <g transform="translate(30,60)">{row_svg}</g>
-    <g transform="translate(220,20) scale(0.08)" data-hugging-face-mark="true">{mark_paths}</g>
+    <g transform="translate(220,67) scale(0.08)" data-hugging-face-mark="true">{mark_paths}</g>
 </svg>'''
 
 

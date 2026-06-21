@@ -91,6 +91,10 @@ test("renderer creates the 340×200 card with five totals and an embedded mark",
   ]) {
     assert.match(result.stdout, new RegExp(value));
   }
+  assert.match(
+    result.stdout,
+    /<g transform="translate\(220,67\) scale\(0\.08\)" data-hugging-face-mark="true">/,
+  );
 });
 
 test("README and daily workflow publish the ordered two-by-two card layout", () => {
