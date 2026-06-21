@@ -39,7 +39,7 @@
 
 <a href="https://ceilf6.github.io/ceilf6/" target="_blank">
   <p align="center">
-    <img src="./assets/github-contribution-graph.svg" width="99%" alt="GitHub contributions" />
+    <img src="./assets/github-contribution-graph.svg" width="100%" alt="GitHub contributions" />
   </p>
 </a>
 
