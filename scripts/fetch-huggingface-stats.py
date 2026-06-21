@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -65,6 +66,7 @@ def main():
 
     try:
         stats = parse_overview(load_source(args.input, args.url))
+        stats["last_updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         write_atomically(args.output, stats)
         print(f"Hugging Face stats written to {args.output}")
         return 0

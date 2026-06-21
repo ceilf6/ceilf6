@@ -30,10 +30,15 @@ function runFetcher(source, existingOutput) {
   return { result, output };
 }
 
-test("fetcher writes the five required Hugging Face overview totals", () => {
+test("fetcher writes the five required Hugging Face overview totals and update time", () => {
   const { result, output } = runFetcher(JSON.stringify(validOverview));
   assert.equal(result.status, 0, result.stderr);
-  assert.deepEqual(JSON.parse(readFileSync(output, "utf8")), validOverview);
+  const stats = JSON.parse(readFileSync(output, "utf8"));
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(stats).filter(([key]) => key !== "last_updated")),
+    validOverview,
+  );
+  assert.match(stats.last_updated, /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
 });
 
 test("fetcher rejects malformed, incomplete, and invalid totals without replacing output", () => {
