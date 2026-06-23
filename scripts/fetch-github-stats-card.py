@@ -127,14 +127,20 @@ def replace_right_side_group(root, parent, target):
         replacement,
         qualified_tag(root, "text"),
         {
-            # Center the badge glyph on the ring's exact center (cx=48, cy=48):
-            # text-anchor centers horizontally, dominant-baseline centers vertically.
-            # No manual translate/scale nudges, so it cannot drift off-center.
+            # Center the badge glyph on the ring's exact geometric center (cx=48, cy=48).
+            # We borrow github-readme-stats' rendering technique -- 800-weight Segoe UI,
+            # plus BOTH alignment-baseline and dominant-baseline (different SVG renderers,
+            # GitHub's included, honor different ones) -- but NOT its anchor coordinates:
+            # grs anchors the letter at (x=-5, y=3) against a ring centered at (cx=-10,
+            # cy=8), i.e. +5 right / -5 up from center, which is visibly off at this
+            # circle size. text-anchor=middle + both central baselines put the glyph's
+            # optical center on (48, 48) with no manual nudges, so it cannot drift.
             "x": "48",
             "y": "48",
             "text-anchor": "middle",
+            "alignment-baseline": "central",
             "dominant-baseline": "central",
-            "style": "font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;",
+            "style": "font-family: 'Segoe UI', Ubuntu, Sans-Serif; font-size: 24px; font-weight: 800; fill: #ffffff;",
         },
     )
     badge_text.text = "S"
