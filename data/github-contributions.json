@@ -1,22 +1,14 @@
 {
   "username": "ceilf6",
   "source": "github-graphql",
-  "generated_at": "2026-06-23T00:13:39Z",
-  "from": "2025-06-23",
-  "to": "2026-06-22",
-  "total_contributions": 11084,
+  "generated_at": "2026-06-25T00:14:18Z",
+  "from": "2025-06-25",
+  "to": "2026-06-24",
+  "total_contributions": 11044,
   "weeks": [
     {
-      "first_day": "2025-06-23",
+      "first_day": "2025-06-25",
       "days": [
-        {
-          "date": "2025-06-23",
-          "contribution_count": 0
-        },
-        {
-          "date": "2025-06-24",
-          "contribution_count": 0
-        },
         {
           "date": "2025-06-25",
           "contribution_count": 0
@@ -1504,7 +1496,7 @@
         },
         {
           "date": "2026-05-06",
-          "contribution_count": 39
+          "contribution_count": 35
         },
         {
           "date": "2026-05-07",
@@ -1516,7 +1508,7 @@
         },
         {
           "date": "2026-05-09",
-          "contribution_count": 121
+          "contribution_count": 75
         }
       ]
     },
@@ -1525,11 +1517,11 @@
       "days": [
         {
           "date": "2026-05-10",
-          "contribution_count": 58
+          "contribution_count": 48
         },
         {
           "date": "2026-05-11",
-          "contribution_count": 28
+          "contribution_count": 24
         },
         {
           "date": "2026-05-12",
@@ -1537,7 +1529,7 @@
         },
         {
           "date": "2026-05-13",
-          "contribution_count": 34
+          "contribution_count": 32
         },
         {
           "date": "2026-05-14",
@@ -1545,7 +1537,7 @@
         },
         {
           "date": "2026-05-15",
-          "contribution_count": 35
+          "contribution_count": 31
         },
         {
           "date": "2026-05-16",
@@ -1562,15 +1554,15 @@
         },
         {
           "date": "2026-05-18",
-          "contribution_count": 13
+          "contribution_count": 11
         },
         {
           "date": "2026-05-19",
-          "contribution_count": 97
+          "contribution_count": 95
         },
         {
           "date": "2026-05-20",
-          "contribution_count": 332
+          "contribution_count": 331
         },
         {
           "date": "2026-05-21",
@@ -1595,15 +1587,15 @@
         },
         {
           "date": "2026-05-25",
-          "contribution_count": 44
+          "contribution_count": 43
         },
         {
           "date": "2026-05-26",
-          "contribution_count": 51
+          "contribution_count": 50
         },
         {
           "date": "2026-05-27",
-          "contribution_count": 69
+          "contribution_count": 68
         },
         {
           "date": "2026-05-28",
@@ -1628,7 +1620,7 @@
         },
         {
           "date": "2026-06-01",
-          "contribution_count": 101
+          "contribution_count": 97
         },
         {
           "date": "2026-06-02",
@@ -1636,7 +1628,7 @@
         },
         {
           "date": "2026-06-03",
-          "contribution_count": 16
+          "contribution_count": 15
         },
         {
           "date": "2026-06-04",
@@ -1644,11 +1636,11 @@
         },
         {
           "date": "2026-06-05",
-          "contribution_count": 19
+          "contribution_count": 18
         },
         {
           "date": "2026-06-06",
-          "contribution_count": 246
+          "contribution_count": 237
         }
       ]
     },
@@ -1673,7 +1665,7 @@
         },
         {
           "date": "2026-06-11",
-          "contribution_count": 520
+          "contribution_count": 519
         },
         {
           "date": "2026-06-12",
@@ -1694,15 +1686,15 @@
         },
         {
           "date": "2026-06-15",
-          "contribution_count": 51
+          "contribution_count": 50
         },
         {
           "date": "2026-06-16",
-          "contribution_count": 32
+          "contribution_count": 30
         },
         {
           "date": "2026-06-17",
-          "contribution_count": 25
+          "contribution_count": 21
         },
         {
           "date": "2026-06-18",
@@ -1714,7 +1706,7 @@
         },
         {
           "date": "2026-06-20",
-          "contribution_count": 29
+          "contribution_count": 28
         }
       ]
     },
@@ -1728,6 +1720,14 @@
         {
           "date": "2026-06-22",
           "contribution_count": 10
+        },
+        {
+          "date": "2026-06-23",
+          "contribution_count": 55
+        },
+        {
+          "date": "2026-06-24",
+          "contribution_count": 7
         }
       ]
     }
