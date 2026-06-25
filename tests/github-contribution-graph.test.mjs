@@ -96,10 +96,11 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
     }),
   );
 
+  const compact = join(dir, "graph-compact.svg");
   runPython(graphScript, ["--input", input, "--output", output]);
   const svg = readFileSync(output, "utf8");
 
-  assert.match(svg, /GitHub Contribution Graph/);
+  assert.match(svg, /ceilf6's Github Contribution/);
   assert.match(svg, /width="1020" height="184"/);
   assert.match(svg, /active 4 days/);
   assert.match(svg, />15<\/text>/);
@@ -110,7 +111,7 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   assert.match(svg, /#bf91f3/);
   assert.match(svg, /font-weight: 800; fill: #1a1b27; pointer-events: none/);
   assert.doesNotMatch(svg, /fill: #bf91f3; stroke:/);
-  assert.doesNotMatch(svg, /ceilf6/);
+  assert.doesNotMatch(svg, /GitHub Contribution Graph/);
   assert.doesNotMatch(svg, /last 12 months/);
   assert.doesNotMatch(svg, /26 contributions/);
   assert.doesNotMatch(svg, /generated/i);
@@ -119,6 +120,20 @@ test("generator renders a Tokyo Night SVG from contribution data", () => {
   assert.doesNotMatch(svg, />Less</);
   assert.doesNotMatch(svg, />More</);
   assert.doesNotMatch(svg, /#216e39/i);
+
+  // Compact copy is generated alongside the full graph, within the 700x220 budget.
+  const compactSvg = readFileSync(compact, "utf8");
+  const size = compactSvg.match(/width="(\d+)" height="(\d+)"/);
+  assert.ok(size, "compact svg must declare width/height");
+  const compactWidth = Number(size[1]);
+  const compactHeight = Number(size[2]);
+  assert.ok(compactWidth <= 700, `compact width ${compactWidth} must be <= 700`);
+  assert.ok(compactHeight <= 220, `compact height ${compactHeight} must be <= 220`);
+  assert.match(compactSvg, /ceilf6's Github Contribution/);
+  assert.match(compactSvg, /active 4 days/);
+  assert.match(compactSvg, /#bf91f3/);
+  // Per-cell numbers are dropped in the compact copy.
+  assert.doesNotMatch(compactSvg, />15<\/text>/);
 });
 
 test("generator rejects empty contribution data", () => {
