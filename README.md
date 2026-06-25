@@ -70,6 +70,7 @@
 - **[cc hooks](https://github.com/ceilf6/cc-hooks)** - 极致利用你的智能体。例如在完成任务/ goal 之后立马通知，通过你的 claw 继续发布下个阶段任务
 - **[Study4ExamAgent](https://github.com/ceilf6/Study4ExamAgent)** - 应试教育复习仓库的冷启动基建
 - **[KnowledgeFlow StudyAgent](https://github.com/ceilf6/KnowledgeFlow-StudyAgent)** - AI智能体驱动的学习平台，让知识轻松流入你的脑海
+- **[overlap aware speaker asr](https://github.com/SHUOSC-11-1126/overlap-aware-speaker-asr)** - 多人情景下的 ASR + LLM 模型研究
 - **[DayMate](https://github.com/ceilf6/DayMate)** - 跨平台日历应用
 - **[SmartFruits](https://github.com/ceilf6/SmartFruits)** - 上海大学国家级项目，C++ 嵌入式配合 python 上位机编程的智能水果系统
 - **[claude code source](https://github.com/ceilf6/cc-source)** - claude code 源码学习网站
@@ -89,4 +90,3 @@
 - **[abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus)** - 知识库工具: 感知代码变更的级联反应，辅助 SDD 规范驱动开发
 - **[farion1231/cc-switch](https://github.com/farion1231/cc-switch)** - 各种智能体的全方位管理工具
 - **[goplus/builder](https://github.com/goplus/builder)** - 游戏开发平台
-- **[SHUOSC-11-1126/overlap-aware-speaker-asr](https://github.com/SHUOSC-11-1126/overlap-aware-speaker-asr)** - 多人情景下的 ASR 模型识别
