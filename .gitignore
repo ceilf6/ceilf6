@@ -1,6 +1,7 @@
 _CONFIG.sh
 
 .claude/
+.worktrees/
 
 # .ref/
 github-profile-summary-cards/
