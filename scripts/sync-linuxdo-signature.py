@@ -41,7 +41,11 @@ def json_response(response, operation):
 
 def normalized_base_url(value):
     parsed = urlparse(value)
-    if parsed.scheme not in {"http", "https"} or parsed.hostname not in ALLOWED_BASE_HOSTS:
+    if parsed.hostname not in ALLOWED_BASE_HOSTS:
+        raise SyncError("--base-url is not an allowed Linux DO endpoint")
+    if parsed.hostname == "linux.do" and parsed.scheme != "https":
+        raise SyncError("--base-url is not an allowed Linux DO endpoint")
+    if parsed.hostname != "linux.do" and parsed.scheme not in {"http", "https"}:
         raise SyncError("--base-url is not an allowed Linux DO endpoint")
     return f"{value.rstrip('/')}/"
 

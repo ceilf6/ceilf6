@@ -45,6 +45,29 @@ function runSync({ image, baseUrl, cookie = "_forum_session=test-session" }) {
   });
 }
 
+function runBaseUrlValidation(baseUrl) {
+  const source = [
+    "import importlib.util, sys",
+    "spec = importlib.util.spec_from_file_location('linuxdo_sync', sys.argv[1])",
+    "module = importlib.util.module_from_spec(spec)",
+    "spec.loader.exec_module(module)",
+    "try:",
+    "    module.normalized_base_url(sys.argv[2])",
+    "except module.SyncError as exc:",
+    "    print(exc, file=sys.stderr)",
+    "    raise SystemExit(1)",
+  ].join("\n");
+  return new Promise((resolve, reject) => {
+    const child = spawn("python3", ["-c", source, syncScript.pathname, baseUrl], {
+      cwd: repoRoot,
+    });
+    let stderr = "";
+    child.stderr.on("data", (chunk) => (stderr += chunk));
+    child.on("error", reject);
+    child.on("close", (status) => resolve({ status, stderr }));
+  });
+}
+
 test("sync uploads the compact SVG then updates only signature_url", async (t) => {
   const requests = [];
   const baseUrl = await startServer(t, (request, response) => {
@@ -133,6 +156,13 @@ test("sync stops after a failed request without retrying", async (t) => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /CSRF request failed with HTTP 403/);
   assert.deepEqual(requests, [["GET", "/session/csrf.json"]]);
+});
+
+test("sync refuses an insecure Linux DO base URL before sending a Cookie", async () => {
+  const result = await runBaseUrlValidation("http://linux.do");
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /--base-url is not an allowed Linux DO endpoint/);
 });
 
 test("contribution workflow syncs configured changed graphs only after git push", () => {
