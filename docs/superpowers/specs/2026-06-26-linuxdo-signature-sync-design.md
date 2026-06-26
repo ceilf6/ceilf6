@@ -63,7 +63,8 @@ linux.do CDN SVG URL stored as signature_url
 在 `.github/workflows/update-github-contribution-graph.yml` 中，图表生成后、Git 提交前增加同步步骤：
 
 - 使用 `git diff --quiet -- assets/github-contribution-graph-compact.svg` 跳过无变化同步。
-- 仅在 `LINUXDO_SESSION_COOKIE` 已配置时运行；缺失时在工作流摘要中标示为未配置，而非伪造同步成功。
+- 定时同步还要求 `LINUXDO_SYNC_ENABLED` 的值为 `true`；只有 Cookie 时保持禁用，并在工作流摘要中标示为未启用。
+- `workflow_dispatch` 的 `sync_linuxdo=true` 输入可执行一次明确请求的手动测试，即使定时同步尚未启用。
 - 将 Cookie 作为环境变量传给脚本；不启用 shell tracing，且不输出 HTTP 响应内容。
 - 不增加新的第三方依赖：工作流已经安装 `requests`，同步脚本复用它。
 
@@ -72,7 +73,7 @@ linux.do CDN SVG URL stored as signature_url
 - `LINUXDO_SESSION_COOKIE` 只能配置为 GitHub Actions Secret，绝不写入 `.env`、代码、测试 fixture 或 workflow 输出。
 - Cookie 等同于登录态。能修改默认分支工作流的协作者也可能令其外泄，因此必须限制仓库写权限；Cookie 过期或发现异常后立即在 linux.do 退出该会话并更换 Secret。
 - 工作流不试图绕过 Cloudflare、验证码、403 或 429。遇到这些响应会失败并等待人工介入。
-- 部署后首个真实请求必须由用户在 Actions 运行前确认。部署脚本和测试本身不向 linux.do 发出写请求。
+- 部署后首个真实请求必须以 `sync_linuxdo=true` 手动触发；确认成功后才设置 `LINUXDO_SYNC_ENABLED=true` 以启用每日定时同步。部署脚本和测试本身不向 linux.do 发出写请求。
 
 ## 测试与验收
 
