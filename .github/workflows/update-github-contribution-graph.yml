@@ -34,6 +34,24 @@ jobs:
       - name: Generate GitHub contribution graph
         run: python scripts/generate-github-contribution-graph.py
 
+      - name: Detect Linux DO sync configuration
+        id: linuxdo-sync
+        env:
+          LINUXDO_SESSION_COOKIE: ${{ secrets.LINUXDO_SESSION_COOKIE }}
+        run: |
+          if git diff --quiet -- assets/github-contribution-graph-compact.svg; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Linux DO sync skipped: compact graph is unchanged."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -z "$LINUXDO_SESSION_COOKIE" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Linux DO sync is not configured; add LINUXDO_SESSION_COOKIE to enable it."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Commit and push if changed
         run: |
           git config --global user.name "github-actions[bot]"
@@ -45,3 +63,9 @@ jobs:
             git commit -m "chore: update github contribution graph [skip ci]" -m "Co-authored-by: ceilf6 <3506456886@qq.com>"
             git push
           fi
+
+      - name: Sync Linux DO signature
+        if: ${{ steps.linuxdo-sync.outputs.changed == 'true' && steps.linuxdo-sync.outputs.configured == 'true' }}
+        env:
+          LINUXDO_SESSION_COOKIE: ${{ secrets.LINUXDO_SESSION_COOKIE }}
+        run: python scripts/sync-linuxdo-signature.py --image assets/github-contribution-graph-compact.svg --username ceilf6

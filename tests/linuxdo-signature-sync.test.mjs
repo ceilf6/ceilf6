@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -133,4 +133,16 @@ test("sync stops after a failed request without retrying", async (t) => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /CSRF request failed with HTTP 403/);
   assert.deepEqual(requests, [["GET", "/session/csrf.json"]]);
+});
+
+test("contribution workflow syncs configured changed graphs only after git push", () => {
+  const workflow = readFileSync(
+    new URL("../.github/workflows/update-github-contribution-graph.yml", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(workflow, /LINUXDO_SESSION_COOKIE/);
+  assert.match(workflow, /git diff --quiet -- assets\/github-contribution-graph-compact\.svg/);
+  assert.match(workflow, /scripts\/sync-linuxdo-signature\.py/);
+  assert.ok(workflow.indexOf("git push") < workflow.indexOf("scripts/sync-linuxdo-signature.py"));
 });
