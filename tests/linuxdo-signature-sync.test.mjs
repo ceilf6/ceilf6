@@ -172,6 +172,9 @@ test("contribution workflow syncs configured changed graphs only after git push"
   );
 
   assert.match(workflow, /LINUXDO_SESSION_COOKIE/);
+  assert.match(workflow, /LINUXDO_SYNC_ENABLED/);
+  assert.match(workflow, /sync_linuxdo/);
+  assert.match(workflow, /github\.event_name == 'workflow_dispatch'/);
   assert.match(workflow, /git diff --quiet -- assets\/github-contribution-graph-compact\.svg/);
   assert.match(workflow, /scripts\/sync-linuxdo-signature\.py/);
   assert.ok(workflow.indexOf("git push") < workflow.indexOf("scripts/sync-linuxdo-signature.py"));

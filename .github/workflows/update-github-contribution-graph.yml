@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "50 23 * * *"
   workflow_dispatch:
+    inputs:
+      sync_linuxdo:
+        description: "Upload and apply the current compact graph to the Linux DO signature"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -38,8 +44,13 @@ jobs:
         id: linuxdo-sync
         env:
           LINUXDO_SESSION_COOKIE: ${{ secrets.LINUXDO_SESSION_COOKIE }}
+          LINUXDO_SYNC_ENABLED: ${{ secrets.LINUXDO_SYNC_ENABLED }}
+          LINUXDO_MANUAL_SYNC: ${{ github.event_name == 'workflow_dispatch' && inputs.sync_linuxdo || 'false' }}
         run: |
-          if git diff --quiet -- assets/github-contribution-graph-compact.svg; then
+          if [ "$LINUXDO_MANUAL_SYNC" = "true" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Linux DO sync manually requested."
+          elif git diff --quiet -- assets/github-contribution-graph-compact.svg; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Linux DO sync skipped: compact graph is unchanged."
           else
@@ -48,8 +59,11 @@ jobs:
           if [ -z "$LINUXDO_SESSION_COOKIE" ]; then
             echo "configured=false" >> "$GITHUB_OUTPUT"
             echo "::notice::Linux DO sync is not configured; add LINUXDO_SESSION_COOKIE to enable it."
-          else
+          elif [ "$LINUXDO_MANUAL_SYNC" = "true" ] || [ "$LINUXDO_SYNC_ENABLED" = "true" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Linux DO sync is disabled; manually dispatch with sync_linuxdo=true to test it first."
           fi
 
       - name: Commit and push if changed
