@@ -130,7 +130,7 @@ test("README and Update Stats workflow use the repository-owned stats card", () 
   assert.match(readme, /src="\.\/assets\/github-stats-card\.svg"/);
   assert.match(
     workflow,
-    /- name: Fetch GitHub stats card\n\s+run: python scripts\/fetch-github-stats-card\.py/,
+    /- name: Fetch GitHub stats card\n\s+id: fetch-github\n\s+continue-on-error: true\n\s+run: python scripts\/fetch-github-stats-card\.py/,
   );
   assert.equal(existsSync(generatedCard), true);
   const svg = readFileSync(generatedCard, "utf8");

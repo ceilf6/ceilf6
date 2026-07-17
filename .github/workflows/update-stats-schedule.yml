@@ -35,18 +35,26 @@ jobs:
         run: node scripts/update-image-metadata.mjs
 
       - name: Fetch Bilibili stats
+        id: fetch-bilibili
+        continue-on-error: true
         run: python scripts/fetch-bilibili-stats-1.py
         env:
           BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
           BILI_BILI_JCT: ${{ secrets.BILI_BILI_JCT }}
 
       - name: Fetch CSDN stats
+        id: fetch-csdn
+        continue-on-error: true
         run: python scripts/fetch-csdn-stats-2.py
 
       - name: Fetch GitHub stats card
+        id: fetch-github
+        continue-on-error: true
         run: python scripts/fetch-github-stats-card.py
 
       - name: Fetch Hugging Face stats
+        id: fetch-huggingface
+        continue-on-error: true
         run: python scripts/fetch-huggingface-stats.py
 
       - name: Generate SVG cards
@@ -63,3 +71,34 @@ jobs:
             git commit -m "chore: update stats [skip ci]" -m "Co-authored-by: ceilf6 <3506456886@qq.com>"
             git push
           fi
+
+      - name: Report fetch failures
+        if: always()
+        env:
+          FETCH_BILIBILI_OUTCOME: ${{ steps.fetch-bilibili.outcome }}
+          FETCH_CSDN_OUTCOME: ${{ steps.fetch-csdn.outcome }}
+          FETCH_GITHUB_OUTCOME: ${{ steps.fetch-github.outcome }}
+          FETCH_HUGGINGFACE_OUTCOME: ${{ steps.fetch-huggingface.outcome }}
+        run: |
+          failed_sources=()
+
+          if [[ "$FETCH_BILIBILI_OUTCOME" == "failure" ]]; then
+            failed_sources+=("Bilibili")
+          fi
+          if [[ "$FETCH_CSDN_OUTCOME" == "failure" ]]; then
+            failed_sources+=("CSDN")
+          fi
+          if [[ "$FETCH_GITHUB_OUTCOME" == "failure" ]]; then
+            failed_sources+=("GitHub Stats")
+          fi
+          if [[ "$FETCH_HUGGINGFACE_OUTCOME" == "failure" ]]; then
+            failed_sources+=("Hugging Face")
+          fi
+
+          if ((${#failed_sources[@]} > 0)); then
+            failed_list=$(IFS=,; echo "${failed_sources[*]}")
+            echo "::error::Stats fetch failed for: $failed_list"
+            exit 1
+          fi
+
+          echo "All stats sources fetched successfully"
