@@ -1,0 +1,25 @@
+.github/workflows/update-stats-schedule.yml
+  s_5502c9bd462934::t_7b7b979e9fde9d 38-39,46-47,51-52,56-57,74-104
+tests/github-stats-card.test.mjs
+  s_5502c9bd462934::t_4c2e63e8285ed5 133
+tests/update-stats-workflow.test.mjs
+  s_5502c9bd462934::t_b1b0921cd951c7 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d137a18df4eee5cc450a2b1f639299adcebe47c4",
+  "prompts": {},
+  "sessions": {
+    "s_5502c9bd462934": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f6f1c-01b6-7391-8f5d-47949a281097",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
