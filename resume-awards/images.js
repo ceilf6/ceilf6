@@ -7,7 +7,7 @@ const images = [
     width: 2772,
     height: 2056,
     thumbWidth: 900,
-    thumbHeight: 649,
+    thumbHeight: 667,
   },
   {
     src: "resume-awards/imgs/腾讯青科实训营.png",
