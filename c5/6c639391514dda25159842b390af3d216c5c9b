@@ -1,0 +1,21 @@
+docs/superpowers/specs/2026-07-23-dawn-theme-design.md
+  s_0fd41a8b817dd7::t_d4c79a4d5b4af7 85-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "c56c639391514dda25159842b390af3d216c5c9b",
+  "prompts": {},
+  "sessions": {
+    "s_0fd41a8b817dd7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ceb7a3c5-1e1e-4c02-822e-9cd71fc58e39",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
