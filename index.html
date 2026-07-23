@@ -495,14 +495,8 @@
         }
 
         .gallery {
-          padding: 40px 60px;
-          column-count: 2;
-        }
-
-        @supports (grid-template-rows: masonry) {
-          .gallery {
-            grid-template-columns: repeat(2, 1fr);
-          }
+          padding: 28px 40px 40px;
+          grid-template-columns: repeat(2, 1fr);
         }
       }
 
@@ -517,15 +511,13 @@
           grid-template-columns: 1fr;
         }
 
-        .gallery {
-          padding: 20px;
-          column-count: 1;
+        .main-content {
+          padding: 0 12px 28px;
         }
 
-        @supports (grid-template-rows: masonry) {
-          .gallery {
-            grid-template-columns: 1fr;
-          }
+        .gallery {
+          padding: 14px 6px 6px;
+          grid-template-columns: 1fr;
         }
       }
 
