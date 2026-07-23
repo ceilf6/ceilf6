@@ -1,0 +1,25 @@
+README.md
+  s_0fd41a8b817dd7::t_b13862700d43db 5,8,23,25,27,29,31,33,35,37,40
+blog.html
+  s_0fd41a8b817dd7::t_f8b191d5fd34c9 444
+vlog.html
+  s_0fd41a8b817dd7::t_3939316b15f1b7 472
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "6cbb8a42643f15002dab92c0bbb16dd4b5a17045",
+  "prompts": {},
+  "sessions": {
+    "s_0fd41a8b817dd7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ceb7a3c5-1e1e-4c02-822e-9cd71fc58e39",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
