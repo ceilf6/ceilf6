@@ -1,0 +1,25 @@
+assets/hint-text-for-index.svg
+  s_0fd41a8b817dd7::t_69544a1f24853f 1,5,9-10,12-13,15-16,22,31-32
+index.html
+  s_0fd41a8b817dd7::t_aa1a4eb2a5a695 16-24,30,35,39-41,52-53,65,71,125,130,135,150,153,212-213,242-243,246,256,258,270,298-299,365-367,390-391,413,416-417,443,446,454,533
+viewer.html
+  s_0fd41a8b817dd7::t_876ed3a9d6d4ca 16,40-41,78,80,143-144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "cd6012d0b2c08e7fead38ded3e6ba342533fbfda",
+  "prompts": {},
+  "sessions": {
+    "s_0fd41a8b817dd7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ceb7a3c5-1e1e-4c02-822e-9cd71fc58e39",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
