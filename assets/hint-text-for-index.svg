@@ -1,25 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="530" height="30" viewBox="0 0 530 30">
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="30" viewBox="0 0 380 30">
     <defs>
         <clipPath id="typing">
             <rect x="0" y="0" width="0" height="30">
-                <animate attributeName="width" from="0" to="530" dur="2.5s" fill="freeze" />
+                <animate attributeName="width" from="0" to="380" dur="2.2s" fill="freeze" />
             </rect>
         </clipPath>
         <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#70A5FE">
-                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="5s" begin="2.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
+            <stop offset="0%" style="stop-color:#FFC069">
+                <animate attributeName="stop-color" values="#FFC069;#BF91F3;#FFC069" dur="5s" begin="2.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
             </stop>
-            <stop offset="50%" style="stop-color:#70A5FE">
-                <animate attributeName="stop-color" values="#70A5FE;#70A5FE;#BF91F3" dur="5s" begin="2.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
+            <stop offset="50%" style="stop-color:#FFC069">
+                <animate attributeName="stop-color" values="#FFC069;#FF9A62;#BF91F3" dur="5s" begin="2.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
             </stop>
-            <stop offset="100%" style="stop-color:#70A5FE">
-                <animate attributeName="stop-color" values="#70A5FE;#BF91F3;#70A5FE" dur="5s" begin="2.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
+            <stop offset="100%" style="stop-color:#FFC069">
+                <animate attributeName="stop-color" values="#FFC069;#BF91F3;#FFC069" dur="5s" begin="2.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" />
             </stop>
         </linearGradient>
     </defs>
     <style>
         .hint {
-            font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
             font-size: 17px;
             fill: url(#shimmer);
         }
@@ -28,7 +28,7 @@
         }
     </style>
     <text x="0" y="21" class="hint" clip-path="url(#typing)">
-        <tspan class="highlight">All cards are clickable.</tspan>
-        <tspan> Feel free to explore and learn more about me.</tspan>
+        <tspan class="highlight">所有卡片均可点击，</tspan>
+        <tspan>欢迎探索、进一步了解我。</tspan>
     </text>
 </svg>
