@@ -82,5 +82,6 @@ GitHub Actions 自动 tar 发 ECS `/var/www/wangjinghong`。
 
 ## 已知问题
 
-- ECS 只监听 80，**443 无证书**，对外链接目前只能走 `http://wangjinghong.com/`。
-  建议后续上机器跑 certbot 配免费证书；届时再做暂缓的简历链接更新，直接用 https。
+- ~~ECS 只监听 80，443 无证书~~ 实施当天用户侧已配好 Let's Encrypt 证书
+  （至 2026-10-21），HTTP 301 跳 HTTPS。暂缓的简历链接更新可直接用
+  `https://wangjinghong.com/`。
