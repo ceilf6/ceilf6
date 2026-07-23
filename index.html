@@ -466,6 +466,34 @@
         filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
       }
 
+      .icp-footer {
+        text-align: center;
+        padding: 0 20px 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .icp-footer a {
+        color: var(--text-muted);
+        opacity: 0.55;
+        font-size: 12px;
+        text-decoration: none;
+        transition:
+          opacity 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .icp-footer a:hover {
+        color: var(--accent-gold);
+        opacity: 0.9;
+      }
+
+      .icp-footer a:focus-visible {
+        outline: 2px solid var(--accent-gold);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
       @media (max-width: 900px) {
         .readme-section {
           margin: 16px 16px 0;
@@ -583,6 +611,16 @@
       <!-- 瀑布流容器 -->
       <div class="gallery waterfall active" id="gallery"></div>
     </div>
+
+    <!-- ICP 备案 -->
+    <footer class="icp-footer">
+      <a
+        href="https://beian.miit.gov.cn/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >浙ICP备2026055968号-1</a
+      >
+    </footer>
 
     <script src="resume-awards/images.js"></script>
     <script>
