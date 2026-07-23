@@ -2,10 +2,10 @@
   <code>Hi👋,我是&nbsp;ceilf6&nbsp;!</code>
 </h1>
 <p align="center">
-  <a href="https://ceilf6.github.io/ceilf6/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="36%" src="./assets/huggingface-card.svg" /></a>
+  <a href="https://wangjinghong.com/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="36%" src="./assets/huggingface-card.svg" /></a>
 </p>
 <p align="center">
-  <a href="https://ceilf6.github.io/ceilf6/vlog.html" target="_blank"><img width="36%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://ceilf6.github.io/ceilf6/blog.html" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
+  <a href="https://wangjinghong.com/vlog.html" target="_blank"><img width="36%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://wangjinghong.com/blog.html" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
 </p>
 <p align="center">
   <!-- <img src="./assets/hint-text-for-index.svg" /> -->
@@ -20,24 +20,24 @@
 </h2>
 
 <p align="center">  
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=0" target="_blank">字&#x2060;节&#x2060;跳&#x2060;动&#x2060;工&#x2060;程&#x2060;营&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=0" target="_blank">字&#x2060;节&#x2060;跳&#x2060;动&#x2060;工&#x2060;程&#x2060;营&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=1" target="_blank">腾&#x2060;讯&#x2060;技&#x2060;术&#x2060;菁&#x2060;英&#x2060;班&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=1" target="_blank">腾&#x2060;讯&#x2060;技&#x2060;术&#x2060;菁&#x2060;英&#x2060;班&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=2" target="_blank">腾&#x2060;讯&#x2060;开&#x2060;源&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=2" target="_blank">腾&#x2060;讯&#x2060;开&#x2060;源&#x2060;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=4" target="_blank">Datawhale&nbsp;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=4" target="_blank">Datawhale&nbsp;优&#x2060;秀&#x2060;学&#x2060;员</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=3" target="_blank">百&#x2060;度&#x2060;之&#x2060;星&#x2060;金&#x2060;奖</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=3" target="_blank">百&#x2060;度&#x2060;之&#x2060;星&#x2060;金&#x2060;奖</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=7" target="_blank">码&#x2060;蹄&#x2060;杯&#x2060;金&#x2060;奖</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=7" target="_blank">码&#x2060;蹄&#x2060;杯&#x2060;金&#x2060;奖</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=5" target="_blank">天&#x2060;梯&#x2060;程&#x2060;序&#x2060;设&#x2060;计&#x2060;赛&#x2060;国&#x2060;家&#x2060;级&#x2060;二&#x2060;等&#x2060;奖</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=5" target="_blank">天&#x2060;梯&#x2060;程&#x2060;序&#x2060;设&#x2060;计&#x2060;赛&#x2060;国&#x2060;家&#x2060;级&#x2060;二&#x2060;等&#x2060;奖</a></strong>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>&#x2060;<a href="https://ceilf6.github.io/ceilf6/viewer.html?img=6" target="_blank">睿&#x2060;抗&#x2060;开&#x2060;发&#x2060;者&#x2060;大&#x2060;赛&#x2060;国&#x2060;家&#x2060;级&#x2060;二&#x2060;等&#x2060;奖</a></strong>
+  <strong>&#x2060;<a href="https://wangjinghong.com/viewer.html?img=6" target="_blank">睿&#x2060;抗&#x2060;开&#x2060;发&#x2060;者&#x2060;大&#x2060;赛&#x2060;国&#x2060;家&#x2060;级&#x2060;二&#x2060;等&#x2060;奖</a></strong>
 </p>
 
-<a href="https://ceilf6.github.io/ceilf6/" target="_blank">
+<a href="https://wangjinghong.com/" target="_blank">
   <p align="center">
     <img src="./assets/github-contribution-graph.svg" width="100%" alt="GitHub contributions" />
   </p>
