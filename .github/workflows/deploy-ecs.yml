@@ -1,0 +1,37 @@
+name: Deploy to Alibaba Cloud ECS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' '${{ secrets.ECS_SSH_KEY }}' > ~/.ssh/ecs-key.pem
+          chmod 600 ~/.ssh/ecs-key.pem
+          ssh-keyscan -H 47.103.28.157 >> ~/.ssh/known_hosts
+
+      - name: Deploy website
+        run: |
+          tar \
+            --exclude='.git' \
+            --exclude='.github' \
+            -czf - . |
+          ssh -i ~/.ssh/ecs-key.pem root@47.103.28.157 '
+            rm -rf /var/www/wangjinghong &&
+            mkdir -p /var/www/wangjinghong &&
+            tar -xzf - -C /var/www/wangjinghong
+          '
