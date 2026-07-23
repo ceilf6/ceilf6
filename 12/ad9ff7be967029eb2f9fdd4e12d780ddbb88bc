@@ -1,0 +1,23 @@
+README.md
+  s_b8cbea426c7aa1::t_324fbf792f6c1b 5,8
+index.html
+  s_b8cbea426c7aa1::t_eca78d0f658820 559,563,575,579-583
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "12ad9ff7be967029eb2f9fdd4e12d780ddbb88bc",
+  "prompts": {},
+  "sessions": {
+    "s_b8cbea426c7aa1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "941634e6-a1bd-49ae-be89-dc597f508034",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
