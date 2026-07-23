@@ -2,10 +2,10 @@
   <code>Hi👋,我是&nbsp;ceilf6&nbsp;!</code>
 </h1>
 <p align="center">
-  <a href="https://wangjinghong.com/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="36%" src="./assets/huggingface-card.svg" /></a>
+  <a href="https://wangjinghong.com/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://wangjinghong.com/blog.html" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
 </p>
 <p align="center">
-  <a href="https://wangjinghong.com/vlog.html" target="_blank"><img width="36%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://wangjinghong.com/blog.html" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
+  <a href="https://wangjinghong.com/vlog.html" target="_blank"><img width="36%" src="./assets/vlog-card.svg" /></a>&emsp;<a href="https://huggingface.co/ceilf6" target="_blank"><img width="36%" src="./assets/huggingface-card.svg" /></a>
 </p>
 <p align="center">
   <!-- <img src="./assets/hint-text-for-index.svg" /> -->
