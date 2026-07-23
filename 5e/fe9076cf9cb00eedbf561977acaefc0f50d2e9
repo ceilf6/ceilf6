@@ -1,0 +1,21 @@
+index.html
+  s_0fd41a8b817dd7::t_e95fac7891f08f 498-499,514-515,518-520
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5efe9076cf9cb00eedbf561977acaefc0f50d2e9",
+  "prompts": {},
+  "sessions": {
+    "s_0fd41a8b817dd7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ceb7a3c5-1e1e-4c02-822e-9cd71fc58e39",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
