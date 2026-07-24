@@ -4,10 +4,10 @@ const images = [
     src: "resume-awards/imgs/0004-字节工训营.JPG",
     thumb: "resume-awards/imgs/thumbs/0004-字节工训营.jpg",
     alt: "字节工训营",
-    width: 2772,
-    height: 2056,
+    width: 3148,
+    height: 2240,
     thumbWidth: 900,
-    thumbHeight: 667,
+    thumbHeight: 640,
   },
   {
     src: "resume-awards/imgs/腾讯青科实训营.png",
