@@ -45,6 +45,23 @@ function createLocation(initialUrl) {
   };
 }
 
+function createCanvas() {
+  return {
+    width: 0,
+    height: 0,
+    getContext() {
+      return {
+        imageSmoothingEnabled: false,
+        imageSmoothingQuality: "low",
+        drawImage() {},
+      };
+    },
+    toDataURL(type) {
+      return `data:${type};base64,STUB`;
+    },
+  };
+}
+
 function loadViewer({ opener = null } = {}) {
   assert.equal(inlineScripts.length, 1, "viewer.html should have one inline script");
 
@@ -56,6 +73,20 @@ function loadViewer({ opener = null } = {}) {
     prevBtn: createElement(),
     nextBtn: createElement(),
   };
+  // viewer.html ships a static <link rel="icon" id="favicon"> that the script swaps out
+  let favicon = { rel: "icon", id: "favicon", href: "./assets/Profile.jpg", remove() {} };
+  const imageLoaders = [];
+
+  class FakeImage {
+    constructor() {
+      this.naturalWidth = 900;
+      this.naturalHeight = 640;
+      this.onload = null;
+      this.onerror = null;
+      imageLoaders.push(this);
+    }
+  }
+
   const documentListeners = new Map();
   const timers = [];
   const location = createLocation(
@@ -80,21 +111,34 @@ function loadViewer({ opener = null } = {}) {
   };
   const document = {
     title: "",
+    head: {
+      appendChild(node) {
+        if (node.id === "favicon") favicon = node;
+      },
+    },
     addEventListener(type, listener) {
       documentListeners.set(type, listener);
     },
+    createElement(tag) {
+      if (tag === "canvas") return createCanvas();
+      return { rel: "", id: "", href: "", remove() {} };
+    },
     getElementById(id) {
+      if (id === "favicon") return favicon;
       assert.ok(elements[id], `unexpected element lookup: ${id}`);
       return elements[id];
     },
   };
   const context = {
+    Image: FakeImage,
+    Math,
     URLSearchParams,
     document,
     history,
     images: Array.from({ length: 8 }, (_, index) => ({
       alt: `award-${index}`,
       src: `award-${index}.jpg`,
+      thumb: `thumbs/award-${index}.jpg`,
     })),
     setTimeout: window.setTimeout.bind(window),
     window,
@@ -102,7 +146,14 @@ function loadViewer({ opener = null } = {}) {
 
   vm.runInNewContext(inlineScripts[0], context);
 
-  return { documentListeners, elements, timers, window };
+  return {
+    documentListeners,
+    elements,
+    imageLoaders,
+    getFavicon: () => favicon,
+    timers,
+    window,
+  };
 }
 
 test("clicking the award image from a direct README link returns to the site home", () => {
@@ -178,6 +229,50 @@ test("switching awards restores loading state before the next image appears", ()
   assert.equal(elements["viewer-img"].src, "award-6.jpg");
   assert.equal(elements["viewer-img"].style.display, "none");
   assert.notEqual(elements.loading.style.display, "none");
+});
+
+test("the tab icon becomes the current award once its thumbnail decodes", () => {
+  const { getFavicon, imageLoaders } = loadViewer();
+
+  assert.equal(imageLoaders.length, 1);
+  assert.equal(imageLoaders[0].src, "thumbs/award-5.jpg");
+  assert.equal(getFavicon().href, "./assets/Profile.jpg");
+
+  imageLoaders[0].onload();
+
+  assert.equal(getFavicon().href, "data:image/png;base64,STUB");
+  assert.equal(getFavicon().rel, "icon");
+});
+
+test("switching awards repoints the tab icon at the newly shown award", () => {
+  const { getFavicon, imageLoaders, elements } = loadViewer();
+
+  imageLoaders[0].onload();
+  elements.nextBtn.dispatchEventType("click", { stopPropagation() {} });
+
+  assert.equal(imageLoaders.length, 2);
+  assert.equal(imageLoaders[1].src, "thumbs/award-6.jpg");
+});
+
+test("a thumbnail that arrives after the user moved on does not hijack the tab icon", () => {
+  const { getFavicon, imageLoaders, elements } = loadViewer();
+
+  elements.nextBtn.dispatchEventType("click", { stopPropagation() {} });
+  imageLoaders[1].onload();
+  const currentHref = getFavicon().href;
+
+  // award-5's thumbnail finally lands, but award-6 is on screen now
+  imageLoaders[0].onerror();
+
+  assert.equal(getFavicon().href, currentHref);
+});
+
+test("an unreachable thumbnail falls back to the site icon", () => {
+  const { getFavicon, imageLoaders } = loadViewer();
+
+  imageLoaders[0].onerror();
+
+  assert.equal(getFavicon().href, "./assets/Profile.jpg");
 });
 
 test("failed image loads hide the native broken-image placeholder", () => {
