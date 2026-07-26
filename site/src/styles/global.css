@@ -1,0 +1,47 @@
+::selection {
+  background: var(--accent-gold);
+  color: #0b1226;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(194, 210, 234, 0.3);
+  border-radius: 5px;
+  border: 2px solid var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 192, 105, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--bg-void);
+}
+
+body {
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  font-family:
+    "Azeret Mono", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
