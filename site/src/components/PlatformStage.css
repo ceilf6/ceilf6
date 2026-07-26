@@ -120,7 +120,7 @@
     0 18px 38px rgba(1, 8, 20, 0.36);
   overflow: hidden;
   transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.4s ease,
     box-shadow 0.4s ease;
 }
@@ -143,7 +143,9 @@
 
 .stage .card:hover,
 .stage .card:focus-visible {
-  transform: translateY(-7px);
+  /* 用独立的 translate 属性而非 transform：framer 进场动画会在行内留下
+     transform:none，transform 写法会被压制（旧站被 rise fill-forwards 压制同理） */
+  translate: 0 -7px;
   border-color: rgba(var(--brand-rgb), 0.62);
   box-shadow:
     0 1px 2px rgba(1, 8, 20, 0.4),
