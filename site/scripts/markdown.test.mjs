@@ -10,6 +10,12 @@ test("parseFrontmatter 取出 meta 与正文", () => {
   assert.equal(body, "正文");
 });
 
+test("frontmatter 容忍 CRLF", () => {
+  const { meta, body } = parseFrontmatter("---\r\ntitle: 甲\r\n---\r\n正文");
+  assert.equal(meta.title, "甲");
+  assert.equal(body, "正文");
+});
+
 test("无 frontmatter 时 meta 为空、正文原样", () => {
   const { meta, body } = parseFrontmatter("裸正文");
   assert.deepEqual(meta, {});
@@ -34,6 +40,11 @@ test("连续行合并为同一段落", () => {
 
 test("无序列表", () => {
   assert.equal(mdToHtml("- 甲\n- 乙"), "<ul><li>甲</li><li>乙</li></ul>");
+});
+
+test("行内 code 不二次解析其它行内语法", () => {
+  assert.equal(mdToHtml("`[x](y)`"), "<p><code>[x](y)</code></p>");
+  assert.equal(mdToHtml("`a**b**c`"), "<p><code>a**b**c</code></p>");
 });
 
 test("围栏代码块转义且不解析行内语法", () => {

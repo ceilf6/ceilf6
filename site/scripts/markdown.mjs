@@ -2,7 +2,8 @@
     运行时零解析器。刻意只支持文章实际用到的子集,先转义再替换防注入。 */
 
 export function parseFrontmatter(src) {
-  const m = /^---\n([\s\S]*?)\n---\n?/.exec(src);
+  // 容忍 CRLF:与 mdToHtml 的 \r\n 归一化保持一致,否则 Windows 存的文件会静默丢 frontmatter
+  const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(src);
   if (!m) return { meta: {}, body: src };
   const meta = {};
   for (const line of m[1].split("\n")) {
@@ -17,12 +18,19 @@ const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 function inline(s) {
+  // 先把 code span 抽成占位符,避免其内容被当作链接/加粗等二次解析;
+  // 占位符用 NUL 包裹序号——正文里不可能合法出现,回填时整体替换。
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => {
+    codes.push(`<code>${esc(c)}</code>`);
+    return `\u0000${codes.length - 1}\u0000`;
+  });
   return esc(s)
     .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img alt="$1" src="$2" loading="lazy">')
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>");
+    .replace(/\u0000(\d+)\u0000/g, (_, i) => codes[i]);
 }
 
 export function mdToHtml(md) {
