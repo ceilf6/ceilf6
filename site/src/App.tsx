@@ -38,7 +38,7 @@ export default function App() {
     <>
       <SplashScreen />
       <AnimatePresence mode="wait">
-        <div key={location.pathname}>
+        <div key={location.pathname} className="route-shell">
           <AppRoutes location={location} />
         </div>
       </AnimatePresence>

@@ -5,6 +5,7 @@ export function PageTransition({ children, testId }: { children: ReactNode; test
   return (
     <motion.div
       data-testid={testId}
+      className="page-shell"
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}

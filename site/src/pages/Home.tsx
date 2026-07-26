@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { PageTransition } from "../components/PageTransition";
 import { ReadmeCards } from "../components/ReadmeCards";
 import { IcpFooter } from "../components/IcpFooter";
+import { WaterfallGallery } from "../components/WaterfallGallery";
 import "./Home.css";
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
         <ReadmeCards />
       </div>
       <div className="main-content">
-        <div className="gallery waterfall active" id="gallery" />
+        <WaterfallGallery />
       </div>
       <IcpFooter />
     </PageTransition>

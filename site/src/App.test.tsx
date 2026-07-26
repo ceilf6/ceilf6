@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { AppRoutes } from "./App";
+import App, { AppRoutes } from "./App";
 
 const at = (path: string) =>
   render(
@@ -39,5 +39,17 @@ describe("routes", () => {
   it("未知路径回主页", () => {
     at("/nonsense");
     expect(screen.getByTestId("page-home")).toBeInTheDocument();
+  });
+});
+
+describe("flex 链外壳", () => {
+  it("路由外壳与页面外壳带类名（body→#root→.route-shell→.page-shell 的 flex 链靠它们延续）", () => {
+    const { container } = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(container.querySelector(".route-shell")).not.toBeNull();
+    expect(container.querySelector(".page-shell")).not.toBeNull();
   });
 });

@@ -166,3 +166,13 @@ html::after {
     transition: none !important;
   }
 }
+
+/* SPA 包裹层的 flex 链延续：body → #root → 路由外壳 → 页面外壳，让 .main-content 的 flex:1 恢复生效 */
+#root,
+.route-shell,
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
