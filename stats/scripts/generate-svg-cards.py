@@ -180,7 +180,7 @@ def main():
             csdn_stats = json.load(f)
 
         blog_svg = generate_blog_card(csdn_stats)
-        blog_svg_file = Path(__file__).parent.parent / 'assets' / 'blog-card.svg'
+        blog_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'blog-card.svg'
         blog_svg_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(blog_svg_file, 'w', encoding='utf-8') as f:
@@ -194,7 +194,7 @@ def main():
             bilibili_stats = json.load(f)
 
         vlog_svg = generate_vlog_card(bilibili_stats)
-        vlog_svg_file = Path(__file__).parent.parent / 'assets' / 'vlog-card.svg'
+        vlog_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'vlog-card.svg'
         vlog_svg_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(vlog_svg_file, 'w', encoding='utf-8') as f:
@@ -209,7 +209,7 @@ def main():
             huggingface_stats = json.load(f)
 
         huggingface_svg = generate_huggingface_card(huggingface_stats)
-        huggingface_svg_file = Path(__file__).parent.parent / 'assets' / 'huggingface-card.svg'
+        huggingface_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'huggingface-card.svg'
         huggingface_svg_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(huggingface_svg_file, 'w', encoding='utf-8') as f:

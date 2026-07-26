@@ -1,9 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { runInNewContext } from "node:vm";
 
-const repoRoot = new URL("../", import.meta.url);
-const imagesFile = new URL("../resume-awards/images.js", import.meta.url);
+const publicRoot = new URL("../public/", import.meta.url);
+const awardsFile = new URL("../src/data/awards.json", import.meta.url);
 
 function readUint24LE(buffer, offset) {
   return buffer[offset] | (buffer[offset + 1] << 8) | (buffer[offset + 2] << 16);
@@ -115,13 +114,18 @@ export function readImageSizeFromFile(fileUrl) {
   return readImageSize(readFileSync(fileUrl));
 }
 
-export function loadImagesModule(source) {
-  return runInNewContext(`${source}\nimages;`, {});
+export function loadAwards(source) {
+  return JSON.parse(source);
 }
 
-export function applyImageMetadata(images, rootUrl = repoRoot) {
+// awards.json 里的 src/thumb 是站点绝对路径（/resume-awards/...），实际文件在 site/public/ 下
+export function resolvePublicUrl(publicPath, rootUrl = publicRoot) {
+  return new URL(publicPath.replace(/^\//, ""), rootUrl);
+}
+
+export function applyImageMetadata(images, rootUrl = publicRoot) {
   return images.map((image) => {
-    const sourceSize = readImageSizeFromFile(new URL(image.src, rootUrl));
+    const sourceSize = readImageSizeFromFile(resolvePublicUrl(image.src, rootUrl));
     const nextImage = {
       ...image,
       width: sourceSize.width,
@@ -129,7 +133,7 @@ export function applyImageMetadata(images, rootUrl = repoRoot) {
     };
 
     if (image.thumb) {
-      const thumbSize = readImageSizeFromFile(new URL(image.thumb, rootUrl));
+      const thumbSize = readImageSizeFromFile(resolvePublicUrl(image.thumb, rootUrl));
       nextImage.thumbWidth = thumbSize.width;
       nextImage.thumbHeight = thumbSize.height;
     }
@@ -138,7 +142,7 @@ export function applyImageMetadata(images, rootUrl = repoRoot) {
   });
 }
 
-export function formatImagesModule(images) {
+export function formatAwards(images) {
   const orderedKeys = [
     "src",
     "thumb",
@@ -148,34 +152,28 @@ export function formatImagesModule(images) {
     "thumbWidth",
     "thumbHeight",
   ];
-  const lines = [
-    "// src: 原图（viewer.html 大图查看用）；thumb: 压缩缩略图（index.html 瀑布流用）；width/height: 自动生成的真实尺寸",
-    "const images = [",
-  ];
-
-  for (const image of images) {
-    lines.push("  {");
+  const ordered = images.map((image) => {
+    const next = {};
     for (const key of orderedKeys) {
       if (image[key] !== undefined) {
-        lines.push(`    ${key}: ${JSON.stringify(image[key])},`);
+        next[key] = image[key];
       }
     }
     for (const [key, value] of Object.entries(image)) {
       if (!orderedKeys.includes(key)) {
-        lines.push(`    ${key}: ${JSON.stringify(value)},`);
+        next[key] = value;
       }
     }
-    lines.push("  },");
-  }
+    return next;
+  });
 
-  lines.push("];", "");
-  return lines.join("\n");
+  return `${JSON.stringify(ordered, null, 2)}\n`;
 }
 
 export function updateImageMetadata({ check = false } = {}) {
-  const currentSource = readFileSync(imagesFile, "utf8");
-  const images = loadImagesModule(currentSource);
-  const nextSource = formatImagesModule(applyImageMetadata(images, repoRoot));
+  const currentSource = readFileSync(awardsFile, "utf8");
+  const images = loadAwards(currentSource);
+  const nextSource = formatAwards(applyImageMetadata(images, publicRoot));
 
   if (currentSource === nextSource) {
     return false;
@@ -183,11 +181,11 @@ export function updateImageMetadata({ check = false } = {}) {
 
   if (check) {
     throw new Error(
-      "resume-awards/images.js has stale image dimensions. Run: node scripts/update-image-metadata.mjs",
+      "site/src/data/awards.json has stale image dimensions. Run: node site/scripts/update-image-metadata.mjs",
     );
   }
 
-  writeFileSync(imagesFile, nextSource);
+  writeFileSync(awardsFile, nextSource);
   return true;
 }
 

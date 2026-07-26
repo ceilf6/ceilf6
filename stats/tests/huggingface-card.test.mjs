@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-const repoRoot = new URL("../", import.meta.url);
+const repoRoot = new URL("../../", import.meta.url);
 const fetchScript = new URL("../scripts/fetch-huggingface-stats.py", import.meta.url);
 const generatorScript = new URL("../scripts/generate-svg-cards.py", import.meta.url);
 const validOverview = {
@@ -132,9 +132,9 @@ test("all profile card renderers use 18px titles", () => {
 
 test("generated profile card assets use 18px titles", () => {
   for (const [file, title] of [
-    ["../assets/blog-card.svg", "Blog"],
-    ["../assets/vlog-card.svg", "Vlog"],
-    ["../assets/huggingface-card.svg", "Hugging Face"],
+    ["../../assets/blog-card.svg", "Blog"],
+    ["../../assets/vlog-card.svg", "Vlog"],
+    ["../../assets/huggingface-card.svg", "Hugging Face"],
   ]) {
     const svg = readFileSync(new URL(file, import.meta.url), "utf8");
     assert.match(
@@ -145,12 +145,12 @@ test("generated profile card assets use 18px titles", () => {
 });
 
 test("README and daily workflow publish the ordered two-by-two card layout", () => {
-  const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+  const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
   const workflow = readFileSync(
-    new URL("../.github/workflows/update-stats-schedule.yml", import.meta.url),
+    new URL("../../.github/workflows/update-stats-schedule.yml", import.meta.url),
     "utf8",
   );
-  const generatedCard = new URL("../assets/huggingface-card.svg", import.meta.url);
+  const generatedCard = new URL("../../assets/huggingface-card.svg", import.meta.url);
   const cards = [
     "./assets/github-stats-card.svg",
     "./assets/huggingface-card.svg",
@@ -175,7 +175,7 @@ test("README and daily workflow publish the ordered two-by-two card layout", () 
   );
   assert.match(
     workflow,
-    /- name: Fetch Hugging Face stats\n\s+run: python scripts\/fetch-huggingface-stats\.py/,
+    /- name: Fetch Hugging Face stats\n\s+run: python stats\/scripts\/fetch-huggingface-stats\.py/,
   );
   assert.equal(existsSync(generatedCard), true);
 });

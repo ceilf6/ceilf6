@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-const repoRoot = new URL("../", import.meta.url);
+const repoRoot = new URL("../../", import.meta.url);
 const script = new URL("../scripts/fetch-github-stats-card.py", import.meta.url);
 const currentYear = new Date().getUTCFullYear();
 
@@ -120,17 +120,17 @@ test("generator rejects malformed or incompatible cards without publishing outpu
 });
 
 test("README and Update Stats workflow use the repository-owned stats card", () => {
-  const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+  const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
   const workflow = readFileSync(
-    new URL("../.github/workflows/update-stats-schedule.yml", import.meta.url),
+    new URL("../../.github/workflows/update-stats-schedule.yml", import.meta.url),
     "utf8",
   );
-  const generatedCard = new URL("../assets/github-stats-card.svg", import.meta.url);
+  const generatedCard = new URL("../../assets/github-stats-card.svg", import.meta.url);
 
   assert.match(readme, /src="\.\/assets\/github-stats-card\.svg"/);
   assert.match(
     workflow,
-    /- name: Fetch GitHub stats card\n\s+id: fetch-github\n\s+continue-on-error: true\n\s+run: python scripts\/fetch-github-stats-card\.py/,
+    /- name: Fetch GitHub stats card\n\s+id: fetch-github\n\s+continue-on-error: true\n\s+run: python stats\/scripts\/fetch-github-stats-card\.py/,
   );
   assert.equal(existsSync(generatedCard), true);
   const svg = readFileSync(generatedCard, "utf8");

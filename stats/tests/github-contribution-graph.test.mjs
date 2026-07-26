@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-const repoRoot = new URL("../", import.meta.url);
+const repoRoot = new URL("../../", import.meta.url);
 const fetchScript = new URL("../scripts/fetch-github-contributions.py", import.meta.url);
 const graphScript = new URL("../scripts/generate-github-contribution-graph.py", import.meta.url);
 

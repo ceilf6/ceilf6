@@ -15,7 +15,7 @@ DEFAULT_URL = (
     "https://github-profile-summary-cards.vercel.app/api/cards/stats?"
     "username=ceilf6&theme=tokyonight"
 )
-DEFAULT_OUTPUT = Path(__file__).parent.parent / "assets" / "github-stats-card.svg"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / "assets" / "github-stats-card.svg"
 RIGHT_SIDE_TRANSFORM = "translate(220,20)"
 LEFT_SIDE_TRANSFORM = "translate(30,20)"
 EXPECTED_LABELS = (

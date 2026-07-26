@@ -3,13 +3,14 @@ import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
-  loadImagesModule,
+  loadAwards,
   readImageSizeFromFile,
+  resolvePublicUrl,
   updateImageMetadata,
 } from "./update-image-metadata.mjs";
 
-const repoRoot = new URL("../", import.meta.url);
-const imagesFile = new URL("../resume-awards/images.js", import.meta.url);
+const publicRoot = new URL("../public/", import.meta.url);
+const awardsFile = new URL("../src/data/awards.json", import.meta.url);
 
 export const MAX_EDGE = 900;
 const JPEG_QUALITY = 80;
@@ -30,14 +31,14 @@ export function planResize(size, maxEdge = MAX_EDGE) {
   return Math.max(size.width, size.height) > maxEdge ? maxEdge : null;
 }
 
-export function planThumbnails(images, { rootUrl = repoRoot, force = false } = {}) {
+export function planThumbnails(images, { rootUrl = publicRoot, force = false } = {}) {
   const tasks = [];
 
   for (const image of images) {
     if (!image.thumb) continue;
 
-    const source = new URL(image.src, rootUrl);
-    const thumb = new URL(image.thumb, rootUrl);
+    const source = resolvePublicUrl(image.src, rootUrl);
+    const thumb = resolvePublicUrl(image.thumb, rootUrl);
     const thumbExists = existsSync(thumb);
     const status = resolveThumbStatus({
       thumbExists,
@@ -103,8 +104,8 @@ export function resolveRenderer() {
 }
 
 export function generateThumbs({ force = false } = {}) {
-  const images = loadImagesModule(readFileSync(imagesFile, "utf8"));
-  const tasks = planThumbnails(images, { rootUrl: repoRoot, force });
+  const images = loadAwards(readFileSync(awardsFile, "utf8"));
+  const tasks = planThumbnails(images, { rootUrl: publicRoot, force });
   if (tasks.length === 0) return tasks;
 
   const render = resolveRenderer();

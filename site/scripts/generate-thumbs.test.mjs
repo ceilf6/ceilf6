@@ -1,20 +1,23 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import vm from "node:vm";
 
 import {
   MAX_EDGE,
   planResize,
   resolveThumbStatus,
-} from "../scripts/generate-thumbs.mjs";
-import { readImageSizeFromFile } from "../scripts/update-image-metadata.mjs";
+} from "./generate-thumbs.mjs";
+import {
+  loadAwards,
+  readImageSizeFromFile,
+  resolvePublicUrl,
+} from "./update-image-metadata.mjs";
 
-const repoRoot = new URL("../", import.meta.url);
-const imagesFile = new URL("../resume-awards/images.js", import.meta.url);
+const publicRoot = new URL("../public/", import.meta.url);
+const awardsFile = new URL("../src/data/awards.json", import.meta.url);
 
 function loadImages() {
-  return vm.runInNewContext(`${readFileSync(imagesFile, "utf8")}\nimages;`, {});
+  return loadAwards(readFileSync(awardsFile, "utf8"));
 }
 
 test("thumbnail status flags missing and outdated thumbnails only", () => {
@@ -54,7 +57,7 @@ test("every award image has a thumbnail within the target edge", () => {
   assert.equal(withThumbs.length, images.length);
 
   for (const image of withThumbs) {
-    const size = readImageSizeFromFile(new URL(image.thumb, repoRoot));
+    const size = readImageSizeFromFile(resolvePublicUrl(image.thumb, publicRoot));
     assert.ok(
       Math.max(size.width, size.height) <= MAX_EDGE,
       `${image.thumb} exceeds ${MAX_EDGE}px`,

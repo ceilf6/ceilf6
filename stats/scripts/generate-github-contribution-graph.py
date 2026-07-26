@@ -17,7 +17,7 @@ from pathlib import Path
 
 
 DEFAULT_INPUT = Path(__file__).parent.parent / "data" / "github-contributions.json"
-DEFAULT_OUTPUT = Path(__file__).parent.parent / "assets" / "github-contribution-graph.svg"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / "assets" / "github-contribution-graph.svg"
 
 TITLE_TEXT = "ceilf6's Github Contribution"
 BACKGROUND = "#1a1b27"

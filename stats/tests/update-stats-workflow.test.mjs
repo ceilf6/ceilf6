@@ -3,16 +3,16 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const workflow = readFileSync(
-  new URL("../.github/workflows/update-stats-schedule.yml", import.meta.url),
+  new URL("../../.github/workflows/update-stats-schedule.yml", import.meta.url),
   "utf8",
 );
 
 test("stats sources continue independently and report failures after publishing", () => {
   const fetchSteps = [
-    ["Fetch Bilibili stats", "fetch-bilibili", "python scripts/fetch-bilibili-stats-1.py"],
-    ["Fetch CSDN stats", "fetch-csdn", "python scripts/fetch-csdn-stats-2.py"],
-    ["Fetch GitHub stats card", "fetch-github", "python scripts/fetch-github-stats-card.py"],
-    ["Fetch Hugging Face stats", "fetch-huggingface", "python scripts/fetch-huggingface-stats.py"],
+    ["Fetch Bilibili stats", "fetch-bilibili", "python stats/scripts/fetch-bilibili-stats-1.py"],
+    ["Fetch CSDN stats", "fetch-csdn", "python stats/scripts/fetch-csdn-stats-2.py"],
+    ["Fetch GitHub stats card", "fetch-github", "python stats/scripts/fetch-github-stats-card.py"],
+    ["Fetch Hugging Face stats", "fetch-huggingface", "python stats/scripts/fetch-huggingface-stats.py"],
   ];
 
   for (const [name, id, command] of fetchSteps) {

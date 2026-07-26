@@ -1,43 +1,44 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import vm from "node:vm";
 
 import {
   applyImageMetadata,
-  formatImagesModule,
+  formatAwards,
+  loadAwards,
   readImageSizeFromFile,
-} from "../scripts/update-image-metadata.mjs";
+  resolvePublicUrl,
+} from "./update-image-metadata.mjs";
 
-const repoRoot = new URL("../", import.meta.url);
-const imagesFile = new URL("../resume-awards/images.js", import.meta.url);
+const publicRoot = new URL("../public/", import.meta.url);
+const awardsFile = new URL("../src/data/awards.json", import.meta.url);
 
 function loadImages() {
-  return vm.runInNewContext(`${readFileSync(imagesFile, "utf8")}\nimages;`, {});
+  return loadAwards(readFileSync(awardsFile, "utf8"));
 }
 
 test("all award image entries include real dimensions for source and thumbnail files", () => {
   const images = loadImages();
 
   for (const image of images) {
-    const sourceSize = readImageSizeFromFile(new URL(image.src, repoRoot));
+    const sourceSize = readImageSizeFromFile(resolvePublicUrl(image.src, publicRoot));
     assert.equal(image.width, sourceSize.width, `${image.src} width`);
     assert.equal(image.height, sourceSize.height, `${image.src} height`);
 
     if (image.thumb) {
-      const thumbSize = readImageSizeFromFile(new URL(image.thumb, repoRoot));
+      const thumbSize = readImageSizeFromFile(resolvePublicUrl(image.thumb, publicRoot));
       assert.equal(image.thumbWidth, thumbSize.width, `${image.thumb} width`);
       assert.equal(image.thumbHeight, thumbSize.height, `${image.thumb} height`);
     }
   }
 });
 
-test("image metadata generator keeps images.js up to date", () => {
+test("image metadata generator keeps awards.json up to date", () => {
   const images = loadImages();
-  const withMetadata = applyImageMetadata(images, repoRoot);
-  const expectedSource = formatImagesModule(withMetadata);
+  const withMetadata = applyImageMetadata(images, publicRoot);
+  const expectedSource = formatAwards(withMetadata);
 
-  assert.equal(readFileSync(imagesFile, "utf8"), expectedSource);
+  assert.equal(readFileSync(awardsFile, "utf8"), expectedSource);
 });
 
 test("image metadata generator preserves future custom fields", () => {
@@ -50,13 +51,13 @@ test("image metadata generator preserves future custom fields", () => {
         group: "fixture",
       },
     ],
-    repoRoot,
+    publicRoot,
   );
 
   assert.equal(withMetadata.featured, true);
   assert.equal(withMetadata.group, "fixture");
 
-  const formatted = formatImagesModule([withMetadata]);
-  assert.match(formatted, /featured: true,/);
-  assert.match(formatted, /group: "fixture",/);
+  const formatted = formatAwards([withMetadata]);
+  assert.match(formatted, /"featured": true/);
+  assert.match(formatted, /"group": "fixture"/);
 });
