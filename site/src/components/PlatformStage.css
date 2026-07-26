@@ -7,6 +7,19 @@
       framer-motion stagger 承担（含 prefers-reduced-motion 分支）。
    :root/body 级规则归 tokens.css 与 global.css 管辖，此处不重复。 */
 
+/* 旧页把「居中 + 外边距」放在 body 上（align-items/justify-content: center; padding: 48px 20px），
+   而 global.css 的 body 是照旧 index.html 抄的，没有这三条——主页不需要，平台页需要。
+   这里补一层页面级容器承接，三条声明照抄旧 body 原值；flex: 1 吃满 .page-shell 的剩余高度，
+   垂直居中才等价于旧页的 body min-height: 100vh + justify-content: center。
+   padding 不能挂到 .stage 上：旧页这层 padding 在 880px 内容宽之外，挂上去会把内容压成 840px。 */
+.stage-viewport {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
 /* 旧 blog/vlog 页的 :root 里定义了 --accent-cyan/--accent-amber，而站点令牌（tokens.css，
    取自旧 index.html）只有 --accent-gold/--accent-dawn。这两个变量缺失会让 .headline 的
    linear-gradient 整条失效——配上 color: transparent 就是标题不可见。故按旧页原值就地补齐，

@@ -47,56 +47,58 @@ export function PlatformStage({
   }, [docTitle]);
 
   return (
-    <motion.main
-      className="stage"
-      variants={containerVariants}
-      initial="hidden"
-      animate="show"
-    >
-      <motion.span className="eyebrow" variants={item}>
-        {eyebrow}
-      </motion.span>
-      <motion.h1 className="headline" variants={item}>
-        {headline}
-      </motion.h1>
-      <motion.p className="subtitle" variants={item}>
-        {subtitle}
-      </motion.p>
+    <div className="stage-viewport">
+      <motion.main
+        className="stage"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.span className="eyebrow" variants={item}>
+          {eyebrow}
+        </motion.span>
+        <motion.h1 className="headline" variants={item}>
+          {headline}
+        </motion.h1>
+        <motion.p className="subtitle" variants={item}>
+          {subtitle}
+        </motion.p>
 
-      <div className="cards">
-        {platforms.map((p) => (
-          <motion.a
-            key={p.url}
-            className="card"
-            variants={item}
-            style={
-              {
-                "--brand": p.brand,
-                "--brand-rgb": p.brandRgb,
-                "--brand-2-rgb": p.brand2Rgb,
-              } as CSSProperties
-            }
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={p.ariaLabel}
-          >
-            <span className="card-index">{p.index}</span>
-            <span className="logo" aria-hidden="true">
-              {p.logo}
-            </span>
-            <span className="card-name">{p.name}</span>
-            <span className="card-handle">{p.handle}</span>
-            <span className="card-foot">
-              {p.footText} <span className="arrow">→</span>
-            </span>
-          </motion.a>
-        ))}
-      </div>
+        <div className="cards">
+          {platforms.map((p) => (
+            <motion.a
+              key={p.url}
+              className="card"
+              variants={item}
+              style={
+                {
+                  "--brand": p.brand,
+                  "--brand-rgb": p.brandRgb,
+                  "--brand-2-rgb": p.brand2Rgb,
+                } as CSSProperties
+              }
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={p.ariaLabel}
+            >
+              <span className="card-index">{p.index}</span>
+              <span className="logo" aria-hidden="true">
+                {p.logo}
+              </span>
+              <span className="card-name">{p.name}</span>
+              <span className="card-handle">{p.handle}</span>
+              <span className="card-foot">
+                {p.footText} <span className="arrow">→</span>
+              </span>
+            </motion.a>
+          ))}
+        </div>
 
-      <MotionLink className="home-link" to="/" variants={item}>
-        <span aria-hidden="true">←</span> 返回主页
-      </MotionLink>
-    </motion.main>
+        <MotionLink className="home-link" to="/" variants={item}>
+          <span aria-hidden="true">←</span> 返回主页
+        </MotionLink>
+      </motion.main>
+    </div>
   );
 }
