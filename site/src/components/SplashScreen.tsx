@@ -29,14 +29,21 @@ export function SplashScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <motion.span
-            className="splash-name"
-            initial={{ opacity: 0, letterSpacing: "0.6em", y: 8 }}
-            animate={{ opacity: 1, letterSpacing: "0.18em", y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            王景宏
-          </motion.span>
+          <span className="splash-name">
+            {/* 逐字 transform 汇聚取代 letter-spacing 动画：字距是布局属性，
+                大号 CJK 字形上逐帧回流必掉帧；x/opacity 走合成器满帧 */}
+            {["王", "景", "宏"].map((ch, i) => (
+              <motion.span
+                key={ch}
+                className="splash-char"
+                initial={{ opacity: 0, x: (i - 1) * 26, y: 8 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {ch}
+              </motion.span>
+            ))}
+          </span>
           <motion.span
             className="splash-sub"
             initial={{ opacity: 0 }}

@@ -148,6 +148,11 @@ html::after {
   text-indent: 0.18em;
 }
 
+.splash-name .splash-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 .splash-sub {
   font-family: "Azeret Mono", monospace;
   font-size: clamp(0.68rem, 1.8vw, 0.82rem);
