@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>已迁移至 wangjinghong.com</title>
+    <!-- 旧 Pages 深链（viewer.html?img=N 等）映射到新站路由，query 保留 -->
+    <script>
+      (function () {
+        var p = location.pathname.replace(/^\/ceilf6/, "");
+        var map = {
+          "/blog.html": "/blog",
+          "/vlog.html": "/vlog",
+          "/viewer.html": "/viewer",
+          "/index.html": "/",
+          "/index_backup.html": "/",
+        };
+        var target = map[p] || "/";
+        location.replace("https://wangjinghong.com" + target + location.search);
+      })();
+    </script>
+    <meta http-equiv="refresh" content="1; url=https://wangjinghong.com/" />
+  </head>
+  <body>
+    <p>页面已迁移：<a href="https://wangjinghong.com/">wangjinghong.com</a></p>
+  </body>
+</html>
