@@ -12,6 +12,12 @@ export default defineConfig({
       "/assets": { target: "https://wangjinghong.com", changeOrigin: true },
     },
   },
+  // preview 同款代理：server.proxy 只作用于 dev，不补这条 preview 下 /assets/*.svg 会 404
+  preview: {
+    proxy: {
+      "/assets": { target: "https://wangjinghong.com", changeOrigin: true },
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,
