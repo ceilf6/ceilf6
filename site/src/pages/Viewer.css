@@ -162,3 +162,43 @@
   width: 24px;
   height: 24px;
 }
+
+/* —— 2026-07-26 性能改造新增（无旧站对照物）—— */
+
+/* 渐进加载的缩略图垫底：同构图先显形，展示图到位即替换 */
+.viewer-screen .viewer {
+  position: relative;
+}
+
+.viewer-screen .viewer-preview {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 92vw;
+  max-height: 92vh;
+  object-fit: contain;
+  filter: blur(4px);
+  opacity: 0.85;
+}
+
+/* 原件直达：viewer 默认展示压缩渲染，求证入口保留 */
+.viewer-screen .original-link {
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  z-index: 5;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: var(--panel-bg);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.viewer-screen .original-link:hover {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+}

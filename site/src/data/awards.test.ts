@@ -9,6 +9,7 @@ describe("awards manifest", () => {
     for (const a of awards) {
       expect(a.src).toMatch(/^\/resume-awards\/imgs\//);
       expect(a.thumb).toMatch(/^\/resume-awards\/imgs\/thumbs\//);
+      expect(a.display).toMatch(/^\/resume-awards\/imgs\/display\/.+\.jpg$/);
       expect(a.alt).toBeTruthy();
       for (const n of [a.width, a.height, a.thumbWidth, a.thumbHeight]) {
         expect(n).toBeGreaterThan(0);
@@ -21,6 +22,7 @@ describe("awards manifest", () => {
     for (const a of awards) {
       expect(existsSync(join(publicDir, a.src)), a.src).toBe(true);
       expect(existsSync(join(publicDir, a.thumb)), a.thumb).toBe(true);
+      expect(existsSync(join(publicDir, a.display)), a.display).toBe(true);
     }
   });
 });

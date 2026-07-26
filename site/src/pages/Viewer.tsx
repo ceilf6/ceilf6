@@ -105,9 +105,18 @@ export default function Viewer() {
         </button>
 
         <div className="viewer">
+          {award && showLoading && (
+            /* 渐进加载：缩略图（画廊里大概率已有缓存）先顶上，展示图到位后替换 */
+            <img
+              className="viewer-preview"
+              src={award.thumb}
+              alt=""
+              aria-hidden="true"
+            />
+          )}
           {award && (
             <img
-              src={award.src}
+              src={award.display}
               alt={award.alt}
               style={{ display: imgState === "loaded" ? "block" : "none" }}
               onLoad={() => setImgState("loaded")}
@@ -118,6 +127,17 @@ export default function Viewer() {
           {showLoading && <div className="loading">加载奖状中</div>}
           {showError && <div className="error">图片未找到</div>}
         </div>
+        {award && imgState === "loaded" && (
+          <a
+            className="original-link"
+            href={award.src}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            查看原件
+          </a>
+        )}
       </div>
     </PageTransition>
   );

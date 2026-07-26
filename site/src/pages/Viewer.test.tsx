@@ -15,9 +15,20 @@ const at = (search: string) =>
   );
 
 describe("Viewer", () => {
+  it("加载完成后提供指向原件的直达链接", () => {
+    at("?img=1");
+    fireEvent.load(screen.getByAltText(awards[1].alt));
+    const link = screen.getByText("查看原件").closest("a");
+    expect(link).toHaveAttribute("href", awards[1].src);
+    expect(link).toHaveAttribute("target", "_blank");
+  });
+
   it("按 img 参数显示对应大图", () => {
     at("?img=1");
-    expect(screen.getByAltText(awards[1].alt)).toHaveAttribute("src", awards[1].src);
+    expect(screen.getByAltText(awards[1].alt)).toHaveAttribute(
+      "src",
+      awards[1].display,
+    );
   });
 
   it("img 越界或非法显示错误态", () => {

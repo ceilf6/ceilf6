@@ -54,7 +54,9 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
       </div>
       <img
         alt={award.alt}
-        loading="lazy"
+        /* 首屏前三张 eager+首张高优先级：lazy 会被浏览器降权，拖累 LCP */
+        loading={index < 3 ? "eager" : "lazy"}
+        fetchPriority={index === 0 ? "high" : undefined}
         decoding="async"
         src={award.thumb || award.src}
         onLoad={() => setState("loaded")}

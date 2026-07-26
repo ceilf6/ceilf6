@@ -6,7 +6,8 @@
     "width": 3148,
     "height": 2240,
     "thumbWidth": 900,
-    "thumbHeight": 640
+    "thumbHeight": 640,
+    "display": "/resume-awards/imgs/display/0004-字节工训营.jpg"
   },
   {
     "src": "/resume-awards/imgs/腾讯青科实训营.png",
@@ -15,7 +16,8 @@
     "width": 4960,
     "height": 7016,
     "thumbWidth": 636,
-    "thumbHeight": 900
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/腾讯青科实训营.jpg"
   },
   {
     "src": "/resume-awards/imgs/0003-腾讯开源.jpg",
@@ -24,7 +26,8 @@
     "width": 1179,
     "height": 1786,
     "thumbWidth": 594,
-    "thumbHeight": 900
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/0003-腾讯开源.jpg"
   },
   {
     "src": "/resume-awards/imgs/0010-百度之星.JPG",
@@ -33,7 +36,8 @@
     "width": 1811,
     "height": 1280,
     "thumbWidth": 900,
-    "thumbHeight": 636
+    "thumbHeight": 636,
+    "display": "/resume-awards/imgs/display/0010-百度之星.jpg"
   },
   {
     "src": "/resume-awards/imgs/0013-Datawhale-Agent.JPG",
@@ -42,7 +46,8 @@
     "width": 1280,
     "height": 904,
     "thumbWidth": 900,
-    "thumbHeight": 635
+    "thumbHeight": 635,
+    "display": "/resume-awards/imgs/display/0013-Datawhale-Agent.jpg"
   },
   {
     "src": "/resume-awards/imgs/0001-天梯赛.PNG",
@@ -51,7 +56,8 @@
     "width": 788,
     "height": 1112,
     "thumbWidth": 637,
-    "thumbHeight": 900
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/0001-天梯赛.jpg"
   },
   {
     "src": "/resume-awards/imgs/0002-睿抗.JPG",
@@ -60,7 +66,8 @@
     "width": 1000,
     "height": 707,
     "thumbWidth": 900,
-    "thumbHeight": 636
+    "thumbHeight": 636,
+    "display": "/resume-awards/imgs/display/0002-睿抗.jpg"
   },
   {
     "src": "/resume-awards/imgs/0011-码蹄杯.JPG",
@@ -69,7 +76,8 @@
     "width": 904,
     "height": 1280,
     "thumbWidth": 635,
-    "thumbHeight": 900
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/0011-码蹄杯.jpg"
   },
   {
     "src": "/resume-awards/imgs/0101-美国大学生数学建模大赛.jpg",
@@ -78,7 +86,8 @@
     "width": 1179,
     "height": 867,
     "thumbWidth": 900,
-    "thumbHeight": 662
+    "thumbHeight": 662,
+    "display": "/resume-awards/imgs/display/0101-美国大学生数学建模大赛.jpg"
   },
   {
     "src": "/resume-awards/imgs/1001-上大-优秀学生.jpg",
@@ -87,7 +96,8 @@
     "width": 1850,
     "height": 1279,
     "thumbWidth": 900,
-    "thumbHeight": 622
+    "thumbHeight": 622,
+    "display": "/resume-awards/imgs/display/1001-上大-优秀学生.jpg"
   },
   {
     "src": "/resume-awards/imgs/1002-上大公益奖学金.JPG",
@@ -96,7 +106,8 @@
     "width": 3264,
     "height": 2272,
     "thumbWidth": 900,
-    "thumbHeight": 626
+    "thumbHeight": 626,
+    "display": "/resume-awards/imgs/display/1002-上大公益奖学金.jpg"
   },
   {
     "src": "/resume-awards/imgs/1003-上大科创奖学金.JPG",
@@ -105,7 +116,8 @@
     "width": 3264,
     "height": 2312,
     "thumbWidth": 900,
-    "thumbHeight": 637
+    "thumbHeight": 637,
+    "display": "/resume-awards/imgs/display/1003-上大科创奖学金.jpg"
   },
   {
     "src": "/resume-awards/imgs/1004-上大科创奖学金2.JPG",
@@ -114,7 +126,8 @@
     "width": 2592,
     "height": 1860,
     "thumbWidth": 900,
-    "thumbHeight": 646
+    "thumbHeight": 646,
+    "display": "/resume-awards/imgs/display/1004-上大科创奖学金2.jpg"
   },
   {
     "src": "/resume-awards/imgs/1005-企创大赛特等奖.jpg",
@@ -123,7 +136,8 @@
     "width": 4032,
     "height": 2389,
     "thumbWidth": 900,
-    "thumbHeight": 533
+    "thumbHeight": 533,
+    "display": "/resume-awards/imgs/display/1005-企创大赛特等奖.jpg"
   },
   {
     "src": "/resume-awards/imgs/中国计算机协会CSP证书.png",
@@ -132,6 +146,7 @@
     "width": 1410,
     "height": 1825,
     "thumbWidth": 695,
-    "thumbHeight": 900
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/中国计算机协会CSP证书.jpg"
   }
 ]

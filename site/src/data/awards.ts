@@ -5,6 +5,8 @@ import raw from "./awards.json";
 export interface Award {
   src: string;
   thumb: string;
+  /** viewer 展示级渲染（长边 2000 jpeg，site/scripts/generate-display.mjs 维护）；原件走 src */
+  display: string;
   alt: string;
   width: number;
   height: number;
