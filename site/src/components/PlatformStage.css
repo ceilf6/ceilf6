@@ -1,0 +1,255 @@
+/* 逐字迁移自旧 blog.html <style>（已 diff 确认 vlog.html 的 <style> 与之逐字节相同）：
+   平台选择页的舞台、标题组、平台卡全系与返回链。声明一字未改，只做了两处必要适配：
+   1) 选择器统一加 `.stage ` 前缀——旧页是独立 HTML，选择器可以裸写；SPA 里 CSS 全局生效，
+      裸 `.card` 会命中主页瀑布流的 `.gallery .card`（display/padding/::before opacity 都会串味）。
+      与 WaterfallGallery.css 把画廊规则收进 `.gallery` 是同一套命名空间做法。
+   2) 未迁移 .reveal/.d1–.d6/@keyframes rise 的入场延迟体系——改由 PlatformStage 的
+      framer-motion stagger 承担（含 prefers-reduced-motion 分支）。
+   :root/body 级规则归 tokens.css 与 global.css 管辖，此处不重复。 */
+
+/* 旧 blog/vlog 页的 :root 里定义了 --accent-cyan/--accent-amber，而站点令牌（tokens.css，
+   取自旧 index.html）只有 --accent-gold/--accent-dawn。这两个变量缺失会让 .headline 的
+   linear-gradient 整条失效——配上 color: transparent 就是标题不可见。故按旧页原值就地补齐，
+   作用域限于本组件，不污染全局令牌。 */
+.stage {
+  --accent-cyan: #57e3cf;
+  --accent-amber: #ffb262;
+}
+
+.stage {
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stage .eyebrow {
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.stage .eyebrow::before,
+.stage .eyebrow::after {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(86, 227, 207, 0.7)
+  );
+}
+.stage .eyebrow::before {
+  transform: scaleX(-1);
+}
+
+.stage .headline {
+  margin-top: 18px;
+  font-family: "ZCOOL XiaoWei", "Noto Sans SC", serif;
+  font-size: clamp(2.4rem, 7vw, 3.9rem);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  background: linear-gradient(
+    120deg,
+    var(--text-main) 0%,
+    var(--accent-cyan) 58%,
+    var(--accent-amber) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stage .subtitle {
+  margin-top: 14px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: clamp(0.92rem, 2.2vw, 1.05rem);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.stage .cards {
+  margin-top: 46px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.stage .card {
+  --brand: var(--accent-cyan);
+  --brand-rgb: 86, 227, 207;
+  --brand-2-rgb: var(--brand-rgb);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 32px 30px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--text-main);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 1px 2px rgba(1, 8, 20, 0.4),
+    0 18px 38px rgba(1, 8, 20, 0.36);
+  overflow: hidden;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* brand bloom that fades in on hover/focus */
+.stage .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(
+    120% 120% at 82% 0%,
+    rgba(var(--brand-rgb), 0.26) 0%,
+    rgba(var(--brand-2-rgb), 0.08) 38%,
+    transparent 70%
+  );
+  transition: opacity 0.45s ease;
+}
+
+.stage .card:hover,
+.stage .card:focus-visible {
+  transform: translateY(-7px);
+  border-color: rgba(var(--brand-rgb), 0.62);
+  box-shadow:
+    0 1px 2px rgba(1, 8, 20, 0.4),
+    0 26px 54px rgba(1, 8, 20, 0.5),
+    0 0 0 1px rgba(var(--brand-rgb), 0.18),
+    0 14px 40px rgba(var(--brand-rgb), 0.28);
+  outline: none;
+}
+
+.stage .card:hover::before,
+.stage .card:focus-visible::before {
+  opacity: 1;
+}
+
+.stage .card:focus-visible {
+  outline: 2px solid rgba(var(--brand-rgb), 0.9);
+  outline-offset: 3px;
+}
+
+.stage .logo {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(var(--brand-rgb), 0.32);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    background 0.4s ease;
+}
+.stage .card:hover .logo,
+.stage .card:focus-visible .logo {
+  transform: scale(1.06) rotate(-3deg);
+  background: rgba(var(--brand-rgb), 0.12);
+  border-color: rgba(var(--brand-rgb), 0.7);
+}
+.stage .logo svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
+.stage .card-name {
+  font-family: "ZCOOL XiaoWei", "Noto Sans SC", serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.05em;
+}
+
+.stage .card-handle {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin-top: -8px;
+}
+
+.stage .card-foot {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.stage .card-foot .arrow {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stage .card:hover .card-foot .arrow,
+.stage .card:focus-visible .card-foot .arrow {
+  transform: translateX(6px);
+}
+
+.stage .card-index {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  color: rgba(175, 195, 221, 0.4);
+}
+
+.stage .home-link {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+.stage .home-link:hover,
+.stage .home-link:focus-visible {
+  color: var(--accent-cyan);
+  outline: none;
+}
+.stage .home-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .stage .cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .stage .card {
+    padding: 26px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage .card,
+  .stage .logo,
+  .stage .card-foot .arrow {
+    transition: none;
+  }
+}
