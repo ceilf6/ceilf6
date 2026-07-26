@@ -17,6 +17,12 @@
   padding: 48px 100px 56px;
 }
 
+/* 键盘可达性增强（2026-07-26 经用户批准；旧站无 tabIndex，无对照物） */
+.gallery .card:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
 .gallery .card {
   height: auto;
   margin-bottom: 24px;

@@ -29,6 +29,14 @@ describe("WaterfallGallery", () => {
     );
   });
 
+  it("键盘 Enter 激活卡片进入 viewer（可达性）", () => {
+    setup();
+    const card = screen.getByLabelText(`查看证书：${awards[5].alt}`);
+    expect(card).toHaveAttribute("tabindex", "0");
+    fireEvent.keyDown(card, { key: "Enter" });
+    expect(screen.getByTestId("viewer-probe")).toBeInTheDocument();
+  });
+
   it("点击第 N 张卡进入 /viewer?img=N", () => {
     setup();
     fireEvent.click(screen.getByAltText(awards[3].alt));

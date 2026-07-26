@@ -34,11 +34,20 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
     <div
       ref={ref}
       className={`card is-${state}`}
+      role="button"
+      tabIndex={0}
+      aria-label={`查看证书：${award.alt}`}
       style={{
         aspectRatio: `${award.thumbWidth} / ${award.thumbHeight}`,
         ["--i" as string]: index,
       }}
       onClick={() => navigate(`/viewer?img=${index}`)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/viewer?img=${index}`);
+        }
+      }}
     >
       <div className="card-loader" aria-hidden="true">
         {state === "error" ? "加载失败" : state === "loading" ? "加载中" : null}
