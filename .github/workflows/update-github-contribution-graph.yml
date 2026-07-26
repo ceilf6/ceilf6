@@ -45,3 +45,11 @@ jobs:
             git commit -m "chore: update github contribution graph [skip ci]" -m "Co-authored-by: ceilf6 <3506456886@qq.com>"
             git push
           fi
+
+      - name: Sync fresh cards to live site
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' '${{ secrets.ECS_SSH_KEY }}' > ~/.ssh/ecs-key.pem
+          chmod 600 ~/.ssh/ecs-key.pem
+          ssh-keyscan -H 47.103.28.157 >> ~/.ssh/known_hosts
+          scp -i ~/.ssh/ecs-key.pem assets/*.svg root@47.103.28.157:/var/www/wangjinghong/assets/
