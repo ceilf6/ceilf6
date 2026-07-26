@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
+import { awards } from "./data/awards";
 import App, { AppRoutes } from "./App";
 
 const at = (path: string) =>
@@ -34,7 +35,7 @@ describe("routes", () => {
     at("/viewer.html?img=2");
     const viewer = screen.getByTestId("page-viewer");
     expect(viewer).toBeInTheDocument();
-    expect(screen.getByTestId("viewer-search")).toHaveTextContent("?img=2");
+    expect(screen.getByAltText(awards[2].alt)).toBeInTheDocument();
   });
   it("未知路径回主页", () => {
     at("/nonsense");
