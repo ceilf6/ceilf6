@@ -1,0 +1,131 @@
+/* 逐字迁移自旧 index.html <style>。
+   原文里 loader 系规则与画廊卡片（.gallery .card-loader）合并在同一组选择器上，
+   这里只摘出 .readme-card* 的选择器，声明一字未改；.gallery 的那半留给瀑布流组件。 */
+
+.readme-card-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(238, 244, 255, 0.66);
+  font-size: 13px;
+  letter-spacing: 0;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 192, 105, 0.12) 42%,
+      rgba(191, 145, 243, 0.08) 72%,
+      rgba(255, 255, 255, 0.02) 100%
+    ),
+    rgba(13, 22, 44, 0.42);
+  transition: opacity 0.32s ease;
+}
+
+.readme-card-loader::before {
+  content: "";
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(238, 244, 255, 0.18);
+  border-top-color: rgba(255, 192, 105, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(255, 192, 105, 0.2);
+  animation: loaderSpin 0.9s linear infinite;
+}
+
+.readme-card.is-loaded .readme-card-loader {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.readme-card.is-error .readme-card-loader {
+  color: rgba(255, 154, 98, 0.92);
+}
+
+.readme-card.is-error .readme-card-loader::before {
+  display: none;
+}
+
+@keyframes loaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* README 区域 */
+.readme-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.readme-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 340 / 200;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 214, 166, 0.3);
+  background: linear-gradient(
+    160deg,
+    rgba(18, 28, 54, 0.92),
+    rgba(26, 40, 74, 0.68)
+  );
+  box-shadow: 0 14px 30px rgba(3, 10, 24, 0.3);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+}
+
+.readme-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition:
+    opacity 0.36s ease,
+    filter 0.45s ease;
+}
+
+.readme-card.is-loaded img {
+  opacity: 1;
+}
+
+.readme-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 192, 105, 0.48);
+  box-shadow:
+    0 18px 34px rgba(3, 10, 24, 0.44),
+    0 0 0 1px rgba(255, 192, 105, 0.38);
+}
+
+.readme-card:hover img {
+  filter: saturate(1.08) contrast(1.04) brightness(1.04);
+}
+
+.readme-cards a:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .readme-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .readme-cards {
+    grid-template-columns: 1fr;
+  }
+}

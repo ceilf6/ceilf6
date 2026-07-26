@@ -1,0 +1,88 @@
+/* 逐字迁移自旧 index.html <style>：README 区容器 + 主内容区。
+   卡片本体（.readme-cards / .readme-card 全系）归 ReadmeCards.css，
+   画廊（.gallery）留给瀑布流组件；响应式段落按选择器归属拆开，声明未改。 */
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px 40px 20px;
+  position: relative;
+}
+
+/* README 区域 */
+.readme-section {
+  background: var(--panel-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--panel-border);
+  padding: 26px 24px;
+  text-align: center;
+  flex-shrink: 0;
+  margin: 22px 22px 0;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(2, 8, 22, 0.26);
+  position: relative;
+  z-index: 1;
+}
+
+.readme-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 192, 105, 0.68),
+    rgba(191, 145, 243, 0.58),
+    rgba(255, 192, 105, 0.68)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.readme-section h1 {
+  font-size: clamp(22px, 2.2vw, 34px);
+  color: var(--text-main);
+  margin-bottom: 16px;
+  font-family: "ZCOOL XiaoWei", "KaiTi", serif;
+  letter-spacing: 0.06em;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.36);
+}
+
+.readme-section h1 .accent {
+  background: linear-gradient(
+    100deg,
+    #ffcf87 10%,
+    var(--accent-dawn) 90%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (max-width: 900px) {
+  .readme-section {
+    margin: 16px 16px 0;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .readme-section {
+    padding: 16px;
+    margin: 12px 12px 0;
+    border-radius: 16px;
+  }
+
+  .main-content {
+    padding: 0 12px 28px;
+  }
+}

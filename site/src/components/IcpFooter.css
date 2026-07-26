@@ -1,0 +1,29 @@
+/* 逐字迁移自旧 index.html <style> 的 .icp-footer 全系规则 */
+
+.icp-footer {
+  text-align: center;
+  padding: 0 20px 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.icp-footer a {
+  color: var(--text-muted);
+  opacity: 0.55;
+  font-size: 12px;
+  text-decoration: none;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
+}
+
+.icp-footer a:hover {
+  color: var(--accent-gold);
+  opacity: 0.9;
+}
+
+.icp-footer a:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
