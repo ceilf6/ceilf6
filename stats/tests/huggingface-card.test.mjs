@@ -151,11 +151,12 @@ test("README and daily workflow publish the ordered two-by-two card layout", () 
     "utf8",
   );
   const generatedCard = new URL("../../assets/huggingface-card.svg", import.meta.url);
+  // 用户策展的门面顺序：第一行 github-stats + blog，第二行 vlog + huggingface
   const cards = [
     "./assets/github-stats-card.svg",
-    "./assets/huggingface-card.svg",
-    "./assets/vlog-card.svg",
     "./assets/blog-card.svg",
+    "./assets/vlog-card.svg",
+    "./assets/huggingface-card.svg",
   ];
   let position = -1;
   for (const card of cards) {
@@ -167,15 +168,15 @@ test("README and daily workflow publish the ordered two-by-two card layout", () 
   assert.doesNotMatch(readme.slice(0, readme.indexOf('<p align="center">')), /<table>/);
   assert.match(
     readme,
-    /<p align="center">\n\s*<a href="https:\/\/ceilf6\.github\.io\/ceilf6\/" target="_blank"><img width="36%" src="\.\/assets\/github-stats-card\.svg" \/><\/a>&emsp;<a href="https:\/\/huggingface\.co\/ceilf6" target="_blank"><img width="36%" src="\.\/assets\/huggingface-card\.svg" \/><\/a>\n\s*<\/p>/,
+    /<p align="center">\n\s*<a href="https:\/\/wangjinghong\.com\/" target="_blank"><img width="36%" src="\.\/assets\/github-stats-card\.svg" \/><\/a>&emsp;<a href="https:\/\/wangjinghong\.com\/blog\.html" target="_blank"><img width="36%" src="\.\/assets\/blog-card\.svg" \/><\/a>\n\s*<\/p>/,
   );
   assert.match(
     readme,
-    /<p align="center">\n\s*<a href="https:\/\/ceilf6\.github\.io\/ceilf6\/vlog\.html" target="_blank"><img width="36%" src="\.\/assets\/vlog-card\.svg" \/><\/a>&emsp;<a href="https:\/\/blog\.csdn\.net\/2301_78856868" target="_blank"><img width="36%" src="\.\/assets\/blog-card\.svg" \/><\/a>\n\s*<\/p>/,
+    /<p align="center">\n\s*<a href="https:\/\/wangjinghong\.com\/vlog\.html" target="_blank"><img width="36%" src="\.\/assets\/vlog-card\.svg" \/><\/a>&emsp;<a href="https:\/\/huggingface\.co\/ceilf6" target="_blank"><img width="36%" src="\.\/assets\/huggingface-card\.svg" \/><\/a>\n\s*<\/p>/,
   );
   assert.match(
     workflow,
-    /- name: Fetch Hugging Face stats\n\s+run: python stats\/scripts\/fetch-huggingface-stats\.py/,
+    /- name: Fetch Hugging Face stats\n\s+id: fetch-huggingface\n\s+continue-on-error: true\n\s+run: python stats\/scripts\/fetch-huggingface-stats\.py/,
   );
   assert.equal(existsSync(generatedCard), true);
 });

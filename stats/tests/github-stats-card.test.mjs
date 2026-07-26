@@ -70,9 +70,11 @@ test("generator preserves upstream stats while replacing the GitHub group with a
     svg,
     /<circle(?=[^>]*cx="48")(?=[^>]*cy="48")(?=[^>]*r="40")(?=[^>]*fill="none")(?=[^>]*stroke="#bf91f3")(?=[^>]*stroke-width="6")[^>]*\/>/,
   );
+  // S 徽章字形锚定在圆环几何中心 (48,48)：text-anchor=middle 加双保险 central 基线，
+  // 无手工位移——这是生成器注释里点名的居中契约，属稳定结构。
   assert.match(
     svg,
-    /<text[^>]*x="47"[^>]*y="58"[^>]*transform="translate\(-3\.76 0\) scale\(1\.08 1\)"[^>]*style="font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;">S<\/text>/,
+    /<text(?=[^>]*x="48")(?=[^>]*y="48")(?=[^>]*text-anchor="middle")(?=[^>]*alignment-baseline="central")(?=[^>]*dominant-baseline="central")[^>]*style="font-family: 'Segoe UI', Ubuntu, Sans-Serif; font-size: 24px; font-weight: 800; fill: #ffffff;">S<\/text>/,
   );
   assert.doesNotMatch(svg, /github-mark/);
 });
@@ -134,9 +136,11 @@ test("README and Update Stats workflow use the repository-owned stats card", () 
   );
   assert.equal(existsSync(generatedCard), true);
   const svg = readFileSync(generatedCard, "utf8");
+  // gpsc 风格上游会在标题上带 class="gpsc-item" 等自有属性；仍钉死位置 (30,40)、
+  // 18px 标题样式与替换后的标题文本。
   assert.match(
     svg,
-    /<text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">ceilf6's Github Stats<\/text>/,
+    /<text x="30" y="40"[^>]*style="font-size: 18px; fill: #70a5fd;">ceilf6's Github Stats<\/text>/,
   );
   assert.match(
     svg,
@@ -144,6 +148,6 @@ test("README and Update Stats workflow use the repository-owned stats card", () 
   );
   assert.match(
     svg,
-    /<text[^>]*x="47"[^>]*y="58"[^>]*transform="translate\(-3\.76 0\) scale\(1\.08 1\)"[^>]*style="font-family: Arial; font-size: 24px; font-weight: 400; fill: #ffffff;">S<\/text>/,
+    /<text(?=[^>]*x="48")(?=[^>]*y="48")(?=[^>]*text-anchor="middle")(?=[^>]*alignment-baseline="central")(?=[^>]*dominant-baseline="central")[^>]*style="font-family: 'Segoe UI', Ubuntu, Sans-Serif; font-size: 24px; font-weight: 800; fill: #ffffff;">S<\/text>/,
   );
 });
