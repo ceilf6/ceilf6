@@ -2,6 +2,10 @@
   <code>Hi👋,我是&nbsp;ceilf6&nbsp;!</code>
 </h1>
 <p align="center">
+  <a href="https://github.com/ceilf6/ceilf6/actions/workflows/verify.yml"><img src="https://github.com/ceilf6/ceilf6/actions/workflows/verify.yml/badge.svg?branch=main" alt="Verify" /></a>
+  <a href="https://github.com/ceilf6/ceilf6/actions/workflows/deploy-ecs.yml"><img src="https://github.com/ceilf6/ceilf6/actions/workflows/deploy-ecs.yml/badge.svg" alt="Deploy" /></a>
+</p>
+<p align="center">
   <a href="https://wangjinghong.com/" target="_blank"><img width="36%" src="./assets/github-stats-card.svg" /></a>&emsp;<a href="https://wangjinghong.com/blog.html" target="_blank"><img width="36%" src="./assets/blog-card.svg" /></a>
 </p>
 <p align="center">

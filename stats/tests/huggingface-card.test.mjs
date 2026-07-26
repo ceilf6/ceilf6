@@ -165,7 +165,9 @@ test("README and daily workflow publish the ordered two-by-two card layout", () 
     position = next;
   }
   assert.match(readme, /href="https:\/\/huggingface\.co\/ceilf6"/);
-  assert.doesNotMatch(readme.slice(0, readme.indexOf('<p align="center">')), /<table>/);
+  // 锚在卡片栅格本身，而不是「第一个 <p align="center">」——顶部已插入 CI 徽章段，
+  // 后者会把守卫窗口缩到徽章之前，放过徽章与卡片之间重新长出来的 <table> 布局
+  assert.doesNotMatch(readme.slice(0, readme.indexOf(cards[0])), /<table>/);
   assert.match(
     readme,
     /<p align="center">\n\s*<a href="https:\/\/wangjinghong\.com\/" target="_blank"><img width="36%" src="\.\/assets\/github-stats-card\.svg" \/><\/a>&emsp;<a href="https:\/\/wangjinghong\.com\/blog\.html" target="_blank"><img width="36%" src="\.\/assets\/blog-card\.svg" \/><\/a>\n\s*<\/p>/,
