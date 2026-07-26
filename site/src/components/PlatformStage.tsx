@@ -26,10 +26,12 @@ const itemVariants: Variants = {
 };
 
 /** 旧站在 prefers-reduced-motion 下把 .reveal 直接钉成终态；JS 动画不吃 CSS 媒体查询，
-    所以这里显式换一套「原地显形」的变体，行为与旧站对齐。 */
+    所以这里显式换一套「原地显形」的变体，行为与旧站对齐。
+    注意不能写 y:0——framer 会因此接管 transform 并留下行内 transform:none，
+    盖掉 .card:hover 的 translateY(-7px)；旧站减动下 animation:none，hover 上浮是生效的。 */
 const staticVariants: Variants = {
-  hidden: { opacity: 1, y: 0 },
-  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 1 },
+  show: { opacity: 1 },
 };
 
 export function PlatformStage({
