@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""
+Generate SVG cards for Blog and Vlog stats
+"""
+
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ElementTree
+
+
+def format_number(num):
+    """格式化数字"""
+    if num >= 1000:
+        return f"{num/1000:.1f}k"
+    return f"{num:,}"
+
+
+def generate_blog_card(stats):
+    """生成Blog统计SVG卡片 - Tokyo Night主题（与.ref样式一致）"""
+    followers = format_number(stats.get('fans', 0))
+    likes = format_number(stats.get('likes', 0))
+    views = format_number(stats.get('views', 0))
+    creations = format_number(stats.get('original', 0))
+    stars = format_number(stats.get('collect', 0))
+
+    # 340px 宽度与 Stats 卡片一致，README 中通过 width="32%" 控制显示大小
+    width = 340
+    height = 200
+    stroke_width = 1
+
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+    <style>
+        * {{
+            font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif
+        }}
+    </style>
+    <rect x="1" y="1" rx="5" ry="5" height="99%" width="{((width - 2 * stroke_width) / width) * 100}%" stroke="#1a1b27" stroke-width="1"
+        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Blog</text>
+    <g transform="translate(0,40)">
+        <g transform="translate(30,20)">
+            <g transform="translate(0,0)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M5.5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.507 5.507 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4.001 4.001 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.49 3.49 0 0 1 2 5.5zM11 4a.75.75 0 1 0 0 1.5 1.5 1.5 0 0 1 .666 2.844.75.75 0 0 0-.416.672v.352a.75.75 0 0 0 .574.73c1.2.289 2.162 1.2 2.522 2.372a.75.75 0 1 0 1.434-.44 5.01 5.01 0 0 0-2.56-3.012A3 3 0 0 0 11 4z" />
+            </g>
+            <g transform="translate(0,25.2)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z" />
+            </g>
+            <g transform="translate(0,50.4)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z" />
+            </g>
+            <g transform="translate(0,75.6)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z" />
+            </g>
+            <g transform="translate(0,100.8)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z" />
+            </g><text x="21" y="14" style="fill: #38bdae; font-size: 14px;">Followers:</text><text x="21" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">Likes:</text><text x="21" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">Views:</text><text x="21" y="89.6"
+                style="fill: #38bdae; font-size: 14px;">Creations:</text><text x="21" y="114.8"
+                style="fill: #38bdae; font-size: 14px;">Stars:</text><text x="100" y="14"
+                style="fill: #38bdae; font-size: 14px;">{followers}</text><text x="100" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">{likes}</text><text x="100" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">{views}</text><text x="100" y="89.6"
+                style="fill: #38bdae; font-size: 14px;">{creations}</text><text x="100" y="114.8"
+                style="fill: #38bdae; font-size: 14px;">{stars}</text>
+        </g>
+        <g transform="translate(220,20)">
+            <g transform="scale(6)" style="fill: #bf91f3;">
+                <path fill-rule="evenodd"
+                    d="M421.073,221.719c-0.578,11.719-9.469,26.188-23.797,40.094v183.25c-0.016,4.719-1.875,8.719-5.016,11.844 c-3.156,3.063-7.25,4.875-12.063,4.906H81.558c-4.781-0.031-8.891-1.844-12.047-4.906c-3.141-3.125-4.984-7.125-5-11.844V152.219 c0.016-4.703,1.859-8.719,5-11.844c3.156-3.063,7.266-4.875,12.047-4.906h158.609c12.828-16.844,27.781-34.094,44.719-49.906 c0.078-0.094,0.141-0.188,0.219-0.281H81.558c-18.75-0.016-35.984,7.531-48.25,19.594c-12.328,12.063-20.016,28.938-20,47.344 v292.844c-0.016,18.406,7.672,35.313,20,47.344C45.573,504.469,62.808,512,81.558,512h298.641c18.781,0,36.016-7.531,48.281-19.594 c12.297-12.031,20-28.938,19.984-47.344V203.469c0,0-0.125-0.156-0.328-0.313C440.37,209.813,431.323,216.156,421.073,221.719z M498.058,0c0,0-15.688,23.438-118.156,58.109C275.417,93.469,211.104,237.313,211.104,237.313 c-15.484,29.469-76.688,151.906-76.688,151.906c-16.859,31.625,14.031,50.313,32.156,17.656 c34.734-62.688,57.156-119.969,109.969-121.594c77.047-2.375,129.734-69.656,113.156-66.531c-21.813,9.5-69.906,0.719-41.578-3.656 c68-5.453,109.906-56.563,96.25-60.031c-24.109,9.281-46.594,0.469-51-2.188C513.386,138.281,498.058,0,498.058,0z"
+                    transform="scale(0.026)" />
+            </g>
+        </g>
+    </g>
+</svg>'''
+
+    return svg
+
+
+def generate_vlog_card(stats):
+    """生成Vlog统计SVG卡片 - Tokyo Night主题（与.ref样式一致）"""
+    followers = format_number(stats.get('followers', 0))
+    likes = format_number(stats.get('likes', 0))
+    views = format_number(stats.get('views', 0))
+    creations = format_number(stats.get('creations', 0))
+
+    # 340px 宽度与 Stats 卡片一致，README 中通过 width="33%" 控制显示大小
+    width = 340
+    height = 200
+    stroke_width = 1
+
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+    <style>
+        * {{
+            font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif
+        }}
+    </style>
+    <rect x="1" y="1" rx="5" ry="5" height="99%" width="{((width - 2 * stroke_width) / width) * 100}%" stroke="#1a1b27" stroke-width="1"
+        fill="#1a1b27" stroke-opacity="1" /><text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Vlog</text>
+    <g transform="translate(0,40)">
+        <g transform="translate(30,20)">
+            <g transform="translate(0,0)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M5.5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.507 5.507 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4.001 4.001 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.49 3.49 0 0 1 2 5.5zM11 4a.75.75 0 1 0 0 1.5 1.5 1.5 0 0 1 .666 2.844.75.75 0 0 0-.416.672v.352a.75.75 0 0 0 .574.73c1.2.289 2.162 1.2 2.522 2.372a.75.75 0 1 0 1.434-.44 5.01 5.01 0 0 0-2.56-3.012A3 3 0 0 0 11 4z" />
+            </g>
+            <g transform="translate(0,25.2)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z" />
+            </g>
+            <g transform="translate(0,50.4)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z" />
+            </g>
+            <g transform="translate(0,75.6)" width="14" height="14" fill="#bf91f3">
+                <path fill-rule="evenodd"
+                    d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z" />
+            </g><text x="21" y="14" style="fill: #38bdae; font-size: 14px;">Followers:</text><text x="21" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">Likes:</text><text x="21" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">Views:</text><text x="21" y="89.6"
+                style="fill: #38bdae; font-size: 14px;">Creations:</text><text x="100" y="14"
+                style="fill: #38bdae; font-size: 14px;">{followers}</text><text x="100" y="39.2"
+                style="fill: #38bdae; font-size: 14px;">{likes}</text><text x="100" y="64.4"
+                style="fill: #38bdae; font-size: 14px;">{views}</text><text x="100" y="89.6"
+                style="fill: #38bdae; font-size: 14px;">{creations}</text>
+        </g>
+        <g transform="translate(235,25)">
+            <g transform="scale(5)" style="fill: #bf91f3;">
+                <path fill-rule="evenodd"
+                    d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zm1.75-.25a.25.25 0 00-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25v-8.5a.25.25 0 00-.25-.25H1.75zM6.5 5.5v5l4-2.5-4-2.5z" />
+            </g>
+        </g>
+    </g>
+</svg>'''
+
+    return svg
+
+
+def generate_huggingface_card(stats):
+    """生成 Hugging Face 统计 SVG 卡片。"""
+    rows = (
+        ("Followers:", format_number(stats["numFollowers"]), "M5.5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.507 5.507 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4.001 4.001 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.49 3.49 0 0 1 2 5.5zM11 4a.75.75 0 1 0 0 1.5 1.5 1.5 0 0 1 .666 2.844.75.75 0 0 0-.416.672v.352a.75.75 0 0 0 .574.73c1.2.289 2.162 1.2 2.522 2.372a.75.75 0 1 0 1.434-.44 5.01 5.01 0 0 0-2.56-3.012A3 3 0 0 0 11 4z"),
+        ("Likes:", format_number(stats["numLikes"]), "M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"),
+        ("Models:", format_number(stats["numModels"]), "M1.75 1.5A1.75 1.75 0 0 0 0 3.25v7.5c0 .966.784 1.75 1.75 1.75h4.5v1H4.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5H9.75v-1h4.5A1.75 1.75 0 0 0 16 10.75v-7.5A1.75 1.75 0 0 0 14.25 1.5H1.75zm0 1.5h12.5a.25.25 0 0 1 .25.25v7.5a.25.25 0 0 1-.25.25H1.75a.25.25 0 0 1-.25-.25v-7.5A.25.25 0 0 1 1.75 3z"),
+        ("Datasets:", format_number(stats["numDatasets"]), "M2 1.25A1.75 1.75 0 0 0 .25 3v10A1.75 1.75 0 0 0 2 14.75h12A1.75 1.75 0 0 0 15.75 13V3A1.75 1.75 0 0 0 14 1.25H2zm0 1.5h12a.25.25 0 0 1 .25.25v2.25h-13V3A.25.25 0 0 1 2 2.75zm-.75 4h13v2.5h-13v-2.5zm0 4h13V13a.25.25 0 0 1-.25.25H2a.25.25 0 0 1-.25-.25v-2.25z"),
+        ("Spaces:", format_number(stats["numSpaces"]), "M1.5 1.5h5v5h-5v-5zm1.5 1.5V5h2V3H3zm6.5-1.5h5v5h-5v-5zM11 3v2h2V3h-2zM1.5 9.5h5v5h-5v-5zM3 11v2h2v-2H3zm6.5-1.5h5v5h-5v-5zM11 11v2h2v-2h-2z"),
+    )
+    row_svg = "".join(
+        f'<g transform="translate(0,{index * 25.2})"><path fill="#bf91f3" d="{icon}" /><text x="21" y="14" style="fill: #38bdae; font-size: 14px;">{label}</text><text x="100" y="14" style="fill: #38bdae; font-size: 14px;">{value}</text></g>'
+        for index, (label, value, icon) in enumerate(rows)
+    )
+    mark_source = Path(__file__).parent.parent / "svg" / "hugging_face_high_contrast.svg"
+    mark_root = ElementTree.parse(mark_source).getroot()
+    mark_paths = "".join(
+        ElementTree.tostring(path, encoding="unicode")
+        for path in mark_root.iter()
+        if path.tag.rsplit("}", 1)[-1] == "path"
+    ).replace("#BF91F3", "#bf91f3")
+
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="340" height="200" viewBox="0 0 340 200">
+    <style>* {{ font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif }}</style>
+    <rect x="1" y="1" rx="5" ry="5" height="99%" width="99.41176470588235%" stroke="#1a1b27" stroke-width="1" fill="#1a1b27" stroke-opacity="1" />
+    <text x="30" y="40" style="font-size: 18px; fill: #70a5fd;">Hugging Face</text>
+    <g transform="translate(30,60)">{row_svg}</g>
+    <g transform="translate(220,67) scale(0.08)" data-hugging-face-mark="true">{mark_paths}</g>
+</svg>'''
+
+
+def main():
+    # 读取数据
+    csdn_stats_file = Path(__file__).parent.parent / 'data' / 'csdn-stats.json'
+    bilibili_stats_file = Path(__file__).parent.parent / 'data' / 'bilibili-stats.json'
+
+    # 生成Blog卡片
+    if csdn_stats_file.exists():
+        with open(csdn_stats_file, 'r', encoding='utf-8') as f:
+            csdn_stats = json.load(f)
+
+        blog_svg = generate_blog_card(csdn_stats)
+        blog_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'blog-card.svg'
+        blog_svg_file.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(blog_svg_file, 'w', encoding='utf-8') as f:
+            f.write(blog_svg)
+
+        print("Blog card generated successfully!")
+
+    # 生成Vlog卡片
+    if bilibili_stats_file.exists():
+        with open(bilibili_stats_file, 'r', encoding='utf-8') as f:
+            bilibili_stats = json.load(f)
+
+        vlog_svg = generate_vlog_card(bilibili_stats)
+        vlog_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'vlog-card.svg'
+        vlog_svg_file.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(vlog_svg_file, 'w', encoding='utf-8') as f:
+            f.write(vlog_svg)
+
+        print("Vlog card generated successfully!")
+
+    # 生成 Hugging Face 卡片
+    huggingface_stats_file = Path(__file__).parent.parent / 'data' / 'huggingface-stats.json'
+    if huggingface_stats_file.exists():
+        with open(huggingface_stats_file, 'r', encoding='utf-8') as f:
+            huggingface_stats = json.load(f)
+
+        huggingface_svg = generate_huggingface_card(huggingface_stats)
+        huggingface_svg_file = Path(__file__).resolve().parents[2] / 'assets' / 'huggingface-card.svg'
+        huggingface_svg_file.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(huggingface_svg_file, 'w', encoding='utf-8') as f:
+            f.write(huggingface_svg)
+
+        print("Hugging Face card generated successfully!")
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,178 @@
+::selection {
+  background: var(--accent-gold);
+  color: #0b1226;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(194, 210, 234, 0.3);
+  border-radius: 5px;
+  border: 2px solid var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 192, 105, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--bg-void);
+}
+
+body {
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  font-family:
+    "Azeret Mono", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
+
+/* 站点签名背景层：逐字迁移自旧 index.html <style>，SPA 全路由共享 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--page-background);
+  background-attachment: fixed;
+  z-index: -3;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  background:
+    radial-gradient(
+      32% 38% at 14% 72%,
+      rgba(255, 192, 105, 0.22) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      36% 42% at 83% 18%,
+      rgba(191, 145, 243, 0.16) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      34% 36% at 44% 48%,
+      rgba(255, 154, 98, 0.14) 0%,
+      transparent 100%
+    );
+  filter: blur(14px);
+  animation: floatOrbs 30s ease-in-out infinite;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* 噪点颗粒，消除大面积渐变的塑料感 */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(226, 199, 161, 0.07) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      rgba(226, 199, 161, 0.06) 1px,
+      transparent 1px
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size:
+    38px 38px,
+    38px 38px,
+    160px 160px;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 50;
+}
+
+@keyframes floatOrbs {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: translate3d(2.5%, 3%, 0) rotate(4deg) scale(1.02);
+  }
+
+  50% {
+    transform: translate3d(-2%, 1.5%, 0) rotate(-3deg) scale(0.98);
+  }
+
+  75% {
+    transform: translate3d(3.5%, -2.5%, 0) rotate(2deg) scale(1.01);
+  }
+}
+
+/* 开屏：每会话只出现一次，退场后彻底卸载 */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  background: var(--page-background);
+}
+
+.splash-name {
+  font-family: "ZCOOL XiaoWei", "Noto Sans SC", "PingFang SC", serif;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  line-height: 1.2;
+  color: var(--accent-gold);
+  letter-spacing: 0.18em;
+  /* 字距会在末字后多留一格，回补等量缩进才是真居中 */
+  text-indent: 0.18em;
+}
+
+.splash-sub {
+  font-family: "Azeret Mono", monospace;
+  font-size: clamp(0.68rem, 1.8vw, 0.82rem);
+  color: var(--text-muted);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
+
+/* 旧站同款减动偏好兜底（背景 floatOrbs 一并停）；
+   原块里的 .gallery .card 那半留给瀑布流组件 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* SPA 包裹层的 flex 链延续：body → #root → 路由外壳 → 页面外壳，让 .main-content 的 flex:1 恢复生效 */
+#root,
+.route-shell,
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}

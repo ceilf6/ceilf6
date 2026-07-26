@@ -1,0 +1,170 @@
+/* 逐字迁移自旧 index.html <style> 的 .gallery* 全系规则，声明一字未改。
+   原文里 loader 系规则与 README 卡（.readme-card-loader）合并在同一组选择器上，
+   这里只摘 .gallery 的那半；.readme-card* 那半已随 P7 迁入 ReadmeCards.css。
+   依赖：@keyframes loaderSpin 定义在 ReadmeCards.css（全局生效），此处不重复定义。
+   @media (prefers-reduced-motion: reduce) 里的 `*` 通配半边已随 P7 迁入 global.css。 */
+
+/* 瀑布流布局 */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 24px;
+  grid-auto-rows: 1px;
+  max-width: 1400px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  padding: 48px 100px 56px;
+}
+
+.gallery .card {
+  height: auto;
+  margin-bottom: 24px;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+  background: linear-gradient(
+    160deg,
+    rgba(18, 28, 54, 0.86),
+    rgba(26, 40, 74, 0.56)
+  );
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--card-shadow);
+  opacity: 0;
+  translate: 0 40px;
+  animation: cardIn 0.6s ease forwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+.gallery .card-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(238, 244, 255, 0.66);
+  font-size: 13px;
+  letter-spacing: 0;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 192, 105, 0.12) 42%,
+      rgba(191, 145, 243, 0.08) 72%,
+      rgba(255, 255, 255, 0.02) 100%
+    ),
+    rgba(13, 22, 44, 0.42);
+  transition: opacity 0.32s ease;
+}
+
+.gallery .card-loader::before {
+  content: "";
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(238, 244, 255, 0.18);
+  border-top-color: rgba(255, 192, 105, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(255, 192, 105, 0.2);
+  animation: loaderSpin 0.9s linear infinite;
+}
+
+.gallery .card.is-loaded .card-loader {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gallery .card.is-error .card-loader {
+  color: rgba(255, 154, 98, 0.92);
+}
+
+.gallery .card.is-error .card-loader::before {
+  display: none;
+}
+
+.gallery .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 10%,
+    rgba(255, 255, 255, 0.06) 48%,
+    transparent 70%
+  );
+  transform: translateX(-140%);
+  transition: transform 0.6s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gallery .card:hover {
+  box-shadow:
+    0 2px 3px rgba(1, 8, 20, 0.4),
+    0 24px 48px rgba(2, 8, 20, 0.5),
+    0 0 0 1px rgba(255, 192, 105, 0.42);
+  border-color: rgba(255, 192, 105, 0.5);
+  transform: translateY(-6px);
+}
+
+.gallery .card:hover::before {
+  transform: translateX(120%);
+}
+
+.gallery .card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  opacity: 0;
+  transition:
+    opacity 0.36s ease,
+    filter 0.45s ease;
+}
+
+.gallery .card.is-loaded img {
+  opacity: 1;
+}
+
+.gallery .card:hover img {
+  filter: saturate(1.08) contrast(1.04) brightness(1.04);
+}
+
+/* 入场位移用独立的 translate 属性，transform 留给悬停上浮 */
+@keyframes cardIn {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    padding: 28px 40px 40px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    padding: 14px 6px 6px;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery .card {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

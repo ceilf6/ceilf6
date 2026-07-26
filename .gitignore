@@ -10,3 +10,5 @@ github-readme-stats/
 ptr.md
 
 .vscode/
+
+__pycache__/

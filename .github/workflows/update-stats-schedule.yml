@@ -32,12 +32,12 @@ jobs:
           pip install requests cloudscraper beautifulsoup4
 
       - name: Update award image metadata
-        run: node scripts/update-image-metadata.mjs
+        run: node site/scripts/update-image-metadata.mjs
 
       - name: Fetch Bilibili stats
         id: fetch-bilibili
         continue-on-error: true
-        run: python scripts/fetch-bilibili-stats-1.py
+        run: python stats/scripts/fetch-bilibili-stats-1.py
         env:
           BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
           BILI_BILI_JCT: ${{ secrets.BILI_BILI_JCT }}
@@ -45,20 +45,20 @@ jobs:
       - name: Fetch CSDN stats
         id: fetch-csdn
         continue-on-error: true
-        run: python scripts/fetch-csdn-stats-2.py
+        run: python stats/scripts/fetch-csdn-stats-2.py
 
       - name: Fetch GitHub stats card
         id: fetch-github
         continue-on-error: true
-        run: python scripts/fetch-github-stats-card.py
+        run: python stats/scripts/fetch-github-stats-card.py
 
       - name: Fetch Hugging Face stats
         id: fetch-huggingface
         continue-on-error: true
-        run: python scripts/fetch-huggingface-stats.py
+        run: python stats/scripts/fetch-huggingface-stats.py
 
       - name: Generate SVG cards
-        run: python scripts/generate-svg-cards.py
+        run: python stats/scripts/generate-svg-cards.py
 
       - name: Commit and push if changed
         run: |
@@ -71,6 +71,14 @@ jobs:
             git commit -m "chore: update stats [skip ci]" -m "Co-authored-by: ceilf6 <3506456886@qq.com>"
             git push
           fi
+
+      - name: Sync fresh cards to live site
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' '${{ secrets.ECS_SSH_KEY }}' > ~/.ssh/ecs-key.pem
+          chmod 600 ~/.ssh/ecs-key.pem
+          ssh-keyscan -H 47.103.28.157 >> ~/.ssh/known_hosts
+          scp -i ~/.ssh/ecs-key.pem assets/*.svg root@47.103.28.157:/var/www/wangjinghong/assets/
 
       - name: Report fetch failures
         if: always()

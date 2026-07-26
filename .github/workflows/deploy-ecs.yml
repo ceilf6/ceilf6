@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "site/**"
+      - "assets/**"
+      - ".github/workflows/deploy-ecs.yml"
   workflow_dispatch:
 
 permissions:
@@ -17,6 +21,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Build site
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Bundle README stats cards
+        run: cp -r assets site/dist/assets
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
@@ -24,14 +44,14 @@ jobs:
           chmod 600 ~/.ssh/ecs-key.pem
           ssh-keyscan -H 47.103.28.157 >> ~/.ssh/known_hosts
 
-      - name: Deploy website
+      - name: Deploy website (atomic swap, keep previous as .old)
         run: |
-          tar \
-            --exclude='.git' \
-            --exclude='.github' \
-            -czf - . |
+          tar -czf - -C site/dist . |
           ssh -i ~/.ssh/ecs-key.pem root@47.103.28.157 '
-            rm -rf /var/www/wangjinghong &&
-            mkdir -p /var/www/wangjinghong &&
-            tar -xzf - -C /var/www/wangjinghong
+            rm -rf /var/www/wangjinghong.new &&
+            mkdir -p /var/www/wangjinghong.new &&
+            tar -xzf - -C /var/www/wangjinghong.new &&
+            rm -rf /var/www/wangjinghong.old &&
+            { mv /var/www/wangjinghong /var/www/wangjinghong.old 2>/dev/null || true; } &&
+            mv /var/www/wangjinghong.new /var/www/wangjinghong
           '
