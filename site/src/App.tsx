@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes, useLocation } from "react-router";
+import { Navigate, Route, Routes, useLocation, type Location } from "react-router";
 import { AnimatePresence } from "framer-motion";
+import { SplashScreen } from "./components/SplashScreen";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import Vlog from "./pages/Vlog";
@@ -11,9 +12,13 @@ function LegacyViewerRedirect() {
   return <Navigate to={`/viewer${search}`} replace />;
 }
 
-export function AppRoutes() {
+/**
+ * `location` 可选：App 会把它钉在 AnimatePresence 的 key 所对应的那个 location 上，
+ * 否则退场中的旧页会跟着实时 location 重新匹配路由、渲染出新页内容。
+ */
+export function AppRoutes({ location }: { location?: Location }) {
   return (
-    <Routes>
+    <Routes location={location}>
       <Route path="/" element={<Home />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/vlog" element={<Vlog />} />
@@ -30,10 +35,13 @@ export function AppRoutes() {
 export default function App() {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <div key={location.pathname}>
-        <AppRoutes />
-      </div>
-    </AnimatePresence>
+    <>
+      <SplashScreen />
+      <AnimatePresence mode="wait">
+        <div key={location.pathname}>
+          <AppRoutes location={location} />
+        </div>
+      </AnimatePresence>
+    </>
   );
 }

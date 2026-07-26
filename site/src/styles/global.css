@@ -45,3 +45,34 @@ body {
     "Azeret Mono", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
     sans-serif;
 }
+
+/* 开屏：每会话只出现一次，退场后彻底卸载 */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  background: var(--page-background);
+}
+
+.splash-name {
+  font-family: "ZCOOL XiaoWei", "Noto Sans SC", "PingFang SC", serif;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  line-height: 1.2;
+  color: var(--accent-gold);
+  letter-spacing: 0.18em;
+  /* 字距会在末字后多留一格，回补等量缩进才是真居中 */
+  text-indent: 0.18em;
+}
+
+.splash-sub {
+  font-family: "Azeret Mono", monospace;
+  font-size: clamp(0.68rem, 1.8vw, 0.82rem);
+  color: var(--text-muted);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
