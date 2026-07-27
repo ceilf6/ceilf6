@@ -51,6 +51,17 @@ describe("initScrollActs", () => {
       expect(cfg.clearProps).toBe("transform,opacity");
     }
   });
+  it("init 时画廊已在视口内 → 跳过 stagger 入场(防已见内容被压回重闪)", () => {
+    const root = document.createElement("div");
+    root.innerHTML = `<section class="act-gallery"><div class="gallery"><div class="card"></div></div></section>`;
+    const act = root.querySelector(".act-gallery") as HTMLElement;
+    vi.spyOn(act, "getBoundingClientRect").mockReturnValue({
+      top: 120,
+      bottom: 640,
+    } as DOMRect);
+    initScrollActs(root, { force: true });
+    expect(gsapMock.from.mock.calls.some(([, cfg]) => cfg.stagger !== undefined)).toBe(false);
+  });
   it("VITEST 环境不传 force → gsap 零调用(jsdom 无布局守卫)", () => {
     const root = document.createElement("div");
     root.innerHTML = `<section data-act-reveal></section>`;

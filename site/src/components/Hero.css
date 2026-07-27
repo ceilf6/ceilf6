@@ -77,6 +77,10 @@
 @keyframes hint-bob {
   50% { translate: -50% 8px; }
 }
+@media (max-width: 640px) {
+  /* 窄屏下面板全宽贴边会读不出「面板」,留边保住玻璃面板语义 */
+  .hero-content { margin: 0 16px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-hint { animation: none; }
 }

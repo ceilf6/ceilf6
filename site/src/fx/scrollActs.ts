@@ -22,8 +22,14 @@ export function initScrollActs(root: HTMLElement, { force = false } = {}): () =>
         scrollTrigger: { trigger: el, start: "top 78%" },
       });
     });
+    /* 迟到入场防重闪:chunk 迟到或用户已滚到画廊时(init 晚于内容进视口),
+       再跑 stagger 会把正被观看的卡压回 opacity:0 重浮——可见的闪断,整段跳过。
+       直接几何判断:act 已与视口相交(top 进入下沿且 bottom 未出上沿)即算已见。 */
+    const act = root.querySelector<HTMLElement>(".act-gallery");
+    const rect = act?.getBoundingClientRect();
+    const galleryInView = !!rect && rect.top < window.innerHeight && rect.bottom > 0;
     const cards = root.querySelectorAll(".gallery .card");
-    if (cards.length)
+    if (cards.length && !galleryInView)
       gsap.from(cards, {
         opacity: 0,
         y: 36,
