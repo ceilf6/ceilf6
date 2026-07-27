@@ -181,3 +181,16 @@ html::after {
   flex: 1;
   min-height: 0;
 }
+
+/* 懒路由 Suspense fallback:chunk 在途时占位,观感与 Viewer 的 .loading 同源 */
+.route-loading {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-loading::after {
+  content: "加载中…";
+  color: var(--text-muted);
+}
