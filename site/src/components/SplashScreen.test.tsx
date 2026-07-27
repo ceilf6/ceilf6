@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { SPLASH_KEY, SplashScreen } from "./SplashScreen";
 
@@ -6,6 +6,11 @@ describe("SplashScreen", () => {
   beforeEach(() => {
     sessionStorage.clear();
     vi.useRealTimers();
+  });
+
+  afterEach(() => {
+    window.history.pushState({}, "", "/");
+    vi.restoreAllMocks();
   });
 
   it("首次进站渲染开屏并写入 session 标记", () => {
@@ -36,5 +41,16 @@ describe("SplashScreen", () => {
     render(<SplashScreen />);
     expect(await screen.findByText("王")).toBeInTheDocument();
     expect(screen.getByText("宏")).toBeInTheDocument();
+  });
+
+  it("非主页深链首访直接走 chars 逐字，不再尝试粒子画布", async () => {
+    window.history.pushState({}, "", "/viewer?img=1");
+    // 观察是否走过粒子路径：mode 初值分级后 NameParticles 压根不挂载，
+    // getContext("2d") 一次都不该发生（AuroraCanvas 只请求 webgl，不受影响）
+    const getCtx = vi.spyOn(HTMLCanvasElement.prototype, "getContext");
+    render(<SplashScreen />);
+    expect(document.querySelector(".splash-canvas")).toBeNull();
+    expect(await screen.findByText("王")).toBeInTheDocument();
+    expect(getCtx.mock.calls.some(([kind]) => kind === "2d")).toBe(false);
   });
 });
