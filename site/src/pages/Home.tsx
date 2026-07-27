@@ -40,22 +40,25 @@ export default function Home() {
         <section className="act act-hero">
           <Hero />
         </section>
-        <section className="act act-cards" data-act-reveal>
-          <div className="readme-section">
-            <h2>
-              👋 你好，我是<span className="accent">王景宏</span>！
-            </h2>
-            <ReadmeCards />
-          </div>
-        </section>
-        <section className="act act-gallery" data-act-reveal>
-          <h2 className="act-title">证书画廊</h2>
-          <div className="main-content">
-            <WaterfallGallery />
-          </div>
-        </section>
-        <NotesPreview heading="札记精选" max={6} />
-        <IcpFooter />
+        {/* 窗帘层:hero 钉住(sticky),后续幕作为不透明幕布从其上滑过,幕间背景断层从根上消失 */}
+        <div className="acts-curtain">
+          <section className="act act-cards" data-act-reveal>
+            <div className="readme-section">
+              <h2>
+                👋 你好，我是<span className="accent">王景宏</span>！
+              </h2>
+              <ReadmeCards />
+            </div>
+          </section>
+          <section className="act act-gallery" data-act-reveal>
+            <h2 className="act-title">证书画廊</h2>
+            <div className="main-content">
+              <WaterfallGallery />
+            </div>
+          </section>
+          <NotesPreview heading="札记精选" max={6} />
+          <IcpFooter />
+        </div>
       </div>
     </PageTransition>
   );

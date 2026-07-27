@@ -26,4 +26,13 @@ describe("Home 五幕结构", () => {
     expect(container.querySelector(".act-gallery")).not.toBeNull();
     expect(document.title).toBe("王景宏 · 个人主页");
   });
+  it("hero 之后的内容包进 .acts-curtain 窗帘层(sticky hero 上滑过的不透明幕布)", () => {
+    const { container } = wrap();
+    const curtain = container.querySelector(".acts-curtain");
+    expect(curtain).not.toBeNull();
+    expect(curtain!.querySelector(".act-cards")).not.toBeNull();
+    expect(curtain!.querySelector(".act-gallery")).not.toBeNull();
+    // hero 必须在窗帘层外,否则钉住/覆盖关系不成立
+    expect(curtain!.querySelector(".act-hero")).toBeNull();
+  });
 });

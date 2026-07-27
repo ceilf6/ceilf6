@@ -24,7 +24,7 @@ describe("initScrollActs", () => {
     expect(gsapMock.registerPlugin).toHaveBeenCalled();
     expect(gsapMock.from).toHaveBeenCalledTimes(2);
   });
-  it("画廊卡片有 stagger 编排、hero 背景有视差", () => {
+  it("画廊卡片有 stagger 编排;hero 视差已随窗帘结构删除(sticky hero 不动,gsap.to 零调用)", () => {
     const root = document.createElement("div");
     root.innerHTML = `
       <section class="act-hero"><div class="hero-bg"></div></section>
@@ -32,7 +32,7 @@ describe("initScrollActs", () => {
     initScrollActs(root, { force: true });
     const fromCalls = gsapMock.from.mock.calls;
     expect(fromCalls.some(([, cfg]) => cfg.stagger !== undefined)).toBe(true);
-    expect(gsapMock.to).toHaveBeenCalled();
+    expect(gsapMock.to).not.toHaveBeenCalled();
   });
   it("返回 cleanup,调用即 revert", () => {
     const root = document.createElement("div");

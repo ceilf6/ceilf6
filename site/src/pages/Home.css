@@ -16,6 +16,16 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* 窗帘结构(2026-07-28 用户反馈幕间背景断层):hero 钉住,后续内容从其上滑过覆盖 */
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+/* 窗帘层必须不透明,否则钉住的 hero 从缝里漏出 */
+.acts-curtain {
+  position: relative;
+  z-index: 1;
+  background: var(--page-background);
 }
 .act-cards { padding-bottom: 12px; }
 .act-gallery { padding-top: 8px; }

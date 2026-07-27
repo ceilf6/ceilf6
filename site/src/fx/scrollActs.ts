@@ -1,7 +1,9 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/** 五幕滚动编排:触发式进出场,不 pin、不 snap、不劫持滚动(触控板党的血泪审美)。
+/** 五幕滚动编排:触发式进出场,不 snap、不劫持滚动(触控板党的血泪审美)。
+    hero 的钉住由 CSS position:sticky 完成(窗帘结构),本编排不再做 hero-bg 视差——
+    sticky 下 hero 本身不动,视差与钉住语义冲突。
     reduced-motion 整体跳过;vitest 环境默认跳过(jsdom 无布局),测试用 force 打开。
     重要:入场初态由 gsap.from 在 JS 侧设置——绝不能写 [data-act-reveal]{opacity:0} 的 CSS,
     否则 /blog 上同属性的 NotesPreview(那里不跑本编排)会永久隐形。 */
@@ -38,13 +40,6 @@ export function initScrollActs(root: HTMLElement, { force = false } = {}): () =>
         stagger: 0.06,
         clearProps: "transform,opacity",
         scrollTrigger: { trigger: ".act-gallery", start: "top 70%" },
-      });
-    const bg = root.querySelector(".hero-bg");
-    if (bg)
-      gsap.to(bg, {
-        yPercent: 18,
-        ease: "none",
-        scrollTrigger: { trigger: ".act-hero", start: "top top", end: "bottom top", scrub: true },
       });
   }, root);
   return () => ctx.revert();
