@@ -59,6 +59,7 @@ export function SplashScreen() {
               ))}
             </span>
           )}
+          {/* 开屏时长有意分叉：particles 约 3.4s（主秀，onDone 收场）、chars 1.4s（保底速通，定时收场） */}
           <motion.span
             className="splash-sub"
             initial={{ opacity: 0 }}

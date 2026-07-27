@@ -159,6 +159,12 @@ html::after {
   color: var(--text-muted);
   letter-spacing: 0.3em;
   text-indent: 0.3em;
+  /* 钉在低处：粒子姓名画在视口正中，sub 若留在流内居中会与其精确共心横穿字面；
+     chars 兜底模式 .splash-name 仍在流内独占中心，两模式同时成立 */
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 12%;
 }
 
 /* 开屏两层画布：极光垫底、姓名粒子在上；都不参与布局 */
