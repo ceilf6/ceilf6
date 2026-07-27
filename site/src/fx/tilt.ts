@@ -8,6 +8,7 @@ export function attachTilt(el: HTMLElement, maxDeg = 10): () => void {
     return () => {};
   const move = (e: MouseEvent) => {
     const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return; // display:none 等零尺寸场景防 NaN
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     el.style.setProperty("--tilt-ry", `${(px * maxDeg * 2).toFixed(2)}deg`);

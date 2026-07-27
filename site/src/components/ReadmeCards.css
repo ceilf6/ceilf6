@@ -137,7 +137,6 @@
    过渡时长已并入上方 .readme-card 的 transition 列表(transform 0.18s)。 */
 .readme-card {
   transform: perspective(700px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
-  transform-style: preserve-3d;
 }
 
 /* 跟随鼠标的辉光:坐标由 tilt.ts 写入 --gx/--gy */
