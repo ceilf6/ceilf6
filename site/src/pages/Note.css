@@ -1,0 +1,63 @@
+/* Note.css —— 文章排版:窄栏、留白、金色点缀,与全站体系同源 */
+.note {
+  flex: 1;
+  width: min(720px, 92vw);
+  margin: 0 auto;
+  padding: 48px 0 72px;
+  color: var(--text-main);
+}
+.note-back {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.note-back:hover { color: var(--accent-gold); }
+.note-head h1 {
+  font-family: "ZCOOL XiaoWei", "KaiTi", serif;
+  font-size: clamp(26px, 3.2vw, 40px);
+  margin: 14px 0 8px;
+  letter-spacing: 0.04em;
+}
+.note-meta { color: var(--text-muted); font-size: 13px; margin-bottom: 30px; }
+.note-body { line-height: 2; font-size: 15.5px; color: var(--text-muted); overflow-wrap: anywhere; }
+.note-body h2, .note-body h3, .note-body h4 { color: var(--text-main); margin: 30px 0 12px; }
+.note-body p { margin: 14px 0; }
+.note-body ul { padding-left: 22px; margin: 14px 0; }
+.note-body li { margin: 8px 0; }
+.note-body strong { color: var(--text-main); }
+.note-body a { color: var(--accent-gold); }
+.note-body code {
+  font-family: "Azeret Mono", monospace;
+  font-size: 0.88em;
+  background: rgba(13, 22, 44, 0.7);
+  border: 1px solid var(--panel-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+.note-body pre {
+  background: rgba(8, 14, 30, 0.85);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.note-body pre code { background: none; border: none; padding: 0; }
+.note-body blockquote {
+  border-left: 3px solid var(--accent-gold);
+  margin: 16px 0;
+  padding: 2px 0 2px 16px;
+  opacity: 0.9;
+}
+.note-body img { max-width: 100%; border-radius: 10px; }
+.note-foot {
+  margin-top: 44px;
+  padding-top: 18px;
+  border-top: 1px solid var(--panel-border);
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+.note-foot a { color: var(--accent-gold); }
+.note-loading { color: var(--text-muted); padding: 40px 0; }
+.note-error { color: var(--text-muted); padding: 40px 0; }

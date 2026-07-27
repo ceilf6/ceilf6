@@ -54,3 +54,22 @@ describe("flex 链外壳", () => {
     expect(container.querySelector(".page-shell")).not.toBeNull();
   });
 });
+
+describe("札记路由", () => {
+  it("/notes/不存在的slug 重定向到 /blog", async () => {
+    at("/notes/no-such-note");
+    expect(await screen.findByTestId("page-blog")).toBeInTheDocument();
+  });
+  it("已落地文章可达:标题、正文、首发尾注", async () => {
+    at("/notes/harness-cold-start");
+    expect(await screen.findByTestId("page-note")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "关于 Harness 的讨论，附冷启动工具" }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText(/harness-kit/)).toBeInTheDocument();
+    expect(screen.getByText("LinuxDo").closest("a")).toHaveAttribute(
+      "href",
+      "https://linux.do/t/topic/2481591",
+    );
+  });
+});

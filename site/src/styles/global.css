@@ -159,6 +159,30 @@ html::after {
   color: var(--text-muted);
   letter-spacing: 0.3em;
   text-indent: 0.3em;
+  /* 钉在低处：粒子姓名画在视口正中，sub 若留在流内居中会与其精确共心横穿字面；
+     chars 兜底模式 .splash-name 仍在流内独占中心，两模式同时成立 */
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 12%;
+}
+
+/* 开屏两层画布：极光垫底、姓名粒子在上；都不参与布局 */
+.splash-aurora,
+.splash-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.splash-aurora {
+  z-index: -1;
+}
+
+/* 极光降级兜底：与页面底色同源的静态渐变（AuroraCanvas 各消费场景共用） */
+.aurora-fallback {
+  background: var(--page-background);
 }
 
 /* 旧站同款减动偏好兜底（背景 floatOrbs 一并停）；
@@ -180,4 +204,30 @@ html::after {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+/* 懒路由 Suspense fallback:chunk 在途时的占位,Viewer 同款圆环 spinner——
+   纯装饰、不渲染文字,与容器上的 aria-hidden 语义相称 */
+.route-loading {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-loading::after {
+  content: "";
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(238, 244, 255, 0.18);
+  border-top-color: rgba(255, 192, 105, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 192, 105, 0.24);
+  animation: route-spin 0.9s linear infinite;
+}
+
+@keyframes route-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

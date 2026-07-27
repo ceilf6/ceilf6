@@ -1,0 +1,67 @@
+/* .act/.act-title 样式随 T14(Home 五幕)落地;本文件只定义 act-notes 自身 */
+.act-notes {
+  padding: 10px 22px 46px;
+}
+
+.notes-grid {
+  width: min(980px, 100%);
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.note-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  text-decoration: none;
+  color: var(--text-main);
+  transition:
+    translate 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.note-card:hover {
+  translate: 0 -5px;
+  border-color: rgba(255, 192, 105, 0.5);
+  box-shadow: 0 16px 34px rgba(1, 8, 20, 0.4);
+}
+
+.note-card:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+.note-card-source {
+  align-self: flex-start;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--accent-gold);
+  border: 1px solid rgba(255, 192, 105, 0.45);
+  border-radius: 20px;
+  padding: 2px 10px;
+}
+
+.note-card h3 {
+  font-size: 16.5px;
+  line-height: 1.5;
+}
+
+.note-card p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.note-card-date {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: "Azeret Mono", monospace;
+}

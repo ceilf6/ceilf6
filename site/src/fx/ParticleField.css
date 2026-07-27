@@ -1,0 +1,7 @@
+/* 组件自带定位:防裸用方拿到 300×150 默认 canvas(评审 T12-#4)。父容器需 position:relative。 */
+.particle-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}

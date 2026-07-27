@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { AuroraCanvas } from "../fx/AuroraCanvas";
+import { NameParticles } from "../fx/NameParticles";
 
 export const SPLASH_KEY = "wjh-splash-seen";
 const SPLASH_MS = 1400;
@@ -12,13 +14,28 @@ function shouldShow(): boolean {
 
 export function SplashScreen() {
   const [visible, setVisible] = useState(shouldShow);
+  // particles = 甲·像素粒子成名；chars = 原逐字浮现（canvas 不可用时的兜底）。
+  // 初值按路由分级：粒子 3.4s 大秀只属于主页——主页是开场秀的舞台；
+  // 简历深链（/viewer?img=N、/blog 等）首访走 1.4s 逐字（与旧站开屏等长），
+  // 不拿大秀挡 HR 的主转化路径。读 window.location 而非 useLocation：
+  // 本组件在测试中裸渲染、无 Router 上下文，且 BrowserRouter 下两者一致。
+  const [mode, setMode] = useState<"particles" | "chars">(() =>
+    window.location.pathname === "/" ? "particles" : "chars",
+  );
 
   useEffect(() => {
-    if (!visible) return;
-    sessionStorage.setItem(SPLASH_KEY, "1");
+    if (visible) sessionStorage.setItem(SPLASH_KEY, "1");
+  }, [visible]);
+
+  // chars 兜底沿用原开屏的定时收场；particles 模式由 onDone 收场
+  useEffect(() => {
+    if (!visible || mode !== "chars") return;
     const t = setTimeout(() => setVisible(false), SPLASH_MS);
     return () => clearTimeout(t);
-  }, [visible]);
+  }, [visible, mode]);
+
+  const handleDone = useCallback(() => setVisible(false), []);
+  const handleUnsupported = useCallback(() => setMode("chars"), []);
 
   return (
     <AnimatePresence>
@@ -29,21 +46,26 @@ export function SplashScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <span className="splash-name">
-            {/* 逐字 transform 汇聚取代 letter-spacing 动画：字距是布局属性，
-                大号 CJK 字形上逐帧回流必掉帧；x/opacity 走合成器满帧 */}
-            {["王", "景", "宏"].map((ch, i) => (
-              <motion.span
-                key={ch}
-                className="splash-char"
-                initial={{ opacity: 0, x: (i - 1) * 26, y: 8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {ch}
-              </motion.span>
-            ))}
-          </span>
+          <AuroraCanvas className="splash-aurora" />
+          {mode === "particles" ? (
+            <NameParticles text="王景宏" onDone={handleDone} onUnsupported={handleUnsupported} />
+          ) : (
+            <span className="splash-name">
+              {/* 逐字 transform 汇聚：字距是布局属性，大号 CJK 字形上逐帧回流必掉帧 */}
+              {["王", "景", "宏"].map((ch, i) => (
+                <motion.span
+                  key={ch}
+                  className="splash-char"
+                  initial={{ opacity: 0, x: (i - 1) * 26, y: 8 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {ch}
+                </motion.span>
+              ))}
+            </span>
+          )}
+          {/* 开屏时长有意分叉：particles 约 3.4s（主秀，onDone 收场）、chars 1.4s（保底速通，定时收场） */}
           <motion.span
             className="splash-sub"
             initial={{ opacity: 0 }}

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { readmeCards, type ReadmeCard } from "../data/site";
+import { attachTilt } from "../fx/tilt";
 import "./ReadmeCards.css";
 
 type LoadState = "loading" | "loaded" | "error";
@@ -10,6 +11,10 @@ type LoadState = "loading" | "loaded" | "error";
     loader 节点始终挂载，靠 CSS 淡出；只有文案随状态切换，加载完即无「加载中」。 */
 function Card({ card }: { card: ReadmeCard }) {
   const [state, setState] = useState<LoadState>("loading");
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  // tilt 是纯视觉增强:href/顺序/external 语义零改动
+  useEffect(() => (ref.current ? attachTilt(ref.current) : undefined), []);
 
   const content = (
     <>
@@ -30,11 +35,11 @@ function Card({ card }: { card: ReadmeCard }) {
   const className = `readme-card is-${state}`;
 
   return card.external ? (
-    <a className={className} href={card.href} target="_blank" rel="noopener noreferrer">
+    <a ref={ref} className={className} href={card.href} target="_blank" rel="noopener noreferrer">
       {content}
     </a>
   ) : (
-    <Link className={className} to={card.href}>
+    <Link ref={ref} className={className} to={card.href}>
       {content}
     </Link>
   );
