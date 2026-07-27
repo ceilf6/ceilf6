@@ -9,8 +9,9 @@
 }
 .act { position: relative; }
 .act-hero {
-  min-height: 88vh;
-  min-height: 88svh; /* 移动端地址栏伸缩下的稳定视口(评审结转);旧浏览器回退上一行 */
+  /* 满屏首幕:滚动提示贴视口底(2026-07-27 用户反馈);svh 防移动端地址栏伸缩 */
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;

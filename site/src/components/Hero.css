@@ -6,7 +6,15 @@
   align-items: center;
   justify-content: center;
 }
-.hero-bg { position: absolute; inset: 0; overflow: hidden; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* 底缘羽化:极光画布与页面渐变底色在幕边界是硬接缝(2026-07-27 用户反馈「背景色不统一」),
+     遮罩渐隐让极光/粒子融进页面底色;内容层(hero-content)不受影响 */
+  mask-image: linear-gradient(to bottom, #000 76%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent 100%);
+}
 .hero-aurora {
   position: absolute;
   inset: 0;
