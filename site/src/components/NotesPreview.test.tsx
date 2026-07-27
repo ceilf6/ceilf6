@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { NotesPreview } from "./NotesPreview";
-import Blog from "../pages/Blog";
 
 const ITEMS = [
   {
@@ -12,6 +11,18 @@ const ITEMS = [
     summary: "摘要甲",
     source: "LinuxDo",
     sourceUrl: "https://linux.do/t/topic/1",
+  },
+];
+
+const TWO_ITEMS = [
+  ...ITEMS,
+  {
+    slug: "b",
+    title: "文章乙",
+    date: "2026-07-26",
+    summary: "摘要乙",
+    source: "CSDN",
+    sourceUrl: "https://blog.csdn.net/2301_78856868/article/details/2",
   },
 ];
 
@@ -35,22 +46,15 @@ describe("NotesPreview", () => {
     );
     expect(container.firstChild).toBeNull();
   });
-});
 
-describe("Blog 两层升级不变项", () => {
-  it("平台卡与返回链接原样保留", () => {
-    render(
+  it("双条目渲染 2 张卡,各自链接正确(覆盖 map/key 路径)", () => {
+    const { container } = render(
       <MemoryRouter>
-        <Blog />
+        <NotesPreview heading="札记精选" items={TWO_ITEMS} />
       </MemoryRouter>,
     );
-    expect(screen.getByLabelText("前往 LINUX DO 主页")).toHaveAttribute(
-      "href",
-      "https://linux.do/u/ceilf6/summary",
-    );
-    expect(screen.getByLabelText("前往 CSDN 博客主页")).toHaveAttribute(
-      "href",
-      "https://blog.csdn.net/2301_78856868",
-    );
+    expect(container.querySelectorAll("a.note-card")).toHaveLength(2);
+    expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/notes/a");
+    expect(screen.getByText("文章乙").closest("a")).toHaveAttribute("href", "/notes/b");
   });
 });

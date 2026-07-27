@@ -1,3 +1,4 @@
+/* .act/.act-title 样式随 T14(Home 五幕)落地;本文件只定义 act-notes 自身 */
 .act-notes {
   padding: 10px 22px 46px;
 }
@@ -21,15 +22,20 @@
   text-decoration: none;
   color: var(--text-main);
   transition:
-    translate 0.25s,
-    border-color 0.25s,
-    box-shadow 0.25s;
+    translate 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .note-card:hover {
   translate: 0 -5px;
   border-color: rgba(255, 192, 105, 0.5);
   box-shadow: 0 16px 34px rgba(1, 8, 20, 0.4);
+}
+
+.note-card:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
 }
 
 .note-card-source {
