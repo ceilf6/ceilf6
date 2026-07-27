@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { createField, linkPairs, stepField } from "./particles";
+import { createField, linkPairs, rescaleField, stepField } from "./particles";
 import { useFxQuality } from "./quality";
 
 /** 星座粒子画布。降级阶梯：reduced-motion→不渲染；lite→静态一帧；
@@ -18,8 +18,12 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     const n = window.matchMedia("(max-width: 768px)").matches ? Math.floor(count / 2) : count;
     let w = 1;
     let h = 1;
+    let rectLeft = 0;
+    let rectTop = 0;
     const resize = () => {
       const r = cv.getBoundingClientRect();
+      rectLeft = r.left;
+      rectTop = r.top;
       w = Math.max(1, r.width);
       h = Math.max(1, r.height);
       cv.width = w * dpr;
@@ -29,10 +33,11 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     resize();
     const ps = createField(n, w, h, Math.random);
     const mouse = { x: -1e4, y: -1e4 };
+    // rect 用 resize 时的缓存,省逐 mousemove 的 getBoundingClientRect 强制回流。
+    // 取舍:滚动会让缓存的 top 漂移,但 hero 铺满首屏、引力半径又有 130px,偏差不可感知。
     const onMove = (e: MouseEvent) => {
-      const r = cv.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = e.clientY - r.top;
+      mouse.x = e.clientX - rectLeft;
+      mouse.y = e.clientY - rectTop;
     };
     const onLeave = () => {
       mouse.x = -1e4;
@@ -72,13 +77,21 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     };
     if (quality === "full") raf = requestAnimationFrame(loop);
     else draw(); // lite：静态一帧当氛围底
-    window.addEventListener("resize", resize);
+    // 不能把重分布/补帧塞进 resize 本体:首挂载调 resize() 时 ps/draw 还在 TDZ
+    const onResize = () => {
+      const ow = w;
+      const oh = h;
+      resize();
+      rescaleField(ps, ow, oh, w, h);
+      if (quality !== "full") draw(); // lite 无 rAF 补帧,而 cv.width 赋值已清空画布,必须手动补一帧
+    };
+    window.addEventListener("resize", onResize);
     cv.addEventListener("mousemove", onMove);
     cv.addEventListener("mouseleave", onLeave);
     document.addEventListener("visibilitychange", onVis);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
       cv.removeEventListener("mousemove", onMove);
       cv.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
