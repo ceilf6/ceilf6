@@ -21,8 +21,16 @@ export function mdNotes() {
         if (!meta[key]) {
           throw new Error(`md-notes: ${file} 缺少必填 frontmatter 键(title/date/summary)`);
         }
+        // 数据层按字符串排序,只有定宽 YYYY-MM-DD 能保证字典序=时间序,
+        // `2026-7-5` 这类会静默错序——格式偏差也在构建期拦下。
+        if (key === "date" && !/^\d{4}-\d{2}-\d{2}$/.test(meta.date)) {
+          throw new Error(
+            `md-notes: ${file} date 须为 YYYY-MM-DD(字符串排序依赖定宽格式),实际为 "${meta.date}"`,
+          );
+        }
       }
-      if (query === "meta") {
+      // dev/HMR 可能在查询串追加 &t= 等参数,精确比较会漏匹配——按参数集合判定
+      if (new URLSearchParams(query).has("meta")) {
         return {
           code: `export const meta = ${JSON.stringify(meta)};`,
           moduleSideEffects: false,

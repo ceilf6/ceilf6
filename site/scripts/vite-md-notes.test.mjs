@@ -48,6 +48,24 @@ test("?meta 分支同样跑 frontmatter 守卫", () => {
   );
 });
 
+test("?meta&t=1(HMR 追参)仍只 emit meta", () => {
+  const md = join(notesDir(), "e.md");
+  writeFileSync(md, "---\ntitle: 戊\ndate: 2026-07-27\nsummary: s\n---\n正文");
+  const res = mdNotes().load(`${posix(md)}?meta&t=1`);
+  assert.ok(res.code.includes("export const meta"));
+  assert.ok(!res.code.includes("export const html"));
+});
+
+test("date 非 YYYY-MM-DD → 构建期 fail loud,报错含路径与实际值", () => {
+  const md = join(notesDir(), "f.md");
+  writeFileSync(md, "---\ntitle: 己\ndate: 2026-7-5\nsummary: s\n---\n正文");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("2026-7-5"),
+  );
+});
+
 test("缺必填 frontmatter 键 → 构建期 fail loud,报错含文件路径", () => {
   const md = join(notesDir(), "b.md");
   writeFileSync(md, "没有 frontmatter 的正文");

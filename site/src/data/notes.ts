@@ -2,7 +2,7 @@
     每篇文章一个分包,只在 /notes/:slug 加载。eager 侧必须带 ?meta 查询:
     同一模块 id 既 eager 又 dynamic 会让 Rollup 拒绝分包(INEFFECTIVE_DYNAMIC_IMPORT),
     ?meta 使两侧成为不同模块,插件对该查询只 emit meta,主包物理上不含正文。 */
-import type { NoteModule } from "./note-module";
+import type { NoteFrontmatter, NoteModule } from "./note-module";
 
 export interface NoteMeta {
   slug: string;
@@ -17,8 +17,8 @@ export function slugFromPath(path: string): string {
   return path.split("/").pop()!.replace(/\.md$/, "");
 }
 
-export function buildNotes(mods: Record<string, NoteModule["meta"]>): NoteMeta[] {
-  return Object.entries(mods)
+export function buildNotes(metas: Record<string, NoteFrontmatter>): NoteMeta[] {
+  return Object.entries(metas)
     .map(([path, m]) => ({
       slug: slugFromPath(path),
       title: m.title,
@@ -31,10 +31,10 @@ export function buildNotes(mods: Record<string, NoteModule["meta"]>): NoteMeta[]
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
-const metaModules = import.meta.glob<NoteModule["meta"]>("/content/notes/*.md", {
+const metaModules = import.meta.glob<NoteFrontmatter>("/content/notes/*.md", {
   eager: true,
   import: "meta",
-  query: "?meta",
+  query: "?meta", // 勿删:去掉即 INEFFECTIVE_DYNAMIC_IMPORT,正文回灌主包(见文件头)
 });
 
 export const notes: NoteMeta[] = buildNotes(metaModules);
