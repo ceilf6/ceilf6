@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes, useLocation, type Location } from "react-router";
 import { AnimatePresence } from "framer-motion";
 import { SplashScreen } from "./components/SplashScreen";
@@ -5,6 +6,8 @@ import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import Vlog from "./pages/Vlog";
 import Viewer from "./pages/Viewer";
+
+const Note = lazy(() => import("./pages/Note"));
 
 /** 旧站 .html 直链的站内兜底：Nginx 301（cutover Stage B）之前/失效时依然可达 */
 function LegacyViewerRedirect() {
@@ -23,6 +26,14 @@ export function AppRoutes({ location }: { location?: Location }) {
       <Route path="/blog" element={<Blog />} />
       <Route path="/vlog" element={<Vlog />} />
       <Route path="/viewer" element={<Viewer />} />
+      <Route
+        path="/notes/:slug"
+        element={
+          <Suspense fallback={<div className="route-loading" aria-hidden="true" />}>
+            <Note />
+          </Suspense>
+        }
+      />
       <Route path="/blog.html" element={<Navigate to="/blog" replace />} />
       <Route path="/vlog.html" element={<Navigate to="/vlog" replace />} />
       <Route path="/viewer.html" element={<LegacyViewerRedirect />} />

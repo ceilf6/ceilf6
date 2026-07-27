@@ -54,3 +54,10 @@ describe("flex 链外壳", () => {
     expect(container.querySelector(".page-shell")).not.toBeNull();
   });
 });
+
+describe("札记路由", () => {
+  it("/notes/不存在的slug 重定向到 /blog", async () => {
+    at("/notes/no-such-note");
+    expect(await screen.findByTestId("page-blog")).toBeInTheDocument();
+  });
+});
