@@ -7,8 +7,7 @@
   justify-content: center;
 }
 .hero-bg { position: absolute; inset: 0; overflow: hidden; }
-.hero-aurora,
-.particle-field {
+.hero-aurora {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -19,9 +18,8 @@
   z-index: 2;
   text-align: center;
   padding: 48px 22px;
-  /* 局部 scrim:极光最坏帧对比度 3.3:1 只够大字,正文层需字底加深(T10 评审结转) */
-  background: radial-gradient(58% 68% at 50% 50%, rgba(11, 18, 38, 0.55) 0%, rgba(11, 18, 38, 0.25) 62%, transparent 100%);
-  border-radius: 24px;
+  /* 全宽字底带,落点实测 ≥5.3:1(评审校准:bio 行两端/eyebrow/scroll-hint 全落点 5.3–6.4:1) */
+  background: radial-gradient(85% 95% at 50% 50%, rgba(11, 18, 38, 0.62) 0%, rgba(11, 18, 38, 0.46) 70%, transparent 100%);
 }
 .hero-eyebrow {
   font-family: "Azeret Mono", monospace;

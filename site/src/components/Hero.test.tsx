@@ -9,5 +9,6 @@ describe("Hero", () => {
     const link = screen.getByRole("link", { name: "@FrontAgent" });
     expect(link).toHaveAttribute("href", "https://github.com/ceilf6/FrontAgent");
     expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 });

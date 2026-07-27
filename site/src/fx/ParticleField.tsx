@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createField, linkPairs, rescaleField, stepField } from "./particles";
 import { useFxQuality } from "./quality";
+import "./ParticleField.css";
 
 /** 星座粒子画布。降级阶梯：reduced-motion→不渲染；lite→静态一帧；
     移动端粒子减半；tab 隐藏暂停 rAF；DPR 上限 2。父容器需 position:relative。 */

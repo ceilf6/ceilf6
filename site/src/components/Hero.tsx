@@ -25,8 +25,8 @@ export function Hero() {
             ),
           )}
         </p>
-        <span className="hero-scroll-hint" aria-hidden="true">↓ 滚动认识我</span>
       </div>
+      <span className="hero-scroll-hint" aria-hidden="true">↓ 滚动认识我</span>
     </div>
   );
 }
