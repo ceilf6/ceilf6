@@ -6,20 +6,26 @@ import { useFxQuality } from "./quality";
     颜色与 tokens 同源（#0b1226 底、#ffc069 金、#ff9a62 暖橙）；
     靛蓝 vec3(0.31,0.51,1.0)=#4f82ff 为极光补色，非 tokens 命名色。
     time 单独 highp：移动 GPU mediump=fp16，几分钟后精度不足产生可见跳变。
-    构图按 aspect 做相似变换（中心 x、漂移振幅、半径全乘 a，y 向不动）：
-    窄屏时斑随宽度等比变小变散，防四斑叠加成亮雾压垮前景文字对比度。 */
+    构图相似变换：中心 x 与漂移振幅乘 a（y 向不动）竖屏斑等比变散防丢；
+    半径乘 min(a,1)——竖屏数值与相似变换一致，宽屏钳在设计基准防半径膨胀。
+    glow 软色调映射 1-exp(-glow)：加性高斯全叠峰值 >1 会爆白，软映射把
+    亮度渐近封顶（评审时间扫描实测 text-muted CR 从 1.3 恢复到 ≈3.6）。
+    验收口径：本 shader 的对比度验收必须做时间扫描（t=0…120s）取最坏帧，
+    单帧 t=0 有误导性——实现/评审/协调三方共同踩坑的教训，写此防再犯。 */
 const AURORA_FRAG = `precision mediump float; varying vec2 uv;
 uniform highp float time; uniform vec2 res;
 vec3 blob(vec2 p, vec2 c, vec3 col, float r){ float d = distance(p, c); return col * exp(-d*d/(r*r)); }
 void main(){
   float a = res.x / res.y;
+  float ra = min(a, 1.0);
   vec2 p = uv; p.x *= a;
   vec3 col = vec3(0.043, 0.071, 0.149);
-  col += blob(p, vec2((0.35 + 0.12*sin(time*0.21))*a, 0.55 + 0.10*cos(time*0.17)), vec3(1.0, 0.75, 0.41)*0.50, 0.34*a);
-  col += blob(p, vec2((0.95 + 0.15*cos(time*0.13))*a, 0.45 + 0.12*sin(time*0.19)), vec3(0.75, 0.57, 0.95)*0.45, 0.40*a);
-  col += blob(p, vec2((0.65 + 0.18*sin(time*0.11))*a, 0.85 + 0.10*cos(time*0.23)), vec3(1.0, 0.60, 0.38)*0.40, 0.30*a);
-  col += blob(p, vec2((1.25 + 0.10*sin(time*0.16))*a, 0.75), vec3(0.31, 0.51, 1.0)*0.35, 0.42*a);
-  gl_FragColor = vec4(col, 1.0);
+  vec3 glow = vec3(0.0);
+  glow += blob(p, vec2((0.35 + 0.12*sin(time*0.21))*a, 0.55 + 0.10*cos(time*0.17)), vec3(1.0, 0.75, 0.41)*0.50, 0.34*ra);
+  glow += blob(p, vec2((0.95 + 0.15*cos(time*0.13))*a, 0.45 + 0.12*sin(time*0.19)), vec3(0.75, 0.57, 0.95)*0.45, 0.40*ra);
+  glow += blob(p, vec2((0.65 + 0.18*sin(time*0.11))*a, 0.85 + 0.10*cos(time*0.23)), vec3(1.0, 0.60, 0.38)*0.40, 0.30*ra);
+  glow += blob(p, vec2((1.25 + 0.10*sin(time*0.16))*a, 0.75), vec3(0.31, 0.51, 1.0)*0.35, 0.42*ra);
+  gl_FragColor = vec4(col + (1.0 - exp(-glow)), 1.0);
 }`;
 
 export function AuroraCanvas({ className = "" }: { className?: string }) {
