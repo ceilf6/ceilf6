@@ -29,6 +29,13 @@
 
 html {
   min-height: 100%;
+  /* 弹性滚动三重防线(2026-07-28,同旧站 d19d755 根因):
+     ① overscroll-behavior 从源头禁用橡皮筋位移(现代浏览器,配合首幕吸附的坚定质感);
+     ② 不支持 ① 的浏览器若仍弹,canvas 画同款 viewport 锁定渐变,露出的也是同色;
+     ③ 配套:窗帘层渐变同为 fixed 锁定(Home.css),三层逐像素一致无接缝 */
+  overscroll-behavior-y: none;
+  background: var(--page-background);
+  background-attachment: fixed;
   background-color: var(--bg-void);
 }
 

@@ -26,6 +26,7 @@
   position: relative;
   z-index: 1;
   background: var(--page-background);
+  background-attachment: fixed; /* 与 body::before/html 的 viewport 锁定渐变逐像素一致,消除弹性位移接缝 */
 }
 .act-cards { padding-bottom: 12px; }
 .act-gallery { padding-top: 8px; }
