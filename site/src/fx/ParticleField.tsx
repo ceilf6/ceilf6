@@ -20,10 +20,17 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     let h = 1;
     let rectLeft = 0;
     let rectTop = 0;
-    const resize = () => {
-      const r = cv.getBoundingClientRect();
+    let rectScrollX = 0;
+    let rectScrollY = 0;
+    const cacheRect = (r: DOMRect) => {
       rectLeft = r.left;
       rectTop = r.top;
+      rectScrollX = window.scrollX;
+      rectScrollY = window.scrollY;
+    };
+    const resize = () => {
+      const r = cv.getBoundingClientRect();
+      cacheRect(r);
       w = Math.max(1, r.width);
       h = Math.max(1, r.height);
       cv.width = w * dpr;
@@ -33,9 +40,11 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     resize();
     const ps = createField(n, w, h, Math.random);
     const mouse = { x: -1e4, y: -1e4 };
-    // rect 用 resize 时的缓存,省逐 mousemove 的 getBoundingClientRect 强制回流。
-    // 取舍:滚动会让缓存的 top 漂移,但 hero 铺满首屏、引力半径又有 130px,偏差不可感知。
+    // rect 用缓存,省逐 mousemove 的 getBoundingClientRect 强制回流;滚动会让 rect 相对
+    // 视口漂移,故缓存连同 scrollX/Y 一起记——每 move 只付一次数值比较,滚动后的首个
+    // move 检测到差异才重取一次 rect,兼得精确与省回流。
     const onMove = (e: MouseEvent) => {
+      if (window.scrollX !== rectScrollX || window.scrollY !== rectScrollY) cacheRect(cv.getBoundingClientRect());
       mouse.x = e.clientX - rectLeft;
       mouse.y = e.clientY - rectTop;
     };
@@ -85,13 +94,16 @@ export function ParticleField({ count = 70 }: { count?: number }) {
       rescaleField(ps, ow, oh, w, h);
       if (quality !== "full") draw(); // lite 无 rAF 补帧,而 cv.width 赋值已清空画布,必须手动补一帧
     };
-    window.addEventListener("resize", onResize);
+    // ResizeObserver 而非 window resize:元素级布局变化(开屏遮罩卸载、容器动画结束)
+    // 不派发 window resize;RO 也天然覆盖窗口缩放
+    const ro = new ResizeObserver(onResize);
+    ro.observe(cv);
     cv.addEventListener("mousemove", onMove);
     cv.addEventListener("mouseleave", onLeave);
     document.addEventListener("visibilitychange", onVis);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
+      ro.disconnect();
       cv.removeEventListener("mousemove", onMove);
       cv.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);

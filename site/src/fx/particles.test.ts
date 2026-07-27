@@ -28,6 +28,14 @@ describe("粒子纯函数", () => {
     for (let t = 0; t < 5000; t++) stepField(ps, 200, 100, { x: -1e4, y: -1e4 }, 16.7);
     expect(meanSpeed(ps)).toBeGreaterThanOrEqual(v0 / 2);
   });
+  it("stepField 鼠标扰动衰减回基速", () => {
+    const ps = [{ x: 50, y: 25, vx: 0.1, vy: -0.1, bvx: 0.1, bvy: -0.1, r: 1, gold: false }];
+    stepField(ps, 1e4, 1e4, { x: 60, y: 25 }, 16.7);
+    expect(ps[0].vx).toBeGreaterThan(0.1); // 近距鼠标产生吸引扰动
+    for (let t = 0; t < 2000; t++) stepField(ps, 1e4, 1e4, { x: -1e4, y: -1e4 }, 16.7);
+    expect(ps[0].vx).toBeCloseTo(0.1, 3); // 扰动指数归位,不吃掉基速
+    expect(ps[0].vy).toBeCloseTo(-0.1, 3);
+  });
   it("rescaleField 按比例重分布,非法尺寸 no-op", () => {
     const ps = [{ x: 50, y: 25, vx: 0, vy: 0, bvx: 0, bvy: 0, r: 1, gold: false }];
     rescaleField(ps, 100, 50, 200, 50);
