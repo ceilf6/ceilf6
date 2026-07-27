@@ -160,3 +160,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* 乙·共享波纹画布:absolute 不占格,hover 激活时才可见;圆角对齐 .card 的 14px */
+.ripple-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s;
+  border-radius: 14px;
+  z-index: 3;
+}
+
+.ripple-overlay.is-on {
+  opacity: 1;
+}

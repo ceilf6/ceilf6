@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { awards, type Award } from "../data/awards";
+import { RippleOverlay } from "../fx/RippleOverlay";
 import "./WaterfallGallery.css";
 
 const ROW_GAP = 24; // 与旧站 resizeCard 的 +24 一致（gap 补偿）
@@ -64,11 +65,13 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
 }
 
 export function WaterfallGallery() {
+  const ref = useRef<HTMLDivElement>(null);
   return (
-    <div className="gallery waterfall active">
+    <div ref={ref} className="gallery waterfall active">
       {awards.map((a, i) => (
         <GalleryCard key={a.src} award={a} index={i} />
       ))}
+      <RippleOverlay containerRef={ref} />
     </div>
   );
 }

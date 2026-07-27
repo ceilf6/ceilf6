@@ -45,3 +45,12 @@ describe("WaterfallGallery", () => {
     expect(probe).toHaveTextContent("?img=3");
   });
 });
+
+describe("乙·波纹覆盖层", () => {
+  it("画廊挂载共享 ripple canvas,且 <img> 原件全部保留(可达性契约)", () => {
+    const { container } = setup();
+    expect(container.querySelector(".ripple-overlay")).not.toBeNull();
+    // jsdom 无 WebGL:覆盖层必须保持惰性,不影响 15 张缩略图
+    expect(container.querySelectorAll(".card img")).toHaveLength(15);
+  });
+});
