@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import Home from "./Home";
@@ -11,6 +11,9 @@ const wrap = () =>
   );
 
 describe("Home 五幕结构", () => {
+  // Home 的 useEffect 动态 import scrollActs(gsap chunk);必须等它落定再放行 teardown,
+  // 否则 CI 慢盘下 gsap 在环境销毁后才到达 → EnvironmentTeardownError(2026-07-28 CI 实翻)
+  afterEach(() => vi.dynamicImportSettled());
   it("Hero 与 README 区共存,四卡不变项仍在", () => {
     wrap();
     expect(screen.getByRole("heading", { level: 1, name: "王景宏" })).toBeInTheDocument();
