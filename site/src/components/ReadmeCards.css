@@ -79,8 +79,11 @@
     rgba(26, 40, 74, 0.68)
   );
   box-shadow: 0 14px 30px rgba(3, 10, 24, 0.3);
+  /* transform 通道让给 3D tilt(0.18s 快响应);hover 上浮改走独立 translate 通道,
+     保留原 0.45s 时长语义——同 PlatformStage.css 的手法 */
   transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.18s ease,
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.35s ease;
 }
@@ -101,7 +104,7 @@
 }
 
 .readme-card:hover {
-  transform: translateY(-4px);
+  translate: 0 -4px;
   border-color: rgba(255, 192, 105, 0.48);
   box-shadow:
     0 18px 34px rgba(3, 10, 24, 0.44),
@@ -128,4 +131,31 @@
   .readme-cards {
     grid-template-columns: 1fr;
   }
+}
+
+/* 3D tilt:rotate 走 transform 通道,hover 上浮沿用独立 translate 通道互不冲突。
+   过渡时长已并入上方 .readme-card 的 transition 列表(transform 0.18s)。 */
+.readme-card {
+  transform: perspective(700px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
+  transform-style: preserve-3d;
+}
+
+/* 跟随鼠标的辉光:坐标由 tilt.ts 写入 --gx/--gy */
+.readme-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: radial-gradient(
+    240px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.14),
+    transparent 55%
+  );
+}
+
+.readme-card:hover::after {
+  opacity: 1;
 }
