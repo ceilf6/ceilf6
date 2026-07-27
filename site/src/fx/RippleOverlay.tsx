@@ -28,13 +28,19 @@ export function RippleOverlay({ containerRef }: { containerRef: RefObject<HTMLDi
     const host = containerRef.current;
     const cv = cvRef.current;
     if (!host || !cv) return;
-    if (quality === "lite") return;
-    if (window.matchMedia("(hover: none)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // teardown 清态(评审阻塞项):effect 任何原因重跑(FPS 守卫 full→lite 是实证路径)
+    // 或卸载时,canvas 必须回到失活态——否则冻结帧以 opacity:1 永久悬浮在旧位置。
+    // 不依赖 WebGL init 成功:守卫早退路径同样返回它,保证任何分支都不留 is-on。
+    const deactivate = () => cv.classList.remove("is-on");
+    if (quality === "lite") return deactivate;
+    if (window.matchMedia("(hover: none)").matches) return deactivate;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return deactivate;
     const prog = initQuadProgram(cv, RIPPLE_FRAG);
-    if (!prog) return;
+    if (!prog) return deactivate;
     const { gl } = prog;
-    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+    // 纹理句柄留存:webgl.destroy 只回收 program+buffer,纹理归本组件在 cleanup 释放
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
     // 缩略图非 2 幂尺寸:WebGL1 下必须 CLAMP + LINEAR、不 mipmap
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -47,13 +53,21 @@ export function RippleOverlay({ containerRef }: { containerRef: RefObject<HTMLDi
     let raf = 0;
     let active: HTMLElement | null = null;
     const mouse = { x: 0.5, y: 0.5 };
-    const loop = (now: number) => {
+    const drawFrame = (now: number) => {
       gl.viewport(0, 0, cv.width, cv.height);
       gl.uniform2f(uMouse, mouse.x, mouse.y);
       gl.uniform1f(uTime, now * 0.001);
       gl.uniform2f(uRes, cv.width, cv.height);
       prog.draw();
+    };
+    const loop = (now: number) => {
+      drawFrame(now);
       raf = requestAnimationFrame(loop);
+    };
+    const leave = () => {
+      active = null;
+      cv.classList.remove("is-on");
+      cancelAnimationFrame(raf);
     };
     const enter = (card: HTMLElement) => {
       const img = card.querySelector("img");
@@ -66,16 +80,20 @@ export function RippleOverlay({ containerRef }: { containerRef: RefObject<HTMLDi
       cv.style.height = `${cr.height}px`;
       cv.width = cr.width * dpr;
       cv.height = cr.height * dpr;
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      try {
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      } catch {
+        // 与 webgl.ts「任一失败→静态降级」口径一致:纹理上传在 handler 里抛
+        // (如未来缩略图迁 CDN 引入跨域)不能冒泡成未捕获错误,收敛为失活。
+        leave();
+        return;
+      }
       cv.classList.add("is-on");
       active = card;
       cancelAnimationFrame(raf);
+      // resize canvas 已把像素清空:先同步画一帧再排 rAF,消掉激活瞬间的 1 帧空白
+      drawFrame(performance.now());
       raf = requestAnimationFrame(loop);
-    };
-    const leave = () => {
-      active = null;
-      cv.classList.remove("is-on");
-      cancelAnimationFrame(raf);
     };
     const onOver = (e: MouseEvent) => {
       const card = (e.target as HTMLElement).closest?.(".card") as HTMLElement | null;
@@ -90,14 +108,20 @@ export function RippleOverlay({ containerRef }: { containerRef: RefObject<HTMLDi
       mouse.x = (e.clientX - r.left) / r.width;
       mouse.y = (e.clientY - r.top) / r.height;
     };
+    // 悬停中改窗口尺寸是罕见路径:失活即无错位,下次 mouseover 会重新定位
+    const onResize = () => leave();
     host.addEventListener("mouseover", onOver);
     host.addEventListener("mouseout", onOut);
     host.addEventListener("mousemove", onMove);
+    window.addEventListener("resize", onResize);
     return () => {
-      cancelAnimationFrame(raf);
+      // leave 一并清 is-on/active/rAF——不清 is-on 就是「冻结帧永久悬浮」事故本体
+      leave();
+      window.removeEventListener("resize", onResize);
       host.removeEventListener("mouseover", onOver);
       host.removeEventListener("mouseout", onOut);
       host.removeEventListener("mousemove", onMove);
+      gl.deleteTexture(tex);
       prog.destroy();
     };
   }, [containerRef, quality]);

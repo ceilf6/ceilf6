@@ -161,18 +161,25 @@
   }
 }
 
-/* 乙·共享波纹画布:absolute 不占格,hover 激活时才可见;圆角对齐 .card 的 14px */
+/* 乙·共享波纹画布:absolute 不占格,hover 激活时才可见;圆角对齐 .card 的 14px。
+   translate 与 .gallery .card:hover 的上浮同通道/同时长/同缓动——canvas 定位在
+   卡片静止位,不锁步的话卡片抬 6px 后图像下缘硬切溢出卡框、遮圆角金环阴影。
+   卡→卡切换时新卡从 0 起浮而 canvas 已在 -6px,有 ≤6px/450ms 瞬态,可接受。 */
 .ripple-overlay {
   position: absolute;
   left: 0;
   top: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.18s;
+  translate: 0 0;
+  transition:
+    opacity 0.18s,
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   border-radius: 14px;
   z-index: 3;
 }
 
 .ripple-overlay.is-on {
   opacity: 1;
+  translate: 0 -6px;
 }
