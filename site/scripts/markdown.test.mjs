@@ -16,6 +16,12 @@ test("frontmatter 容忍 CRLF", () => {
   assert.equal(body, "正文");
 });
 
+test("frontmatter 闭合定界符须整行:---- 不闭合", () => {
+  const { meta, body } = parseFrontmatter("---\ntitle: x\n----\nbody");
+  assert.deepEqual(meta, {});
+  assert.equal(body, "---\ntitle: x\n----\nbody");
+});
+
 test("无 frontmatter 时 meta 为空、正文原样", () => {
   const { meta, body } = parseFrontmatter("裸正文");
   assert.deepEqual(meta, {});
@@ -40,6 +46,33 @@ test("连续行合并为同一段落", () => {
 
 test("无序列表", () => {
   assert.equal(mdToHtml("- 甲\n- 乙"), "<ul><li>甲</li><li>乙</li></ul>");
+});
+
+test("strong/em 不渗入链接与图片标记", () => {
+  assert.equal(
+    mdToHtml("[a*b](c) *x*"),
+    '<p><a href="c" target="_blank" rel="noopener noreferrer">a*b</a> <em>x</em></p>',
+  );
+  assert.equal(
+    mdToHtml("[x](https://a.b/*p*)"),
+    '<p><a href="https://a.b/*p*" target="_blank" rel="noopener noreferrer">x</a></p>',
+  );
+  assert.equal(mdToHtml("![a*b](c)"), '<p><img alt="a*b" src="c" loading="lazy"></p>');
+});
+
+test("链接文本内的 strong 正常解析", () => {
+  assert.equal(
+    mdToHtml("[**a**](b)"),
+    '<p><a href="b" target="_blank" rel="noopener noreferrer"><strong>a</strong></a></p>',
+  );
+});
+
+test("引用块多行合并", () => {
+  assert.equal(mdToHtml("> 甲\n> 乙"), "<blockquote><p>甲 乙</p></blockquote>");
+});
+
+test("图片:标准段落包裹", () => {
+  assert.equal(mdToHtml("![图](x.png)"), '<p><img alt="图" src="x.png" loading="lazy"></p>');
 });
 
 test("行内 code 不二次解析其它行内语法", () => {

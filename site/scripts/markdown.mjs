@@ -2,8 +2,9 @@
     运行时零解析器。刻意只支持文章实际用到的子集,先转义再替换防注入。 */
 
 export function parseFrontmatter(src) {
-  // 容忍 CRLF:与 mdToHtml 的 \r\n 归一化保持一致,否则 Windows 存的文件会静默丢 frontmatter
-  const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(src);
+  // 容忍 CRLF(与 mdToHtml 的归一化一致,否则 Windows 文件静默丢 frontmatter);
+  // 闭合定界符锚定行尾,防 "----"/"---extra" 误闭合。
+  const m = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(src);
   if (!m) return { meta: {}, body: src };
   const meta = {};
   for (const line of m[1].split("\n")) {
@@ -17,20 +18,35 @@ export function parseFrontmatter(src) {
 const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+// 行内原子占位符的定界符:NUL 不可能出现在合法文本里。
+// 用 fromCharCode 而非字面转义,避免源码里混入原始控制字节(git 会误判二进制)。
+const NUL = String.fromCharCode(0);
+const PLACEHOLDER = new RegExp(`${NUL}(\\d+)${NUL}`, "g");
+
 function inline(s) {
-  // 先把 code span 抽成占位符,避免其内容被当作链接/加粗等二次解析;
-  // 占位符用 NUL 包裹序号——正文里不可能合法出现,回填时整体替换。
-  const codes = [];
-  s = s.replace(/`([^`]+)`/g, (_, c) => {
-    codes.push(`<code>${esc(c)}</code>`);
-    return `\u0000${codes.length - 1}\u0000`;
-  });
-  return esc(s)
-    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img alt="$1" src="$2" loading="lazy">')
-    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/\u0000(\d+)\u0000/g, (_, i) => codes[i]);
+  // 行内原子(code/img/link)统一抽成占位符:已生成的标记若留在原文流里,
+  // 后跑的 strong/em 会跨标签边界配对(href/alt 里的 * 也会被撕开)。
+  // 进料先剔除杂散 NUL,保证占位符定界唯一、回填循环不空转。
+  s = s.split(NUL).join("");
+  const atoms = [];
+  const stash = (html) => NUL + (atoms.push(html) - 1) + NUL;
+  const em = (t) =>
+    t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  s = s
+    .replace(/`([^`]+)`/g, (_, c) => stash(`<code>${esc(c)}</code>`))
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
+      stash(`<img alt="${esc(alt)}" src="${esc(src)}" loading="lazy">`),
+    )
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) =>
+      // 链接文本自身要吃 strong/em(如 [**a**](b)),href 保持原样
+      stash(
+        `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${em(esc(text))}</a>`,
+      ),
+    );
+  s = em(esc(s));
+  // 链接文本可能内嵌 code 占位符(嵌套 stash),回填须循环——replace 不重扫替换进来的文本
+  while (s.includes(NUL)) s = s.replace(PLACEHOLDER, (_, i) => atoms[i]);
+  return s;
 }
 
 export function mdToHtml(md) {
