@@ -18,7 +18,7 @@
   z-index: 2;
   text-align: center;
   padding: 48px 22px;
-  /* 全宽字底带,落点实测 ≥5.3:1(评审校准:bio 行两端/eyebrow/scroll-hint 全落点 5.3–6.4:1) */
+  /* 全宽字底带,落点实测 ≥5.3:1(评审校准:bio 行两端/eyebrow 全落点 5.3–6.4:1;scroll-hint 在 .hero 层,自带胶囊底) */
   background: radial-gradient(85% 95% at 50% 50%, rgba(11, 18, 38, 0.62) 0%, rgba(11, 18, 38, 0.46) 70%, transparent 100%);
 }
 .hero-eyebrow {
@@ -59,6 +59,10 @@
   bottom: 26px;
   left: 50%;
   translate: -50% 0;
+  /* 胶囊底:hint 不在 scrim 覆盖内,裸极光最坏帧 CR 2.28,α0.50 垫底后 5.46:1 */
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(11, 18, 38, 0.5);
   color: var(--text-muted);
   font-size: 13px;
   letter-spacing: 0.2em;
