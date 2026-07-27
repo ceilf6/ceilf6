@@ -56,8 +56,12 @@ export function initQuadProgram(
       gl.deleteShader(fs);
       return null;
     }
+    // link 成功后立即标记删除：shader 已链进 program，真正释放随 deleteProgram 一起
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
     gl.useProgram(prog);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(
       gl.ARRAY_BUFFER,
       new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
@@ -71,8 +75,11 @@ export function initQuadProgram(
       uniform: (name) => gl.getUniformLocation(prog, name),
       draw: () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4),
       destroy: () => {
-        // 依赖 WEBGL_lose_context，缺失时为 no-op；当前消费方卸载即弃 canvas，可接受。
-        gl.getExtension("WEBGL_lose_context")?.loseContext();
+        // 不能 loseContext：StrictMode 双跑时 React 复用同一 canvas，cleanup 同步
+        // 杀死 context 会让二次 init 编译必败→组件锁死 fallback（dev 全瞎）。
+        // 只逐个释放 GL 对象，context 留活供二次挂载复用。
+        gl.deleteProgram(prog);
+        gl.deleteBuffer(buf);
       },
     };
   } catch {
