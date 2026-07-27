@@ -4,8 +4,10 @@ import { useFxQuality } from "./quality";
 import "./ParticleField.css";
 
 /** 星座粒子画布。降级阶梯：reduced-motion→不渲染；lite→静态一帧；
-    移动端粒子减半；tab 隐藏暂停 rAF；DPR 上限 2。父容器需 position:relative。 */
-export function ParticleField({ count = 70 }: { count?: number }) {
+    移动端粒子减半；tab 隐藏暂停 rAF；DPR 上限 2。父容器需 position:relative。
+    count=130/连线 110/透明度 0.45 等参数自 2026-07-28 用户反馈星空微弱上调；
+    linkPairs O(n²) 130²≈8.4k 对/帧可接受，再往上加 count 需先换空间分桶。 */
+export function ParticleField({ count = 130 }: { count?: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const quality = useFxQuality();
 
@@ -55,16 +57,16 @@ export function ParticleField({ count = 70 }: { count?: number }) {
     };
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
-      for (const [i, j, a] of linkPairs(ps, 90)) {
-        ctx.strokeStyle = `rgba(255,192,105,${(a * 0.32).toFixed(3)})`;
-        ctx.lineWidth = 0.7;
+      for (const [i, j, a] of linkPairs(ps, 110)) {
+        ctx.strokeStyle = `rgba(255,192,105,${(a * 0.45).toFixed(3)})`;
+        ctx.lineWidth = 0.8;
         ctx.beginPath();
         ctx.moveTo(ps[i].x, ps[i].y);
         ctx.lineTo(ps[j].x, ps[j].y);
         ctx.stroke();
       }
       for (const p of ps) {
-        ctx.fillStyle = p.gold ? "rgba(255,192,105,.95)" : "rgba(245,248,255,.8)";
+        ctx.fillStyle = p.gold ? "rgba(255,192,105,.95)" : "rgba(245,248,255,.9)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();

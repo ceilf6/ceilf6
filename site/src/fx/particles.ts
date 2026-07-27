@@ -18,7 +18,8 @@ export function createField(count: number, w: number, h: number, rand: () => num
     const y = rand() * h;
     const vx = (rand() - 0.5) * 0.45;
     const vy = (rand() - 0.5) * 0.45;
-    return { x, y, vx, vy, bvx: vx, bvy: vy, r: rand() * 1.6 + 0.6, gold: rand() < 0.3 };
+    // 半径/金点概率上调自 1.6+0.6 / 0.3(2026-07-28 用户反馈星空微弱)
+    return { x, y, vx, vy, bvx: vx, bvy: vy, r: rand() * 2.2 + 0.8, gold: rand() < 0.35 };
   });
 }
 

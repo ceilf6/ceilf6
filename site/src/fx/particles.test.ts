@@ -13,6 +13,15 @@ describe("粒子纯函数", () => {
       expect(p.r).toBeGreaterThan(0);
     }
   });
+  it("createField 星点增强参数:半径 [0.8,3.0)、金点概率阈 0.35(2026-07-28 用户反馈星空微弱)", () => {
+    // rand=0.32:旧参数下 r=0.32*1.6+0.6=1.112 且 gold=false(0.32<0.3 不成立);
+    // 新参数下 r=0.32*2.2+0.8=1.504 且 gold=true(0.32<0.35)——两参数各自可辨
+    const p = createField(1, 10, 10, () => 0.32)[0];
+    expect(p.r).toBeCloseTo(0.32 * 2.2 + 0.8, 5);
+    expect(p.gold).toBe(true);
+    const pMin = createField(1, 10, 10, () => 0)[0];
+    expect(pMin.r).toBeCloseTo(0.8, 5);
+  });
   it("stepField 越界环绕", () => {
     const ps = [{ x: 99.9, y: 0.1, vx: 1, vy: -1, bvx: 1, bvy: -1, r: 1, gold: false }];
     stepField(ps, 100, 50, { x: -1e4, y: -1e4 }, 16.7);

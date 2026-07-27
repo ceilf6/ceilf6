@@ -9,7 +9,8 @@ export function Hero() {
     <div className="hero">
       <div className="hero-bg" aria-hidden="true">
         <AuroraCanvas className="hero-aurora" />
-        <ParticleField count={70} />
+        {/* count 走组件默认值(130,2026-07-28 星空增强),不再显式覆盖 */}
+        <ParticleField />
       </div>
       <div className="hero-content">
         <p className="hero-eyebrow">WANGJINGHONG.COM</p>
