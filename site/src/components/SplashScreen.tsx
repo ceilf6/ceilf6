@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { AuroraCanvas } from "../fx/AuroraCanvas";
+import { NameParticles } from "../fx/NameParticles";
 
 export const SPLASH_KEY = "wjh-splash-seen";
 const SPLASH_MS = 1400;
@@ -12,13 +14,22 @@ function shouldShow(): boolean {
 
 export function SplashScreen() {
   const [visible, setVisible] = useState(shouldShow);
+  // particles = 甲·像素粒子成名；chars = 原逐字浮现（canvas 不可用时的兜底）
+  const [mode, setMode] = useState<"particles" | "chars">("particles");
 
   useEffect(() => {
-    if (!visible) return;
-    sessionStorage.setItem(SPLASH_KEY, "1");
+    if (visible) sessionStorage.setItem(SPLASH_KEY, "1");
+  }, [visible]);
+
+  // chars 兜底沿用原开屏的定时收场；particles 模式由 onDone 收场
+  useEffect(() => {
+    if (!visible || mode !== "chars") return;
     const t = setTimeout(() => setVisible(false), SPLASH_MS);
     return () => clearTimeout(t);
-  }, [visible]);
+  }, [visible, mode]);
+
+  const handleDone = useCallback(() => setVisible(false), []);
+  const handleUnsupported = useCallback(() => setMode("chars"), []);
 
   return (
     <AnimatePresence>
@@ -29,21 +40,25 @@ export function SplashScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <span className="splash-name">
-            {/* 逐字 transform 汇聚取代 letter-spacing 动画：字距是布局属性，
-                大号 CJK 字形上逐帧回流必掉帧；x/opacity 走合成器满帧 */}
-            {["王", "景", "宏"].map((ch, i) => (
-              <motion.span
-                key={ch}
-                className="splash-char"
-                initial={{ opacity: 0, x: (i - 1) * 26, y: 8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {ch}
-              </motion.span>
-            ))}
-          </span>
+          <AuroraCanvas className="splash-aurora" />
+          {mode === "particles" ? (
+            <NameParticles text="王景宏" onDone={handleDone} onUnsupported={handleUnsupported} />
+          ) : (
+            <span className="splash-name">
+              {/* 逐字 transform 汇聚：字距是布局属性，大号 CJK 字形上逐帧回流必掉帧 */}
+              {["王", "景", "宏"].map((ch, i) => (
+                <motion.span
+                  key={ch}
+                  className="splash-char"
+                  initial={{ opacity: 0, x: (i - 1) * 26, y: 8 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {ch}
+                </motion.span>
+              ))}
+            </span>
+          )}
           <motion.span
             className="splash-sub"
             initial={{ opacity: 0 }}

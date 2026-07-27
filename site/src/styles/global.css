@@ -161,6 +161,24 @@ html::after {
   text-indent: 0.3em;
 }
 
+/* 开屏两层画布：极光垫底、姓名粒子在上；都不参与布局 */
+.splash-aurora,
+.splash-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.splash-aurora {
+  z-index: -1;
+}
+
+/* 极光降级兜底：与页面底色同源的静态渐变（AuroraCanvas 各消费场景共用） */
+.aurora-fallback {
+  background: var(--page-background);
+}
+
 /* 旧站同款减动偏好兜底（背景 floatOrbs 一并停）；
    原块里的 .gallery .card 那半留给瀑布流组件 */
 @media (prefers-reduced-motion: reduce) {

@@ -30,4 +30,11 @@ describe("SplashScreen", () => {
       timeout: 5000,
     });
   }, 9000);
+
+  it("jsdom 无 canvas 2D 时走 chars 兜底路径（字符逐个渲染）", async () => {
+    sessionStorage.clear();
+    render(<SplashScreen />);
+    expect(await screen.findByText("王")).toBeInTheDocument();
+    expect(screen.getByText("宏")).toBeInTheDocument();
+  });
 });
