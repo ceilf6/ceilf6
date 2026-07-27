@@ -4,17 +4,26 @@ import { useEffect, useState } from "react";
 
 export type FxQuality = "full" | "lite";
 
-export function createFpsMeter({ sampleMs = 2000, threshold = 40 } = {}) {
-  let start: number | null = null;
+export function createFpsMeter({
+  sampleMs = 2000,
+  threshold = 40,
+  maxFrameMs = 200,
+} = {}) {
+  let last: number | null = null;
+  let elapsed = 0;
   let frames = 0;
   return {
     frame(now: number): FxQuality | null {
-      if (start === null) {
-        start = now;
+      if (last === null) {
+        last = now;
         return null;
       }
+      // 单帧间隔按 maxFrameMs 封顶：标签页挂起、shader 编译这类停摆不是稳态帧率。
+      // 不封顶的话一次 5s 空档会被算成 0.2fps，而降档只降不升、误判无法回滚。
+      // 200ms(=5fps)远低于任何真实帧距，封顶不会遮蔽真卡顿。
+      elapsed += Math.min(now - last, maxFrameMs);
+      last = now;
       frames++;
-      const elapsed = now - start;
       if (elapsed < sampleMs) return null;
       return (frames * 1000) / elapsed < threshold ? "lite" : "full";
     },
