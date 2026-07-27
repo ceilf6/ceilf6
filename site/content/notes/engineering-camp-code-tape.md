@@ -1,6 +1,6 @@
 ---
 title: 26 字节工程营——code-tape 复盘
-date: 2026-07-28
+date: 2026-07-06
 summary: 两周带队从 0 到 1 做出代码讲解录制回放产品 code-tape：组长视角的人员调度与 Harness 工程基建，开发者视角的录制/回放/云端/AI 字幕/WebRTC 主链路。
 source: CSDN
 sourceUrl: https://blog.csdn.net/2301_78856868/article/details/161597694

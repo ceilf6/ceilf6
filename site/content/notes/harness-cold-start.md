@@ -1,6 +1,6 @@
 ---
 title: 关于 Harness 的讨论，附冷启动工具
-date: 2026-07-27
+date: 2026-07-22
 summary: 我如何在仓库里搭建 Harness 环境：TDD 质量门、知识库、SDD 与 CR 机器人，以及沉淀出的冷启动工具 harness-kit。
 source: LinuxDo
 sourceUrl: https://linux.do/t/topic/2481591

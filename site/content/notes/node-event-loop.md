@@ -1,6 +1,6 @@
 ---
 title: Node.js 事件循环：tick 的各个阶段与执行顺序实验
-date: 2026-07-28
+date: 2026-06-05
 summary: 用可运行的计时实验梳理 Node.js 事件循环的生命周期：timers、poll、check 各阶段的职责，以及 nextTick/Promise 微任务的插队规则。
 source: 工程师沉淀
 sourceUrl: https://github.com/ceilf6/Obsidion/tree/main/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%B2%89%E6%B7%80/NodeJS/Node%E6%A0%B8%E5%BF%83/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%20%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%203320f8d8d1fd8010937ff1f56cd3acaa.md

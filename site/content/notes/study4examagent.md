@@ -1,6 +1,6 @@
 ---
 title: 期末周：应试复习仓库的冷启动
-date: 2026-07-27
+date: 2026-07-18
 summary: 把期末复习做成仓库冷启动：上下文全部导入目录，剩下交给 AI——Study4ExamAgent 与后续的 KnowledgeFlow 探索。
 source: LinuxDo
 sourceUrl: https://linux.do/t/topic/2468027

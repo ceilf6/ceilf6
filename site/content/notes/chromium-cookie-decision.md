@@ -1,6 +1,6 @@
 ---
 title: 浏览器如何决定携带哪些 Cookie：Chromium 源码分析
-date: 2026-07-28
+date: 2026-06-15
 summary: 沿 URLRequest 到 CookieMonster 的调用链，逐层拆解 Chromium 决定一次请求携带哪些 Cookie 的完整决策管线。
 source: 工程师沉淀
 sourceUrl: https://github.com/ceilf6/Obsidion/tree/main/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%B2%89%E6%B7%80/%E7%BD%91%E7%BB%9C/cookie/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%B3%E5%AE%9A%E6%90%BA%E5%B8%A6cookie%E8%BF%87%E7%A8%8B/chromium%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%203170f8d8d1fd80178319ce2d35aeff44.md

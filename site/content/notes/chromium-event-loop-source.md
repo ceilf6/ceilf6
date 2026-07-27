@@ -1,6 +1,6 @@
 ---
 title: 事件循环不空转：Chromium 消息循环源码分析
-date: 2026-07-28
+date: 2026-06-12
 summary: 从 MessagePump、SequenceManager 到 RunLoop 三层组件拆解 Chromium 事件循环的实现，重点回答"任务队列为空时线程如何休眠与唤醒"。
 source: 工程师沉淀
 sourceUrl: https://github.com/ceilf6/Obsidion/tree/main/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%B2%89%E6%B7%80/%E6%B5%8F%E8%A7%88%E5%99%A8/%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%EF%BC%89/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%BA%90%E7%A0%81%203160f8d8d1fd8090b54ee484e98a2ebe.md

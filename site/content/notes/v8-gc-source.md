@@ -1,6 +1,6 @@
 ---
 title: V8 垃圾回收源码分析：Scavenger 与 Mark-Compact
-date: 2026-07-28
+date: 2026-06-08
 summary: 从 AllocationType 堆空间划分入手，读 V8 源码看 Minor GC 的 Cheney 复制算法与 Major GC 的三色标记如何分工。
 source: 工程师沉淀
 sourceUrl: https://github.com/ceilf6/Obsidion/tree/main/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%B2%89%E6%B7%80/JS/%E5%BA%95%E5%B1%82/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B8%8E%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%203000f8d8d1fd80e08621cd30a700c26a.md
