@@ -18,8 +18,14 @@
   z-index: 2;
   text-align: center;
   padding: 48px 22px;
-  /* 全宽字底带,落点实测 ≥5.3:1(评审校准:bio 行两端/eyebrow 全落点 5.3–6.4:1;scroll-hint 在 .hero 层,自带胶囊底) */
-  background: radial-gradient(85% 95% at 50% 50%, rgba(11, 18, 38, 0.62) 0%, rgba(11, 18, 38, 0.46) 70%, transparent 100%);
+  /* 玻璃面板,与 readme-section 同源体系(评审:radial scrim 在内容盒边缘 α≈0.49 硬截断,
+     换纯色+blur 后硬边成为有意的面板边;α0.5 ≥ 原 70% 停点的 0.46,全落点对比度只升不降;
+     scroll-hint 在 .hero 层,自带胶囊底) */
+  background: rgba(11, 18, 38, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 28px;
+  border: 1px solid var(--panel-border);
 }
 .hero-eyebrow {
   font-family: "Azeret Mono", monospace;

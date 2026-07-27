@@ -30,8 +30,13 @@
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
+  /* 入场归 scrollActs(gsap stagger)统一编排,CSS 默认可见=无 gsap 时的安全态
+     (reduced-motion 天然成立)。此前的 cardIn fill:forwards 会压过 gsap 的
+     opacity 写入,fade 从未真正发生过——入场初态绝不能回到 CSS。
+     hover 上浮走独立 translate 通道,transform 留给 gsap 逐帧写入
+     (同 ReadmeCards/PlatformStage 手法)。 */
   transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.35s ease;
   background: linear-gradient(
@@ -43,10 +48,6 @@
   -webkit-backdrop-filter: blur(8px) saturate(120%);
   border: 1px solid var(--panel-border);
   box-shadow: var(--card-shadow);
-  opacity: 0;
-  translate: 0 40px;
-  animation: cardIn 0.6s ease forwards;
-  animation-delay: calc(var(--i, 0) * 60ms);
 }
 
 .gallery .card-loader {
@@ -119,7 +120,7 @@
     0 24px 48px rgba(2, 8, 20, 0.5),
     0 0 0 1px rgba(255, 192, 105, 0.42);
   border-color: rgba(255, 192, 105, 0.5);
-  transform: translateY(-6px);
+  translate: 0 -6px;
 }
 
 .gallery .card:hover::before {
@@ -146,14 +147,6 @@
   filter: saturate(1.08) contrast(1.04) brightness(1.04);
 }
 
-/* 入场位移用独立的 translate 属性，transform 留给悬停上浮 */
-@keyframes cardIn {
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
 @media (max-width: 900px) {
   .gallery {
     padding: 28px 40px 40px;
@@ -165,12 +158,5 @@
   .gallery {
     padding: 14px 6px 6px;
     grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gallery .card {
-    opacity: 1;
-    translate: 0 0;
   }
 }

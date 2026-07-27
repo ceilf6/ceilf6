@@ -5,12 +5,12 @@ import { IcpFooter } from "../components/IcpFooter";
 import { WaterfallGallery } from "../components/WaterfallGallery";
 import { Hero } from "../components/Hero";
 import { NotesPreview } from "../components/NotesPreview";
-import { initScrollActs } from "../fx/scrollActs";
 import { startFxProbe } from "../fx/quality";
 import "./Home.css";
 
 /** 五幕长卷:Hero → 四卡 → 证书画廊 → 札记精选 → 页脚。
-    幕间进出场由 initScrollActs 编排;FPS 探针延迟到 LCP 之后再启动。 */
+    幕间进出场由 initScrollActs 编排——动态 import 把 gsap 挪出主包与 LCP 路径;
+    FPS 探针延迟到 LCP 之后再启动。 */
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -22,10 +22,15 @@ export default function Home() {
     const root = rootRef.current;
     if (!root) return;
     const probe = setTimeout(() => startFxProbe(), 3000);
-    const cleanup = initScrollActs(root);
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
+    import("../fx/scrollActs").then((m) => {
+      if (!cancelled) cleanup = m.initScrollActs(root);
+    });
     return () => {
+      cancelled = true;
+      cleanup?.();
       clearTimeout(probe);
-      cleanup();
     };
   }, []);
 

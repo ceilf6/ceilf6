@@ -40,4 +40,24 @@ describe("initScrollActs", () => {
     cleanup();
     expect(gsapMock.context.mock.results[0].value.revert).toHaveBeenCalled();
   });
+  it("所有 from 入场都带 clearProps,完成后释放 inline transform(否则压死画廊 hover lift)", () => {
+    const root = document.createElement("div");
+    root.innerHTML = `
+      <section data-act-reveal></section>
+      <section class="act-gallery"><div class="gallery"><div class="card"></div></div></section>`;
+    initScrollActs(root, { force: true });
+    expect(gsapMock.from).toHaveBeenCalled();
+    for (const [, cfg] of gsapMock.from.mock.calls) {
+      expect(cfg.clearProps).toBe("transform,opacity");
+    }
+  });
+  it("VITEST 环境不传 force → gsap 零调用(jsdom 无布局守卫)", () => {
+    const root = document.createElement("div");
+    root.innerHTML = `<section data-act-reveal></section>`;
+    const cleanup = initScrollActs(root);
+    expect(gsapMock.registerPlugin).not.toHaveBeenCalled();
+    expect(gsapMock.context).not.toHaveBeenCalled();
+    expect(gsapMock.from).not.toHaveBeenCalled();
+    expect(cleanup).not.toThrow();
+  });
 });

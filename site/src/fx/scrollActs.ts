@@ -10,12 +10,15 @@ export function initScrollActs(root: HTMLElement, { force = false } = {}): () =>
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
   gsap.registerPlugin(ScrollTrigger);
   const ctx = gsap.context(() => {
+    /* clearProps:入场结束即释放 inline transform/opacity——残留的 transform
+       会永久压过 CSS 的 hover 效果(画廊卡上浮实证翻车过),交还样式主权。 */
     root.querySelectorAll<HTMLElement>("[data-act-reveal]").forEach((el) => {
       gsap.from(el, {
         opacity: 0,
         y: 44,
         duration: 0.7,
         ease: "power3.out",
+        clearProps: "transform,opacity",
         scrollTrigger: { trigger: el, start: "top 78%" },
       });
     });
@@ -27,6 +30,7 @@ export function initScrollActs(root: HTMLElement, { force = false } = {}): () =>
         duration: 0.55,
         ease: "power3.out",
         stagger: 0.06,
+        clearProps: "transform,opacity",
         scrollTrigger: { trigger: ".act-gallery", start: "top 70%" },
       });
     const bg = root.querySelector(".hero-bg");

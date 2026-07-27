@@ -37,10 +37,7 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
       role="button"
       tabIndex={0}
       aria-label={`查看证书：${award.alt}`}
-      style={{
-        aspectRatio: `${award.thumbWidth} / ${award.thumbHeight}`,
-        ["--i" as string]: index,
-      }}
+      style={{ aspectRatio: `${award.thumbWidth} / ${award.thumbHeight}` }}
       onClick={() => navigate(`/viewer?img=${index}`)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
