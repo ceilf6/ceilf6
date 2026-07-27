@@ -43,14 +43,14 @@ describe("SplashScreen", () => {
     expect(screen.getByText("宏")).toBeInTheDocument();
   });
 
-  it("非主页深链首访直接走 chars 逐字，不再尝试粒子画布", async () => {
+  it("深链路由同样尝试粒子路径（全路由粒子开屏，2026-07-28 用户拍板）", async () => {
     window.history.pushState({}, "", "/viewer?img=1");
-    // 观察是否走过粒子路径：mode 初值分级后 NameParticles 压根不挂载，
-    // getContext("2d") 一次都不该发生（AuroraCanvas 只请求 webgl，不受影响）
+    // 观察粒子路径是否被尝试：NameParticles 挂载即会请求 getContext("2d")
+    //（AuroraCanvas 只请求 webgl，不干扰观察）。jsdom 下拿到 null，
+    // onUnsupported 自然落回 chars，逐字仍应出现。
     const getCtx = vi.spyOn(HTMLCanvasElement.prototype, "getContext");
     render(<SplashScreen />);
-    expect(document.querySelector(".splash-canvas")).toBeNull();
+    expect(getCtx.mock.calls.some(([kind]) => kind === "2d")).toBe(true);
     expect(await screen.findByText("王")).toBeInTheDocument();
-    expect(getCtx.mock.calls.some(([kind]) => kind === "2d")).toBe(false);
   });
 });

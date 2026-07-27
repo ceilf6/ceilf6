@@ -14,14 +14,8 @@ function shouldShow(): boolean {
 
 export function SplashScreen() {
   const [visible, setVisible] = useState(shouldShow);
-  // particles = 甲·像素粒子成名；chars = 原逐字浮现（canvas 不可用时的兜底）。
-  // 初值按路由分级：粒子 3.4s 大秀只属于主页——主页是开场秀的舞台；
-  // 简历深链（/viewer?img=N、/blog 等）首访走 1.4s 逐字（与旧站开屏等长），
-  // 不拿大秀挡 HR 的主转化路径。读 window.location 而非 useLocation：
-  // 本组件在测试中裸渲染、无 Router 上下文，且 BrowserRouter 下两者一致。
-  const [mode, setMode] = useState<"particles" | "chars">(() =>
-    window.location.pathname === "/" ? "particles" : "chars",
-  );
+  // 全路由粒子开屏（2026-07-28 用户拍板）；chars 仅为 canvas 不可用兜底。
+  const [mode, setMode] = useState<"particles" | "chars">("particles");
 
   useEffect(() => {
     if (visible) sessionStorage.setItem(SPLASH_KEY, "1");
