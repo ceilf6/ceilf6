@@ -2,21 +2,31 @@ import { readFileSync } from "node:fs";
 import { compileNote } from "./markdown.mjs";
 
 /** /content/notes/*.md → `export const meta / html` 纯导出模块。
-    moduleSideEffects:false 让只 import meta 的主包把 html 字符串摇树掉，
-    文章正文只进 /notes/:slug 的懒加载分包。 */
+    同一 md 服务两个模块 id:裸 id 出 meta+html 双导出(懒加载分包消费),
+    `?meta` 查询只出 meta——Rollup 对「同模块既 eager 又 dynamic import」
+    会报 INEFFECTIVE_DYNAMIC_IMPORT 并拒绝分包(正文全量进主包),
+    拆成两个 id 才能让主包物理上不含 html、正文按文章分包。 */
 export function mdNotes() {
   return {
     name: "md-notes",
     enforce: "pre",
     load(id) {
-      if (!/\/content\/notes\/[^/]+\.md$/.test(id)) return null;
-      const { meta, html } = compileNote(readFileSync(id, "utf8"));
+      const [file, query] = id.split("?");
+      if (!/\/content\/notes\/[^/]+\.md$/.test(file)) return null;
+      const { meta, html } = compileNote(readFileSync(file, "utf8"));
       // compileNote 永不 throw(无/未闭合 frontmatter 时 meta={}),这里是构建期
-      // 唯一能拦住「页面标题渲染 undefined」的地方——必填键缺失即 fail loud。
+      // 唯一能拦住「页面标题渲染 undefined」的地方——必填键缺失即 fail loud,
+      // 两个分支都过守卫:坏 md 不能因先被 ?meta 消费而漏检。
       for (const key of ["title", "date", "summary"]) {
         if (!meta[key]) {
-          throw new Error(`md-notes: ${id} 缺少必填 frontmatter 键(title/date/summary)`);
+          throw new Error(`md-notes: ${file} 缺少必填 frontmatter 键(title/date/summary)`);
         }
+      }
+      if (query === "meta") {
+        return {
+          code: `export const meta = ${JSON.stringify(meta)};`,
+          moduleSideEffects: false,
+        };
       }
       return {
         code: `export const meta = ${JSON.stringify(meta)};\nexport const html = ${JSON.stringify(html)};`,

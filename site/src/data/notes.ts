@@ -1,5 +1,7 @@
-/** 站内札记数据层。meta 走 eager glob 进主包(插件产物无副作用,html 被摇树);
-    正文 html 走懒 glob,每篇文章一个分包,只在 /notes/:slug 加载。 */
+/** 站内札记数据层。meta 走 eager glob 进主包,正文 html 走懒 glob,
+    每篇文章一个分包,只在 /notes/:slug 加载。eager 侧必须带 ?meta 查询:
+    同一模块 id 既 eager 又 dynamic 会让 Rollup 拒绝分包(INEFFECTIVE_DYNAMIC_IMPORT),
+    ?meta 使两侧成为不同模块,插件对该查询只 emit meta,主包物理上不含正文。 */
 import type { NoteModule } from "./note-module";
 
 export interface NoteMeta {
@@ -25,12 +27,14 @@ export function buildNotes(mods: Record<string, NoteModule["meta"]>): NoteMeta[]
       source: m.source ?? "站内",
       sourceUrl: m.sourceUrl ?? "",
     }))
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    // localeCompare 相等返回 0:满足比较器契约,稳定排序保住同日文章的 glob 键序
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 const metaModules = import.meta.glob<NoteModule["meta"]>("/content/notes/*.md", {
   eager: true,
   import: "meta",
+  query: "?meta",
 });
 
 export const notes: NoteMeta[] = buildNotes(metaModules);

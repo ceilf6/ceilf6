@@ -28,6 +28,26 @@ test("load 把 content/notes 下的 md 编译为 meta/html 纯导出模块", () 
   assert.equal(res.moduleSideEffects, false);
 });
 
+test("?meta 查询只 emit meta 导出——主包物理上不含 html", () => {
+  const md = join(notesDir(), "c.md");
+  writeFileSync(md, "---\ntitle: 丙\ndate: 2026-07-27\nsummary: 摘要\n---\n正文");
+  const res = mdNotes().load(`${posix(md)}?meta`);
+  assert.ok(
+    res.code.includes('export const meta = {"title":"丙","date":"2026-07-27","summary":"摘要"}'),
+  );
+  assert.ok(!res.code.includes("export const html"));
+  assert.equal(res.moduleSideEffects, false);
+});
+
+test("?meta 分支同样跑 frontmatter 守卫", () => {
+  const md = join(notesDir(), "d.md");
+  writeFileSync(md, "没有 frontmatter 的正文");
+  assert.throws(
+    () => mdNotes().load(`${posix(md)}?meta`),
+    (err) => err.message.includes("title/date/summary"),
+  );
+});
+
 test("缺必填 frontmatter 键 → 构建期 fail loud,报错含文件路径", () => {
   const md = join(notesDir(), "b.md");
   writeFileSync(md, "没有 frontmatter 的正文");
