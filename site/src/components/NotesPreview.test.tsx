@@ -57,4 +57,34 @@ describe("NotesPreview", () => {
     expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/notes/a");
     expect(screen.getByText("文章乙").closest("a")).toHaveAttribute("href", "/notes/b");
   });
+
+  // 主页精选窗口:items 按数据层契约已日期倒序,max 截取即取最新;/blog 不传 max 才是全集
+  const SEVEN_ITEMS = Array.from({ length: 7 }, (_, i) => ({
+    slug: `n${i}`,
+    title: `文章${i}`,
+    date: `2026-07-2${7 - i}`, // 27..21 倒序,n6 最旧
+    summary: `摘要${i}`,
+    source: "站内",
+    sourceUrl: "",
+  }));
+
+  it("max={6} 时恰渲染 6 张卡,且为日期最新的 6 个(主页精选窗口)", () => {
+    const { container } = render(
+      <MemoryRouter>
+        <NotesPreview heading="札记精选" items={SEVEN_ITEMS} max={6} />
+      </MemoryRouter>,
+    );
+    expect(container.querySelectorAll("a.note-card")).toHaveLength(6);
+    expect(screen.getByText("文章0")).toBeInTheDocument(); // 最新在列
+    expect(screen.queryByText("文章6")).toBeNull(); // 最旧被窗口截断
+  });
+
+  it("不传 max 全量渲染(/blog 才是全集)", () => {
+    const { container } = render(
+      <MemoryRouter>
+        <NotesPreview heading="全部札记" items={SEVEN_ITEMS} />
+      </MemoryRouter>,
+    );
+    expect(container.querySelectorAll("a.note-card")).toHaveLength(7);
+  });
 });

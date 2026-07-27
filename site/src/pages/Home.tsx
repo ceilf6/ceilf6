@@ -54,7 +54,7 @@ export default function Home() {
             <WaterfallGallery />
           </div>
         </section>
-        <NotesPreview heading="札记精选" />
+        <NotesPreview heading="札记精选" max={6} />
         <IcpFooter />
       </div>
     </PageTransition>
