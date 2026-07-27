@@ -28,4 +28,11 @@ describe("createFpsMeter", () => {
     for (let i = 0; i < 200 && verdict === null; i++) verdict = m.frame((t += 16.7));
     expect(verdict).toBe("full");
   });
+  // 帧距 333ms 全程超过 maxFrameMs：封顶只压缩单帧计数，不得让窗口永不填满
+  it("灾难级低帧设备(帧距超过封顶)仍判 lite", () => {
+    const m = createFpsMeter({ sampleMs: 1000, threshold: 40 });
+    let verdict: string | null = null;
+    for (let t = 0; t <= 3000 && verdict === null; t += 333) verdict = m.frame(t);
+    expect(verdict).toBe("lite");
+  });
 });
