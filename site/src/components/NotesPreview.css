@@ -1,11 +1,13 @@
 /* .act/.act-title 样式随 T14(Home 五幕)落地;本文件只定义 act-notes 自身 */
 .act-notes {
-  padding: 10px 22px 46px;
+  padding: 0 22px 46px;
 }
 
 .notes-grid {
   width: min(980px, 100%);
-  margin: 18px auto 0;
+  /* 标题下间距对齐证书画廊的 54px(标题 mb 6 + 画廊 pt 48)节奏(2026-07-29 用户拍板);
+     此处与标题 mb 6 是兄弟外边距折叠取大,故直接写 54 */
+  margin: 54px auto 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 18px;

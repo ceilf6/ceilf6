@@ -1,4 +1,5 @@
-/* 逐字迁移自旧 index.html <style> 的 .gallery* 全系规则，声明一字未改。
+/* 逐字迁移自旧 index.html <style> 的 .gallery* 全系规则（例外:.gallery 底部
+   padding 已归零，见规则处注释）。
    原文里 loader 系规则与 README 卡（.readme-card-loader）合并在同一组选择器上，
    这里只摘 .gallery 的那半；.readme-card* 那半已随 P7 迁入 ReadmeCards.css。
    依赖：@keyframes loaderSpin 定义在 ReadmeCards.css（全局生效），此处不重复定义。
@@ -14,7 +15,9 @@
   width: 100%;
   position: relative;
   z-index: 1;
-  padding: 48px 100px 56px;
+  /* 底部 padding 归零(2026-07-29 用户拍板):画廊→札记的段隔对齐画廊上方的 ~54px 节奏,
+     间距只留网格内在的 24px 行尾 + 下一幕标题 margin,不再三层容器各垫一层 */
+  padding: 48px 100px 0;
 }
 
 /* 键盘可达性增强（2026-07-26 经用户批准；旧站无 tabIndex，无对照物） */
@@ -149,14 +152,14 @@
 
 @media (max-width: 900px) {
   .gallery {
-    padding: 28px 40px 40px;
+    padding: 28px 40px 0;
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 640px) {
   .gallery {
-    padding: 14px 6px 6px;
+    padding: 14px 6px 0;
     grid-template-columns: 1fr;
   }
 }

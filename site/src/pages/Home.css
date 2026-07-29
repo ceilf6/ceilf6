@@ -1,6 +1,7 @@
 /* 逐字迁移自旧 index.html <style>：README 区容器 + 主内容区。
    卡片本体（.readme-cards / .readme-card 全系）归 ReadmeCards.css，
-   画廊（.gallery）留给瀑布流组件；响应式段落按选择器归属拆开，声明未改。 */
+   画廊（.gallery）留给瀑布流组件；响应式段落按选择器归属拆开。
+   例外:.main-content 底部 padding 已归零——画廊→札记的段隔统一由下一幕承担。 */
 
 /* 五幕长卷骨架 */
 .long-scroll {
@@ -45,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px 40px 20px;
+  padding: 0 20px;
   position: relative;
 }
 
@@ -121,6 +122,6 @@
   }
 
   .main-content {
-    padding: 0 12px 28px;
+    padding: 0 12px;
   }
 }
