@@ -120,6 +120,16 @@
     "display": "/resume-awards/imgs/display/1003-上大科创奖学金.jpg"
   },
   {
+    "src": "/resume-awards/imgs/中国计算机协会CSP证书.png",
+    "thumb": "/resume-awards/imgs/thumbs/中国计算机协会CSP证书.jpg",
+    "alt": "中国计算机协会CSP证书",
+    "width": 1410,
+    "height": 1825,
+    "thumbWidth": 695,
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/中国计算机协会CSP证书.jpg"
+  },
+  {
     "src": "/resume-awards/imgs/1004-上大科创奖学金2.JPG",
     "thumb": "/resume-awards/imgs/thumbs/1004-上大科创奖学金2.jpg",
     "alt": "科创奖学金2",
@@ -138,15 +148,5 @@
     "thumbWidth": 900,
     "thumbHeight": 533,
     "display": "/resume-awards/imgs/display/1005-企创大赛特等奖.jpg"
-  },
-  {
-    "src": "/resume-awards/imgs/中国计算机协会CSP证书.png",
-    "thumb": "/resume-awards/imgs/thumbs/中国计算机协会CSP证书.jpg",
-    "alt": "中国计算机协会CSP证书",
-    "width": 1410,
-    "height": 1825,
-    "thumbWidth": 695,
-    "thumbHeight": 900,
-    "display": "/resume-awards/imgs/display/中国计算机协会CSP证书.jpg"
   }
 ]
