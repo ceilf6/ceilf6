@@ -1,0 +1,25 @@
+site/src/components/WaterfallGallery.css
+  s_5bfacbadab0cd8::t_9984965b80acae 1-2,18-20,155,162
+site/src/pages/Home.css
+  s_5bfacbadab0cd8::t_9d8463b4e9ffde 3-4,49,125
+site/src/components/NotesPreview.css
+  s_5bfacbadab0cd8::t_ca7bda4e2764bd 3,8-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "1369a7c0cb120de23a78c610e4777ccaa8e45130",
+  "prompts": {},
+  "sessions": {
+    "s_5bfacbadab0cd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1e47c0dd-a570-4a3f-b90b-3b43ade4d906",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
