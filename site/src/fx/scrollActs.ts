@@ -1,7 +1,9 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/** 五幕滚动编排:触发式进出场;唯一的吸附只在首幕过渡带(见下),长内容区不劫持滚动。
+/** 五幕滚动编排:触发式进出场,全程不劫持滚动。首幕过渡带的松手吸附已回滚
+    (2026-07-29 用户拍板,撤销 c55192d):过渡带内画廊卡已露出可读,吸附会把
+    正被阅读的内容拽走,面试官受众不能接受页面自己动——勿再引入。
     hero 的钉住由 CSS position:sticky 完成(窗帘结构),本编排不再做 hero-bg 视差——
     sticky 下 hero 本身不动,视差与钉住语义冲突。
     reduced-motion 整体跳过;vitest 环境默认跳过(jsdom 无布局),测试用 force 打开。
@@ -40,22 +42,6 @@ export function initScrollActs(root: HTMLElement, { force = false } = {}): () =>
         stagger: 0.06,
         clearProps: "transform,opacity",
         scrollTrigger: { trigger: ".act-gallery", start: "top 70%" },
-      });
-    /* 首幕过渡带吸附:snapTo 两端=没有中间态(2026-07-28 用户拍板「松手即吸附」)——
-       窗帘要么完全盖上(第二幕顶到视口顶)、要么退回首幕;duration/ease 取厚重曲线,
-       大站的坚定质感而非轻飘的自由进度。吸附只做开场过渡带(0→hero 高),
-       画廊/札记等长内容自由滚动;reduced-motion 已由函数顶部整体跳过覆盖。 */
-    const hero = root.querySelector<HTMLElement>(".act-hero");
-    if (hero)
-      ScrollTrigger.create({
-        start: 0,
-        end: () => hero.offsetHeight,
-        snap: {
-          snapTo: [0, 1],
-          duration: { min: 0.4, max: 0.75 },
-          ease: "power3.inOut",
-          delay: 0.03,
-        },
       });
   }, root);
   return () => ctx.revert();

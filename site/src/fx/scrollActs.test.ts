@@ -63,21 +63,9 @@ describe("initScrollActs", () => {
     initScrollActs(root, { force: true });
     expect(gsapMock.from.mock.calls.some(([, cfg]) => cfg.stagger !== undefined)).toBe(false);
   });
-  it("含 .act-hero → 建首幕过渡带吸附区,snapTo 两端无中间态(2026-07-28 用户拍板)", () => {
+  it("含 .act-hero 也不建吸附区——首幕吸附已回滚,滚动全程自由(2026-07-29 用户拍板)", () => {
     const root = document.createElement("div");
     root.innerHTML = `<section class="act-hero"></section>`;
-    const hero = root.querySelector(".act-hero") as HTMLElement;
-    Object.defineProperty(hero, "offsetHeight", { value: 800 });
-    initScrollActs(root, { force: true });
-    expect(scrollTriggerMock.create).toHaveBeenCalledTimes(1);
-    const cfg = scrollTriggerMock.create.mock.calls[0][0];
-    expect(cfg.snap.snapTo).toEqual([0, 1]);
-    expect(cfg.start).toBe(0);
-    expect(cfg.end()).toBe(800); // 吸附带只覆盖首幕高度,长内容区不吸
-  });
-  it("无 .act-hero → 不建吸附区", () => {
-    const root = document.createElement("div");
-    root.innerHTML = `<section class="act-gallery"><div class="gallery"><div class="card"></div></div></section>`;
     initScrollActs(root, { force: true });
     expect(scrollTriggerMock.create).not.toHaveBeenCalled();
   });
