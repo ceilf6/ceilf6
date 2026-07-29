@@ -1,0 +1,25 @@
+site/src/fx/scrollActs.test.ts
+  s_5bfacbadab0cd8::t_f1665acc71ae99 66
+site/src/fx/scrollActs.ts
+  s_5bfacbadab0cd8::t_7b5324c52cde02 4-6
+site/src/styles/global.css
+  s_5bfacbadab0cd8::t_28e284a25c6400 33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "b18336d9b2c7f94c9cccfed85444401bd3b8fca6",
+  "prompts": {},
+  "sessions": {
+    "s_5bfacbadab0cd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1e47c0dd-a570-4a3f-b90b-3b43ade4d906",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
