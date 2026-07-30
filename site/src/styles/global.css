@@ -170,7 +170,9 @@ html::after {
      chars 兜底模式 .splash-name 仍在流内独占中心，两模式同时成立 */
   position: absolute;
   left: 50%;
-  translate: -50% 0;
+  /* transform 而非 translate 属性:老内核(微信内置浏览器)不识别 translate 会丢居中;
+     framer-motion 在此元素只动 opacity,不会覆写 transform */
+  transform: translateX(-50%);
   bottom: 12%;
 }
 

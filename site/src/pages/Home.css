@@ -10,9 +10,10 @@
 }
 .act { position: relative; }
 .act-hero {
-  /* 满屏首幕:滚动提示贴视口底(2026-07-27 用户反馈);svh 防移动端地址栏伸缩 */
+  /* 满屏首幕:滚动提示贴视口底(2026-07-27 用户反馈)。
+     100vh 是老内核生存线(微信内置浏览器等 Chromium<108 不识别 svh,2026-07-30 用户微信打开首幕塌陷):
+     svh 必须包进下方 @supports——与 vh 同规则双声明会被构建压缩器合并成只剩 svh,老内核整条失效 */
   min-height: 100vh;
-  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,6 +22,10 @@
   position: sticky;
   top: 0;
   z-index: 0;
+}
+/* svh 防移动端地址栏伸缩;支持才启用,不支持保持上面的 100vh */
+@supports (min-height: 100svh) {
+  .act-hero { min-height: 100svh; }
 }
 /* 窗帘层必须不透明,否则钉住的 hero 从缝里漏出 */
 .acts-curtain {

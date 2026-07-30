@@ -69,7 +69,9 @@
   position: absolute;
   bottom: 26px;
   left: 50%;
-  translate: -50% 0;
+  /* transform 而非 translate 属性:微信内置浏览器等老内核不识别 translate,
+     丢弃后提示失去回移、右偏半个胶囊宽(2026-07-30 用户微信实测) */
+  transform: translateX(-50%);
   /* 胶囊底:hint 不在 scrim 覆盖内,裸极光最坏帧 CR 2.28,α0.50 垫底后 5.46:1 */
   padding: 6px 14px;
   border-radius: 999px;
@@ -80,7 +82,7 @@
   animation: hint-bob 2s ease-in-out infinite;
 }
 @keyframes hint-bob {
-  50% { translate: -50% 8px; }
+  50% { transform: translateX(-50%) translateY(8px); }
 }
 @media (max-width: 640px) {
   /* 窄屏下面板全宽贴边会读不出「面板」,留边保住玻璃面板语义 */
