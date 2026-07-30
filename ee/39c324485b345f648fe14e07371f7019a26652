@@ -1,0 +1,23 @@
+site/src/components/SplashScreen.test.tsx
+  s_f0f793abc71ade::t_d8fcfc5cff8ed0 39-47
+site/src/components/SplashScreen.tsx
+  s_f0f793abc71ade::t_a4d3dc65f1a8fd 24-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ee39c324485b345f648fe14e07371f7019a26652",
+  "prompts": {},
+  "sessions": {
+    "s_f0f793abc71ade": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2d3428a-d850-4de6-ba7c-a091d35a74b0",
+        "model": "unknown"
+      },
+      "human_author": "wangjinghong.ceilf6 <wangjinghong.ceilf6@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
