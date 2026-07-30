@@ -21,6 +21,18 @@ export function SplashScreen() {
     if (visible) sessionStorage.setItem(SPLASH_KEY, "1");
   }, [visible]);
 
+  // .splash 是 fixed 覆盖层，不挡文档滚动：开屏期间滚轮会滚到底下的页面，
+  // 退场后视口就不在顶幕。锁根节点 overflow 直到退场开始。
+  useEffect(() => {
+    if (!visible) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = prev;
+    };
+  }, [visible]);
+
   // chars 兜底沿用原开屏的定时收场；particles 模式由 onDone 收场
   useEffect(() => {
     if (!visible || mode !== "chars") return;

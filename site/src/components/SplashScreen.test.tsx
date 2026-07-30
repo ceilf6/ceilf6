@@ -36,6 +36,15 @@ describe("SplashScreen", () => {
     });
   }, 9000);
 
+  it("开屏期间锁住文档滚动，退场后恢复", async () => {
+    render(<SplashScreen />);
+    expect(document.documentElement.style.overflow).toBe("hidden");
+    await waitForElementToBeRemoved(() => screen.queryByTestId("splash"), {
+      timeout: 5000,
+    });
+    expect(document.documentElement.style.overflow).toBe("");
+  }, 9000);
+
   it("jsdom 无 canvas 2D 时走 chars 兜底路径（字符逐个渲染）", async () => {
     sessionStorage.clear();
     render(<SplashScreen />);
