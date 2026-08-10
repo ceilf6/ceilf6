@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { PageTransition } from "../components/PageTransition";
 import { ReadmeCards } from "../components/ReadmeCards";
+import { HarnessBanner } from "../components/HarnessBanner";
 import { IcpFooter } from "../components/IcpFooter";
 import { WaterfallGallery } from "../components/WaterfallGallery";
 import { Hero } from "../components/Hero";
@@ -48,6 +49,7 @@ export default function Home() {
                 👋 你好，我是<span className="accent">王景宏</span>！
               </h2>
               <ReadmeCards />
+              <HarnessBanner />
             </div>
           </section>
           <section className="act act-gallery" data-act-reveal>
