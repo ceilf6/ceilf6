@@ -11,9 +11,9 @@ interface HarnessThread {
   cr_rounds?: number;
 }
 
-/** 卡片区下方的 harness 看板导流横幅：静态文案保底，取到 /harness/data.json
-    后升级为实时线程数与机审轮次。看板是独立静态页（不在 SPA 路由内），
-    必须用原生 <a> 整页跳转，不能走 react-router Link。 */
+/** 卡片区面板的页脚工艺线：流程文案常驻（与看板页阶段词表一致），
+    取到 /harness/data.json 后追加实时数字胶囊。看板是独立静态页
+    （不在 SPA 路由内），必须用原生 <a> 整页跳转，不能走 react-router Link。 */
 export function HarnessBanner() {
   const [stats, setStats] = useState<HarnessStats | null>(null);
 
@@ -38,10 +38,13 @@ export function HarnessBanner() {
       <span className="harness-banner-dot" aria-hidden="true" />
       <span className="harness-banner-title">harness 线程看板</span>
       <span className="harness-banner-desc">
-        {stats
-          ? `${stats.threads} 条交付线程 · 机审 CR 累计 ${stats.crRounds} 轮`
-          : "飞书机器人接需求 · TDD 红绿纪律 · 对抗式机审 CR · 人工闸门"}
+        飞书机器人接需求 · SDD 计划门 · TDD 红绿纪律 · 对抗式机审 CR · 人工闸门
       </span>
+      {stats ? (
+        <span className="harness-banner-live">
+          {stats.threads} 条线程 · 机审 {stats.crRounds} 轮
+        </span>
+      ) : null}
       <span className="harness-banner-arrow" aria-hidden="true">
         →
       </span>

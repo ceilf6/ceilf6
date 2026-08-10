@@ -1,34 +1,35 @@
-/* 与 .readme-card 同族的边框/底色/hover 辉光，形态为通栏横幅：
-   四卡是静态身份入口，本条是「活的工作台」入口，用脉冲圆点区分动静。 */
+/* 面板的「页脚工艺线」，不是与四卡同级的第三个盒子：无边框无底色，
+   靠一条两端渐隐的发丝线与卡片区分层，内容整行居中。
+   live 胶囊是整行唯一的盒状元素（文字级），用来区分实时状态与静态流程文案。 */
 
 .harness-banner {
+  position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 14px;
-  padding: 13px 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 214, 166, 0.3);
-  background: linear-gradient(
-    160deg,
-    rgba(18, 28, 54, 0.92),
-    rgba(26, 40, 74, 0.68)
-  );
-  box-shadow: 0 14px 30px rgba(3, 10, 24, 0.3);
+  justify-content: center;
+  gap: 8px 12px;
+  margin-top: 20px;
+  padding: 16px 10px 2px;
+  border-radius: 10px;
   color: rgba(238, 244, 255, 0.86);
   text-decoration: none;
-  transition:
-    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.35s ease;
 }
 
-.harness-banner:hover {
-  translate: 0 -3px;
-  border-color: rgba(255, 192, 105, 0.48);
-  box-shadow:
-    0 18px 34px rgba(3, 10, 24, 0.44),
-    0 0 0 1px rgba(255, 192, 105, 0.38);
+/* 发丝分隔线：两端渐隐，避免读成任何容器的边 */
+.harness-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 214, 166, 0.35),
+    transparent
+  );
 }
 
 .harness-banner:focus-visible {
@@ -38,12 +39,13 @@
 
 .harness-banner-dot {
   flex: none;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: rgba(255, 192, 105, 0.92);
   box-shadow: 0 0 10px rgba(255, 192, 105, 0.55);
   animation: harnessDotPulse 2.2s ease-in-out infinite;
+  transition: box-shadow 0.35s ease;
 }
 
 @keyframes harnessDotPulse {
@@ -70,16 +72,25 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   color: rgba(255, 214, 166, 0.95);
+  transition: color 0.35s ease;
 }
 
 .harness-banner-desc {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 13px;
+  line-height: 1.7;
   color: rgba(238, 244, 255, 0.62);
+  transition: color 0.35s ease;
+}
+
+.harness-banner-live {
+  flex: none;
+  padding: 2px 10px;
+  border: 1px solid rgba(255, 192, 105, 0.3);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 214, 166, 0.92);
 }
 
 .harness-banner-arrow {
@@ -89,19 +100,25 @@
   transition: transform 0.3s ease;
 }
 
-.harness-banner:hover .harness-banner-arrow {
-  transform: translateX(3px);
+.harness-banner:hover .harness-banner-title {
+  color: rgba(255, 224, 186, 1);
 }
 
-@media (max-width: 640px) {
-  .harness-banner {
-    flex-wrap: wrap;
-    row-gap: 6px;
-  }
+.harness-banner:hover .harness-banner-desc {
+  color: rgba(238, 244, 255, 0.8);
+}
 
-  .harness-banner-desc {
-    flex-basis: 100%;
-    order: 3;
-    white-space: normal;
+.harness-banner:hover .harness-banner-dot {
+  box-shadow: 0 0 16px rgba(255, 192, 105, 0.85);
+}
+
+.harness-banner:hover .harness-banner-arrow {
+  transform: translateX(4px);
+}
+
+/* 窄屏下装饰箭头会孤行垂落，整条本就是链接，隐藏它 */
+@media (max-width: 640px) {
+  .harness-banner-arrow {
+    display: none;
   }
 }

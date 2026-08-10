@@ -17,15 +17,15 @@ describe("HarnessBanner", () => {
     expect(link).not.toHaveAttribute("target");
   });
 
-  it("data.json 不可达时保持静态文案兜底", async () => {
+  it("流程文案常驻，含 SDD/TDD 工程化阶段词", () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     setup();
     expect(
-      await screen.findByText(/飞书机器人接需求/),
+      screen.getByText(/SDD 计划门 · TDD 红绿纪律 · 对抗式机审 CR/),
     ).toBeInTheDocument();
   });
 
-  it("取到 data.json 后升级为实时数字：线程数不含归档、机审轮次含全量", async () => {
+  it("取到 data.json 后追加实时胶囊：线程数不含归档、机审轮次含全量，流程文案不被顶掉", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -41,12 +41,13 @@ describe("HarnessBanner", () => {
       }),
     );
     setup();
+    expect(await screen.findByText("2 条线程 · 机审 36 轮")).toBeInTheDocument();
     expect(
-      await screen.findByText("2 条交付线程 · 机审 CR 累计 36 轮"),
+      screen.getByText(/SDD 计划门 · TDD 红绿纪律 · 对抗式机审 CR/),
     ).toBeInTheDocument();
   });
 
-  it("响应非 ok 或形状不对时不升级", async () => {
+  it("响应非 ok 或形状不对时不出实时胶囊", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({ ok: false, json: () => Promise.resolve({}) }),
@@ -55,5 +56,6 @@ describe("HarnessBanner", () => {
     expect(
       await screen.findByText(/飞书机器人接需求/),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/条线程 · 机审/)).toBeNull();
   });
 });
