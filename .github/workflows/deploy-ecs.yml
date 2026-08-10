@@ -52,6 +52,7 @@ jobs:
             mkdir -p /var/www/wangjinghong.new &&
             tar -xzf - -C /var/www/wangjinghong.new &&
             { cp -an /var/www/wangjinghong/static/. /var/www/wangjinghong.new/static/ 2>/dev/null || true; } &&
+            { cp -a /var/www/wangjinghong/harness /var/www/wangjinghong.new/ 2>/dev/null || true; } &&
             rm -rf /var/www/wangjinghong.old &&
             { mv /var/www/wangjinghong /var/www/wangjinghong.old 2>/dev/null || true; } &&
             mv /var/www/wangjinghong.new /var/www/wangjinghong
