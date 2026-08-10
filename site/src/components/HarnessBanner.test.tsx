@@ -25,7 +25,7 @@ describe("HarnessBanner", () => {
     ).toBeInTheDocument();
   });
 
-  it("取到 data.json 后追加实时胶囊：线程数不含归档、机审轮次含全量，流程文案不被顶掉", async () => {
+  it("取到 data.json 后追加实时胶囊：线程数与机审轮次均为全量（与公开看板计数同口径，含已归档），流程文案不被顶掉", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -41,7 +41,7 @@ describe("HarnessBanner", () => {
       }),
     );
     setup();
-    expect(await screen.findByText("2 条线程 · 机审 36 轮")).toBeInTheDocument();
+    expect(await screen.findByText("3 条线程 · 机审 36 轮")).toBeInTheDocument();
     expect(
       screen.getByText(/SDD 计划门 · TDD 红绿纪律 · 对抗式机审 CR/),
     ).toBeInTheDocument();

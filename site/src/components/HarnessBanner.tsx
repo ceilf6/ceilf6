@@ -7,13 +7,14 @@ interface HarnessStats {
 }
 
 interface HarnessThread {
-  archived?: boolean;
   cr_rounds?: number;
 }
 
 /** 卡片区面板的页脚工艺线：流程文案常驻（与看板页阶段词表一致），
     取到 /harness/data.json 后追加实时数字胶囊。看板是独立静态页
-    （不在 SPA 路由内），必须用原生 <a> 整页跳转，不能走 react-router Link。 */
+    （不在 SPA 路由内），必须用原生 <a> 整页跳转，不能走 react-router Link。
+    胶囊计数与公开看板页的「N 条线程」同口径：threads 全量（含已归档），
+    访客点进看板看到的数字必须与胶囊一致。 */
 export function HarnessBanner() {
   const [stats, setStats] = useState<HarnessStats | null>(null);
 
@@ -23,9 +24,8 @@ export function HarnessBanner() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d: { threads?: HarnessThread[] } | null) => {
         if (!d || !Array.isArray(d.threads)) return;
-        const active = d.threads.filter((t) => !t.archived);
         setStats({
-          threads: active.length,
+          threads: d.threads.length,
           crRounds: d.threads.reduce((n, t) => n + (t.cr_rounds ?? 0), 0),
         });
       })
