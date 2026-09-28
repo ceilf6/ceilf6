@@ -4,8 +4,8 @@ import { join } from "node:path";
 import { awards } from "./awards";
 
 describe("awards manifest", () => {
-  it("有 15 条完整记录，路径契约与旧站一致", () => {
-    expect(awards).toHaveLength(15);
+  it("有 17 条完整记录，路径契约与旧站一致", () => {
+    expect(awards).toHaveLength(17);
     for (const a of awards) {
       expect(a.src).toMatch(/^\/resume-awards\/imgs\//);
       expect(a.thumb).toMatch(/^\/resume-awards\/imgs\/thumbs\//);

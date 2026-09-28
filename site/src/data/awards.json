@@ -10,6 +10,16 @@
     "display": "/resume-awards/imgs/display/0004-字节工训营.jpg"
   },
   {
+    "src": "/resume-awards/imgs/0004-字节工训营-2025.JPG",
+    "thumb": "/resume-awards/imgs/thumbs/0004-字节工训营-2025.jpg",
+    "alt": "字节工训营结营",
+    "width": 2984,
+    "height": 2152,
+    "thumbWidth": 900,
+    "thumbHeight": 649,
+    "display": "/resume-awards/imgs/display/0004-字节工训营-2025.jpg"
+  },
+  {
     "src": "/resume-awards/imgs/腾讯青科实训营.png",
     "thumb": "/resume-awards/imgs/thumbs/腾讯青科实训营.jpg",
     "alt": "腾讯青科实训营",
@@ -18,6 +28,16 @@
     "thumbWidth": 636,
     "thumbHeight": 900,
     "display": "/resume-awards/imgs/display/腾讯青科实训营.jpg"
+  },
+  {
+    "src": "/resume-awards/imgs/腾讯开源实践-2026.png",
+    "thumb": "/resume-awards/imgs/thumbs/腾讯开源实践-2026.jpg",
+    "alt": "腾讯开源2026",
+    "width": 1200,
+    "height": 1648,
+    "thumbWidth": 655,
+    "thumbHeight": 900,
+    "display": "/resume-awards/imgs/display/腾讯开源实践-2026.jpg"
   },
   {
     "src": "/resume-awards/imgs/0003-腾讯开源.png",
