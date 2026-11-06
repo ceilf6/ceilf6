@@ -20,10 +20,14 @@ RIGHT_SIDE_TRANSFORM = "translate(220,20)"
 LEFT_SIDE_TRANSFORM = "translate(30,20)"
 EXPECTED_LABELS = (
     "Total Stars:",
-    f"{datetime.now(timezone.utc).year} Commits:",
     "Total PRs:",
     "Total Issues:",
     "Contributed to:",
+)
+# Upstream renders the commits row either per calendar year or as an all-time total.
+COMMITS_LABELS = (
+    f"{datetime.now(timezone.utc).year} Commits:",
+    "Total Commits:",
 )
 OUTPUT_TITLE = "ceilf6's Github Stats"
 OUTPUT_TITLE_STYLE = "font-size: 18px; fill: #70a5fd;"
@@ -93,7 +97,8 @@ def validate_card(root):
         for element in root.iter()
         if local_name(element.tag) == "g" and element.get("transform") == LEFT_SIDE_TRANSFORM
     ]
-    if len(label_groups) != 1 or not set(EXPECTED_LABELS).issubset(text_values(label_groups[0])):
+    labels = text_values(label_groups[0]) if len(label_groups) == 1 else set()
+    if not set(EXPECTED_LABELS).issubset(labels) or labels.isdisjoint(COMMITS_LABELS):
         raise ValueError("Upstream card field labels do not match the expected stats layout")
 
     parent, target = find_right_side_group(root)
