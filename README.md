@@ -84,6 +84,7 @@
   <code>同时持续为社区贡献</code>
 </h3>
 
+- **[deepcoldy/botmux](https://github.com/deepcoldy/botmux)** - 飞书 / Lark 桥接 AI 编程 CLI 的机器人
 - **[openai/codex](https://github.com/openai/codex)** - 智能体 GUI 工具
 - **[anthropics/claude-code](https://github.com/anthropics/claude-code)** - 智能体 CLI 工具
 - **[Tencent/cherry markdown](https://github.com/Tencent/cherry-markdown)** - markdown 编辑器
