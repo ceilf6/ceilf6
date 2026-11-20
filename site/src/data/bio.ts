@@ -2,7 +2,7 @@
     @提及渲染为金色外链;词表外的 @ 保持文本,避免猜错链接。 */
 
 export const BIO =
-  "Generalist constantly learning, building and thinking. Founder of @FrontAgent. Currently @bytedance, previously @meituan, @qiniu.";
+  "Generalist constantly learning, building and thinking. Founder of @FrontAgent. Previously @bytedance, @meituan, @qiniu.";
 
 export const MENTIONS: Record<string, string> = {
   FrontAgent: "https://github.com/ceilf6/FrontAgent",
