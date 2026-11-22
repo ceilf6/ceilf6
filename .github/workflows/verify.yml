@@ -31,6 +31,8 @@ jobs:
         run: node site/scripts/update-image-metadata.mjs --check
       - name: Site tooling tests
         run: node --test site/scripts/*.test.mjs
+      - name: Deployment regressions
+        run: python3 -m unittest discover -s deploy/tests -t .
 
   stats:
     runs-on: ubuntu-latest

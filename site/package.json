@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && python3 ../deploy/assets.py bundle ../assets dist/assets",
     "lint": "oxlint",
     "preview": "vite preview",
     "type-check": "tsc -b --noEmit",

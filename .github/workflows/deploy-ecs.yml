@@ -7,6 +7,7 @@ on:
     paths:
       - "site/**"
       - "assets/**"
+      - "deploy/**"
       - ".github/workflows/deploy-ecs.yml"
   workflow_dispatch:
 
@@ -34,26 +35,14 @@ jobs:
           npm ci
           npm run build
 
-      - name: Bundle README stats cards
-        run: cp -r assets site/dist/assets
-
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           printf '%s\n' '${{ secrets.ECS_SSH_KEY }}' > ~/.ssh/ecs-key.pem
           chmod 600 ~/.ssh/ecs-key.pem
-          ssh-keyscan -H 47.103.28.157 >> ~/.ssh/known_hosts
 
-      - name: Deploy website (atomic swap, keep previous as .old)
-        run: |
-          tar -czf - -C site/dist . |
-          ssh -i ~/.ssh/ecs-key.pem root@47.103.28.157 '
-            rm -rf /var/www/wangjinghong.new &&
-            mkdir -p /var/www/wangjinghong.new &&
-            tar -xzf - -C /var/www/wangjinghong.new &&
-            { cp -an /var/www/wangjinghong/static/. /var/www/wangjinghong.new/static/ 2>/dev/null || true; } &&
-            { cp -a /var/www/wangjinghong/harness /var/www/wangjinghong.new/ 2>/dev/null || true; } &&
-            rm -rf /var/www/wangjinghong.old &&
-            { mv /var/www/wangjinghong /var/www/wangjinghong.old 2>/dev/null || true; } &&
-            mv /var/www/wangjinghong.new /var/www/wangjinghong
-          '
+      - name: Publish website
+        env:
+          DEPLOY_KEY: /home/runner/.ssh/ecs-key.pem
+          SITE_ORIGIN: https://www.wangjinghong.com
+        run: bash deploy/publish.sh site
