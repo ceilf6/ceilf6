@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from accounts.views import me_view
-from comments.views import note_comments_view
+from comments.views import delete_comment_view, note_comments_view
 from config.views import health_check
 
 urlpatterns = [
@@ -19,5 +19,10 @@ urlpatterns = [
         "api/notes/<str:slug>/comments/",
         note_comments_view,
         name="api-note-comments",
+    ),
+    path(
+        "api/comments/<str:comment_id>/delete/",
+        delete_comment_view,
+        name="api-comment-delete",
     ),
 ]

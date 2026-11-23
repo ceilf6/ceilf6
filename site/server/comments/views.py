@@ -1,4 +1,4 @@
-"""Cursor-paginated read and CSRF-protected create endpoints for note comments."""
+"""Cursor-paginated read, create, and delete endpoints for note comments."""
 
 from __future__ import annotations
 
@@ -9,14 +9,15 @@ from typing import Any
 from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.core.exceptions import RequestDataTooBig, ValidationError
-from django.http import HttpRequest, JsonResponse, RawPostDataException
+from django.http import HttpRequest, HttpResponse, JsonResponse, RawPostDataException
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from comments.models import MAX_COMMENT_BODY_LENGTH, Comment
+from comments.permissions import can_delete_comment
 from comments.ratelimit import consume_comment_rate_limit
 from comments.serializers import serialize_comment
 from comments.slugs import get_valid_note_slugs
-from config.http import json_no_store
+from config.http import empty_no_store, json_no_store
 
 ALLOWED_COMMENTS_METHODS = ("GET", "HEAD", "POST")
 PAGE_SIZE = 20
@@ -340,3 +341,139 @@ def note_comments_view(request: HttpRequest, slug: str) -> JsonResponse:
     if request.method == "POST":
         return _create_note_comment_view(request, slug)
     return _list_note_comments_view(request, slug)
+
+
+def _parse_positive_comment_id(raw_id: str) -> int | None:
+    """Parse canonical positive SQLite int64 comment ID (rejecting leading zeros)."""
+    if (
+        not raw_id
+        or not raw_id.isascii()
+        or not raw_id.isdigit()
+        or raw_id.startswith("0")
+        or len(raw_id) > MAX_SQLITE_INT64_DIGITS
+    ):
+        return None
+
+    value = int(raw_id)
+    if value < 1 or value > MAX_SQLITE_INT64:
+        return None
+    return value
+
+
+def _validate_delete_payload(request: HttpRequest) -> str | None:
+    raw_length = str(request.META.get("CONTENT_LENGTH", "") or "").strip()
+    if raw_length:
+        try:
+            parsed_len = int(raw_length)
+        except ValueError:
+            return "请求体长度头无效。"
+        if parsed_len < 0 or parsed_len > MAX_COMMENT_REQUEST_BYTES:
+            return "请求体过大，请精简内容后重试。"
+
+    try:
+        raw_body = request.body
+    except (RequestDataTooBig, RawPostDataException):
+        return "请求体过大或无法读取，请精简内容后重试。"
+
+    if len(raw_body) > MAX_COMMENT_REQUEST_BYTES:
+        return "请求体过大，请精简内容后重试。"
+
+    if len(raw_body) == 0:
+        return None
+
+    if (request.content_type or "").lower() != "application/json":
+        return "请求格式必须为 application/json。"
+
+    try:
+        decoded = raw_body.decode("utf-8")
+        payload = json.loads(decoded, parse_constant=_reject_json_constant)
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError, RecursionError):
+        return "请求体 JSON 格式无效。"
+
+    if not isinstance(payload, dict):
+        return "请求体必须为 JSON 对象。"
+
+    if payload:
+        return "请求包含未允许的字段。"
+
+    return None
+
+
+def _comment_not_found_response() -> JsonResponse:
+    return json_no_store(
+        {"code": "comment_not_found", "message": "未找到对应的评论。"},
+        status=404,
+    )
+
+
+@csrf_protect
+def _delete_comment_post_view(
+    request: HttpRequest, comment_id: str
+) -> HttpResponse:
+    payload_error = _validate_delete_payload(request)
+    if payload_error is not None:
+        return json_no_store(
+            {"code": "invalid_payload", "message": payload_error},
+            status=400,
+        )
+
+    user = request.user
+    if not user.is_authenticated or not user.is_active:
+        return json_no_store(
+            {
+                "code": "authentication_required",
+                "message": "请先登录后再删除评论。",
+            },
+            status=401,
+        )
+
+    has_verified_email = bool(
+        user.is_superuser
+        or EmailAddress.objects.filter(user=user, verified=True).exists()
+    )
+    if not has_verified_email:
+        return json_no_store(
+            {
+                "code": "email_not_verified",
+                "message": "请先完成邮箱验证后再操作评论。",
+            },
+            status=403,
+        )
+
+    parsed_id = _parse_positive_comment_id(comment_id)
+    if parsed_id is None:
+        return _comment_not_found_response()
+
+    comment = (
+        Comment.objects.only("id", "author_id").filter(pk=parsed_id).first()
+    )
+    if comment is None:
+        return _comment_not_found_response()
+
+    if not can_delete_comment(user, comment):
+        return json_no_store(
+            {"code": "permission_denied", "message": "无权删除该条评论。"},
+            status=403,
+        )
+
+    deleted_count, _ = Comment.objects.filter(pk=comment.pk).delete()
+    if deleted_count == 0:
+        return _comment_not_found_response()
+
+    return empty_no_store(status=204)
+
+
+@csrf_exempt
+def delete_comment_view(
+    request: HttpRequest, comment_id: str
+) -> HttpResponse:
+    """Dispatch CSRF-enforced POST comment deletion; reject non-POST with 405 JSON."""
+    if request.method != "POST":
+        response = json_no_store(
+            {"code": "method_not_allowed", "message": "Method not allowed."},
+            status=405,
+        )
+        response["Allow"] = "POST"
+        return response
+
+    return _delete_comment_post_view(request, comment_id)
