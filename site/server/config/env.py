@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from collections.abc import Mapping, MutableMapping
 from dataclasses import dataclass
 from pathlib import Path
@@ -26,9 +27,16 @@ MIN_PRODUCTION_SECRET_KEY_LENGTH = 50
 MIN_PRODUCTION_SECRET_KEY_UNIQUE_CHARS = 5
 FILEBASED_EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 SMTP_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+ALLOWED_PRODUCTION_EMAIL_BACKENDS = frozenset(
+    {
+        FILEBASED_EMAIL_BACKEND,
+        SMTP_EMAIL_BACKEND,
+    }
+)
 LOCMEM_CACHE_BACKEND = "django.core.cache.backends.locmem.LocMemCache"
 FILEBASED_CACHE_BACKEND = "django.core.cache.backends.filebased.FileBasedCache"
 RESERVED_ADMIN_PREFIXES = ("api/", "accounts/", "django-static/", "static/")
+SAFE_ADMIN_PATH_RE = re.compile(r"^[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*/?$")
 
 
 @dataclass(frozen=True)
@@ -155,10 +163,15 @@ def _ensure_private_dir(target_dir: Path) -> None:
 
 
 def _normalize_admin_path(raw_admin_path: str) -> str:
-    cleaned = raw_admin_path.strip().lstrip("/")
-    if not cleaned or ".." in cleaned.split("/"):
+    trimmed = raw_admin_path.strip()
+    if any(ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in trimmed):
         raise ImproperlyConfigured(
-            "DJANGO_ADMIN_PATH must be a non-empty relative URL prefix."
+            "DJANGO_ADMIN_PATH must not contain whitespace or control characters."
+        )
+    cleaned = trimmed.lstrip("/")
+    if not cleaned or not SAFE_ADMIN_PATH_RE.fullmatch(cleaned):
+        raise ImproperlyConfigured(
+            "DJANGO_ADMIN_PATH must be a safe non-empty URL prefix containing only letters, digits, '/', '_', or '-'."
         )
     if not cleaned.endswith("/"):
         cleaned = f"{cleaned}/"
@@ -250,6 +263,11 @@ def resolve_runtime_settings(
         if not raw_email_backend:
             raise ImproperlyConfigured(
                 "DJANGO_EMAIL_BACKEND must be explicitly set when DJANGO_DEBUG is false."
+            )
+        if raw_email_backend not in ALLOWED_PRODUCTION_EMAIL_BACKENDS:
+            raise ImproperlyConfigured(
+                f"Unsupported DJANGO_EMAIL_BACKEND in production: {raw_email_backend!r}. "
+                f"Expected {FILEBASED_EMAIL_BACKEND!r} or {SMTP_EMAIL_BACKEND!r}."
             )
         email_backend = raw_email_backend
 

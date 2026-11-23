@@ -51,6 +51,11 @@ class User(AbstractUser):
         validators=[validate_safe_display_name],
         help_text="对外展示的公开昵称，与私有登录邮箱分离。",
     )
+    is_comment_admin = models.BooleanField(
+        "站主评论管理权限",
+        default=False,
+        help_text="标记该账号具备站主评论治理权限（由 grant_comment_admin 命令显式授予或撤销）。",
+    )
 
     class Meta(AbstractUser.Meta):
         verbose_name = "用户"

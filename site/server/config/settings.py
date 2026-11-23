@@ -26,7 +26,7 @@ DJANGO_ADMIN_PATH = _RUNTIME.admin_path
 ALLAUTH_TRUSTED_PROXY_COUNT = _RUNTIME.trusted_proxy_count
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "config.admin_site.UnifiedAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -118,9 +118,12 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
 ACCOUNT_FORMS = {
+    "login": "accounts.forms.AccountLoginForm",
+    "reset_password": "accounts.forms.AccountResetPasswordForm",
     "signup": "accounts.forms.AccountSignupForm",
 }
 ACCOUNT_USER_DISPLAY = "accounts.adapter.user_display"

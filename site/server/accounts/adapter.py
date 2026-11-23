@@ -9,6 +9,7 @@ from allauth.account.adapter import DefaultAccountAdapter
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.http import HttpRequest
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from accounts.models import normalize_display_name
 
@@ -30,8 +31,19 @@ def user_display(user: AbstractBaseUser) -> str:
     return str(user)
 
 
+def is_safe_internal_redirect_url(url: str | None) -> bool:
+    """Allow only safe site-internal relative paths starting with a single '/'."""
+    if not isinstance(url, str) or not url or url != url.strip():
+        return False
+    if "\\" in url or any(ord(ch) < 32 or ord(ch) == 127 for ch in url):
+        return False
+    if not url.startswith("/") or url.startswith("//"):
+        return False
+    return url_has_allowed_host_and_scheme(url, allowed_hosts=set())
+
+
 class AccountAdapter(DefaultAccountAdapter):
-    """Adapter enforcing lowercase emails, opaque usernames, and public nicknames."""
+    """Adapter enforcing lowercase emails, opaque usernames, and strict internal redirects."""
 
     error_messages = {
         **DefaultAccountAdapter.error_messages,
@@ -45,6 +57,9 @@ class AccountAdapter(DefaultAccountAdapter):
         "too_many_login_attempts": "登录尝试次数过多，请稍后再试。",
         "unverified_primary_email": "请先完成邮箱验证后再登录。",
     }
+
+    def is_safe_url(self, url: str) -> bool:
+        return is_safe_internal_redirect_url(url)
 
     def clean_email(self, email: str) -> str:
         normalized = (email or "").strip().lower()
