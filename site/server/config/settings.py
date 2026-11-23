@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping, MutableMapping
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+from config.env import SERVER_DIR, bootstrap_env, load_dotenv_file
+
+BASE_DIR = SERVER_DIR
 
 LOCAL_DEV_SECRET_KEY = "django-insecure-local-dev-placeholder"
 EXAMPLE_SECRET_KEY_PLACEHOLDER = "django-insecure-example-placeholder"
@@ -32,6 +34,17 @@ SQLITE_INIT_COMMAND = (
     "PRAGMA foreign_keys=ON;"
 )
 
+__all__ = [
+    "BASE_DIR",
+    "EXAMPLE_SECRET_KEY_PLACEHOLDER",
+    "FILEBASED_EMAIL_BACKEND",
+    "LOCAL_DEV_SECRET_KEY",
+    "RuntimeSettings",
+    "load_dotenv_file",
+    "parse_env_bool",
+    "resolve_runtime_settings",
+]
+
 
 @dataclass(frozen=True)
 class RuntimeSettings:
@@ -42,36 +55,6 @@ class RuntimeSettings:
     email_backend: str
     email_file_path: Path
     admin_path: str
-    allow_guest_comments: bool
-
-
-def load_dotenv_file(
-    dotenv_path: Path, target_env: MutableMapping[str, str]
-) -> None:
-    """Load simple KEY=VALUE pairs from .env without overriding existing env vars."""
-    if not dotenv_path.is_file():
-        return
-
-    for raw_line in dotenv_path.read_text(encoding="utf-8").splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#"):
-            continue
-        if line.startswith("export "):
-            line = line[len("export ") :].strip()
-        if "=" not in line:
-            continue
-        key, raw_value = line.split("=", 1)
-        key = key.strip()
-        if not key:
-            continue
-        value = raw_value.strip()
-        if (
-            len(value) >= 2
-            and value[0] == value[-1]
-            and value[0] in {"'", '"'}
-        ):
-            value = value[1:-1]
-        target_env.setdefault(key, value)
 
 
 def parse_env_bool(
@@ -115,8 +98,8 @@ def _normalize_admin_path(raw_admin_path: str) -> str:
 def resolve_runtime_settings(
     environ: Mapping[str, str], *, base_dir: Path = BASE_DIR
 ) -> RuntimeSettings:
-    # Default to False (fail-closed) when DJANGO_DEBUG is unset; manage.py sets
-    # DJANGO_DEBUG=true explicitly for zero-config local CLI/runserver usage.
+    # Default to False (fail-closed) when DJANGO_DEBUG is unset; manage.py calls
+    # bootstrap_env(default_debug="true") after loading .env for local dev.
     debug = parse_env_bool(environ, "DJANGO_DEBUG", default=False)
 
     raw_secret = environ.get("DJANGO_SECRET_KEY", "").strip()
@@ -180,10 +163,6 @@ def resolve_runtime_settings(
     raw_admin_path = environ.get("DJANGO_ADMIN_PATH", "admin/")
     admin_path = _normalize_admin_path(raw_admin_path)
 
-    allow_guest_comments = parse_env_bool(
-        environ, "ALLOW_GUEST_COMMENTS", default=False
-    )
-
     return RuntimeSettings(
         debug=debug,
         secret_key=secret_key,
@@ -192,15 +171,10 @@ def resolve_runtime_settings(
         email_backend=email_backend,
         email_file_path=email_file_path,
         admin_path=admin_path,
-        allow_guest_comments=allow_guest_comments,
     )
 
 
-_DOTENV_OVERRIDE = os.environ.get("DJANGO_DOTENV_PATH", "").strip()
-load_dotenv_file(
-    Path(_DOTENV_OVERRIDE) if _DOTENV_OVERRIDE else (BASE_DIR / ".env"),
-    os.environ,
-)
+bootstrap_env(default_debug="false", environ=os.environ, base_dir=BASE_DIR)
 _RUNTIME = resolve_runtime_settings(os.environ, base_dir=BASE_DIR)
 
 SECRET_KEY = _RUNTIME.secret_key
@@ -208,7 +182,6 @@ DEBUG = _RUNTIME.debug
 ALLOWED_HOSTS = _RUNTIME.allowed_hosts
 
 DJANGO_ADMIN_PATH = _RUNTIME.admin_path
-ALLOW_GUEST_COMMENTS = _RUNTIME.allow_guest_comments
 
 INSTALLED_APPS = [
     "django.contrib.admin",

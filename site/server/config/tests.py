@@ -27,12 +27,12 @@ from django.db.backends.sqlite3.base import DatabaseWrapper
 from django.test import Client, SimpleTestCase, TestCase, override_settings
 
 from accounts.models import User
+from config.env import bootstrap_env, load_dotenv_file
 from config.settings import (
     BASE_DIR,
     EXAMPLE_SECRET_KEY_PLACEHOLDER,
     FILEBASED_EMAIL_BACKEND,
     LOCAL_DEV_SECRET_KEY,
-    load_dotenv_file,
     resolve_runtime_settings,
 )
 
@@ -58,7 +58,6 @@ def _isolated_env(tmp_path: Path, **overrides: str) -> dict[str, str]:
             "DJANGO_EMAIL_BACKEND",
             "EMAIL_FILE_PATH",
             "DJANGO_ADMIN_PATH",
-            "ALLOW_GUEST_COMMENTS",
             "DJANGO_DOTENV_PATH",
         }
     }
@@ -312,7 +311,6 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
             self.assertTrue(mail_dir.is_dir())
             self.assertEqual(stat.S_IMODE(mail_dir.stat().st_mode), 0o700)
             self.assertEqual(cfg.admin_path, "admin/")
-            self.assertFalse(cfg.allow_guest_comments)
 
     def test_smtp_email_backend_does_not_create_local_mail_directory(
         self,
@@ -367,7 +365,6 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
                     "DJANGO_SECRET_KEY": strong_key,
                     "DJANGO_ALLOWED_HOSTS": "www.wangjinghong.com, 127.0.0.1, localhost",
                     "DJANGO_ADMIN_PATH": "/ops-panel",
-                    "ALLOW_GUEST_COMMENTS": "true",
                 },
                 base_dir=base,
             )
@@ -378,7 +375,6 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
                 ["www.wangjinghong.com", "127.0.0.1", "localhost"],
             )
             self.assertEqual(cfg.admin_path, "ops-panel/")
-            self.assertTrue(cfg.allow_guest_comments)
 
             for bad_hosts in ("", "*", "www.wangjinghong.com,*"):
                 with self.subTest(allowed_hosts=bad_hosts):
@@ -409,6 +405,62 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
             self.assertNotEqual(proc.returncode, 0)
             self.assertIn("DJANGO_SECRET_KEY", proc.stderr)
 
+    def test_dotenv_debug_false_overrides_manage_py_default_and_fails_closed(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(prefix="ceilf6-env-prec-") as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            dotenv_file = tmp_path / ".env"
+            dotenv_file.write_text("DJANGO_DEBUG=false\n", encoding="utf-8")
+
+            env = _isolated_env(tmp_path, DJANGO_DOTENV_PATH=str(dotenv_file))
+            proc = subprocess.run(
+                [sys.executable, str(MANAGE_PY), "check"],
+                cwd=str(BASE_DIR),
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertIn("DJANGO_SECRET_KEY", proc.stderr)
+
+    def test_bootstrap_env_precedence_process_beats_dotenv_beats_default(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(prefix="ceilf6-boot-env-") as tmp_dir:
+            base = Path(tmp_dir)
+            dotenv_path = base / ".env"
+            dotenv_path.write_text(
+                "# comment\n"
+                "DJANGO_DEBUG=false\n"
+                "DJANGO_ALLOWED_HOSTS='dotenv.example.com'\n"
+                "export DJANGO_ADMIN_PATH=dotenv-admin/\n",
+                encoding="utf-8",
+            )
+
+            # Process env beats .env
+            target_proc = {
+                "DJANGO_DEBUG": "true",
+                "DJANGO_ALLOWED_HOSTS": "process.example.com",
+            }
+            load_dotenv_file(dotenv_path, target_proc)
+            bootstrap_env(
+                default_debug="true", environ=target_proc, base_dir=base
+            )
+            self.assertEqual(target_proc["DJANGO_DEBUG"], "true")
+            self.assertEqual(
+                target_proc["DJANGO_ALLOWED_HOSTS"], "process.example.com"
+            )
+            self.assertEqual(target_proc["DJANGO_ADMIN_PATH"], "dotenv-admin/")
+
+            # .env beats entrypoint default
+            target_dotenv: dict[str, str] = {}
+            bootstrap_env(
+                default_debug="true", environ=target_dotenv, base_dir=base
+            )
+            self.assertEqual(target_dotenv["DJANGO_DEBUG"], "false")
+
     def test_invalid_boolean_and_colliding_admin_path_raise_errors(self) -> None:
         with tempfile.TemporaryDirectory(prefix="ceilf6-invalid-") as tmp_dir:
             base = Path(tmp_dir)
@@ -427,28 +479,16 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
                             base_dir=base,
                         )
 
-    def test_dotenv_loader_does_not_override_existing_environ(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="ceilf6-dotenv-") as tmp_dir:
-            dotenv_path = Path(tmp_dir) / ".env"
-            dotenv_path.write_text(
-                "# comment\n"
-                "DJANGO_ALLOWED_HOSTS='dotenv.example.com'\n"
-                "export ALLOW_GUEST_COMMENTS=true\n",
-                encoding="utf-8",
-            )
-            target = {"DJANGO_ALLOWED_HOSTS": "process.example.com"}
-            load_dotenv_file(dotenv_path, target)
-            self.assertEqual(
-                target["DJANGO_ALLOWED_HOSTS"], "process.example.com"
-            )
-            self.assertEqual(target["ALLOW_GUEST_COMMENTS"], "true")
-
 
 class WsgiEntrypointTests(SimpleTestCase):
-    def test_wsgi_import_fails_closed_when_unconfigured(self) -> None:
+    def test_wsgi_import_fails_closed_when_unconfigured_or_dotenv_empty(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory(prefix="ceilf6-wsgi-fail-") as tmp_dir:
             tmp_path = Path(tmp_dir)
-            env = _isolated_env(tmp_path)
+            empty_dotenv = tmp_path / ".env"
+            empty_dotenv.write_text("# empty dotenv\n", encoding="utf-8")
+            env = _isolated_env(tmp_path, DJANGO_DOTENV_PATH=str(empty_dotenv))
 
             import_proc = subprocess.run(
                 [sys.executable, "-c", "import config.wsgi"],
@@ -478,6 +518,35 @@ class WsgiEntrypointTests(SimpleTestCase):
                 check=False,
             )
             self.assertNotEqual(gunicorn_proc.returncode, 0)
+
+    def test_dotenv_debug_true_allows_wsgi_gunicorn_in_local_dev(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="ceilf6-wsgi-env-") as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            dotenv_file = tmp_path / ".env"
+            dotenv_file.write_text("DJANGO_DEBUG=true\n", encoding="utf-8")
+            env = _isolated_env(tmp_path, DJANGO_DOTENV_PATH=str(dotenv_file))
+
+            proc = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "gunicorn",
+                    "--check-config",
+                    "--chdir",
+                    str(BASE_DIR),
+                    "config.wsgi:application",
+                ],
+                cwd=str(BASE_DIR),
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(
+                proc.returncode,
+                0,
+                msg=f"dotenv DJANGO_DEBUG=true gunicorn failed:\n{proc.stdout}\n{proc.stderr}",
+            )
 
     def test_wsgi_and_gunicorn_succeed_with_explicit_dev_or_prod_env(
         self,
