@@ -1,178 +1,19 @@
-"""Django settings for site/server."""
+"""Declarative Django settings for site/server."""
 
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping
-from dataclasses import dataclass
-from pathlib import Path
 
-from django.core.exceptions import ImproperlyConfigured
-
-from config.env import SERVER_DIR, bootstrap_env, load_dotenv_file
+from config.env import SERVER_DIR, bootstrap_env, resolve_runtime_settings
 
 BASE_DIR = SERVER_DIR
 
-LOCAL_DEV_SECRET_KEY = "django-insecure-local-dev-placeholder"
-EXAMPLE_SECRET_KEY_PLACEHOLDER = "django-insecure-example-placeholder"
-INSECURE_SECRET_KEYS = frozenset(
-    {
-        LOCAL_DEV_SECRET_KEY,
-        EXAMPLE_SECRET_KEY_PLACEHOLDER,
-        "change-me",
-        "changeme",
-        "secret",
-    }
-)
-MIN_PRODUCTION_SECRET_KEY_LENGTH = 50
-MIN_PRODUCTION_SECRET_KEY_UNIQUE_CHARS = 5
-FILEBASED_EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 SQLITE_INIT_COMMAND = (
     "PRAGMA journal_mode=WAL; "
     "PRAGMA synchronous=NORMAL; "
     "PRAGMA busy_timeout=5000; "
     "PRAGMA foreign_keys=ON;"
 )
-
-__all__ = [
-    "BASE_DIR",
-    "EXAMPLE_SECRET_KEY_PLACEHOLDER",
-    "FILEBASED_EMAIL_BACKEND",
-    "LOCAL_DEV_SECRET_KEY",
-    "RuntimeSettings",
-    "load_dotenv_file",
-    "parse_env_bool",
-    "resolve_runtime_settings",
-]
-
-
-@dataclass(frozen=True)
-class RuntimeSettings:
-    debug: bool
-    secret_key: str
-    allowed_hosts: list[str]
-    sqlite_name: str | Path
-    email_backend: str
-    email_file_path: Path
-    admin_path: str
-
-
-def parse_env_bool(
-    environ: Mapping[str, str], name: str, *, default: bool
-) -> bool:
-    raw = environ.get(name, "").strip()
-    if not raw:
-        return default
-    lowered = raw.lower()
-    if lowered in {"1", "true", "yes", "on"}:
-        return True
-    if lowered in {"0", "false", "no", "off"}:
-        return False
-    raise ImproperlyConfigured(
-        f"Invalid boolean value for {name}: {raw!r}. Expected true/false."
-    )
-
-
-def _resolve_path(base_dir: Path, raw_path: str, default_rel: Path) -> Path:
-    candidate = Path(raw_path) if raw_path else (base_dir / default_rel)
-    if not candidate.is_absolute():
-        candidate = base_dir / candidate
-    return candidate.resolve()
-
-
-def _normalize_admin_path(raw_admin_path: str) -> str:
-    cleaned = raw_admin_path.strip().lstrip("/")
-    if not cleaned or ".." in cleaned.split("/"):
-        raise ImproperlyConfigured(
-            "DJANGO_ADMIN_PATH must be a non-empty relative URL prefix."
-        )
-    if not cleaned.endswith("/"):
-        cleaned = f"{cleaned}/"
-    if cleaned.startswith("api/"):
-        raise ImproperlyConfigured(
-            "DJANGO_ADMIN_PATH must not be nested under api/."
-        )
-    return cleaned
-
-
-def resolve_runtime_settings(
-    environ: Mapping[str, str], *, base_dir: Path = BASE_DIR
-) -> RuntimeSettings:
-    # Default to False (fail-closed) when DJANGO_DEBUG is unset; manage.py calls
-    # bootstrap_env(default_debug="true") after loading .env for local dev.
-    debug = parse_env_bool(environ, "DJANGO_DEBUG", default=False)
-
-    raw_secret = environ.get("DJANGO_SECRET_KEY", "").strip()
-    if debug:
-        secret_key = raw_secret or LOCAL_DEV_SECRET_KEY
-    else:
-        if (
-            not raw_secret
-            or raw_secret in INSECURE_SECRET_KEYS
-            or raw_secret.startswith("django-insecure-")
-            or len(raw_secret) < MIN_PRODUCTION_SECRET_KEY_LENGTH
-            or len(set(raw_secret)) < MIN_PRODUCTION_SECRET_KEY_UNIQUE_CHARS
-        ):
-            raise ImproperlyConfigured(
-                "DJANGO_SECRET_KEY must be set to a strong non-default secret "
-                f"(>= {MIN_PRODUCTION_SECRET_KEY_LENGTH} chars with at least "
-                f"{MIN_PRODUCTION_SECRET_KEY_UNIQUE_CHARS} distinct chars, "
-                "not starting with 'django-insecure-') when DJANGO_DEBUG is false."
-            )
-        secret_key = raw_secret
-
-    raw_hosts = environ.get("DJANGO_ALLOWED_HOSTS", "").strip()
-    allowed_hosts = [h.strip() for h in raw_hosts.split(",") if h.strip()]
-    if not allowed_hosts:
-        if debug:
-            allowed_hosts = ["127.0.0.1", "localhost"]
-        else:
-            raise ImproperlyConfigured(
-                "DJANGO_ALLOWED_HOSTS must be set when DJANGO_DEBUG is false."
-            )
-    if not debug and "*" in allowed_hosts:
-        raise ImproperlyConfigured(
-            "Wildcard '*' is not permitted in DJANGO_ALLOWED_HOSTS when DJANGO_DEBUG is false."
-        )
-
-    raw_sqlite = environ.get("SQLITE_PATH", "").strip()
-    if raw_sqlite == ":memory:":
-        sqlite_name: str | Path = ":memory:"
-    else:
-        sqlite_path = _resolve_path(
-            base_dir, raw_sqlite, Path("var") / "db.sqlite3"
-        )
-        sqlite_path.parent.mkdir(parents=True, exist_ok=True)
-        sqlite_name = sqlite_path
-
-    email_backend = (
-        environ.get("DJANGO_EMAIL_BACKEND", "").strip()
-        or FILEBASED_EMAIL_BACKEND
-    )
-    raw_email_dir = environ.get("EMAIL_FILE_PATH", "").strip()
-    email_file_path = _resolve_path(
-        base_dir, raw_email_dir, Path("var") / "mail"
-    )
-    if email_backend == FILEBASED_EMAIL_BACKEND:
-        email_file_path.mkdir(mode=0o700, parents=True, exist_ok=True)
-        try:
-            email_file_path.chmod(0o700)
-        except OSError:
-            pass
-
-    raw_admin_path = environ.get("DJANGO_ADMIN_PATH", "admin/")
-    admin_path = _normalize_admin_path(raw_admin_path)
-
-    return RuntimeSettings(
-        debug=debug,
-        secret_key=secret_key,
-        allowed_hosts=allowed_hosts,
-        sqlite_name=sqlite_name,
-        email_backend=email_backend,
-        email_file_path=email_file_path,
-        admin_path=admin_path,
-    )
-
 
 bootstrap_env(default_debug="false", environ=os.environ, base_dir=BASE_DIR)
 _RUNTIME = resolve_runtime_settings(os.environ, base_dir=BASE_DIR)
@@ -182,6 +23,7 @@ DEBUG = _RUNTIME.debug
 ALLOWED_HOSTS = _RUNTIME.allowed_hosts
 
 DJANGO_ADMIN_PATH = _RUNTIME.admin_path
+ALLAUTH_TRUSTED_PROXY_COUNT = _RUNTIME.trusted_proxy_count
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -191,15 +33,19 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
+    "allauth",
+    "allauth.account",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "config.middleware.DynamicRouteNoStoreMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -208,7 +54,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -234,11 +80,29 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": _RUNTIME.cache_backend,
+        "LOCATION": _RUNTIME.cache_location,
+        "OPTIONS": {
+            "MAX_ENTRIES": 10000,
+        },
+    }
+}
+
 AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {
+            "user_attributes": ("username", "email", "display_name"),
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -251,6 +115,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
+ACCOUNT_FORMS = {
+    "signup": "accounts.forms.AccountSignupForm",
+}
+ACCOUNT_USER_DISPLAY = "accounts.adapter.user_display"
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_MAX_EMAIL_ADDRESSES = 1
+ACCOUNT_PREVENT_ENUMERATION = True
+ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = False
+ACCOUNT_LOGOUT_ON_GET = False
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[wangjinghong.com] "
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http" if DEBUG else "https"
+
 LANGUAGE_CODE = "zh-hans"
 TIME_ZONE = "Asia/Shanghai"
 USE_I18N = True
@@ -262,10 +146,23 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 EMAIL_BACKEND = _RUNTIME.email_backend
 EMAIL_FILE_PATH = str(_RUNTIME.email_file_path)
+EMAIL_HOST = _RUNTIME.email_host
+EMAIL_PORT = _RUNTIME.email_port
+EMAIL_HOST_USER = _RUNTIME.email_host_user
+EMAIL_HOST_PASSWORD = _RUNTIME.email_host_password
+EMAIL_USE_SSL = _RUNTIME.email_use_ssl
+EMAIL_USE_TLS = _RUNTIME.email_use_tls
+EMAIL_TIMEOUT = _RUNTIME.email_timeout
+DEFAULT_FROM_EMAIL = _RUNTIME.default_from_email
 
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SECURE = not DEBUG
+
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = not DEBUG
+
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 if not DEBUG:

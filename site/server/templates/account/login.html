@@ -1,0 +1,20 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}邮箱登录{% endblock %}
+
+{% block content %}
+  <h1>邮箱登录</h1>
+  <p class="auth-subtitle">请使用已验证的注册邮箱与密码登录。</p>
+
+  <form class="auth-form" method="post" action="{% url 'account_login' %}" novalidate>
+    {% csrf_token %}
+    {% include "account/snippets/form_fields.html" with form=form %}
+    {{ redirect_field }}
+    <button class="btn-primary" type="submit">登录</button>
+  </form>
+
+  <div class="auth-links">
+    <span>还没有账号？<a href="{{ signup_url }}">立即注册</a></span>
+    <a href="{% url 'account_reset_password' %}">忘记密码？</a>
+  </div>
+{% endblock %}

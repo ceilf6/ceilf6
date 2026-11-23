@@ -8,9 +8,10 @@ from django.db import DatabaseError, connection
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from config.middleware import NO_STORE_CACHE_CONTROL
+
 logger = logging.getLogger(__name__)
 
-NO_STORE_CACHE_CONTROL = "private, no-store, no-cache, must-revalidate"
 ALLOWED_HEALTH_METHODS = ("GET", "HEAD")
 
 
@@ -45,9 +46,7 @@ def health_check(request: HttpRequest) -> HttpResponse:
         try:
             connection.close()
         except DatabaseError:
-            logger.warning(
-                "Failed to close broken database connection", exc_info=True
-            )
+            logger.warning("Closing broken database connection failed")
         return _json_no_store({"status": "unavailable"}, status=503)
 
     return _json_no_store({"status": "ok"}, status=200)
