@@ -12,6 +12,8 @@ export function slugFromNotePath(path) {
   return String(path).replace(/\\/g, "/").split("/").pop().replace(/\.md$/, "");
 }
 
+const VALID_NOTE_SLUG_RE = /^[-a-zA-Z0-9_]{1,120}$/;
+
 export function discoverNoteSlugs(notesDir = defaultNotesDir) {
   return readdirSync(notesDir, { withFileTypes: true })
     .filter(
@@ -20,7 +22,15 @@ export function discoverNoteSlugs(notesDir = defaultNotesDir) {
         !entry.name.startsWith(".") &&
         entry.name.endsWith(".md"),
     )
-    .map((entry) => slugFromNotePath(`/content/notes/${entry.name}`))
+    .map((entry) => {
+      const slug = slugFromNotePath(`/content/notes/${entry.name}`);
+      if (!VALID_NOTE_SLUG_RE.test(slug)) {
+        throw new Error(
+          `Invalid note slug "${slug}" derived from "${entry.name}" under site/content/notes/ (expected ${VALID_NOTE_SLUG_RE})`,
+        );
+      }
+      return slug;
+    })
     .sort();
 }
 

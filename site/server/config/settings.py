@@ -24,6 +24,19 @@ ALLOWED_HOSTS = _RUNTIME.allowed_hosts
 
 DJANGO_ADMIN_PATH = _RUNTIME.admin_path
 ALLAUTH_TRUSTED_PROXY_COUNT = _RUNTIME.trusted_proxy_count
+ALLOW_GUEST_COMMENTS = _RUNTIME.allow_guest_comments
+COMMENT_RATE_LIMITS = {
+    "guest_ip": (
+        (5, 60),
+        (20, 3600),
+    ),
+    "member_user": (
+        (10, 60),
+    ),
+    "member_ip": (
+        (20, 60),
+    ),
+}
 
 INSTALLED_APPS = [
     "config.admin_site.UnifiedAdminConfig",
@@ -166,6 +179,7 @@ SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = not DEBUG
+CSRF_FAILURE_VIEW = "config.http.csrf_failure_view"
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"

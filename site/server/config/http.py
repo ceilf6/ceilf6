@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.utils.cache import patch_vary_headers
+from django.views.csrf import csrf_failure as django_csrf_failure
 
 from config.middleware import NO_STORE_CACHE_CONTROL
 
@@ -16,3 +17,18 @@ def json_no_store(payload: dict[str, Any], *, status: int = 200) -> JsonResponse
     response["Cache-Control"] = NO_STORE_CACHE_CONTROL
     patch_vary_headers(response, ("Cookie",))
     return response
+
+
+def csrf_failure_view(
+    request: HttpRequest, reason: str = ""
+) -> HttpResponse:
+    """Return JSON 403 for `/api/*` CSRF failures and HTML for page routes."""
+    if request.path_info == "/api" or request.path_info.startswith("/api/"):
+        return json_no_store(
+            {
+                "code": "csrf_failed",
+                "message": "CSRF 安全校验未通过，请刷新页面后重试。",
+            },
+            status=403,
+        )
+    return django_csrf_failure(request, reason=reason)

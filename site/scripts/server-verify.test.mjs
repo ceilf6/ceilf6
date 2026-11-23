@@ -215,6 +215,23 @@ test("update-note-slugs.mjs 保持 comments/note_slugs.json 与 content/notes/*.
       updateNoteSlugs({ check: true, notesDir, manifestFile }),
       false,
     );
+
+    for (const invalidFile of [
+      "bad space.md",
+      "bad.dot.md",
+      `${"a".repeat(121)}.md`,
+    ]) {
+      const badPath = join(notesDir, invalidFile);
+      writeFileSync(badPath, "# bad\n", "utf8");
+      try {
+        assert.throws(
+          () => discoverNoteSlugs(notesDir),
+          /Invalid note slug/,
+        );
+      } finally {
+        rmSync(badPath, { force: true });
+      }
+    }
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
