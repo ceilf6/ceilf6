@@ -80,7 +80,18 @@ class User(AbstractUser):
         self._normalize_identity_fields()
         super().save(*args, **kwargs)
 
+    @property
+    def public_display_name(self) -> str:
+        """Return NFKC-normalized public nickname without exposing email or opaque username."""
+        cleaned = normalize_display_name(self.display_name)
+        if cleaned:
+            return cleaned
+        if self.pk is not None:
+            return f"用户 #{self.pk}"
+        return "用户"
+
     def __str__(self) -> str:
+        """Return internal label for Django Admin and CLI output (never exposing email)."""
         cleaned_display_name = normalize_display_name(self.display_name)
         if cleaned_display_name:
             return cleaned_display_name

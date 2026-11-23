@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from accounts.views import me_view
+from comments.views import note_comments_view
 from config.views import health_check
 
 urlpatterns = [
@@ -14,4 +15,9 @@ urlpatterns = [
     path("accounts/", include("allauth.account.urls")),
     path("api/health/", health_check, name="api-health"),
     path("api/me/", me_view, name="api-me"),
+    path(
+        "api/notes/<str:slug>/comments/",
+        note_comments_view,
+        name="api-note-comments",
+    ),
 ]
