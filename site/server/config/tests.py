@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import secrets
+import shutil
 import stat
 import subprocess
 import sys
@@ -481,6 +482,60 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
 
 
 class WsgiEntrypointTests(SimpleTestCase):
+    def test_verbatim_dotenv_example_fails_closed_for_wsgi_while_manage_py_works(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(prefix="ceilf6-env-example-") as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            copied_dotenv = tmp_path / ".env"
+            shutil.copyfile(BASE_DIR / ".env.example", copied_dotenv)
+            env = _isolated_env(
+                tmp_path, DJANGO_DOTENV_PATH=str(copied_dotenv)
+            )
+
+            wsgi_import = subprocess.run(
+                [sys.executable, "-c", "import config.wsgi"],
+                cwd=str(BASE_DIR),
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(wsgi_import.returncode, 0)
+            self.assertIn("DJANGO_SECRET_KEY", wsgi_import.stderr)
+
+            gunicorn_proc = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "gunicorn",
+                    "--check-config",
+                    "--chdir",
+                    str(BASE_DIR),
+                    "config.wsgi:application",
+                ],
+                cwd=str(BASE_DIR),
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(gunicorn_proc.returncode, 0)
+
+            manage_proc = subprocess.run(
+                [sys.executable, str(MANAGE_PY), "check"],
+                cwd=str(BASE_DIR),
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(
+                manage_proc.returncode,
+                0,
+                msg=f"manage.py check with .env.example failed:\n{manage_proc.stdout}\n{manage_proc.stderr}",
+            )
+
     def test_wsgi_import_fails_closed_when_unconfigured_or_dotenv_empty(
         self,
     ) -> None:
