@@ -290,6 +290,22 @@ class HealthAndNoStoreMiddlewareTests(TestCase):
                 self.assertEqual(payload["code"], "method_not_allowed")
                 self.assertTrue(payload["message"])
 
+    def test_csrf_failure_view_returns_json_on_api_and_html_elsewhere(self) -> None:
+        from django.test import RequestFactory
+        from config.http import csrf_failure_view
+
+        rf = RequestFactory()
+        api_res = csrf_failure_view(rf.post("/api/notes/x/comments/"), reason="bad")
+        self.assertEqual(api_res.status_code, 403)
+        self.assertEqual(api_res["Cache-Control"], EXPECTED_NO_STORE)
+        self.assertIn("Cookie", api_res["Vary"])
+        self.assertEqual(
+            api_res.headers["Content-Type"], "application/json"
+        )
+        html_res = csrf_failure_view(rf.post("/accounts/logout/"), reason="bad")
+        self.assertEqual(html_res.status_code, 403)
+        self.assertIn("text/html", html_res.headers["Content-Type"])
+
     def test_admin_and_auth_routes_emit_no_store_while_static_prefix_excluded(
         self,
     ) -> None:
@@ -811,6 +827,29 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
             with self.assertRaises(ImproperlyConfigured):
                 resolve_runtime_settings(
                     {"DJANGO_DEBUG": "flase"}, base_dir=base
+                )
+            default_rt = resolve_runtime_settings(
+                {"DJANGO_DEBUG": "true", "DJANGO_CACHE_PATH": ":memory:"},
+                base_dir=base,
+            )
+            self.assertIs(default_rt.allow_guest_comments, True)
+            disabled_rt = resolve_runtime_settings(
+                {
+                    "DJANGO_DEBUG": "true",
+                    "DJANGO_CACHE_PATH": ":memory:",
+                    "ALLOW_GUEST_COMMENTS": "false",
+                },
+                base_dir=base,
+            )
+            self.assertIs(disabled_rt.allow_guest_comments, False)
+            with self.assertRaises(ImproperlyConfigured):
+                resolve_runtime_settings(
+                    {
+                        "DJANGO_DEBUG": "true",
+                        "DJANGO_CACHE_PATH": ":memory:",
+                        "ALLOW_GUEST_COMMENTS": "maybe",
+                    },
+                    base_dir=base,
                 )
             for bad_admin in (
                 "",

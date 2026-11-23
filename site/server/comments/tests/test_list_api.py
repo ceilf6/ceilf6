@@ -32,11 +32,11 @@ class NoteCommentsListApiTests(TestCase):
         csrf_client = Client(enforce_csrf_checks=True)
         url = "/api/notes/harness-cold-start/comments/"
 
-        for method_name in ("post", "put", "patch", "delete", "options"):
+        for method_name in ("put", "patch", "delete", "options"):
             with self.subTest(method=method_name):
                 res_405 = getattr(csrf_client, method_name)(url)
                 self.assertEqual(res_405.status_code, 405)
-                self.assertEqual(res_405["Allow"], "GET, HEAD")
+                self.assertEqual(res_405["Allow"], "GET, HEAD, POST")
                 self._assert_no_store_headers(res_405)
                 self.assertEqual(
                     res_405.json(),

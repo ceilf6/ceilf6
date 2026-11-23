@@ -59,6 +59,7 @@ class RuntimeSettings:
     email_timeout: int
     default_from_email: str
     admin_path: str
+    allow_guest_comments: bool
 
 
 def load_dotenv_file(
@@ -335,6 +336,9 @@ def resolve_runtime_settings(
 
     raw_admin_path = environ.get("DJANGO_ADMIN_PATH", "admin/")
     admin_path = _normalize_admin_path(raw_admin_path)
+    allow_guest_comments = parse_env_bool(
+        environ, "ALLOW_GUEST_COMMENTS", default=True
+    )
 
     return RuntimeSettings(
         debug=debug,
@@ -355,4 +359,5 @@ def resolve_runtime_settings(
         email_timeout=email_timeout,
         default_from_email=default_from_email,
         admin_path=admin_path,
+        allow_guest_comments=allow_guest_comments,
     )

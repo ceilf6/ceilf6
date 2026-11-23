@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
@@ -26,12 +27,14 @@ def me_view(request: HttpRequest) -> JsonResponse:
         return response
 
     csrf_token = get_token(request)
+    guest_comments_allowed = bool(settings.ALLOW_GUEST_COMMENTS)
     user = request.user
     if not user.is_authenticated or not user.is_active:
         return json_no_store(
             {
                 "user": None,
                 "csrfToken": csrf_token,
+                "guestCommentsAllowed": guest_comments_allowed,
             },
             status=200,
         )
@@ -47,6 +50,7 @@ def me_view(request: HttpRequest) -> JsonResponse:
                 "isCommentAdmin": is_comment_admin,
             },
             "csrfToken": csrf_token,
+            "guestCommentsAllowed": guest_comments_allowed,
         },
         status=200,
     )

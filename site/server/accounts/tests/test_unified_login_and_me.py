@@ -436,6 +436,7 @@ class CurrentSessionMeApiTests(TestCase):
 
         json_a = me_a.json()
         json_b = me_b.json()
+        self.assertEqual((anon_json["guestCommentsAllowed"], json_a["guestCommentsAllowed"], json_b["guestCommentsAllowed"]), (True, True, True))
         self.assertEqual(
             json_a["user"],
             {
