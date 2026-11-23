@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, connection, transaction
 from django.test import RequestFactory, TestCase
 
+from accounts.adapter import user_display
 from accounts.admin import AccountUserAdmin
 from accounts.models import User
 from accounts.tests.helpers import gen_test_credential
@@ -102,6 +103,15 @@ class UserModelTests(TestCase):
             display_name="",
         )
         self.assertEqual(str(unsaved_user), "user")
+        self.assertEqual(unsaved_user.public_display_name, "用户")
+        self.assertEqual(user_display(unsaved_user), "用户")
+        self.assertEqual(
+            saved_user.public_display_name, f"用户 #{saved_user.pk}"
+        )
+        self.assertEqual(user_display(saved_user), f"用户 #{saved_user.pk}")
+        nfkc_unsaved = User(username="u_nfkc", display_name="  ＡＢＣ  ")
+        self.assertEqual(nfkc_unsaved.public_display_name, "ABC")
+        self.assertEqual(user_display(nfkc_unsaved), "ABC")
 
     def test_display_name_validation_enforces_post_nfkc_length_and_blocks_urls(
         self,

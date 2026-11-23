@@ -15,6 +15,11 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  discoverNoteSlugs,
+  updateNoteSlugs,
+} from "./update-note-slugs.mjs";
+
 const SCRIPTS_DIR = dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = resolve(SCRIPTS_DIR, "..");
 const SERVER_DIR = resolve(SITE_DIR, "server");
@@ -178,6 +183,40 @@ test("已有不兼容虚拟环境时报错提示且绝不删除用户目录", ()
     assert.equal(existsSync(sentinelFile), true);
   } finally {
     rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
+test("update-note-slugs.mjs 保持 comments/note_slugs.json 与 content/notes/*.md 完全同步", () => {
+  assert.equal(updateNoteSlugs({ check: true }), false);
+  assert.ok(discoverNoteSlugs().length > 0);
+
+  const scratch = mkdtempSync(join(tmpdir(), "site-note-slugs-"));
+  try {
+    const notesDir = join(scratch, "notes");
+    const manifestFile = join(scratch, "note_slugs.json");
+    mkdirSync(notesDir, { recursive: true });
+    writeFileSync(join(notesDir, "zeta-post.md"), "# z\n", "utf8");
+    writeFileSync(join(notesDir, "alpha-post.md"), "# a\n", "utf8");
+
+    assert.throws(
+      () => updateNoteSlugs({ check: true, notesDir, manifestFile }),
+      /node site\/scripts\/update-note-slugs\.mjs/,
+    );
+
+    assert.equal(
+      updateNoteSlugs({ check: false, notesDir, manifestFile }),
+      true,
+    );
+    assert.deepEqual(JSON.parse(readFileSync(manifestFile, "utf8")), [
+      "alpha-post",
+      "zeta-post",
+    ]);
+    assert.equal(
+      updateNoteSlugs({ check: true, notesDir, manifestFile }),
+      false,
+    );
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
   }
 });
 

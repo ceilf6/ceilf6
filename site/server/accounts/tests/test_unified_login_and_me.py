@@ -476,21 +476,23 @@ class CurrentSessionMeApiTests(TestCase):
     def test_me_endpoint_handles_blank_display_name_and_inactive_users_safely(
         self,
     ) -> None:
-        legacy_user = User.objects.create_user(
-            "legacy@example.com",
-            "legacy@example.com",
-            gen_test_credential(),
-            display_name="",
-        )
-        self.client.force_login(legacy_user)
-        res = self.client.get("/api/me/")
-        self.assertEqual(res.status_code, 200)
-        body = res.json()
-        self.assertEqual(body["user"]["displayName"], f"user-{legacy_user.pk}")
-        self.assertNotIn("@", res.content.decode("utf-8"))
+        for uname, email_addr in (
+            ("legacy@example.com", "legacy@example.com"),
+            ("u_9f8e7d6c5b4a3210", "opaque-blank@example.com"),
+        ):
+            user_obj = User.objects.create_user(
+                uname, email_addr, gen_test_credential(), display_name="  "
+            )
+            self.client.force_login(user_obj)
+            res = self.client.get("/api/me/")
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(
+                res.json()["user"]["displayName"], f"用户 #{user_obj.pk}"
+            )
+            raw = res.content.decode("utf-8")
+            self.assertNotIn("@", raw)
+            self.assertNotIn(uname, raw)
 
-        legacy_user.is_active = False
-        legacy_user.save(update_fields=["is_active"])
-        inactive_res = self.client.get("/api/me/")
-        self.assertEqual(inactive_res.status_code, 200)
-        self.assertIsNone(inactive_res.json()["user"])
+        user_obj.is_active = False
+        user_obj.save(update_fields=["is_active"])
+        self.assertIsNone(self.client.get("/api/me/").json()["user"])

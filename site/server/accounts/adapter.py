@@ -27,8 +27,8 @@ def generate_opaque_username() -> str:
 
 
 def user_display(user: AbstractBaseUser) -> str:
-    """Return safe public label for templates without exposing private email."""
-    return str(user)
+    """Return safe public label for templates aligned with `/api/me/` and comments."""
+    return getattr(user, "public_display_name", "") or str(user)
 
 
 def is_safe_internal_redirect_url(url: str | None) -> bool:
