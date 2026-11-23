@@ -1,0 +1,39 @@
+{% extends "account/base.html" %}
+{% load account %}
+
+{% block head_title %}确认邮箱地址{% endblock %}
+
+{% block content %}
+  {% if confirmation %}
+    {% user_display confirmation.email_address.user as public_name %}
+    {% if can_confirm %}
+      <h1>确认激活邮箱</h1>
+      <p class="auth-subtitle">
+        请确认将邮箱 <strong>{{ confirmation.email_address.email }}</strong> 绑定至昵称
+        <strong>{{ public_name }}</strong> 的账号。
+      </p>
+      <form class="auth-form" method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+        {{ redirect_field }}
+        <button class="btn-primary" type="submit">确认激活邮箱</button>
+      </form>
+    {% else %}
+      <h1>无法完成邮箱确认</h1>
+      <ul class="auth-error-box" role="alert">
+        <li>该邮箱地址已被其他已验证账号绑定，无法重复确认。</li>
+      </ul>
+      <div class="auth-links">
+        <a href="{% url 'account_login' %}">返回登录</a>
+      </div>
+    {% endif %}
+  {% else %}
+    <h1>验证链接无效或已失效</h1>
+    <ul class="auth-error-box" role="alert">
+      <li>该邮箱确认链接无效、已过期或已完成验证。</li>
+    </ul>
+    <div class="auth-links">
+      <a href="{% url 'account_login' %}">前往登录</a>
+      <a href="{% url 'account_signup' %}">重新注册</a>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% autoescape off %}您好：
+
+感谢您在 {{ current_site.domain }} 注册账号。请访问下方链接完成邮箱验证并激活账号：
+
+{{ activate_url }}
+
+如果这不是您本人的操作，请直接忽略本邮件。
+{% endautoescape %}

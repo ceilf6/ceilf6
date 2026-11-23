@@ -49,9 +49,18 @@ function isBasePythonCompatible(pythonBin) {
   return probe.status === 0;
 }
 
-function findBasePython() {
+function findBasePython(env = process.env) {
+  const explicitPython = (env.SITE_PYTHON ?? "").trim();
+  if (explicitPython) {
+    if (!isBasePythonCompatible(explicitPython)) {
+      throw new Error(
+        `显式指定的 SITE_PYTHON 不可用或低于 Python 3.12（需包含 venv 与 ensurepip 模块）: ${explicitPython}`,
+      );
+    }
+    return explicitPython;
+  }
+
   const candidates = [
-    process.env.SITE_PYTHON,
     "python3.12",
     "python3.13",
     "python3.14",
@@ -59,7 +68,7 @@ function findBasePython() {
     "/usr/local/bin/python3",
     "/usr/bin/python3",
     "python3",
-  ].filter(Boolean);
+  ];
 
   for (const candidate of candidates) {
     if (isBasePythonCompatible(candidate)) {
@@ -92,6 +101,7 @@ function runChecked(bin, args, options = {}) {
 function ensureServerVenv({
   venvDir = DEFAULT_VENV_DIR,
   requirementsPath = REQUIREMENTS_TXT,
+  env = process.env,
 } = {}) {
   const python = venvPythonPath(venvDir);
 
@@ -102,7 +112,7 @@ function ensureServerVenv({
       );
     }
   } else {
-    runChecked(findBasePython(), ["-m", "venv", venvDir], { cwd: SITE_DIR });
+    runChecked(findBasePython(env), ["-m", "venv", venvDir], { cwd: SITE_DIR });
   }
 
   const stampPath = resolve(venvDir, ".requirements.sha256");
@@ -135,6 +145,13 @@ function ensureServerVenv({
 
   return python;
 }
+
+test("显式设置不兼容 SITE_PYTHON 时立即报错而不静默回退", () => {
+  assert.throws(
+    () => findBasePython({ SITE_PYTHON: "/nonexistent/python3.12" }),
+    /SITE_PYTHON/,
+  );
+});
 
 test("已有不兼容虚拟环境时报错提示且绝不删除用户目录", () => {
   const tempRoot = mkdtempSync(join(tmpdir(), "site-venv-guard-"));
@@ -177,10 +194,12 @@ test(
         DJANGO_DOTENV_PATH: join(scratchDir, ".env.isolated"),
         DJANGO_DEBUG: "true",
         SQLITE_PATH: join(scratchDir, "verify.sqlite3"),
+        DJANGO_CACHE_PATH: join(scratchDir, "cache"),
         EMAIL_FILE_PATH: join(scratchDir, "mail"),
       };
       delete env.DJANGO_SECRET_KEY;
       delete env.DJANGO_ALLOWED_HOSTS;
+      delete env.DJANGO_EMAIL_BACKEND;
 
       runChecked(python, [MANAGE_PY, "check"], { cwd: SERVER_DIR, env });
 

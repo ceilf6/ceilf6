@@ -16,6 +16,7 @@ def main() -> None:
 
     if len(sys.argv) > 1 and sys.argv[1] == "test":
         os.environ.setdefault("SQLITE_PATH", ":memory:")
+        os.environ.setdefault("DJANGO_CACHE_PATH", ":memory:")
         os.environ.setdefault(
             "DJANGO_EMAIL_BACKEND",
             "django.core.mail.backends.locmem.EmailBackend",
