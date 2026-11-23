@@ -14,6 +14,12 @@
 
 ## 验证与发布
 
-- 前端位于 `site/`。在该目录运行 `npm run type-check`、`npx vitest run` 和 `npm run build`。发布脚本变更在仓根运行 `python3 -m unittest discover -s deploy/tests -t .`。根据本步涉及的目录选择检查，PR 上以实际运行的 Verify 工作流为准。
-- Repo Guard 承担 CR 时，读取对当前 PR 版本的评审正文和结论。若本次未产出有效评审，委托其他独立 reviewer 补审。CI 成功与 CR 通过分别核对。
-- 合并触发 ECS 静态发布时，跟踪该合并提交的发布结果。下一步依赖线上行为时，先从公开域名验证。发布入口和触发路径见 [deploy/README.md](deploy/README.md) 和 [部署工作流](.github/workflows/deploy-ecs.yml)。
+- 前端位于 `site/`。在该目录运行 `npm run type-check`、`npx vitest run` 和 `npm run build`。发布脚本变更在仓根运行 `python3 -m unittest discover -s deploy/tests -t .`。本地按本步影响范围选择命令，完整检查清单见 [Verify](.github/workflows/verify.yml)。合并前核对最新 HEAD 的全部 Verify job 成功。
+- Repo Guard 承担 CR 时，读取对当前 PR 版本的评审正文和结论。若本次未产出有效评审，委托其他独立 reviewer 补审。“请求修改”回到修正步骤。“需要人工判断”涉及的真实产品决策交给站主。仅评论的评审逐项处置意见后核对明确通过的结论。修正推送会触发复审，避免重复发送触发 Repo Guard 的顶层评论。
+- 合并触发 ECS 静态发布时，跟踪该合并提交的发布结果。发布失败时查明源站与公网探测结果，修复并重试，依赖此次上线的工作等验证通过再继续。下一步依赖线上行为时，先从公开域名验证。发布入口和触发路径见 [deploy/README.md](deploy/README.md) 和 [部署工作流](.github/workflows/deploy-ecs.yml)。
+
+## 课程作业的文件范围
+
+作业实现、后端、验证脚本、运行说明和 AI 使用声明都放在 `site/`。根 `README.md` 用于 GitHub Profile，课程入口直接指向 `site/README.md`。提交前以 PR 相对 `main` 的文件清单核对范围。
+
+主线优先交付开发 agent 能自行实现、验证、评审并合并的小步。需要站主开通付费服务、提供密钥或完成第三方审核的能力单独排入后续 Issue。先用可复现的本地配置走通完整流程，分别记录本地验证与真实公网验收结果。
