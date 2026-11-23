@@ -6,10 +6,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
+from accounts.views import me_view
 from config.views import health_check
 
 urlpatterns = [
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path("accounts/", include("allauth.account.urls")),
     path("api/health/", health_check, name="api-health"),
+    path("api/me/", me_view, name="api-me"),
 ]

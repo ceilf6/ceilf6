@@ -9,7 +9,12 @@
   {{ hidden }}
 {% endfor %}
 {% for field in form.visible_fields %}
-  {% if field.field.widget.input_type == "checkbox" %}
+  {% if field.name == "website" %}
+    <div class="auth-hp-field" aria-hidden="true">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+  {% elif field.field.widget.input_type == "checkbox" %}
     <div class="form-field form-field--checkbox">
       {{ field }}
       <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>

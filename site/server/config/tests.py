@@ -295,12 +295,16 @@ class HealthAndNoStoreMiddlewareTests(TestCase):
     ) -> None:
         self.assertTrue(is_dynamic_route("/accounts/login/"))
         self.assertTrue(is_dynamic_route("/api/health/"))
+        self.assertTrue(is_dynamic_route("/api/me/"))
         self.assertTrue(is_dynamic_route(f"/{settings.DJANGO_ADMIN_PATH}"))
         self.assertFalse(is_dynamic_route("/django-static/admin/css/base.css"))
         self.assertFalse(is_dynamic_route("/static/index.js"))
 
         admin_res = self.client.get(f"/{settings.DJANGO_ADMIN_PATH}login/")
-        self.assertEqual(admin_res.status_code, 200)
+        self.assertEqual(admin_res.status_code, 302)
+        self.assertTrue(
+            admin_res["Location"].startswith("/accounts/login/?next=")
+        )
         self.assertEqual(admin_res["Cache-Control"], EXPECTED_NO_STORE)
         self.assertIn("Cookie", admin_res["Vary"])
 
@@ -365,15 +369,42 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
         self.assertNotIn("django.contrib.sites", settings.INSTALLED_APPS)
         self.assertFalse(hasattr(settings_module, "SITE_ID"))
         self.assertFalse(hasattr(settings_module, "TRUSTED_PROXY_COUNT"))
-        self.assertEqual(settings.ALLAUTH_TRUSTED_PROXY_COUNT, 0)
         self.assertEqual(
             settings.CACHES["default"]["OPTIONS"]["MAX_ENTRIES"], 10000
         )
         self.assertEqual(settings.STATIC_URL, "/django-static/")
-        self.assertTrue(settings.SESSION_COOKIE_HTTPONLY)
-        self.assertEqual(settings.SESSION_COOKIE_SAMESITE, "Lax")
-        self.assertTrue(settings.CSRF_COOKIE_HTTPONLY)
-        self.assertEqual(settings.CSRF_COOKIE_SAMESITE, "Lax")
+        from django.contrib import admin
+        from config.admin_site import UnifiedLoginAdminSite
+
+        self.assertIsInstance(admin.site._wrapped or admin.site, UnifiedLoginAdminSite)
+        self.assertEqual(settings.LOGIN_URL, "/accounts/login/")
+        self.assertEqual(settings.LOGIN_REDIRECT_URL, "/")
+        self.assertEqual(settings.ACCOUNT_LOGOUT_REDIRECT_URL, "/")
+
+        with tempfile.TemporaryDirectory(prefix="ceilf6-decl-env-") as tmp_dir:
+            env = _isolated_env(Path(tmp_dir), DJANGO_DEBUG="true")
+            probe = _run_python_code(
+                "import django, os; "
+                "os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings'); "
+                "django.setup(); "
+                "from django.conf import settings; "
+                "assert settings.ALLAUTH_TRUSTED_PROXY_COUNT == 0; "
+                "assert settings.SESSION_COOKIE_HTTPONLY is True; "
+                "assert settings.SESSION_COOKIE_SAMESITE == 'Lax'; "
+                "assert settings.SESSION_COOKIE_SECURE is False; "
+                "assert settings.CSRF_COOKIE_HTTPONLY is True; "
+                "assert settings.CSRF_COOKIE_SAMESITE == 'Lax'; "
+                "assert settings.CSRF_COOKIE_SECURE is False; "
+                "assert settings.LOGIN_URL == '/accounts/login/'; "
+                "assert settings.LOGIN_REDIRECT_URL == '/'; "
+                "assert settings.ACCOUNT_LOGOUT_REDIRECT_URL == '/'",
+                env=env,
+            )
+            self.assertEqual(
+                probe.returncode,
+                0,
+                msg=f"Isolated declarative settings probe failed:\n{probe.stdout}\n{probe.stderr}",
+            )
 
     def test_default_without_django_debug_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory(prefix="ceilf6-closed-") as tmp_dir:
@@ -463,9 +494,25 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
                 "DJANGO_CACHE_PATH": ":memory:",
             }
 
-            # Missing DJANGO_EMAIL_BACKEND in production fails closed
+            # Missing or non-production DJANGO_EMAIL_BACKEND in production fails closed
             with self.assertRaises(ImproperlyConfigured):
                 resolve_runtime_settings(base_prod_env, base_dir=base)
+
+            for disallowed_backend in (
+                "django.core.mail.backends.console.EmailBackend",
+                "django.core.mail.backends.locmem.EmailBackend",
+                "django.core.mail.backends.dummy.EmailBackend",
+                "custom.untrusted.EmailBackend",
+            ):
+                with self.subTest(email_backend=disallowed_backend):
+                    with self.assertRaises(ImproperlyConfigured):
+                        resolve_runtime_settings(
+                            {
+                                **base_prod_env,
+                                "DJANGO_EMAIL_BACKEND": disallowed_backend,
+                            },
+                            base_dir=base,
+                        )
 
             # Explicit filebased in production creates 0700 directory
             file_mail_dir = base / "prod-mail"
@@ -773,6 +820,13 @@ class RuntimeSettingsSecurityTests(SimpleTestCase):
                 "static/admin/",
                 "django-static/admin/",
                 "../admin/",
+                "admin//nested/",
+                "admin?next=/evil",
+                "admin#frag",
+                "admin%2fpanel",
+                "admin&x=1",
+                "admin panel/",
+                "admin\npanel/",
             ):
                 with self.subTest(admin_path=bad_admin):
                     with self.assertRaises(ImproperlyConfigured):

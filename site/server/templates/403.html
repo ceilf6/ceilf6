@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}无访问权限 (403){% endblock %}
+
+{% block content %}
+  <h1>403 · 无访问权限</h1>
+  <p class="auth-subtitle">当前会话没有访问此页面或执行该操作的权限。</p>
+
+  <div class="auth-form">
+    <a class="btn-primary" href="/">返回站点首页</a>
+    {% if not request.user.is_authenticated %}
+      <a class="btn-secondary" href="{% url 'account_login' %}">前往统一登录页</a>
+    {% endif %}
+  </div>
+{% endblock %}

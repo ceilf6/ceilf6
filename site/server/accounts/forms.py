@@ -1,14 +1,16 @@
-"""Account signup form collecting public display_name alongside email + password."""
+"""Public authentication forms with anti-bot honeypot and safe nickname handling."""
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
-from allauth.account.forms import SignupForm
+from allauth.account.forms import LoginForm, ResetPasswordForm, SignupForm
 from django import forms
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.forms.utils import ErrorDict
 from django.http import HttpRequest
 
 from accounts.models import (
@@ -18,8 +20,63 @@ from accounts.models import (
     validate_safe_display_name,
 )
 
+logger = logging.getLogger(__name__)
 
-class AccountSignupForm(SignupForm):
+HONEYPOT_FIELD_NAME = "website"
+HONEYPOT_ERROR_MESSAGE = "请求未通过安全校验，请重试。"
+
+
+class HoneypotTextInput(forms.TextInput):
+    """Off-screen text input that never echoes dirty values on form re-render."""
+
+    def format_value(self, value: Any) -> None:
+        del value
+        return None
+
+
+class HoneypotFormMixin(forms.Form):
+    """Reject automated submissions that populate the off-screen honeypot field."""
+
+    website = forms.CharField(
+        label="个人主页（请留空）",
+        required=False,
+        strip=False,
+        widget=HoneypotTextInput(
+            attrs={
+                "tabindex": "-1",
+                "autocomplete": "off",
+                "aria-hidden": "true",
+            }
+        ),
+    )
+
+    def _is_honeypot_triggered(self) -> bool:
+        if not self.is_bound:
+            return False
+        raw_value = self.data.get(self.add_prefix(HONEYPOT_FIELD_NAME))
+        return bool(raw_value)
+
+    def full_clean(self) -> None:
+        if self._is_honeypot_triggered():
+            self._errors = ErrorDict()
+            self.cleaned_data = {}
+            self.add_error(HONEYPOT_FIELD_NAME, HONEYPOT_ERROR_MESSAGE)
+            self.add_error(None, HONEYPOT_ERROR_MESSAGE)
+            return
+        super().full_clean()
+
+
+class AccountLoginForm(HoneypotFormMixin, LoginForm):
+    """Unified email+password login form protected by an off-screen honeypot."""
+
+
+class AccountResetPasswordForm(HoneypotFormMixin, ResetPasswordForm):
+    """Password reset request form protected by an off-screen honeypot."""
+
+    field_order = ["email", HONEYPOT_FIELD_NAME]
+
+
+class AccountSignupForm(HoneypotFormMixin, SignupForm):
     """Signup form requiring a safe public nickname isolated from private email."""
 
     display_name = forms.CharField(
@@ -41,7 +98,13 @@ class AccountSignupForm(SignupForm):
         ),
     )
 
-    field_order = ["display_name", "email", "password1", "password2"]
+    field_order = [
+        "display_name",
+        "email",
+        "password1",
+        "password2",
+        HONEYPOT_FIELD_NAME,
+    ]
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -94,9 +157,19 @@ class AccountSignupForm(SignupForm):
         return cleaned_data
 
     def try_save(self, request: HttpRequest) -> tuple[Any, Any]:
+        if self.account_already_exists:
+            return super().try_save(request)
         try:
             with transaction.atomic():
                 return super().try_save(request)
         except IntegrityError:
+            candidate_email = (self.cleaned_data.get("email") or "").strip()
+            if not candidate_email or not User.objects.filter(
+                email__iexact=candidate_email
+            ).exists():
+                raise
+            logger.warning(
+                "Concurrent signup IntegrityError resolved via enumeration-safe fallback for existing account."
+            )
             self.account_already_exists = True
             return super().try_save(request)
