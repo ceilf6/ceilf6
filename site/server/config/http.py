@@ -1,4 +1,4 @@
-"""Shared HTTP response helpers for dynamic JSON endpoints."""
+"""Shared HTTP response helpers for dynamic JSON and empty endpoints."""
 
 from __future__ import annotations
 
@@ -14,6 +14,14 @@ from config.middleware import NO_STORE_CACHE_CONTROL
 def json_no_store(payload: dict[str, Any], *, status: int = 200) -> JsonResponse:
     """Return a JsonResponse with private no-store headers and `Vary: Cookie`."""
     response = JsonResponse(payload, status=status)
+    response["Cache-Control"] = NO_STORE_CACHE_CONTROL
+    patch_vary_headers(response, ("Cookie",))
+    return response
+
+
+def empty_no_store(*, status: int = 204) -> HttpResponse:
+    """Return an empty HttpResponse with private no-store headers and `Vary: Cookie`."""
+    response = HttpResponse(status=status)
     response["Cache-Control"] = NO_STORE_CACHE_CONTROL
     patch_vary_headers(response, ("Cookie",))
     return response

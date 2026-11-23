@@ -5,8 +5,10 @@ from __future__ import annotations
 from django.contrib import admin
 from django.http import HttpRequest
 
-from comments.models import Comment
+from comments.models import GUEST_DISPLAY_NAME, Comment
 from comments.permissions import can_delete_comment
+
+BODY_PREVIEW_MAX_LENGTH = 60
 
 
 def _is_active_comment_moderator(user: object) -> bool:
@@ -22,11 +24,30 @@ def _is_active_comment_moderator(user: object) -> bool:
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("id", "note_slug", "author", "created_at")
+    list_display = (
+        "id",
+        "note_slug",
+        "author_display",
+        "body_preview",
+        "created_at",
+    )
     list_filter = ("note_slug", "created_at")
     list_select_related = ("author",)
     search_fields = ("note_slug", "body", "author__display_name", "author__email")
     readonly_fields = ("note_slug", "author", "body", "created_at")
+
+    @admin.display(description="评论作者", ordering="author__display_name")
+    def author_display(self, obj: Comment) -> str:
+        if obj.author_id and obj.author:
+            return obj.author.public_display_name
+        return GUEST_DISPLAY_NAME
+
+    @admin.display(description="正文摘要")
+    def body_preview(self, obj: Comment) -> str:
+        single_line = " ".join((obj.body or "").split())
+        if len(single_line) <= BODY_PREVIEW_MAX_LENGTH:
+            return single_line
+        return f"{single_line[:BODY_PREVIEW_MAX_LENGTH]}…"
 
     def has_module_permission(self, request: HttpRequest) -> bool:
         if _is_active_comment_moderator(request.user):
