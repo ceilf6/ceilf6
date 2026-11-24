@@ -1,3 +1,7 @@
+export const MAX_COMMENT_BODY_LENGTH = 1000;
+
+const DRAFT_STORAGE_PREFIX = "wangjinghong:note-comment-draft:";
+
 export interface SessionUser {
   id: number;
   displayName: string;
@@ -31,15 +35,35 @@ export interface CommentListPage {
   nextBefore: number | null;
 }
 
+export interface CreateNoteCommentInput {
+  body: string;
+  expectedAuthorKind: CommentAuthorKind;
+  website?: string;
+}
+
+export interface CommentApiErrorOptions {
+  actualAuthorKind?: CommentAuthorKind;
+  retryAfterSeconds?: number;
+}
+
 export class CommentApiError extends Error {
   readonly status: number;
   readonly code: string;
+  readonly actualAuthorKind?: CommentAuthorKind;
+  readonly retryAfterSeconds?: number;
 
-  constructor(message: string, status: number, code = "unknown_error") {
+  constructor(
+    message: string,
+    status: number,
+    code = "unknown_error",
+    options: CommentApiErrorOptions = {},
+  ) {
     super(message);
     this.name = "CommentApiError";
     this.status = status;
     this.code = code;
+    this.actualAuthorKind = options.actualAuthorKind;
+    this.retryAfterSeconds = options.retryAfterSeconds;
   }
 }
 
@@ -51,7 +75,7 @@ function isPositiveSafeInt(value: unknown): value is number {
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 1;
 }
 
-function isAbortLike(error: unknown, signal?: AbortSignal): boolean {
+export function isAbortLike(error: unknown, signal?: AbortSignal): boolean {
   if (signal?.aborted) return true;
   return error instanceof DOMException && error.name === "AbortError";
 }
@@ -60,6 +84,13 @@ function assertValidNoteSlug(slug: string): void {
   if (!slug || slug === "." || slug === ".." || slug.includes("/")) {
     throw new CommentApiError("未找到对应的札记。", 400, "invalid_note_slug");
   }
+}
+
+function parseRetryAfterHeader(response: Response): number | undefined {
+  const raw = response.headers?.get?.("Retry-After")?.trim();
+  if (!raw || !/^\d+$/.test(raw)) return undefined;
+  const parsed = Number(raw);
+  return Number.isSafeInteger(parsed) && parsed >= 1 ? parsed : undefined;
 }
 
 async function readJsonOrThrow(
@@ -89,7 +120,17 @@ async function readJsonOrThrow(
       isRecord(parsed) && typeof parsed.message === "string" && parsed.message.trim()
         ? parsed.message
         : "评论服务暂时不可用，请稍后重试。";
-    throw new CommentApiError(message, response.status, code);
+    const actualAuthorKind =
+      isRecord(parsed) &&
+      (parsed.actualAuthorKind === "guest" || parsed.actualAuthorKind === "member")
+        ? parsed.actualAuthorKind
+        : undefined;
+    const retryAfterSeconds =
+      response.status === 429 ? parseRetryAfterHeader(response) : undefined;
+    throw new CommentApiError(message, response.status, code, {
+      actualAuthorKind,
+      retryAfterSeconds,
+    });
   }
 
   if (!isRecord(parsed)) {
@@ -216,4 +257,63 @@ export async function fetchNoteComments(
     items: data.items.map(parseCommentItem),
     nextBefore: data.nextBefore,
   };
+}
+
+export async function createNoteComment(
+  slug: string,
+  input: CreateNoteCommentInput,
+  csrfToken: string,
+  signal?: AbortSignal,
+): Promise<CommentItem> {
+  assertValidNoteSlug(slug);
+  const token = csrfToken.trim();
+  if (!token) {
+    throw new CommentApiError(
+      "安全令牌尚未就绪，请刷新重试。",
+      400,
+      "missing_csrf_token",
+    );
+  }
+
+  const encodedSlug = encodeURIComponent(slug);
+  const response = await fetch(`/api/notes/${encodedSlug}/comments/`, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": token,
+    },
+    body: JSON.stringify({
+      body: input.body,
+      expectedAuthorKind: input.expectedAuthorKind,
+      website: input.website ?? "",
+    }),
+    signal,
+  });
+  const data = await readJsonOrThrow(response, signal);
+  return parseCommentItem(data);
+}
+
+export function readCommentDraft(slug: string): string {
+  if (!slug) return "";
+  try {
+    return globalThis.sessionStorage?.getItem(`${DRAFT_STORAGE_PREFIX}${slug}`) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+export function writeCommentDraft(slug: string, draft: string): void {
+  if (!slug) return;
+  const key = `${DRAFT_STORAGE_PREFIX}${slug}`;
+  try {
+    if (draft) {
+      globalThis.sessionStorage?.setItem(key, draft);
+    } else {
+      globalThis.sessionStorage?.removeItem(key);
+    }
+  } catch {
+    // sessionStorage 被隐私模式禁用或配额满时静默退化为内存态草稿
+  }
 }

@@ -1,5 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { fetchNoteComments, type CommentItem } from "../data/comments";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  fetchNoteComments,
+  fetchViewerSession,
+  isAbortLike,
+  type CommentItem,
+  type ViewerSession,
+} from "../data/comments";
+import { NoteCommentComposer, type ViewerLoadStatus } from "./NoteCommentComposer";
 import "./NoteComments.css";
 
 interface NoteCommentsProps {
@@ -24,19 +31,51 @@ function formatCommentTime(iso: string): string {
   return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
 }
 
-function isAbortError(error: unknown, signal: AbortSignal): boolean {
-  if (signal.aborted) return true;
-  return error instanceof DOMException && error.name === "AbortError";
-}
-
 export function NoteComments({ slug }: NoteCommentsProps) {
+  const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
+  const [viewer, setViewer] = useState<ViewerSession | null>(null);
+  const [viewerReloadSeq, setViewerReloadSeq] = useState(0);
+
   const [status, setStatus] = useState<ListStatus>("loading");
   const [items, setItems] = useState<CommentItem[]>([]);
   const [nextBefore, setNextBefore] = useState<number | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
   const [reloadSeq, setReloadSeq] = useState(0);
+
   const loadMoreCtrlRef = useRef<AbortController | null>(null);
+  const conflictCtrlRef = useRef<AbortController | null>(null);
+  const localCreatedRef = useRef<CommentItem[]>([]);
+
+  useEffect(() => {
+    localCreatedRef.current = [];
+    setItems([]);
+  }, [slug]);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    conflictCtrlRef.current?.abort();
+    conflictCtrlRef.current = null;
+    setViewerStatus("loading");
+    setViewer(null);
+
+    fetchViewerSession(ctrl.signal)
+      .then((session) => {
+        if (ctrl.signal.aborted) return;
+        setViewer(session);
+        setViewerStatus("ready");
+      })
+      .catch((error: unknown) => {
+        if (isAbortLike(error, ctrl.signal)) return;
+        setViewerStatus("error");
+      });
+
+    return () => {
+      ctrl.abort();
+      conflictCtrlRef.current?.abort();
+      conflictCtrlRef.current = null;
+    };
+  }, [slug, viewerReloadSeq]);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -44,7 +83,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     loadMoreCtrlRef.current = null;
 
     setStatus("loading");
-    setItems([]);
+    setItems(localCreatedRef.current);
     setNextBefore(null);
     setLoadingMore(false);
     setLoadMoreError(null);
@@ -52,12 +91,21 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     fetchNoteComments(slug, { signal: ctrl.signal })
       .then((page) => {
         if (ctrl.signal.aborted) return;
-        setItems(page.items);
+        const pageIds = new Set(page.items.map((item) => item.id));
+        const highestPageId = page.items.reduce(
+          (max, item) => Math.max(max, item.id),
+          0,
+        );
+        const unsyncedLocal = localCreatedRef.current.filter(
+          (item) => !pageIds.has(item.id) && item.id > highestPageId,
+        );
+        localCreatedRef.current = unsyncedLocal;
+        setItems([...unsyncedLocal, ...page.items]);
         setNextBefore(page.nextBefore);
         setStatus("ready");
       })
       .catch((error: unknown) => {
-        if (isAbortError(error, ctrl.signal)) return;
+        if (isAbortLike(error, ctrl.signal)) return;
         setStatus("error");
       });
 
@@ -67,6 +115,46 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       loadMoreCtrlRef.current = null;
     };
   }, [slug, reloadSeq]);
+
+  const handleRefreshViewerAfterConflict = useCallback(async () => {
+    const ctrl = new AbortController();
+    conflictCtrlRef.current?.abort();
+    conflictCtrlRef.current = ctrl;
+
+    try {
+      const refreshed = await fetchViewerSession(ctrl.signal);
+      if (ctrl.signal.aborted) return null;
+      setViewer(refreshed);
+      setViewerStatus("ready");
+      return refreshed;
+    } catch (error: unknown) {
+      if (!isAbortLike(error, ctrl.signal)) {
+        setViewerStatus("error");
+      }
+      return null;
+    } finally {
+      if (conflictCtrlRef.current === ctrl) {
+        conflictCtrlRef.current = null;
+      }
+    }
+  }, []);
+
+  const handleDisableGuestComments = useCallback(() => {
+    setViewer((prev) =>
+      prev ? { ...prev, guestCommentsAllowed: false } : prev,
+    );
+  }, []);
+
+  const handleCommentCreated = useCallback((created: CommentItem) => {
+    localCreatedRef.current = [
+      created,
+      ...localCreatedRef.current.filter((existing) => existing.id !== created.id),
+    ];
+    setItems((prev) => [
+      created,
+      ...prev.filter((existing) => existing.id !== created.id),
+    ]);
+  }, []);
 
   const handleLoadMore = () => {
     if (nextBefore === null || loadingMore) return;
@@ -89,7 +177,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         setLoadingMore(false);
       })
       .catch((error: unknown) => {
-        if (isAbortError(error, ctrl.signal)) return;
+        if (isAbortLike(error, ctrl.signal)) return;
         setLoadMoreError("更多评论暂时无法读取，请重试。");
         setLoadingMore(false);
       })
@@ -111,6 +199,40 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         ) : null}
       </div>
 
+      <NoteCommentComposer
+        slug={slug}
+        viewerStatus={viewerStatus}
+        viewer={viewer}
+        onRetryViewer={() => setViewerReloadSeq((n) => n + 1)}
+        onRefreshViewerAfterConflict={handleRefreshViewerAfterConflict}
+        onDisableGuestComments={handleDisableGuestComments}
+        onCommentCreated={handleCommentCreated}
+      />
+
+      {items.length > 0 ? (
+        <ol className="note-comments-list">
+          {items.map((item) => (
+            <li key={item.id} className="note-comment-card">
+              <div className="note-comment-meta">
+                <span
+                  className="note-comment-author"
+                  data-author-kind={item.author.kind}
+                >
+                  {item.author.displayName}
+                </span>
+                {item.author.kind === "guest" ? (
+                  <span className="note-comment-badge">访客</span>
+                ) : null}
+                <time className="note-comment-time" dateTime={item.createdAt}>
+                  {formatCommentTime(item.createdAt)}
+                </time>
+              </div>
+              <p className="note-comment-body">{item.body}</p>
+            </li>
+          ))}
+        </ol>
+      ) : null}
+
       {status === "loading" ? (
         <p className="note-comments-state" role="status">
           正在读取评论…
@@ -130,28 +252,6 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         <p className="note-comments-empty">还没有评论，欢迎留下第一条讨论。</p>
       ) : (
         <>
-          <ol className="note-comments-list">
-            {items.map((item) => (
-              <li key={item.id} className="note-comment-card">
-                <div className="note-comment-meta">
-                  <span
-                    className="note-comment-author"
-                    data-author-kind={item.author.kind}
-                  >
-                    {item.author.displayName}
-                  </span>
-                  {item.author.kind === "guest" ? (
-                    <span className="note-comment-badge">访客</span>
-                  ) : null}
-                  <time className="note-comment-time" dateTime={item.createdAt}>
-                    {formatCommentTime(item.createdAt)}
-                  </time>
-                </div>
-                <p className="note-comment-body">{item.body}</p>
-              </li>
-            ))}
-          </ol>
-
           {loadMoreError ? (
             <p className="note-comments-more-error" role="alert">
               {loadMoreError}
