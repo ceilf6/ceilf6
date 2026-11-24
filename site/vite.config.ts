@@ -1,29 +1,27 @@
 /// <reference types="vitest/config" />
+import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { buildSiteProxy } from "./scripts/vite-local-proxy.mjs";
 import { mdNotes } from "./scripts/vite-md-notes.mjs";
 
-export default defineConfig({
-  plugins: [react(), mdNotes()],
-  // 哈希产物收进 /static/，把 /assets/ 留给 README stats 卡片（bot 持续更新，Nginx 短缓存）
-  build: { assetsDir: "static" },
-  // 开发期把 /assets 代理到线上，本地能看到真实 stats 卡片
-  server: {
-    proxy: {
-      "/assets": { target: "https://www.wangjinghong.com", changeOrigin: true },
+export default defineConfig(({ mode }) => {
+  const fileEnv = loadEnv(mode, import.meta.dirname, "");
+  const proxy = buildSiteProxy({ ...fileEnv, ...process.env });
+
+  return {
+    plugins: [react(), mdNotes()],
+    // 哈希产物收进 /static/，把 /assets/ 留给 README stats 卡片（bot 持续更新，Nginx 短缓存）
+    build: { assetsDir: "static" },
+    // 开发期与 preview 共用同源代理：/assets 走线上卡片，/api、/accounts、/django-static 与后台走本地 Django
+    server: { proxy },
+    preview: { proxy },
+    test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: "./src/test/setup.ts",
+      // scripts/*.test.mjs 是 node:test 用例（node --test 跑），不归 vitest 收集
+      include: ["src/**/*.{test,spec}.{ts,tsx}"],
     },
-  },
-  // preview 同款代理：server.proxy 只作用于 dev，不补这条 preview 下 /assets/*.svg 会 404
-  preview: {
-    proxy: {
-      "/assets": { target: "https://www.wangjinghong.com", changeOrigin: true },
-    },
-  },
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: "./src/test/setup.ts",
-    // scripts/*.test.mjs 是 node:test 用例（node --test 跑），不归 vitest 收集
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
-  },
+  };
 });
