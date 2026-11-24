@@ -353,4 +353,120 @@ describe("NoteComments 异常恢复、CSRF/身份冲突同步与并发竞态保�
       expect(screen.queryByText("切页前挂起的提交")).toBeNull();
     });
   });
+
+  it("已分页加载并在途加载第 3 页时触发 409 冲突刷新：绝不覆盖中间页或打断分页游标", async () => {
+    let meCalls = 0;
+    let resolvePage3: ((res: Response) => void) | undefined;
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
+      const url = String(input);
+      if (url === "/api/me/") {
+        meCalls += 1;
+        return Promise.resolve(
+          jsonResponse(
+            meCalls === 1
+              ? { user: null, csrfToken: "csrf-1", guestCommentsAllowed: true }
+              : {
+                  user: { id: 8, displayName: "分页读者", isCommentAdmin: false },
+                  csrfToken: "csrf-2",
+                  guestCommentsAllowed: true,
+                },
+          ),
+        );
+      }
+      if (url === "/api/notes/v8-gc-source/comments/" && init?.method === "POST") {
+        return Promise.resolve(
+          jsonResponse(
+            {
+              code: "author_state_changed",
+              actualAuthorKind: "member",
+              message: "当前登录状态已变化，请确认后再提交评论。",
+            },
+            409,
+          ),
+        );
+      }
+      if (url === "/api/notes/v8-gc-source/comments/?before=30") {
+        return Promise.resolve(
+          jsonResponse({
+            items: [
+              {
+                id: 20,
+                body: "第2页中间评论",
+                createdAt: "2026-11-24T09:00:00Z",
+                canDelete: false,
+                author: { kind: "guest", id: null, displayName: "未登录用户" },
+              },
+            ],
+            nextBefore: 20,
+          }),
+        );
+      }
+      if (url === "/api/notes/v8-gc-source/comments/?before=20") {
+        return new Promise<Response>((resolve) => {
+          resolvePage3 = resolve;
+        });
+      }
+      return Promise.resolve(
+        jsonResponse({
+          items: [
+            {
+              id: 30,
+              body: "第1页置顶评论",
+              createdAt: "2026-11-24T10:00:00Z",
+              canDelete: false,
+              author: { kind: "member", id: 2, displayName: "读者甲" },
+            },
+          ],
+          nextBefore: 30,
+        }),
+      );
+    });
+
+    render(<NoteComments slug="v8-gc-source" />);
+    expect(await screen.findByText("第1页置顶评论")).toBeInTheDocument();
+
+    // 加载第 2 页
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    expect(await screen.findByText("第2页中间评论")).toBeInTheDocument();
+
+    // 发起第 3 页在途请求，同时提交评论遇到 409 冲突刷新
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    fireEvent.change(screen.getByLabelText("评论内容"), {
+      target: { value: "分页浏览途中的评论草稿" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "发表评论" }));
+
+    expect(
+      await screen.findByText(
+        "登录状态已更新为「分页读者」，草稿已保留，请确认身份后再次点击发表。",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("第1页置顶评论")).toBeInTheDocument();
+    expect(screen.getByText("第2页中间评论")).toBeInTheDocument();
+
+    // 在途的第 3 页返回后，完整保留 1/2/3 页顺序，无缺页
+    resolvePage3?.(
+      jsonResponse({
+        items: [
+          {
+            id: 10,
+            body: "第3页底部评论",
+            createdAt: "2026-11-24T08:00:00Z",
+            canDelete: false,
+            author: { kind: "guest", id: null, displayName: "未登录用户" },
+          },
+        ],
+        nextBefore: null,
+      }),
+    );
+
+    expect(await screen.findByText("第3页底部评论")).toBeInTheDocument();
+    const cards = screen.getAllByRole("listitem");
+    expect(cards.map((el) => el.textContent)).toEqual([
+      expect.stringContaining("第1页置顶评论"),
+      expect.stringContaining("第2页中间评论"),
+      expect.stringContaining("第3页底部评论"),
+    ]);
+  });
 });

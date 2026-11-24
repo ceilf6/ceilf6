@@ -31,16 +31,6 @@ function formatCommentTime(iso: string): string {
   return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
 }
 
-function mergeHeadComments(
-  localItems: CommentItem[],
-  pageItems: CommentItem[],
-): CommentItem[] {
-  if (localItems.length === 0) return pageItems;
-  const pageIds = new Set(pageItems.map((item) => item.id));
-  const unsyncedLocal = localItems.filter((item) => !pageIds.has(item.id));
-  return [...unsyncedLocal, ...pageItems];
-}
-
 export function NoteComments({ slug }: NoteCommentsProps) {
   const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
   const [viewer, setViewer] = useState<ViewerSession | null>(null);
@@ -101,7 +91,16 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     fetchNoteComments(slug, { signal: ctrl.signal })
       .then((page) => {
         if (ctrl.signal.aborted) return;
-        setItems(mergeHeadComments(localCreatedRef.current, page.items));
+        const pageIds = new Set(page.items.map((item) => item.id));
+        const highestPageId = page.items.reduce(
+          (max, item) => Math.max(max, item.id),
+          0,
+        );
+        const unsyncedLocal = localCreatedRef.current.filter(
+          (item) => !pageIds.has(item.id) && item.id > highestPageId,
+        );
+        localCreatedRef.current = unsyncedLocal;
+        setItems([...unsyncedLocal, ...page.items]);
         setNextBefore(page.nextBefore);
         setStatus("ready");
       })
@@ -123,18 +122,10 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     conflictCtrlRef.current = ctrl;
 
     try {
-      const [refreshed, refreshedPage] = await Promise.all([
-        fetchViewerSession(ctrl.signal),
-        fetchNoteComments(slug, { signal: ctrl.signal }).catch(() => null),
-      ]);
+      const refreshed = await fetchViewerSession(ctrl.signal);
       if (ctrl.signal.aborted) return null;
       setViewer(refreshed);
       setViewerStatus("ready");
-      if (refreshedPage) {
-        setItems(mergeHeadComments(localCreatedRef.current, refreshedPage.items));
-        setNextBefore(refreshedPage.nextBefore);
-        setStatus("ready");
-      }
       return refreshed;
     } catch (error: unknown) {
       if (!isAbortLike(error, ctrl.signal)) {
@@ -146,7 +137,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         conflictCtrlRef.current = null;
       }
     }
-  }, [slug]);
+  }, []);
 
   const handleDisableGuestComments = useCallback(() => {
     setViewer((prev) =>
