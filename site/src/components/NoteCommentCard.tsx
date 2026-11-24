@@ -24,12 +24,17 @@ function formatCommentTime(iso: string): string {
   return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
 }
 
-export function canViewerDeleteComment(
+function canViewerDeleteComment(
   item: CommentItem,
   viewerStatus: ViewerLoadStatus,
   viewer: ViewerSession | null,
 ): boolean {
-  if (viewerStatus !== "ready" || !viewer || !viewer.user || !viewer.csrfToken) {
+  if (
+    viewerStatus !== "ready" ||
+    !viewer ||
+    !viewer.user ||
+    !viewer.csrfToken.trim()
+  ) {
     return false;
   }
   if (viewer.user.isCommentAdmin) {
@@ -90,7 +95,7 @@ export function NoteCommentCard({
       if (isAbortLike(error, ctrl.signal)) return;
 
       if (error instanceof CommentApiError) {
-        if (error.status === 404 || error.code === "comment_not_found") {
+        if (error.status === 404 && error.code === "comment_not_found") {
           onCommentDeleted(item.id);
           return;
         }

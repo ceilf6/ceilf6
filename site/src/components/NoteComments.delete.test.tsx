@@ -308,4 +308,115 @@ describe("NoteComments 作者删评与站主逐条管理", () => {
     rerender(<NoteComments slug="v8-gc-source" />);
     expect(signals[0].aborted).toBe(true);
   });
+
+  it("非 comment_not_found 的 HTML 404 不误删评论；删空首屏且 nextBefore 非空时保留读取更多；并发 csrf_failed 合并重拉", async () => {
+    let meCalls = 0;
+    let del302Calls = 0;
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
+      const url = String(input);
+      if (url === "/api/me/") {
+        meCalls += 1;
+        return Promise.resolve(
+          jsonResponse({
+            user: { id: 1, displayName: "站主", isCommentAdmin: true },
+            csrfToken: meCalls === 1 ? "csrf-old" : "csrf-merged",
+            guestCommentsAllowed: true,
+          }),
+        );
+      }
+      if (url === "/api/notes/cc-source-analysis/comments/?before=302") {
+        return Promise.resolve(
+          jsonResponse({
+            items: [SAMPLE_ITEMS[2]],
+            nextBefore: null,
+          }),
+        );
+      }
+      if (url === "/api/comments/301/delete/" && init?.method === "POST") {
+        const token = (init.headers as Record<string, string>)["X-CSRFToken"];
+        if (token === "csrf-old") {
+          return Promise.resolve(
+            jsonResponse(
+              { code: "csrf_failed", message: "CSRF 安全校验未通过，请刷新页面后重试。" },
+              403,
+            ),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 204 }));
+      }
+      if (url === "/api/comments/302/delete/" && init?.method === "POST") {
+        del302Calls += 1;
+        if (del302Calls === 1) {
+          return Promise.resolve(
+            jsonResponse(
+              { code: "csrf_failed", message: "CSRF 安全校验未通过，请刷新页面后重试。" },
+              403,
+            ),
+          );
+        }
+        if (del302Calls === 2) {
+          return Promise.resolve(
+            new Response("<html>404 Not Found</html>", {
+              status: 404,
+              headers: { "Content-Type": "text/html" },
+            }),
+          );
+        }
+        return Promise.resolve(new Response(null, { status: 204 }));
+      }
+      return Promise.resolve(
+        jsonResponse({
+          items: [SAMPLE_ITEMS[0], SAMPLE_ITEMS[1]],
+          nextBefore: 302,
+        }),
+      );
+    });
+
+    render(<NoteComments slug="cc-source-analysis" />);
+    expect(await screen.findByText("访客留下的讨论")).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "退出登录" })).toBeInTheDocument();
+
+    const card301 = screen.getByText("访客留下的讨论").closest("li")!;
+    const card302 = screen.getByText("成员甲（本人）的评论").closest("li")!;
+
+    // 两张卡片并发遇到 403 csrf_failed：共享同一次 /api/me/ 重拉，均不会因互相 abort 而误报同步受阻
+    fireEvent.click(within(card301).getByRole("button", { name: "删除" }));
+    fireEvent.click(within(card302).getByRole("button", { name: "删除" }));
+    fireEvent.click(within(card301).getByRole("button", { name: "确认删除" }));
+    fireEvent.click(within(card302).getByRole("button", { name: "确认删除" }));
+
+    expect(
+      await within(card301).findByText("安全令牌已更新，请再次点击「确认删除」。"),
+    ).toBeInTheDocument();
+    expect(
+      await within(card302).findByText("安全令牌已更新，请再次点击「确认删除」。"),
+    ).toBeInTheDocument();
+    expect(meCalls).toBe(2);
+
+    // 301 用新令牌成功删除；302 遇到反代 HTML 404 时绝不误删，保留条目并显示格式异常提示
+    fireEvent.click(within(card301).getByRole("button", { name: "确认删除" }));
+    await waitFor(() => {
+      expect(screen.queryByText("访客留下的讨论")).toBeNull();
+    });
+
+    fireEvent.click(within(card302).getByRole("button", { name: "确认删除" }));
+    expect(
+      await within(card302).findByText("服务响应格式异常，请稍后重试。"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("成员甲（本人）的评论")).toBeInTheDocument();
+
+    // 再次删除 302 后首屏可见条目清空，但因 nextBefore=302 仍可点击「读取更多评论」加载后续页
+    fireEvent.click(within(card302).getByRole("button", { name: "删除" }));
+    fireEvent.click(within(card302).getByRole("button", { name: "确认删除" }));
+    await waitFor(() => {
+      expect(screen.queryByText("成员甲（本人）的评论")).toBeNull();
+    });
+    expect(
+      screen.queryByText("还没有评论，欢迎留下第一条讨论。"),
+    ).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    expect(await screen.findByText("成员乙（他人）的评论")).toBeInTheDocument();
+  });
 });

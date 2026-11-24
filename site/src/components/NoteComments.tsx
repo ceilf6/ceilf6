@@ -30,6 +30,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
 
   const loadMoreCtrlRef = useRef<AbortController | null>(null);
   const conflictCtrlRef = useRef<AbortController | null>(null);
+  const conflictPromiseRef = useRef<Promise<ViewerSession | null> | null>(null);
   const localCreatedRef = useRef<CommentItem[]>([]);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     const ctrl = new AbortController();
     conflictCtrlRef.current?.abort();
     conflictCtrlRef.current = null;
+    conflictPromiseRef.current = null;
     setViewerStatus("loading");
     setViewer(null);
 
@@ -59,6 +61,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       ctrl.abort();
       conflictCtrlRef.current?.abort();
       conflictCtrlRef.current = null;
+      conflictPromiseRef.current = null;
     };
   }, [slug, viewerReloadSeq]);
 
@@ -101,27 +104,40 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     };
   }, [slug, reloadSeq]);
 
-  const handleRefreshViewerAfterConflict = useCallback(async () => {
+  const handleRefreshViewerAfterConflict = useCallback((): Promise<ViewerSession | null> => {
+    if (
+      conflictPromiseRef.current &&
+      conflictCtrlRef.current &&
+      !conflictCtrlRef.current.signal.aborted
+    ) {
+      return conflictPromiseRef.current;
+    }
+
     const ctrl = new AbortController();
-    conflictCtrlRef.current?.abort();
     conflictCtrlRef.current = ctrl;
 
-    try {
-      const refreshed = await fetchViewerSession(ctrl.signal);
-      if (ctrl.signal.aborted) return null;
-      setViewer(refreshed);
-      setViewerStatus("ready");
-      return refreshed;
-    } catch (error: unknown) {
-      if (!isAbortLike(error, ctrl.signal)) {
-        setViewerStatus("error");
+    const pending = (async () => {
+      try {
+        const refreshed = await fetchViewerSession(ctrl.signal);
+        if (ctrl.signal.aborted) return null;
+        setViewer(refreshed);
+        setViewerStatus("ready");
+        return refreshed;
+      } catch (error: unknown) {
+        if (!isAbortLike(error, ctrl.signal)) {
+          setViewerStatus("error");
+        }
+        return null;
+      } finally {
+        if (conflictCtrlRef.current === ctrl) {
+          conflictCtrlRef.current = null;
+          conflictPromiseRef.current = null;
+        }
       }
-      return null;
-    } finally {
-      if (conflictCtrlRef.current === ctrl) {
-        conflictCtrlRef.current = null;
-      }
-    }
+    })();
+
+    conflictPromiseRef.current = pending;
+    return pending;
   }, []);
 
   const handleDisableGuestComments = useCallback(() => {
@@ -231,7 +247,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
             重新读取
           </button>
         </div>
-      ) : items.length === 0 ? (
+      ) : items.length === 0 && nextBefore === null ? (
         <p className="note-comments-empty">还没有评论，欢迎留下第一条讨论。</p>
       ) : (
         <>
