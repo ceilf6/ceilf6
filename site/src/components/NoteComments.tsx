@@ -6,6 +6,7 @@ import {
   type CommentItem,
   type ViewerSession,
 } from "../data/comments";
+import { NoteCommentCard } from "./NoteCommentCard";
 import { NoteCommentComposer, type ViewerLoadStatus } from "./NoteCommentComposer";
 import "./NoteComments.css";
 
@@ -14,22 +15,6 @@ interface NoteCommentsProps {
 }
 
 type ListStatus = "loading" | "ready" | "error";
-
-const SHANGHAI_TIME_FORMATTER = new Intl.DateTimeFormat("zh-CN", {
-  timeZone: "Asia/Shanghai",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
-
-function formatCommentTime(iso: string): string {
-  const ms = Date.parse(iso);
-  if (Number.isNaN(ms)) return iso;
-  return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
-}
 
 export function NoteComments({ slug }: NoteCommentsProps) {
   const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
@@ -156,6 +141,13 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     ]);
   }, []);
 
+  const handleCommentDeleted = useCallback((commentId: number) => {
+    localCreatedRef.current = localCreatedRef.current.filter(
+      (existing) => existing.id !== commentId,
+    );
+    setItems((prev) => prev.filter((existing) => existing.id !== commentId));
+  }, []);
+
   const handleLoadMore = () => {
     if (nextBefore === null || loadingMore) return;
 
@@ -212,23 +204,14 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       {items.length > 0 ? (
         <ol className="note-comments-list">
           {items.map((item) => (
-            <li key={item.id} className="note-comment-card">
-              <div className="note-comment-meta">
-                <span
-                  className="note-comment-author"
-                  data-author-kind={item.author.kind}
-                >
-                  {item.author.displayName}
-                </span>
-                {item.author.kind === "guest" ? (
-                  <span className="note-comment-badge">访客</span>
-                ) : null}
-                <time className="note-comment-time" dateTime={item.createdAt}>
-                  {formatCommentTime(item.createdAt)}
-                </time>
-              </div>
-              <p className="note-comment-body">{item.body}</p>
-            </li>
+            <NoteCommentCard
+              key={item.id}
+              item={item}
+              viewerStatus={viewerStatus}
+              viewer={viewer}
+              onRefreshViewerAfterConflict={handleRefreshViewerAfterConflict}
+              onCommentDeleted={handleCommentDeleted}
+            />
           ))}
         </ol>
       ) : null}

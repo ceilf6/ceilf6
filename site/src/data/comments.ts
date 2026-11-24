@@ -295,6 +295,47 @@ export async function createNoteComment(
   return parseCommentItem(data);
 }
 
+export async function deleteComment(
+  commentId: number,
+  csrfToken: string,
+  signal?: AbortSignal,
+): Promise<void> {
+  if (!isPositiveSafeInt(commentId)) {
+    throw new CommentApiError("未找到对应的评论。", 404, "comment_not_found");
+  }
+  const token = csrfToken.trim();
+  if (!token) {
+    throw new CommentApiError(
+      "安全令牌尚未就绪，请刷新重试。",
+      400,
+      "missing_csrf_token",
+    );
+  }
+
+  const encodedId = encodeURIComponent(String(commentId));
+  const response = await fetch(`/api/comments/${encodedId}/delete/`, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      "X-CSRFToken": token,
+    },
+    signal,
+  });
+
+  if (response.status === 204) {
+    return;
+  }
+  if (!response.ok) {
+    await readJsonOrThrow(response, signal);
+  }
+  throw new CommentApiError(
+    "服务响应状态异常，请稍后重试。",
+    response.status,
+    "unexpected_delete_status",
+  );
+}
+
 export function readCommentDraft(slug: string): string {
   if (!slug) return "";
   try {
