@@ -14,6 +14,14 @@ function jsonResponse(payload: unknown, status = 200): Response {
   });
 }
 
+function guestSessionResponse(): Response {
+  return jsonResponse({
+    user: null,
+    csrfToken: "csrf-guest",
+    guestCommentsAllowed: true,
+  });
+}
+
 function makeComment(overrides: Partial<CommentItem> & { id: number }): CommentItem {
   return {
     id: overrides.id,
@@ -31,12 +39,15 @@ function makeComment(overrides: Partial<CommentItem> & { id: number }): CommentI
 describe("NoteComments 列表、分页与异常隔离", () => {
   afterEach(() => {
     vi.restoreAllMocks();
+    globalThis.sessionStorage.clear();
   });
 
   it("空列表渲染友好空态提示", async () => {
-    const fetchSpy = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(jsonResponse({ items: [], nextBefore: null }));
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url === "/api/me/") return Promise.resolve(guestSessionResponse());
+      return Promise.resolve(jsonResponse({ items: [], nextBefore: null }));
+    });
 
     render(<NoteComments slug="cc-source-analysis" />);
     expect(screen.getByText("正在读取评论…")).toBeInTheDocument();
@@ -57,25 +68,28 @@ describe("NoteComments 列表、分页与异常隔离", () => {
     const xssPayload = '<img src=x onerror="window.__xss=1"><script>alert(1)</script>';
     const xssName = "<svg onload=alert(2)>";
 
-    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
-      jsonResponse({
-        items: [
-          makeComment({
-            id: 12,
-            body: xssPayload,
-            createdAt: "2026-11-24T09:05:00Z",
-            author: { kind: "member", id: 3, displayName: xssName },
-          }),
-          makeComment({
-            id: 11,
-            body: "未登录访客的第一条观察",
-            createdAt: "2026-11-24T08:00:00Z",
-            author: { kind: "guest", id: null, displayName: "未登录用户" },
-          }),
-        ],
-        nextBefore: null,
-      }),
-    );
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      if (String(input) === "/api/me/") return Promise.resolve(guestSessionResponse());
+      return Promise.resolve(
+        jsonResponse({
+          items: [
+            makeComment({
+              id: 12,
+              body: xssPayload,
+              createdAt: "2026-11-24T09:05:00Z",
+              author: { kind: "member", id: 3, displayName: xssName },
+            }),
+            makeComment({
+              id: 11,
+              body: "未登录访客的第一条观察",
+              createdAt: "2026-11-24T08:00:00Z",
+              author: { kind: "guest", id: null, displayName: "未登录用户" },
+            }),
+          ],
+          nextBefore: null,
+        }),
+      );
+    });
 
     const { container } = render(<NoteComments slug="cc-source-analysis" />);
 
@@ -90,20 +104,24 @@ describe("NoteComments 列表、分页与异常隔离", () => {
   });
 
   it("基于 nextBefore 游标追加下一页评论并在末尾隐藏分页按钮", async () => {
-    const fetchSpy = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url === "/api/me/") return Promise.resolve(guestSessionResponse());
+      if (url === "/api/notes/v8-gc-source/comments/?before=30") {
+        return Promise.resolve(
+          jsonResponse({
+            items: [makeComment({ id: 21, body: "第二页历史评论" })],
+            nextBefore: null,
+          }),
+        );
+      }
+      return Promise.resolve(
         jsonResponse({
           items: [makeComment({ id: 30, body: "第一页最新评论" })],
           nextBefore: 30,
         }),
-      )
-      .mockResolvedValueOnce(
-        jsonResponse({
-          items: [makeComment({ id: 21, body: "第二页历史评论" })],
-          nextBefore: null,
-        }),
       );
+    });
 
     render(<NoteComments slug="v8-gc-source" />);
 
@@ -114,8 +132,7 @@ describe("NoteComments 列表、分页与异常隔离", () => {
     expect(await screen.findByText("第二页历史评论")).toBeInTheDocument();
     expect(screen.getByText("第一页最新评论")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "读取更多评论" })).toBeNull();
-    expect(fetchSpy).toHaveBeenNthCalledWith(
-      2,
+    expect(fetchSpy).toHaveBeenCalledWith(
       "/api/notes/v8-gc-source/comments/?before=30",
       expect.objectContaining({ method: "GET", credentials: "same-origin" }),
     );
@@ -123,11 +140,12 @@ describe("NoteComments 列表、分页与异常隔离", () => {
 
   it("切换 slug 时立即 abort 旧请求且旧页数据不串入新札记", async () => {
     let resolveSlugA: ((res: Response) => void) | undefined;
-    const signals: AbortSignal[] = [];
+    const commentSignals: AbortSignal[] = [];
 
     vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
-      if (init?.signal) signals.push(init.signal);
       const url = String(input);
+      if (url === "/api/me/") return Promise.resolve(guestSessionResponse());
+      if (init?.signal) commentSignals.push(init.signal);
       if (url.includes("/notes/slug-a/")) {
         return new Promise<Response>((resolve) => {
           resolveSlugA = resolve;
@@ -142,11 +160,11 @@ describe("NoteComments 列表、分页与异常隔离", () => {
     });
 
     const { rerender } = render(<NoteComments slug="slug-a" />);
-    expect(signals).toHaveLength(1);
-    expect(signals[0].aborted).toBe(false);
+    expect(commentSignals).toHaveLength(1);
+    expect(commentSignals[0].aborted).toBe(false);
 
     rerender(<NoteComments slug="slug-b" />);
-    expect(signals[0].aborted).toBe(true);
+    expect(commentSignals[0].aborted).toBe(true);
 
     expect(await screen.findByText("新札记B的评论")).toBeInTheDocument();
 
@@ -163,14 +181,20 @@ describe("NoteComments 列表、分页与异常隔离", () => {
   });
 
   it("接口失败时仅渲染局部降级提示并支持点击重新读取恢复", async () => {
-    vi.spyOn(globalThis, "fetch")
-      .mockRejectedValueOnce(new Error("network down"))
-      .mockResolvedValueOnce(
+    let listAttempt = 0;
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      if (String(input) === "/api/me/") return Promise.resolve(guestSessionResponse());
+      listAttempt += 1;
+      if (listAttempt === 1) {
+        return Promise.reject(new Error("network down"));
+      }
+      return Promise.resolve(
         jsonResponse({
           items: [makeComment({ id: 5, body: "重试后成功展示" })],
           nextBefore: null,
         }),
       );
+    });
 
     render(<NoteComments slug="node-event-loop" />);
 
@@ -201,11 +225,12 @@ describe("NoteComments 列表、分页与异常隔离", () => {
 
   it("分页加载进行中切换 slug 时立即 abort 分页请求且旧分页数据不串入新札记", async () => {
     let resolvePage2A: ((res: Response) => void) | undefined;
-    const signals: AbortSignal[] = [];
+    const commentSignals: AbortSignal[] = [];
 
     vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
-      if (init?.signal) signals.push(init.signal);
       const url = String(input);
+      if (url === "/api/me/") return Promise.resolve(guestSessionResponse());
+      if (init?.signal) commentSignals.push(init.signal);
       if (url === "/api/notes/slug-a/comments/") {
         return Promise.resolve(
           jsonResponse({
@@ -231,11 +256,11 @@ describe("NoteComments 列表、分页与异常隔离", () => {
     expect(await screen.findByText("札记A第一页")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
-    expect(signals).toHaveLength(2);
-    expect(signals[1].aborted).toBe(false);
+    expect(commentSignals).toHaveLength(2);
+    expect(commentSignals[1].aborted).toBe(false);
 
     rerender(<NoteComments slug="slug-b" />);
-    expect(signals[1].aborted).toBe(true);
+    expect(commentSignals[1].aborted).toBe(true);
     expect(await screen.findByText("札记B首屏评论")).toBeInTheDocument();
 
     resolvePage2A?.(
@@ -251,20 +276,29 @@ describe("NoteComments 列表、分页与异常隔离", () => {
   });
 
   it("分页加载失败保留已有列表并提示错误，再次点击可恢复加载", async () => {
-    vi.spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(
+    let page2Calls = 0;
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url === "/api/me/") return Promise.resolve(guestSessionResponse());
+      if (url === "/api/notes/v8-gc-source/comments/?before=30") {
+        page2Calls += 1;
+        if (page2Calls === 1) {
+          return Promise.reject(new Error("page 2 timeout"));
+        }
+        return Promise.resolve(
+          jsonResponse({
+            items: [makeComment({ id: 20, body: "重试成功的第二页评论" })],
+            nextBefore: null,
+          }),
+        );
+      }
+      return Promise.resolve(
         jsonResponse({
           items: [makeComment({ id: 30, body: "已展示的第一页评论" })],
           nextBefore: 30,
         }),
-      )
-      .mockRejectedValueOnce(new Error("page 2 timeout"))
-      .mockResolvedValueOnce(
-        jsonResponse({
-          items: [makeComment({ id: 20, body: "重试成功的第二页评论" })],
-          nextBefore: null,
-        }),
       );
+    });
 
     render(<NoteComments slug="v8-gc-source" />);
     expect(await screen.findByText("已展示的第一页评论")).toBeInTheDocument();

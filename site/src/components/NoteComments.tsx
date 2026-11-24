@@ -1,5 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { fetchNoteComments, type CommentItem } from "../data/comments";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  fetchNoteComments,
+  fetchViewerSession,
+  isAbortLike,
+  type CommentItem,
+  type ViewerSession,
+} from "../data/comments";
+import { NoteCommentComposer, type ViewerLoadStatus } from "./NoteCommentComposer";
 import "./NoteComments.css";
 
 interface NoteCommentsProps {
@@ -24,24 +31,48 @@ function formatCommentTime(iso: string): string {
   return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
 }
 
-function isAbortError(error: unknown, signal: AbortSignal): boolean {
-  if (signal.aborted) return true;
-  return error instanceof DOMException && error.name === "AbortError";
-}
-
 export function NoteComments({ slug }: NoteCommentsProps) {
+  const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
+  const [viewer, setViewer] = useState<ViewerSession | null>(null);
+  const [viewerReloadSeq, setViewerReloadSeq] = useState(0);
+
   const [status, setStatus] = useState<ListStatus>("loading");
   const [items, setItems] = useState<CommentItem[]>([]);
   const [nextBefore, setNextBefore] = useState<number | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
   const [reloadSeq, setReloadSeq] = useState(0);
+
   const loadMoreCtrlRef = useRef<AbortController | null>(null);
+  const conflictCtrlRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    setViewerStatus("loading");
+    setViewer(null);
+
+    fetchViewerSession(ctrl.signal)
+      .then((session) => {
+        if (ctrl.signal.aborted) return;
+        setViewer(session);
+        setViewerStatus("ready");
+      })
+      .catch((error: unknown) => {
+        if (isAbortLike(error, ctrl.signal)) return;
+        setViewerStatus("error");
+      });
+
+    return () => {
+      ctrl.abort();
+    };
+  }, [slug, viewerReloadSeq]);
 
   useEffect(() => {
     const ctrl = new AbortController();
     loadMoreCtrlRef.current?.abort();
     loadMoreCtrlRef.current = null;
+    conflictCtrlRef.current?.abort();
+    conflictCtrlRef.current = null;
 
     setStatus("loading");
     setItems([]);
@@ -57,7 +88,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         setStatus("ready");
       })
       .catch((error: unknown) => {
-        if (isAbortError(error, ctrl.signal)) return;
+        if (isAbortLike(error, ctrl.signal)) return;
         setStatus("error");
       });
 
@@ -65,8 +96,55 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       ctrl.abort();
       loadMoreCtrlRef.current?.abort();
       loadMoreCtrlRef.current = null;
+      conflictCtrlRef.current?.abort();
+      conflictCtrlRef.current = null;
     };
   }, [slug, reloadSeq]);
+
+  const handleRefreshViewerAfterConflict = useCallback(async () => {
+    const ctrl = new AbortController();
+    conflictCtrlRef.current?.abort();
+    conflictCtrlRef.current = ctrl;
+
+    try {
+      const [refreshed, refreshedPage] = await Promise.all([
+        fetchViewerSession(ctrl.signal),
+        fetchNoteComments(slug, { signal: ctrl.signal }).catch(() => null),
+      ]);
+      if (ctrl.signal.aborted) return null;
+      setViewer(refreshed);
+      setViewerStatus("ready");
+      if (refreshedPage) {
+        setItems(refreshedPage.items);
+        setNextBefore(refreshedPage.nextBefore);
+        setStatus("ready");
+      }
+      return refreshed;
+    } catch (error: unknown) {
+      if (!isAbortLike(error, ctrl.signal)) {
+        setViewerStatus("error");
+      }
+      return null;
+    } finally {
+      if (conflictCtrlRef.current === ctrl) {
+        conflictCtrlRef.current = null;
+      }
+    }
+  }, [slug]);
+
+  const handleDisableGuestComments = useCallback(() => {
+    setViewer((prev) =>
+      prev ? { ...prev, guestCommentsAllowed: false } : prev,
+    );
+  }, []);
+
+  const handleCommentCreated = useCallback((created: CommentItem) => {
+    setItems((prev) => [
+      created,
+      ...prev.filter((existing) => existing.id !== created.id),
+    ]);
+    setStatus("ready");
+  }, []);
 
   const handleLoadMore = () => {
     if (nextBefore === null || loadingMore) return;
@@ -89,7 +167,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         setLoadingMore(false);
       })
       .catch((error: unknown) => {
-        if (isAbortError(error, ctrl.signal)) return;
+        if (isAbortLike(error, ctrl.signal)) return;
         setLoadMoreError("更多评论暂时无法读取，请重试。");
         setLoadingMore(false);
       })
@@ -110,6 +188,16 @@ export function NoteComments({ slug }: NoteCommentsProps) {
           <span className="note-comments-count">已展示 {items.length} 条</span>
         ) : null}
       </div>
+
+      <NoteCommentComposer
+        slug={slug}
+        viewerStatus={viewerStatus}
+        viewer={viewer}
+        onRetryViewer={() => setViewerReloadSeq((n) => n + 1)}
+        onRefreshViewerAfterConflict={handleRefreshViewerAfterConflict}
+        onDisableGuestComments={handleDisableGuestComments}
+        onCommentCreated={handleCommentCreated}
+      />
 
       {status === "loading" ? (
         <p className="note-comments-state" role="status">

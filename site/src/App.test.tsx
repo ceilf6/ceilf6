@@ -14,6 +14,18 @@ const at = (path: string) =>
 beforeEach(() => {
   vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
     const url = String(input);
+    if (url === "/api/me/") {
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            user: null,
+            csrfToken: "test-csrf",
+            guestCommentsAllowed: true,
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+      );
+    }
     if (url.startsWith("/api/notes/")) {
       return Promise.resolve(
         new Response(JSON.stringify({ items: [], nextBefore: null }), {

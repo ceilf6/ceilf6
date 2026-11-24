@@ -27,7 +27,17 @@ vi.mock("../data/notes", () => {
   };
 });
 
-function emptyCommentsResponse(): Response {
+function defaultApiResponse(url: string): Response {
+  if (url === "/api/me/") {
+    return new Response(
+      JSON.stringify({
+        user: null,
+        csrfToken: "test-csrf",
+        guestCommentsAllowed: true,
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  }
   return new Response(JSON.stringify({ items: [], nextBefore: null }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
@@ -58,8 +68,8 @@ const settle = (fn: () => void) =>
   });
 
 beforeEach(() => {
-  vi.spyOn(globalThis, "fetch").mockImplementation(() =>
-    Promise.resolve(emptyCommentsResponse()),
+  vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
+    Promise.resolve(defaultApiResponse(String(input))),
   );
 });
 
@@ -95,7 +105,10 @@ describe("Note 正文加载与评论区挂载边界", () => {
     expect(
       await screen.findByText("还没有评论，欢迎留下第一条讨论。"),
     ).toBeInTheDocument();
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(
+      await screen.findByText("当前未登录，将以「未登录用户」身份直接发表"),
+    ).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toHaveBeenCalledWith(
       "/api/notes/b/comments/",
       expect.objectContaining({ method: "GET" }),
@@ -111,11 +124,17 @@ describe("Note 正文加载与评论区挂载边界", () => {
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
     expect(screen.queryByText("正文B")).toBeNull();
     expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("评论接口失败时仅评论区降级提示,札记正文仍正常阅读", async () => {
-    vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(new Error("api 502"));
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url === "/api/me/") {
+        return Promise.resolve(defaultApiResponse(url));
+      }
+      return Promise.reject(new Error("api 502"));
+    });
     at("/notes/a");
 
     await settle(() => inflight.get("a")!.resolve("<p>独立可读的正文A</p>"));
