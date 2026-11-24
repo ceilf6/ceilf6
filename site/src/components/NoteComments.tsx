@@ -6,6 +6,7 @@ import {
   type CommentItem,
   type ViewerSession,
 } from "../data/comments";
+import { NoteCommentCard } from "./NoteCommentCard";
 import { NoteCommentComposer, type ViewerLoadStatus } from "./NoteCommentComposer";
 import "./NoteComments.css";
 
@@ -14,22 +15,6 @@ interface NoteCommentsProps {
 }
 
 type ListStatus = "loading" | "ready" | "error";
-
-const SHANGHAI_TIME_FORMATTER = new Intl.DateTimeFormat("zh-CN", {
-  timeZone: "Asia/Shanghai",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
-
-function formatCommentTime(iso: string): string {
-  const ms = Date.parse(iso);
-  if (Number.isNaN(ms)) return iso;
-  return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
-}
 
 export function NoteComments({ slug }: NoteCommentsProps) {
   const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
@@ -45,6 +30,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
 
   const loadMoreCtrlRef = useRef<AbortController | null>(null);
   const conflictCtrlRef = useRef<AbortController | null>(null);
+  const conflictPromiseRef = useRef<Promise<ViewerSession | null> | null>(null);
   const localCreatedRef = useRef<CommentItem[]>([]);
 
   useEffect(() => {
@@ -56,6 +42,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     const ctrl = new AbortController();
     conflictCtrlRef.current?.abort();
     conflictCtrlRef.current = null;
+    conflictPromiseRef.current = null;
     setViewerStatus("loading");
     setViewer(null);
 
@@ -74,6 +61,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       ctrl.abort();
       conflictCtrlRef.current?.abort();
       conflictCtrlRef.current = null;
+      conflictPromiseRef.current = null;
     };
   }, [slug, viewerReloadSeq]);
 
@@ -116,27 +104,40 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     };
   }, [slug, reloadSeq]);
 
-  const handleRefreshViewerAfterConflict = useCallback(async () => {
+  const handleRefreshViewerAfterConflict = useCallback((): Promise<ViewerSession | null> => {
+    if (
+      conflictPromiseRef.current &&
+      conflictCtrlRef.current &&
+      !conflictCtrlRef.current.signal.aborted
+    ) {
+      return conflictPromiseRef.current;
+    }
+
     const ctrl = new AbortController();
-    conflictCtrlRef.current?.abort();
     conflictCtrlRef.current = ctrl;
 
-    try {
-      const refreshed = await fetchViewerSession(ctrl.signal);
-      if (ctrl.signal.aborted) return null;
-      setViewer(refreshed);
-      setViewerStatus("ready");
-      return refreshed;
-    } catch (error: unknown) {
-      if (!isAbortLike(error, ctrl.signal)) {
-        setViewerStatus("error");
+    const pending = (async () => {
+      try {
+        const refreshed = await fetchViewerSession(ctrl.signal);
+        if (ctrl.signal.aborted) return null;
+        setViewer(refreshed);
+        setViewerStatus("ready");
+        return refreshed;
+      } catch (error: unknown) {
+        if (!isAbortLike(error, ctrl.signal)) {
+          setViewerStatus("error");
+        }
+        return null;
+      } finally {
+        if (conflictCtrlRef.current === ctrl) {
+          conflictCtrlRef.current = null;
+          conflictPromiseRef.current = null;
+        }
       }
-      return null;
-    } finally {
-      if (conflictCtrlRef.current === ctrl) {
-        conflictCtrlRef.current = null;
-      }
-    }
+    })();
+
+    conflictPromiseRef.current = pending;
+    return pending;
   }, []);
 
   const handleDisableGuestComments = useCallback(() => {
@@ -154,6 +155,13 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       created,
       ...prev.filter((existing) => existing.id !== created.id),
     ]);
+  }, []);
+
+  const handleCommentDeleted = useCallback((commentId: number) => {
+    localCreatedRef.current = localCreatedRef.current.filter(
+      (existing) => existing.id !== commentId,
+    );
+    setItems((prev) => prev.filter((existing) => existing.id !== commentId));
   }, []);
 
   const handleLoadMore = () => {
@@ -212,23 +220,14 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       {items.length > 0 ? (
         <ol className="note-comments-list">
           {items.map((item) => (
-            <li key={item.id} className="note-comment-card">
-              <div className="note-comment-meta">
-                <span
-                  className="note-comment-author"
-                  data-author-kind={item.author.kind}
-                >
-                  {item.author.displayName}
-                </span>
-                {item.author.kind === "guest" ? (
-                  <span className="note-comment-badge">访客</span>
-                ) : null}
-                <time className="note-comment-time" dateTime={item.createdAt}>
-                  {formatCommentTime(item.createdAt)}
-                </time>
-              </div>
-              <p className="note-comment-body">{item.body}</p>
-            </li>
+            <NoteCommentCard
+              key={item.id}
+              item={item}
+              viewerStatus={viewerStatus}
+              viewer={viewer}
+              onRefreshViewerAfterConflict={handleRefreshViewerAfterConflict}
+              onCommentDeleted={handleCommentDeleted}
+            />
           ))}
         </ol>
       ) : null}
@@ -248,7 +247,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
             重新读取
           </button>
         </div>
-      ) : items.length === 0 ? (
+      ) : items.length === 0 && nextBefore === null ? (
         <p className="note-comments-empty">还没有评论，欢迎留下第一条讨论。</p>
       ) : (
         <>
