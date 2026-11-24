@@ -285,3 +285,27 @@ test(
     }
   },
 );
+
+test(
+  "site/deploy 后端独立发布与回退脚本语法及沙箱单测全部通过",
+  { timeout: 240_000 },
+  () => {
+    const python = ensureServerVenv();
+    const publishScript = resolve(SITE_DIR, "deploy", "publish-server.sh");
+
+    runChecked("bash", ["-n", publishScript], { cwd: SITE_DIR });
+
+    const deployTests = runChecked(
+      python,
+      ["-m", "unittest", "discover", "-s", "deploy/tests", "-t", ".", "-v"],
+      { cwd: SITE_DIR },
+    );
+    const countMatch = `${deployTests.stdout}\n${deployTests.stderr}`.match(
+      /Ran (\d+) tests?/,
+    );
+    assert.ok(
+      countMatch && Number(countMatch[1]) > 0,
+      "site/deploy unittest 未发现或未执行任何测试用例",
+    );
+  },
+);

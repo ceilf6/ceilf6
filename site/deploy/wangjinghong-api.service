@@ -1,0 +1,35 @@
+# /etc/systemd/system/wangjinghong-api.service
+# Gunicorn systemd unit for wangjinghong.com Django backend (sized for 2 GiB ECS).
+# Single worker + 4 threads shares SQLite WAL cleanly while capping RSS memory.
+
+[Unit]
+Description=wangjinghong.com Django API and Auth Backend (Gunicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/wangjinghong/current/server
+Environment=DJANGO_DOTENV_PATH=/dev/null
+Environment=DJANGO_DEBUG=false
+Environment=WANGJINGHONG_MAINTENANCE_FILE=/opt/wangjinghong/shared/.maintenance
+Environment=SQLITE_PATH=/var/lib/wangjinghong/db.sqlite3
+Environment=DJANGO_CACHE_PATH=/var/lib/wangjinghong/cache
+Environment=EMAIL_FILE_PATH=/var/lib/wangjinghong/mail
+EnvironmentFile=/etc/wangjinghong/server.env
+ExecStart=/opt/wangjinghong/shared/venv/bin/gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8000 \
+    --workers 1 \
+    --threads 4 \
+    --timeout 30 \
+    --access-logfile - \
+    --error-logfile -
+Restart=on-failure
+RestartSec=3
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
