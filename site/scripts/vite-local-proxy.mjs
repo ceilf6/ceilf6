@@ -8,6 +8,8 @@ const RESERVED_FRONTEND_ROOTS = new Set([
   "static",
   "django-static",
   "assets",
+  "src",
+  "node_modules",
   "blog",
   "vlog",
   "viewer",
@@ -38,17 +40,17 @@ export function resolveApiOrigin(rawOrigin) {
     parsed = new URL(trimmed);
   } catch {
     throw new Error(
-      `Invalid VITE_API_ORIGIN "${trimmed}": expected an http:// or https:// origin (e.g. ${DEFAULT_API_ORIGIN}).`,
+      `Invalid VITE_API_ORIGIN: expected an http:// or https:// origin (e.g. ${DEFAULT_API_ORIGIN}).`,
     );
   }
 
-  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new Error(
-      `Unsupported protocol "${parsed.protocol}" in VITE_API_ORIGIN "${trimmed}": expected http: or https:.`,
-    );
-  }
   if (parsed.username || parsed.password) {
     throw new Error("VITE_API_ORIGIN must not embed credentials.");
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error(
+      `Unsupported protocol "${parsed.protocol}" in VITE_API_ORIGIN: expected http: or https:.`,
+    );
   }
   if ((parsed.pathname && parsed.pathname !== "/") || parsed.search || parsed.hash) {
     throw new Error(
@@ -60,7 +62,8 @@ export function resolveApiOrigin(rawOrigin) {
 
 export function resolveAdminProxyPrefix(rawAdminPath) {
   const trimmed = typeof rawAdminPath === "string" ? rawAdminPath.trim() : "";
-  const cleaned = trimmed.replace(/^\/+|\/+$/g, "") || "admin";
+  if (!trimmed) return "/admin";
+  const cleaned = trimmed.replace(/^\/+|\/+$/g, "");
 
   if (
     !SAFE_ADMIN_SEGMENT_RE.test(cleaned) ||
@@ -90,8 +93,10 @@ export function resolveAdminProxyPrefix(rawAdminPath) {
  */
 export function buildSiteProxy(env = process.env) {
   const apiOrigin = resolveApiOrigin(env?.VITE_API_ORIGIN);
+  const viteAdmin =
+    typeof env?.VITE_ADMIN_PATH === "string" ? env.VITE_ADMIN_PATH.trim() : "";
   const adminPrefix = resolveAdminProxyPrefix(
-    env?.VITE_ADMIN_PATH || env?.DJANGO_ADMIN_PATH,
+    viteAdmin ? viteAdmin : env?.DJANGO_ADMIN_PATH,
   );
   const backendRule = { target: apiOrigin, changeOrigin: false };
 

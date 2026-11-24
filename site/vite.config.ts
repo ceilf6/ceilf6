@@ -1,4 +1,5 @@
 /// <reference types="vitest/config" />
+import { resolve } from "node:path";
 import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
@@ -6,8 +7,13 @@ import { buildSiteProxy } from "./scripts/vite-local-proxy.mjs";
 import { mdNotes } from "./scripts/vite-md-notes.mjs";
 
 export default defineConfig(({ mode }) => {
+  const serverAdminEnv = loadEnv(
+    mode,
+    resolve(import.meta.dirname, "server"),
+    "DJANGO_ADMIN_PATH",
+  );
   const fileEnv = loadEnv(mode, import.meta.dirname, "");
-  const proxy = buildSiteProxy({ ...fileEnv, ...process.env });
+  const proxy = buildSiteProxy({ ...serverAdminEnv, ...fileEnv, ...process.env });
 
   return {
     plugins: [react(), mdNotes()],

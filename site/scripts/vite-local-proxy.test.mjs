@@ -40,12 +40,21 @@ test("resolveApiOrigin 与 resolveAdminProxyPrefix 支持合法自定义并拒�
 
   const customProxy = buildSiteProxy({
     VITE_API_ORIGIN: "http://127.0.0.1:9009/",
+    VITE_ADMIN_PATH: "   ",
     DJANGO_ADMIN_PATH: "ops-console/",
   });
   assert.deepEqual(customProxy["^/ops-console(?:/|\\?|$)"], {
     target: "http://127.0.0.1:9009",
     changeOrigin: false,
   });
+
+  assert.throws(
+    () => resolveApiOrigin("ftp://user:super-secret@127.0.0.1:8000"),
+    (err) => {
+      assert.doesNotMatch(String(err.message), /super-secret/);
+      return true;
+    },
+  );
 
   for (const badOrigin of [
     "not-a-url",
@@ -58,10 +67,14 @@ test("resolveApiOrigin 与 resolveAdminProxyPrefix 支持合法自定义并拒�
   }
 
   for (const badAdmin of [
+    "/",
+    "///",
     "/blog/",
     "/notes/",
     "/api/",
     "/assets/",
+    "/src/",
+    "/node_modules/",
     "../escape",
     "ops//console",
     "bad space",
@@ -101,7 +114,11 @@ test(
     await new Promise((r) => backend.listen(0, "127.0.0.1", r));
     const backendPort = backend.address().port;
     const prevOrigin = process.env.VITE_API_ORIGIN;
+    const prevViteAdmin = process.env.VITE_ADMIN_PATH;
+    const prevDjangoAdmin = process.env.DJANGO_ADMIN_PATH;
     process.env.VITE_API_ORIGIN = `http://127.0.0.1:${backendPort}`;
+    process.env.VITE_ADMIN_PATH = "admin";
+    delete process.env.DJANGO_ADMIN_PATH;
 
     let viteServer;
     try {
@@ -171,6 +188,10 @@ test(
     } finally {
       if (prevOrigin === undefined) delete process.env.VITE_API_ORIGIN;
       else process.env.VITE_API_ORIGIN = prevOrigin;
+      if (prevViteAdmin === undefined) delete process.env.VITE_ADMIN_PATH;
+      else process.env.VITE_ADMIN_PATH = prevViteAdmin;
+      if (prevDjangoAdmin === undefined) delete process.env.DJANGO_ADMIN_PATH;
+      else process.env.DJANGO_ADMIN_PATH = prevDjangoAdmin;
       if (viteServer) {
         viteServer.httpServer?.closeAllConnections?.();
         await viteServer.close();
