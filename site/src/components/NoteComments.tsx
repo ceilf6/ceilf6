@@ -31,6 +31,16 @@ function formatCommentTime(iso: string): string {
   return SHANGHAI_TIME_FORMATTER.format(new Date(ms)).replace(/\//g, "-");
 }
 
+function mergeHeadComments(
+  localItems: CommentItem[],
+  pageItems: CommentItem[],
+): CommentItem[] {
+  if (localItems.length === 0) return pageItems;
+  const pageIds = new Set(pageItems.map((item) => item.id));
+  const unsyncedLocal = localItems.filter((item) => !pageIds.has(item.id));
+  return [...unsyncedLocal, ...pageItems];
+}
+
 export function NoteComments({ slug }: NoteCommentsProps) {
   const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
   const [viewer, setViewer] = useState<ViewerSession | null>(null);
@@ -45,9 +55,17 @@ export function NoteComments({ slug }: NoteCommentsProps) {
 
   const loadMoreCtrlRef = useRef<AbortController | null>(null);
   const conflictCtrlRef = useRef<AbortController | null>(null);
+  const localCreatedRef = useRef<CommentItem[]>([]);
+
+  useEffect(() => {
+    localCreatedRef.current = [];
+    setItems([]);
+  }, [slug]);
 
   useEffect(() => {
     const ctrl = new AbortController();
+    conflictCtrlRef.current?.abort();
+    conflictCtrlRef.current = null;
     setViewerStatus("loading");
     setViewer(null);
 
@@ -64,6 +82,8 @@ export function NoteComments({ slug }: NoteCommentsProps) {
 
     return () => {
       ctrl.abort();
+      conflictCtrlRef.current?.abort();
+      conflictCtrlRef.current = null;
     };
   }, [slug, viewerReloadSeq]);
 
@@ -71,11 +91,9 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     const ctrl = new AbortController();
     loadMoreCtrlRef.current?.abort();
     loadMoreCtrlRef.current = null;
-    conflictCtrlRef.current?.abort();
-    conflictCtrlRef.current = null;
 
     setStatus("loading");
-    setItems([]);
+    setItems(localCreatedRef.current);
     setNextBefore(null);
     setLoadingMore(false);
     setLoadMoreError(null);
@@ -83,7 +101,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
     fetchNoteComments(slug, { signal: ctrl.signal })
       .then((page) => {
         if (ctrl.signal.aborted) return;
-        setItems(page.items);
+        setItems(mergeHeadComments(localCreatedRef.current, page.items));
         setNextBefore(page.nextBefore);
         setStatus("ready");
       })
@@ -96,8 +114,6 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       ctrl.abort();
       loadMoreCtrlRef.current?.abort();
       loadMoreCtrlRef.current = null;
-      conflictCtrlRef.current?.abort();
-      conflictCtrlRef.current = null;
     };
   }, [slug, reloadSeq]);
 
@@ -115,7 +131,7 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       setViewer(refreshed);
       setViewerStatus("ready");
       if (refreshedPage) {
-        setItems(refreshedPage.items);
+        setItems(mergeHeadComments(localCreatedRef.current, refreshedPage.items));
         setNextBefore(refreshedPage.nextBefore);
         setStatus("ready");
       }
@@ -139,11 +155,14 @@ export function NoteComments({ slug }: NoteCommentsProps) {
   }, []);
 
   const handleCommentCreated = useCallback((created: CommentItem) => {
+    localCreatedRef.current = [
+      created,
+      ...localCreatedRef.current.filter((existing) => existing.id !== created.id),
+    ];
     setItems((prev) => [
       created,
       ...prev.filter((existing) => existing.id !== created.id),
     ]);
-    setStatus("ready");
   }, []);
 
   const handleLoadMore = () => {
@@ -199,6 +218,30 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         onCommentCreated={handleCommentCreated}
       />
 
+      {items.length > 0 ? (
+        <ol className="note-comments-list">
+          {items.map((item) => (
+            <li key={item.id} className="note-comment-card">
+              <div className="note-comment-meta">
+                <span
+                  className="note-comment-author"
+                  data-author-kind={item.author.kind}
+                >
+                  {item.author.displayName}
+                </span>
+                {item.author.kind === "guest" ? (
+                  <span className="note-comment-badge">访客</span>
+                ) : null}
+                <time className="note-comment-time" dateTime={item.createdAt}>
+                  {formatCommentTime(item.createdAt)}
+                </time>
+              </div>
+              <p className="note-comment-body">{item.body}</p>
+            </li>
+          ))}
+        </ol>
+      ) : null}
+
       {status === "loading" ? (
         <p className="note-comments-state" role="status">
           正在读取评论…
@@ -218,28 +261,6 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         <p className="note-comments-empty">还没有评论，欢迎留下第一条讨论。</p>
       ) : (
         <>
-          <ol className="note-comments-list">
-            {items.map((item) => (
-              <li key={item.id} className="note-comment-card">
-                <div className="note-comment-meta">
-                  <span
-                    className="note-comment-author"
-                    data-author-kind={item.author.kind}
-                  >
-                    {item.author.displayName}
-                  </span>
-                  {item.author.kind === "guest" ? (
-                    <span className="note-comment-badge">访客</span>
-                  ) : null}
-                  <time className="note-comment-time" dateTime={item.createdAt}>
-                    {formatCommentTime(item.createdAt)}
-                  </time>
-                </div>
-                <p className="note-comment-body">{item.body}</p>
-              </li>
-            ))}
-          </ol>
-
           {loadMoreError ? (
             <p className="note-comments-more-error" role="alert">
               {loadMoreError}

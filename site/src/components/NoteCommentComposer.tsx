@@ -27,10 +27,6 @@ function countNormalizedChars(raw: string): number {
   return Array.from(normalized).length;
 }
 
-function sanitizeBannerCopy(text: string): string {
-  return text.replace(/加载中/g, "处理中").replace(/加载失败/g, "读取受阻");
-}
-
 export function NoteCommentComposer({
   slug,
   viewerStatus,
@@ -99,6 +95,7 @@ export function NoteCommentComposer({
     setSubmitting(true);
     setSubmitError(null);
 
+    const prevUserId = viewer.user?.id ?? null;
     const expectedAuthorKind = viewer.user ? "member" : "guest";
     try {
       const created = await createNoteComment(
@@ -116,16 +113,31 @@ export function NoteCommentComposer({
       if (isAbortLike(error, ctrl.signal)) return;
 
       if (error instanceof CommentApiError) {
-        if (error.code === "author_state_changed") {
+        if (
+          error.code === "author_state_changed" ||
+          error.code === "csrf_failed"
+        ) {
           const refreshed = await onRefreshViewerAfterConflict();
           if (ctrl.signal.aborted) return;
-          if (refreshed?.user) {
+          if (!refreshed) {
             setSubmitError(
-              `登录状态已更新为「${refreshed.user.displayName}」，草稿已保留，请确认身份后再次点击发表。`,
+              "发言身份同步受阻，草稿已保留，请点击「重试连接」后再试。",
             );
-          } else if (refreshed && !refreshed.guestCommentsAllowed) {
+            return;
+          }
+          const nextUserId = refreshed.user?.id ?? null;
+          const identityChanged =
+            prevUserId !== nextUserId || error.code === "author_state_changed";
+
+          if (!refreshed.user && !refreshed.guestCommentsAllowed) {
             setSubmitError(
               "登录会话已过期且当前已暂停访客评论；草稿已保留，请重新登录后发表。",
+            );
+          } else if (!identityChanged) {
+            setSubmitError("安全令牌已更新，草稿已保留，请再次点击发表。");
+          } else if (refreshed.user) {
+            setSubmitError(
+              `登录状态已更新为「${refreshed.user.displayName}」，草稿已保留，请确认身份后再次点击发表。`,
             );
           } else {
             setSubmitError(
@@ -143,7 +155,7 @@ export function NoteCommentComposer({
           error.status === 429 && error.retryAfterSeconds
             ? `（建议 ${error.retryAfterSeconds} 秒后重试）`
             : "";
-        setSubmitError(sanitizeBannerCopy(`${error.message}${retryHint}`));
+        setSubmitError(`${error.message}${retryHint}`);
       } else {
         setSubmitError("评论提交未成功，草稿已保留，请稍后重试。");
       }

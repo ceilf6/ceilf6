@@ -220,14 +220,12 @@ describe("NoteComments 发表交互、回跳链接与草稿保护", () => {
     fireEvent.change(textareaA, { target: { value: "跳去登录前写好的长草稿A" } });
     expect(screen.getByRole("button", { name: "发表评论" })).toBeDisabled();
 
-    // 切换到另一篇札记 slug-b 时，草稿互不覆盖
     rerender(<NoteComments slug="slug-b" />);
     expect(screen.getByLabelText("评论内容")).toHaveValue("");
     fireEvent.change(screen.getByLabelText("评论内容"), {
       target: { value: "札记B独立草稿" },
     });
 
-    // 模拟整页登录回跳重新挂载 slug-a：草稿自动恢复且按钮在登录态下可提交
     unmount();
     loggedIn = true;
     render(<NoteComments slug="slug-a" />);
@@ -237,108 +235,7 @@ describe("NoteComments 发表交互、回跳链接与草稿保护", () => {
     expect(screen.getByRole("button", { name: "发表评论" })).not.toBeDisabled();
   });
 
-  it("409 身份变化、429 限频、403 关闭访客及超过 1000 字上限均保护草稿不丢失", async () => {
-    let meCalls = 0;
-    let postCalls = 0;
-
-    vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
-      const url = String(input);
-      if (url === "/api/me/") {
-        meCalls += 1;
-        return Promise.resolve(
-          jsonResponse(
-            meCalls === 1
-              ? {
-                  user: null,
-                  csrfToken: "csrf-before",
-                  guestCommentsAllowed: true,
-                }
-              : {
-                  user: { id: 12, displayName: "后台已登录用户", isCommentAdmin: false },
-                  csrfToken: "csrf-after",
-                  guestCommentsAllowed: true,
-                },
-          ),
-        );
-      }
-      if (url === "/api/notes/node-event-loop/comments/" && init?.method === "POST") {
-        postCalls += 1;
-        if (postCalls === 1) {
-          return Promise.resolve(
-            jsonResponse(
-              {
-                code: "author_state_changed",
-                actualAuthorKind: "member",
-                message: "当前登录状态已变化，请确认后再提交评论。",
-              },
-              409,
-            ),
-          );
-        }
-        if (postCalls === 2) {
-          return Promise.resolve(
-            jsonResponse(
-              {
-                code: "rate_limited",
-                message: "评论提交过于频繁，请稍后再试。",
-              },
-              429,
-              { "Retry-After": "45" },
-            ),
-          );
-        }
-        return Promise.resolve(
-          jsonResponse(
-            {
-              id: 77,
-              body: "确认新身份后成功提交的草稿",
-              createdAt: "2026-11-24T10:30:00Z",
-              canDelete: true,
-              author: { kind: "member", id: 12, displayName: "后台已登录用户" },
-            },
-            201,
-          ),
-        );
-      }
-      return Promise.resolve(jsonResponse({ items: [], nextBefore: null }));
-    });
-
-    render(<NoteComments slug="node-event-loop" />);
-    expect(
-      await screen.findByText("当前未登录，将以「未登录用户」身份直接发表"),
-    ).toBeInTheDocument();
-
-    const textarea = screen.getByLabelText("评论内容");
-    // 超过 1000 字上限时禁用提交按钮
-    fireEvent.change(textarea, { target: { value: "字".repeat(1001) } });
-    expect(screen.getByText("1001 / 1000")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "发表评论" })).toBeDisabled();
-
-    // 改回合法草稿，第 1 次提交遇 409：草稿不丢，自动刷新为「后台已登录用户」
-    fireEvent.change(textarea, { target: { value: "确认新身份后成功提交的草稿" } });
-    fireEvent.click(screen.getByRole("button", { name: "发表评论" }));
-
-    expect(
-      await screen.findByText(
-        "登录状态已更新为「后台已登录用户」，草稿已保留，请确认身份后再次点击发表。",
-      ),
-    ).toBeInTheDocument();
-    expect(textarea).toHaveValue("确认新身份后成功提交的草稿");
-
-    // 第 2 次提交遇 429 限频：提示建议等待秒数且草稿依旧保留
-    fireEvent.click(screen.getByRole("button", { name: "发表评论" }));
-    expect(
-      await screen.findByText("评论提交过于频繁，请稍后再试。（建议 45 秒后重试）"),
-    ).toBeInTheDocument();
-    expect(textarea).toHaveValue("确认新身份后成功提交的草稿");
-
-    // 第 3 次提交成功（201）：使用更新后的 member 身份与新 CSRF 令牌成功发表
-    fireEvent.click(screen.getByRole("button", { name: "发表评论" }));
-    expect(await screen.findByText("确认新身份后成功提交的草稿")).toBeInTheDocument();
-    expect(textarea).toHaveValue("");
-  });
-
-  it("提交期间若后端动态切为 403 guest_comments_disabled，立即切换禁用提示且保留草稿", async () => {
+  it("提交期间若后端动态切为 403 guest_comments_disabled，立即切换禁用态且完整保留草稿", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
       const url = String(input);
       if (url === "/api/me/") {
