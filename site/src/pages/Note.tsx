@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router";
 import { loadNoteHtml, notes } from "../data/notes";
+import { NoteComments } from "../components/NoteComments";
 import { PageTransition } from "../components/PageTransition";
 import "./Note.css";
 
-/** 正文三态(对齐 Viewer 惯例):原子部署后旧 index.html 拉新 hash chunk 404 时必须落错误态,不许永久「加载中」 */
-type NoteBody = "loading" | "error" | { html: string };
+/** 正文三态绑定当前 slug：切换札记的首帧即同步视为 loading，避免旧文闪烁与评论接口提前误发；
+    原子部署后旧 index.html 拉新 hash chunk 404 时落错误态，不永久停留「加载中」 */
+type NoteBody =
+  | "loading"
+  | { slug: string; status: "error" }
+  | { slug: string; status: "ready"; html: string };
 
 export default function Note() {
   const { slug = "" } = useParams();
@@ -23,8 +28,8 @@ export default function Note() {
     const p = loadNoteHtml(slug);
     if (p) {
       p.then(
-        (h) => alive && setBody({ html: h }),
-        () => alive && setBody("error"),
+        (h) => alive && setBody({ slug, status: "ready", html: h }),
+        () => alive && setBody({ slug, status: "error" }),
       );
     }
     return () => {
@@ -33,6 +38,8 @@ export default function Note() {
   }, [slug]);
 
   if (!meta) return <Navigate to="/blog" replace />;
+
+  const activeBody = typeof body === "object" && body.slug === slug ? body : "loading";
 
   return (
     <PageTransition testId="page-note">
@@ -46,9 +53,9 @@ export default function Note() {
           </p>
         </header>
         {/* 正文为本人撰写、私仓审查签字后构建期编译的静态串:无用户输入,无注入面 */}
-        {typeof body === "object" ? (
-          <div className="note-body" dangerouslySetInnerHTML={{ __html: body.html }} />
-        ) : body === "error" ? (
+        {activeBody !== "loading" && activeBody.status === "ready" ? (
+          <div className="note-body" dangerouslySetInnerHTML={{ __html: activeBody.html }} />
+        ) : activeBody !== "loading" && activeBody.status === "error" ? (
           <p className="note-error">正文加载失败,请刷新重试</p>
         ) : (
           <p className="note-loading">加载中…</p>
@@ -61,6 +68,9 @@ export default function Note() {
             </a>
             ,欢迎去原帖交流。
           </footer>
+        )}
+        {activeBody !== "loading" && activeBody.status === "ready" && (
+          <NoteComments slug={slug} />
         )}
       </article>
     </PageTransition>
