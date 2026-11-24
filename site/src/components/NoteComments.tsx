@@ -92,6 +92,11 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         if (isAbortError(error, ctrl.signal)) return;
         setLoadMoreError("更多评论暂时无法读取，请重试。");
         setLoadingMore(false);
+      })
+      .finally(() => {
+        if (loadMoreCtrlRef.current === ctrl) {
+          loadMoreCtrlRef.current = null;
+        }
       });
   };
 

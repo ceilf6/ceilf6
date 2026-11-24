@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { awards } from "./data/awards";
@@ -10,6 +10,33 @@ const at = (path: string) =>
       <AppRoutes />
     </MemoryRouter>,
   );
+
+beforeEach(() => {
+  vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+    const url = String(input);
+    if (url.startsWith("/api/notes/")) {
+      return Promise.resolve(
+        new Response(JSON.stringify({ items: [], nextBefore: null }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    }
+    if (url === "/harness/data.json") {
+      return Promise.resolve(
+        new Response(JSON.stringify({ threads: [] }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    }
+    return Promise.reject(new Error(`Unexpected test fetch: ${url}`));
+  });
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("routes", () => {
   it("/ 渲染主页", () => {
@@ -60,13 +87,16 @@ describe("札记路由", () => {
     at("/notes/no-such-note");
     expect(await screen.findByTestId("page-blog")).toBeInTheDocument();
   });
-  it("已落地文章可达:标题、正文、首发尾注", async () => {
+  it("已落地文章可达:标题、正文、首发尾注与底部评论区", async () => {
     at("/notes/harness-cold-start");
     expect(await screen.findByTestId("page-note")).toBeInTheDocument();
     expect(
       await screen.findByRole("heading", { level: 1, name: "关于 Harness 的讨论，附冷启动工具" }),
     ).toBeInTheDocument();
     expect(await screen.findByText(/harness-kit/)).toBeInTheDocument();
+    expect(
+      await screen.findByText("还没有评论，欢迎留下第一条讨论。"),
+    ).toBeInTheDocument();
     expect(screen.getByText("LinuxDo").closest("a")).toHaveAttribute(
       "href",
       "https://linux.do/t/topic/2481591",

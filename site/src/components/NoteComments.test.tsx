@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { fetchViewerSession, type CommentItem } from "../data/comments";
+import {
+  fetchNoteComments,
+  fetchViewerSession,
+  type CommentItem,
+} from "../data/comments";
 import { NoteComments } from "./NoteComments";
 
 function jsonResponse(payload: unknown, status = 200): Response {
@@ -193,5 +197,102 @@ describe("NoteComments 列表、分页与异常隔离", () => {
       csrfToken: "csrf-123",
       guestCommentsAllowed: true,
     });
+  });
+
+  it("分页加载进行中切换 slug 时立即 abort 分页请求且旧分页数据不串入新札记", async () => {
+    let resolvePage2A: ((res: Response) => void) | undefined;
+    const signals: AbortSignal[] = [];
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((input, init) => {
+      if (init?.signal) signals.push(init.signal);
+      const url = String(input);
+      if (url === "/api/notes/slug-a/comments/") {
+        return Promise.resolve(
+          jsonResponse({
+            items: [makeComment({ id: 30, body: "札记A第一页" })],
+            nextBefore: 30,
+          }),
+        );
+      }
+      if (url === "/api/notes/slug-a/comments/?before=30") {
+        return new Promise<Response>((resolve) => {
+          resolvePage2A = resolve;
+        });
+      }
+      return Promise.resolve(
+        jsonResponse({
+          items: [makeComment({ id: 88, body: "札记B首屏评论" })],
+          nextBefore: null,
+        }),
+      );
+    });
+
+    const { rerender } = render(<NoteComments slug="slug-a" />);
+    expect(await screen.findByText("札记A第一页")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    expect(signals).toHaveLength(2);
+    expect(signals[1].aborted).toBe(false);
+
+    rerender(<NoteComments slug="slug-b" />);
+    expect(signals[1].aborted).toBe(true);
+    expect(await screen.findByText("札记B首屏评论")).toBeInTheDocument();
+
+    resolvePage2A?.(
+      jsonResponse({
+        items: [makeComment({ id: 15, body: "札记A迟到的第二页" })],
+        nextBefore: null,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText("札记A迟到的第二页")).toBeNull();
+    });
+  });
+
+  it("分页加载失败保留已有列表并提示错误，再次点击可恢复加载", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        jsonResponse({
+          items: [makeComment({ id: 30, body: "已展示的第一页评论" })],
+          nextBefore: 30,
+        }),
+      )
+      .mockRejectedValueOnce(new Error("page 2 timeout"))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          items: [makeComment({ id: 20, body: "重试成功的第二页评论" })],
+          nextBefore: null,
+        }),
+      );
+
+    render(<NoteComments slug="v8-gc-source" />);
+    expect(await screen.findByText("已展示的第一页评论")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    expect(
+      await screen.findByText("更多评论暂时无法读取，请重试。"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("已展示的第一页评论")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "读取更多评论" }));
+    expect(await screen.findByText("重试成功的第二页评论")).toBeInTheDocument();
+    expect(screen.queryByText("更多评论暂时无法读取，请重试。")).toBeNull();
+  });
+
+  it("响应体读取阶段触发 AbortError 时原样抛出而不误判为 JSON 格式异常", async () => {
+    const ctrl = new AbortController();
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: () => {
+        ctrl.abort();
+        return Promise.reject(new DOMException("Aborted", "AbortError"));
+      },
+    } as unknown as Response);
+
+    await expect(
+      fetchNoteComments("cc-source-analysis", { signal: ctrl.signal }),
+    ).rejects.toMatchObject({ name: "AbortError" });
   });
 });

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import Note from "./Note";
@@ -27,6 +27,13 @@ vi.mock("../data/notes", () => {
   };
 });
 
+function emptyCommentsResponse(): Response {
+  return new Response(JSON.stringify({ items: [], nextBefore: null }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 function Nav({ to }: { to: string }) {
   const navigate = useNavigate();
   return <button onClick={() => navigate(to)}>nav:{to}</button>;
@@ -50,18 +57,31 @@ const settle = (fn: () => void) =>
     await Promise.resolve();
   });
 
-afterEach(() => {
-  inflight.clear();
+beforeEach(() => {
+  vi.spyOn(globalThis, "fetch").mockImplementation(() =>
+    Promise.resolve(emptyCommentsResponse()),
+  );
 });
 
-describe("Note 正文加载", () => {
-  it("chunk 加载失败渲染错误态,不永久停留「加载中」", async () => {
+afterEach(() => {
+  inflight.clear();
+  vi.restoreAllMocks();
+});
+
+describe("Note 正文加载与评论区挂载边界", () => {
+  it("chunk 加载失败渲染错误态,不永久停留「加载中」,且不挂载评论区", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
     at("/notes/a");
+    expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
+
     await settle(() => inflight.get("a")!.reject(new Error("x")));
     expect(screen.getByText(/加载失败/)).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it("slug 切换后乱序返回:旧文迟到的正文不得覆盖新文,切换即回加载态", async () => {
+  it("slug 切换后乱序返回:旧文迟到的正文不得覆盖新文,切换首帧不提前拉取新文评论", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
     at("/notes/a");
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
     const lateA = inflight.get("a")!;
@@ -71,15 +91,38 @@ describe("Note 正文加载", () => {
 
     await settle(() => inflight.get("b")!.resolve("<p>正文B</p>"));
     expect(screen.getByText("正文B")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "评论" })).toBeInTheDocument();
+    expect(
+      await screen.findByText("还没有评论，欢迎留下第一条讨论。"),
+    ).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "/api/notes/b/comments/",
+      expect.objectContaining({ method: "GET" }),
+    );
 
-    // a 的旧请求此刻才回来:alive 守卫必须吞掉它(React 19 已无 unmounted 告警,守卫真正防的是这个)
+    // a 的旧请求此刻才回来:alive 守卫必须吞掉它
     await settle(() => lateA.resolve("<p>正文A</p>"));
     expect(screen.getByText("正文B")).toBeInTheDocument();
     expect(screen.queryByText("正文A")).toBeNull();
 
-    // 切回 a 开新一轮加载:effect 顶部的 setBody("loading") 必须清掉 B 的正文
+    // 切回 a 开新一轮加载:首帧同步回到 loading,正文 a 尚未完成前不拉取 /api/notes/a/comments/
     fireEvent.click(screen.getByText("nav:/notes/a"));
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
     expect(screen.queryByText("正文B")).toBeNull();
+    expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("评论接口失败时仅评论区降级提示,札记正文仍正常阅读", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(new Error("api 502"));
+    at("/notes/a");
+
+    await settle(() => inflight.get("a")!.resolve("<p>独立可读的正文A</p>"));
+    expect(screen.getByText("独立可读的正文A")).toBeInTheDocument();
+    expect(
+      await screen.findByText("评论暂时无法读取，请稍后重试。"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("独立可读的正文A")).toBeInTheDocument();
   });
 });

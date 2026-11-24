@@ -47,11 +47,32 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-async function readJsonOrThrow(response: Response): Promise<Record<string, unknown>> {
+function isPositiveSafeInt(value: unknown): value is number {
+  return typeof value === "number" && Number.isSafeInteger(value) && value >= 1;
+}
+
+function isAbortLike(error: unknown, signal?: AbortSignal): boolean {
+  if (signal?.aborted) return true;
+  return error instanceof DOMException && error.name === "AbortError";
+}
+
+function assertValidNoteSlug(slug: string): void {
+  if (!slug || slug === "." || slug === ".." || slug.includes("/")) {
+    throw new CommentApiError("未找到对应的札记。", 400, "invalid_note_slug");
+  }
+}
+
+async function readJsonOrThrow(
+  response: Response,
+  signal?: AbortSignal,
+): Promise<Record<string, unknown>> {
   let parsed: unknown = null;
   try {
     parsed = await response.json();
-  } catch {
+  } catch (error: unknown) {
+    if (isAbortLike(error, signal)) {
+      throw error;
+    }
     throw new CommentApiError(
       "服务响应格式异常，请稍后重试。",
       response.status,
@@ -87,14 +108,18 @@ export function parseCommentItem(raw: unknown): CommentItem {
   }
   const { id, body, createdAt, canDelete, author } = raw;
   const kind = author.kind;
+  const validAuthorId =
+    kind === "guest"
+      ? author.id === null
+      : kind === "member" && isPositiveSafeInt(author.id);
+
   if (
-    typeof id !== "number" ||
-    !Number.isInteger(id) ||
+    !isPositiveSafeInt(id) ||
     typeof body !== "string" ||
     typeof createdAt !== "string" ||
     typeof canDelete !== "boolean" ||
     (kind !== "guest" && kind !== "member") ||
-    (author.id !== null && (typeof author.id !== "number" || !Number.isInteger(author.id))) ||
+    !validAuthorId ||
     typeof author.displayName !== "string"
   ) {
     throw new CommentApiError("评论字段格式异常。", 500, "invalid_comment_fields");
@@ -107,7 +132,7 @@ export function parseCommentItem(raw: unknown): CommentItem {
     canDelete,
     author: {
       kind,
-      id: author.id,
+      id: author.id as number | null,
       displayName: author.displayName,
     },
   };
@@ -120,13 +145,13 @@ export async function fetchViewerSession(signal?: AbortSignal): Promise<ViewerSe
     headers: { Accept: "application/json" },
     signal,
   });
-  const data = await readJsonOrThrow(response);
+  const data = await readJsonOrThrow(response, signal);
 
   let user: SessionUser | null = null;
   if (data.user !== null) {
     if (
       !isRecord(data.user) ||
-      typeof data.user.id !== "number" ||
+      !isPositiveSafeInt(data.user.id) ||
       typeof data.user.displayName !== "string" ||
       typeof data.user.isCommentAdmin !== "boolean"
     ) {
@@ -162,6 +187,11 @@ export async function fetchNoteComments(
   slug: string,
   options: FetchNoteCommentsOptions = {},
 ): Promise<CommentListPage> {
+  assertValidNoteSlug(slug);
+  if (options.before !== undefined && !isPositiveSafeInt(options.before)) {
+    throw new CommentApiError("分页游标参数无效。", 400, "invalid_cursor");
+  }
+
   const encodedSlug = encodeURIComponent(slug);
   const query =
     options.before !== undefined
@@ -173,12 +203,11 @@ export async function fetchNoteComments(
     headers: { Accept: "application/json" },
     signal: options.signal,
   });
-  const data = await readJsonOrThrow(response);
+  const data = await readJsonOrThrow(response, options.signal);
 
   if (
     !Array.isArray(data.items) ||
-    (data.nextBefore !== null &&
-      (typeof data.nextBefore !== "number" || !Number.isInteger(data.nextBefore)))
+    (data.nextBefore !== null && !isPositiveSafeInt(data.nextBefore))
   ) {
     throw new CommentApiError("评论列表结构异常。", 500, "invalid_comment_page");
   }
