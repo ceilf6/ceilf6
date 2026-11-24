@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router";
 import { loadNoteHtml, notes } from "../data/notes";
+import { NoteComments } from "../components/NoteComments";
 import { PageTransition } from "../components/PageTransition";
 import "./Note.css";
 
@@ -62,6 +63,7 @@ export default function Note() {
             ,欢迎去原帖交流。
           </footer>
         )}
+        {typeof body === "object" && <NoteComments slug={slug} />}
       </article>
     </PageTransition>
   );
