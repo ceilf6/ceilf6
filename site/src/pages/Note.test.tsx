@@ -52,10 +52,10 @@ function Nav({ to }: { to: string }) {
 const at = (path: string) =>
   render(
     <MemoryRouter initialEntries={[path]}>
-      <Nav to="/notes/a" />
-      <Nav to="/notes/b" />
+      <Nav to="/blog/a" />
+      <Nav to="/blog/b" />
       <Routes>
-        <Route path="/notes/:slug" element={<Note />} />
+        <Route path="/blog/:slug" element={<Note />} />
       </Routes>
     </MemoryRouter>,
   );
@@ -81,7 +81,7 @@ afterEach(() => {
 describe("Note 正文加载与评论区挂载边界", () => {
   it("chunk 加载失败渲染错误态,不永久停留「加载中」,且不挂载评论区", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
-    at("/notes/a");
+    at("/blog/a");
     expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
 
     await settle(() => inflight.get("a")!.reject(new Error("x")));
@@ -92,11 +92,11 @@ describe("Note 正文加载与评论区挂载边界", () => {
 
   it("slug 切换后乱序返回:旧文迟到的正文不得覆盖新文,切换首帧不提前拉取新文评论", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
-    at("/notes/a");
+    at("/blog/a");
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
     const lateA = inflight.get("a")!;
 
-    fireEvent.click(screen.getByText("nav:/notes/b"));
+    fireEvent.click(screen.getByText("nav:/blog/b"));
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
 
     await settle(() => inflight.get("b")!.resolve("<p>正文B</p>"));
@@ -120,7 +120,7 @@ describe("Note 正文加载与评论区挂载边界", () => {
     expect(screen.queryByText("正文A")).toBeNull();
 
     // 切回 a 开新一轮加载:首帧同步回到 loading,正文 a 尚未完成前不拉取 /api/notes/a/comments/
-    fireEvent.click(screen.getByText("nav:/notes/a"));
+    fireEvent.click(screen.getByText("nav:/blog/a"));
     expect(screen.getByText(/加载中/)).toBeInTheDocument();
     expect(screen.queryByText("正文B")).toBeNull();
     expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
@@ -135,7 +135,7 @@ describe("Note 正文加载与评论区挂载边界", () => {
       }
       return Promise.reject(new Error("api 502"));
     });
-    at("/notes/a");
+    at("/blog/a");
 
     await settle(() => inflight.get("a")!.resolve("<p>独立可读的正文A</p>"));
     expect(screen.getByText("独立可读的正文A")).toBeInTheDocument();

@@ -1,5 +1,5 @@
 /** 站内札记数据层。meta 走 eager glob 进主包,正文 html 走懒 glob,
-    每篇文章一个分包,只在 /notes/:slug 加载。eager 侧必须带 ?meta 查询:
+    每篇文章一个分包,只在 /blog/:slug 加载。eager 侧必须带 ?meta 查询:
     同一模块 id 既 eager 又 dynamic 会让 Rollup 拒绝分包(INEFFECTIVE_DYNAMIC_IMPORT),
     ?meta 使两侧成为不同模块,插件对该查询只 emit meta,主包物理上不含正文。 */
 import type { NoteFrontmatter, NoteModule } from "./note-module";

@@ -13,7 +13,6 @@ const RESERVED_FRONTEND_ROOTS = new Set([
   "blog",
   "vlog",
   "viewer",
-  "notes",
   "harness",
   "resume-awards",
   "index.html",

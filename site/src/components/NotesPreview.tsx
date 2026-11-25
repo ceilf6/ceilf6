@@ -21,7 +21,7 @@ export function NotesPreview({
       <h2 className="act-title">{heading}</h2>
       <div className="notes-grid">
         {shown.map((n) => (
-          <Link key={n.slug} className="note-card" to={`/notes/${n.slug}`}>
+          <Link key={n.slug} className="note-card" to={`/blog/${n.slug}`}>
             <span className="note-card-source">{n.source}</span>
             <h3>{n.title}</h3>
             <p>{n.summary}</p>

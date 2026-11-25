@@ -95,12 +95,16 @@ describe("flex 链外壳", () => {
 });
 
 describe("札记路由", () => {
-  it("/notes/不存在的slug 重定向到 /blog", async () => {
-    at("/notes/no-such-note");
+  it("/blog/不存在的slug 重定向到 /blog", async () => {
+    at("/blog/no-such-note");
     expect(await screen.findByTestId("page-blog")).toBeInTheDocument();
   });
-  it("已落地文章可达:标题、正文、首发尾注与底部评论区", async () => {
+  it("旧路径 /notes/:slug 不做兼容保留，按未知路径回主页", () => {
     at("/notes/harness-cold-start");
+    expect(screen.getByTestId("page-home")).toBeInTheDocument();
+  });
+  it("已落地文章可达:标题、正文、首发尾注与底部评论区", async () => {
+    at("/blog/harness-cold-start");
     expect(await screen.findByTestId("page-note")).toBeInTheDocument();
     expect(
       await screen.findByRole("heading", { level: 1, name: "关于 Harness 的讨论，附冷启动工具" }),

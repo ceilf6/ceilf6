@@ -72,11 +72,11 @@ describe("NoteComments 发表交互、回跳链接与草稿保护", () => {
     const signupLink = screen.getByRole("link", { name: "注册" });
     expect(loginLink).toHaveAttribute(
       "href",
-      "/accounts/login/?next=%2Fnotes%2Fcc-source-analysis",
+      "/accounts/login/?next=%2Fblog%2Fcc-source-analysis",
     );
     expect(signupLink).toHaveAttribute(
       "href",
-      "/accounts/signup/?next=%2Fnotes%2Fcc-source-analysis",
+      "/accounts/signup/?next=%2Fblog%2Fcc-source-analysis",
     );
 
     const textarea = screen.getByLabelText("评论内容");
@@ -156,14 +156,14 @@ describe("NoteComments 发表交互、回跳链接与草稿保护", () => {
     const logoutForm = logoutBtn.closest("form");
     expect(logoutForm).toHaveAttribute(
       "action",
-      "/accounts/logout/?next=%2Fnotes%2Fv8-gc-source",
+      "/accounts/logout/?next=%2Fblog%2Fv8-gc-source",
     );
     expect(logoutForm).toHaveAttribute("method", "post");
     expect(
       container.querySelector('input[name="csrfmiddlewaretoken"]'),
     ).toHaveValue("csrf-member-9");
     expect(container.querySelector('input[name="next"]')).toHaveValue(
-      "/notes/v8-gc-source",
+      "/blog/v8-gc-source",
     );
 
     fireEvent.change(screen.getByLabelText("评论内容"), {
