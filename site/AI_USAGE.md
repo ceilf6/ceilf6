@@ -42,7 +42,7 @@
 | `site/deploy/`（`publish-server.sh`、`remote_server.py`、`sqlite_ops.py`、`nginx-wangjinghong.conf` 等） | 实现独立于 `/var/www/wangjinghong` 静态目录的后端版本化发布、SQLite 在线热备、破坏性迁移拦截、自动回退及 Nginx 同源反代配置与沙箱单测（AI 生成初稿） | 要求数据库固定在 `/var/lib/wangjinghong/` 不受静态重发版影响，按 CR 反馈补齐 `O_NOFOLLOW` 路径防护与进程隔离的 canonical DDL 对账 | 修改后采用 |
 | `site/scripts/vite-local-proxy.*`、`site/vite.config.ts` | 配置本地 `vite` 与 `vite preview` 同源后端代理，保持 `changeOrigin: false` 对齐浏览器 `Origin` 与后端 `Host`（AI 生成初稿） | 要求段边界匹配不误劫持相邻前端路由、联动读取 `site/server/.env` 的后台前缀，并补齐回环代理集成测试 | 修改后采用 |
 | `site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`、`site/src/pages/Note.tsx` | 实现札记详情页底部评论列表与游标分页、纯文本防 XSS 渲染、访客直发与成员发评、`sessionStorage` 按札记草稿保留、跨标签页 `409`/`403 csrf_failed` 自动同步及行内二次确认删评（AI 生成初稿） | 要求不改动首页/列表/画廊/统计卡片等既有页面，按多轮 CR 修正切页首帧重复请求、分页合并、并发 `/api/me/` 重拉与非 `comment_not_found` 的 404 防误删 | 修改后采用 |
-| `site/deploy/README.md`、`site/server/.env.example`（生产发信排查与运维配置） | 协助定位线上注册未收到验证邮件的根因（原生产配置仍为 `filebased.EmailBackend` 本地落盘），核对 `mail.wangjinghong.com` 子域 SPF/DKIM/DMARC/MX 解析并切换源站 `server.env` 至阿里云邮件推送 `smtpdm.aliyun.com:465` SSL（云服务开通与 DNS 记录由本人人工配置） | 排查主域名 CDN CNAME 与 TXT 记录冲突后改用独立子域发信，保持验证链接机制不改动业务代码，真实收信确认后再同步文档 | 修改后采用 |
+| `site/deploy/README.md`、`site/server/.env.example`（生产发信排查与运维配置） | 协助定位线上注册未收到验证邮件的根因（原生产配置仍为 `filebased.EmailBackend` 本地落盘），核对 `mail.wangjinghong.com` 子域 SPF/DKIM/DMARC/MX 解析并切换源站 `server.env` 至阿里云邮件推送 `smtpdm.aliyun.com:465` SSL（云服务开通与 DNS 记录由本人人工配置） | 排查主域名 CDN CNAME 同名记录冲突后改用独立子域发信，保持验证链接机制不改动业务代码，真实收信确认后再同步文档 | 修改后采用 |
 | `site/README.md`、`site/AI_USAGE.md` | 编写课程作业 1 架构说明、零密钥干净环境复现指南、真实联调与发信验收记录及本 AI 使用声明（AI 生成初稿） | 严格区分既有静态站点基线与本次作业新增动态范围，逐条在干净目录实测启动命令，保留本人复核勾选与手写签名项为空 | 修改后采用 |
 
 "采用程度"取其一：直接采用 / 修改后采用 / 仅作参考。

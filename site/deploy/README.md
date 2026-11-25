@@ -48,7 +48,8 @@
    DJANGO_EMAIL_USE_SSL=true
    DJANGO_EMAIL_USE_TLS=false
    DJANGO_EMAIL_HOST_USER=noreply@mail.wangjinghong.com
-   DJANGO_EMAIL_HOST_PASSWORD=<替换为阿里云邮件推送SMTP密码>
+   DJANGO_EMAIL_HOST_PASSWORD=
+   DJANGO_EMAIL_TIMEOUT=10
    DJANGO_DEFAULT_FROM_EMAIL="wangjinghong.com <noreply@mail.wangjinghong.com>"
    EMAIL_FILE_PATH=/var/lib/wangjinghong/mail
    ALLOW_GUEST_COMMENTS=true
@@ -58,7 +59,14 @@
    )
    ```
 
-   > **发信域名与备选落盘说明**：因主域名 CNAME 指向阿里云 CDN（CNAME 记录不能与 SPF/DKIM 所需的 TXT 记录共存），线上单独使用子域名 `mail.wangjinghong.com` 在腾讯云 DNSPod 配置 SPF、DKIM、DMARC 与 MX 记录，通过阿里云邮件推送 `smtpdm.aliyun.com:465`（SSL，触发邮件）外发注册验证链接与密码重置邮件；含空格的 `DJANGO_DEFAULT_FROM_EMAIL` 须用双引号包裹以兼容 `systemd` `EnvironmentFile` 与 `site/deploy/runtime.py` 语法校验，`<替换为阿里云邮件推送SMTP密码>` 须仅在源站填写且严禁进入版本库。若在无外部 SMTP 凭据的隔离环境演练，可按 `site/server/.env.example` 方案 A 改设 `DJANGO_EMAIL_BACKEND=django.core.mail.backends.filebased.EmailBackend`（邮件落盘至 `/var/lib/wangjinghong/mail`）。
+   随后使用编辑器单独填入 SMTP 密码并校验非空（**切勿在终端交互命令行或 heredoc 中直接粘贴明文密码**，以免写入 shell history；严禁将密码提交版本库）：
+
+   ```bash
+   EDITOR=nano sudoedit /etc/wangjinghong/server.env
+   grep -q '^DJANGO_EMAIL_HOST_PASSWORD=.\+' /etc/wangjinghong/server.env
+   ```
+
+   > **发信域名、真实验收与备选落盘说明**：因主域名使用 CNAME 指向阿里云 CDN（同名下 CNAME 不能与 SPF 的 TXT、MX 等记录共存），线上单独使用子域名 `mail.wangjinghong.com` 在腾讯云 DNSPod 配置 SPF、DKIM、DMARC 与 MX 记录，通过阿里云邮件推送 `smtpdm.aliyun.com:465`（SSL，触发邮件）外发注册验证链接与密码重置邮件；含空格的 `DJANGO_DEFAULT_FROM_EMAIL` 须用双引号包裹以兼容 `systemd` `EnvironmentFile` 与 `site/deploy/runtime.py` 语法校验。注意发布健康探针（`/api/health/`）不主动连接外部 SMTP，首次配置或轮换密码后须用真实邮箱执行一次注册收信或触发 `send_mail` 验证投递。若在无外部 SMTP 凭据的隔离环境演练，可按 `site/server/.env.example` 方案 A 改设 `DJANGO_EMAIL_BACKEND=django.core.mail.backends.filebased.EmailBackend`（邮件落盘至 `/var/lib/wangjinghong/mail`）。
 
 2. **安装 systemd 服务单元**：
 
