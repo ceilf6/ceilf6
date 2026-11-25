@@ -1,3 +1,13 @@
+:root {
+  --site-header-h: 56px;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --site-header-h: 88px;
+  }
+}
+
 ::selection {
   background: var(--accent-gold);
   color: #0b1226;
@@ -256,4 +266,33 @@ html::after {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 非主页固定顶栏避让：绝不给 body/#root/.route-shell/.page-shell 加 padding-top，
+   以免破坏主页 sticky 首幕窗帘层或令 /viewer 100vh 溢出 */
+.page-shell .stage-viewport,
+.page-shell .note,
+.page-shell .awards-page {
+  padding-top: calc(var(--site-header-h) + 32px);
+}
+
+@media (max-width: 640px) {
+  .page-shell .stage-viewport,
+  .page-shell .note,
+  .page-shell .awards-page {
+    padding-top: calc(var(--site-header-h) + 24px);
+  }
+}
+
+/* 锚点跳转顶栏偏移：覆盖主页各幕、证书画廊及带 id 的章节标题 */
+.act,
+.awards-page,
+h1[id],
+h2[id],
+h3[id],
+h4[id],
+h5[id],
+h6[id],
+section[id] {
+  scroll-margin-top: var(--site-header-h);
 }

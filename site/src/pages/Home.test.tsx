@@ -38,19 +38,21 @@ describe("Home 五幕结构", () => {
     // hero 必须在窗帘层外,否则钉住/覆盖关系不成立
     expect(curtain!.querySelector(".act-hero")).toBeNull();
   });
-  it("两节标题均为 h2 内可跳转链接,指向 /awards 与 /blog,且三处 data-act-reveal 不变", () => {
+  it("两节标题均为 h2 内可跳转纯文本链接（不含箭头）,指向 /awards 与 /blog,且三处 data-act-reveal 不变", () => {
     const { container } = wrap();
-    const galleryHeading = screen.getByRole("heading", { level: 2, name: /证书画廊/ });
+    const galleryHeading = screen.getByRole("heading", { level: 2, name: "证书画廊" });
     const galleryLink = galleryHeading.querySelector("a");
     expect(galleryLink).not.toBeNull();
     expect(galleryLink).toHaveAttribute("href", "/awards");
-    expect(galleryLink).toHaveTextContent(/证书画廊\s*→/);
+    expect(galleryLink).toHaveTextContent(/^证书画廊$/);
+    expect(galleryLink?.textContent).not.toContain("→");
 
-    const notesHeading = screen.getByRole("heading", { level: 2, name: /博客论坛/ });
+    const notesHeading = screen.getByRole("heading", { level: 2, name: "博客论坛" });
     const notesLink = notesHeading.querySelector("a");
     expect(notesLink).not.toBeNull();
     expect(notesLink).toHaveAttribute("href", "/blog");
-    expect(notesLink).toHaveTextContent(/博客论坛\s*→/);
+    expect(notesLink).toHaveTextContent(/^博客论坛$/);
+    expect(notesLink?.textContent).not.toContain("→");
 
     const reveals = container.querySelectorAll("[data-act-reveal]");
     expect(reveals).toHaveLength(3);

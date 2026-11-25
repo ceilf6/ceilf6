@@ -230,27 +230,6 @@
   color: rgba(175, 195, 221, 0.4);
 }
 
-.stage .home-link {
-  margin-top: 40px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
-  text-decoration: none;
-  color: var(--text-muted);
-  transition: color 0.3s ease;
-}
-.stage .home-link:hover,
-.stage .home-link:focus-visible {
-  color: var(--accent-cyan);
-  outline: none;
-}
-.stage .home-link:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
 @media (max-width: 600px) {
   .stage .cards {
     grid-template-columns: 1fr;

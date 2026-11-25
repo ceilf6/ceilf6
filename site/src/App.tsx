@@ -8,7 +8,9 @@ import {
   type Location,
 } from "react-router";
 import { AnimatePresence } from "framer-motion";
+import { SiteHeader } from "./components/SiteHeader";
 import { SplashScreen } from "./components/SplashScreen";
+import { SessionProvider } from "./session/SessionProvider";
 import Home from "./pages/Home";
 import Awards from "./pages/Awards";
 import Blog from "./pages/Blog";
@@ -58,9 +60,13 @@ export default function App() {
   const latestNavRef = useRef({ navigationType, hash: location.hash });
   latestNavRef.current = { navigationType, hash: location.hash };
 
+  const hideSiteHeader =
+    location.pathname === "/viewer" || location.pathname === "/viewer.html";
+
   return (
-    <>
+    <SessionProvider>
       <SplashScreen />
+      {!hideSiteHeader && <SiteHeader />}
       <AnimatePresence
         mode="wait"
         onExitComplete={() => {
@@ -73,6 +79,6 @@ export default function App() {
           <AppRoutes location={location} />
         </div>
       </AnimatePresence>
-    </>
+    </SessionProvider>
   );
 }

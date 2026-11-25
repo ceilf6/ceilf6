@@ -1,0 +1,344 @@
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--site-header-h);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    backdrop-filter 0.25s ease;
+}
+
+.site-header.is-transparent {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  text-shadow: 0 2px 10px rgba(4, 10, 24, 0.72);
+}
+
+.site-header.is-frosted {
+  background: rgba(11, 18, 38, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.site-header-inner {
+  max-width: 1180px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.site-header-brand {
+  font-family: "ZCOOL XiaoWei", "Noto Sans SC", "PingFang SC", serif;
+  font-size: 1.18rem;
+  letter-spacing: 0.12em;
+  color: var(--text-main);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.site-header-brand:hover,
+.site-header-brand:focus-visible {
+  color: var(--accent-gold);
+}
+
+.site-header-brand:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.site-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.site-header-nav-link {
+  position: relative;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.site-header-nav-link:hover,
+.site-header-nav-link:focus-visible {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.site-header-nav-link:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.site-header-nav-link.is-active {
+  color: var(--accent-gold);
+  background: rgba(255, 192, 105, 0.12);
+}
+
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.site-header-github {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.site-header-github:hover,
+.site-header-github:focus-visible {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.site-header-github:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.site-header-account-skeleton {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(194, 210, 234, 0.14);
+  border: 1px solid rgba(255, 214, 166, 0.16);
+}
+
+.site-header-login {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  color: var(--text-main);
+  text-decoration: none;
+  background: rgba(13, 22, 44, 0.62);
+  border: 1px solid var(--panel-border);
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.site-header-login:hover,
+.site-header-login:focus-visible {
+  color: var(--accent-gold);
+  border-color: rgba(255, 192, 105, 0.55);
+  background: rgba(20, 34, 74, 0.82);
+}
+
+.site-header-login:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.account-disclosure {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.account-trigger {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 214, 166, 0.45);
+  background: var(--accent-gold);
+  color: var(--bg-void);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  font-family: "Noto Sans SC", "Azeret Mono", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.account-trigger:hover,
+.account-trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 192, 105, 0.26);
+}
+
+.account-trigger:focus-visible {
+  outline: 2px solid var(--text-main);
+  outline-offset: 2px;
+}
+
+.account-avatar-initial {
+  pointer-events: none;
+  user-select: none;
+}
+
+#account-panel[hidden] {
+  display: none !important;
+}
+
+.account-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 196px;
+  max-width: min(260px, calc(100vw - 24px));
+  padding: 12px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-shadow: none;
+}
+
+.account-panel-frosted {
+  background: rgba(11, 18, 38, 0.94);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--card-shadow);
+}
+
+.account-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px 8px;
+  border-bottom: 1px solid rgba(255, 214, 166, 0.14);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.account-panel-name {
+  color: var(--text-main);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-panel-sep {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.account-panel-role {
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  color: var(--accent-gold);
+  background: rgba(255, 192, 105, 0.14);
+  border: 1px solid rgba(255, 192, 105, 0.28);
+}
+
+.account-logout-form {
+  margin: 0;
+}
+
+.account-logout-btn {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 0.84rem;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.account-logout-btn:hover,
+.account-logout-btn:focus-visible {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 214, 166, 0.2);
+}
+
+.account-logout-btn:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 1px;
+}
+
+@media (max-width: 480px) {
+  .site-header-inner {
+    padding: 6px 12px 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 40px 34px;
+    align-items: center;
+    gap: 0 8px;
+  }
+
+  .site-header-brand {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 1.06rem;
+  }
+
+  .site-header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    gap: 8px;
+  }
+
+  .site-header-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .site-header-nav-link {
+    padding: 5px 4px;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+}

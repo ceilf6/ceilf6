@@ -98,16 +98,17 @@ describe("NotesPreview", () => {
     expect(h2.querySelector("a")).toBeNull();
   });
 
-  it("传入 headingTo='/blog' 时 h2 内渲染指向 /blog 的链接与箭头", () => {
+  it("传入 headingTo='/blog' 时 h2 内渲染指向 /blog 的纯文本链接（不含箭头）", () => {
     render(
       <MemoryRouter>
         <NotesPreview heading="博客论坛" headingTo="/blog" items={ITEMS} />
       </MemoryRouter>,
     );
-    const h2 = screen.getByRole("heading", { level: 2, name: /博客论坛/ });
+    const h2 = screen.getByRole("heading", { level: 2, name: "博客论坛" });
     const link = h2.querySelector("a");
     expect(link).not.toBeNull();
     expect(link).toHaveAttribute("href", "/blog");
-    expect(link).toHaveTextContent(/博客论坛\s*→/);
+    expect(link).toHaveTextContent(/^博客论坛$/);
+    expect(link?.textContent).not.toContain("→");
   });
 });
