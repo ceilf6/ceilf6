@@ -11,7 +11,7 @@
 - **既有静态基线（非本次作业新增）**：
   - 首页个人名片、获奖证书瀑布流画廊（`/viewer`）、Vlog 页（`/vlog`）、构建期编译静态 Markdown 的技术札记阅读页（`/blog`、`/notes/:slug`），以及仓库根目录服务于 GitHub 个人主页的统计卡片流水线（`README.md`、`stats/`、`assets/`）。
 - **本次作业 1 新增全栈动态能力（全部位于 `site/` 内）**：
-  1. **账号与身份认证系统（`site/server/accounts/`）**：邮箱 + 密码 + 公开昵称（`display_name`）注册、零外部密钥的文件邮件验证（`filebased.EmailBackend`，生产可选加密 SMTP）、密码重置、CSRF `POST` 退出登录、统一登录入口 `/accounts/login/`（收拢自定义后台入口并严格校验站内 `next` 回跳）及当前会话查询接口 `GET /api/me/`。
+  1. **账号与身份认证系统（`site/server/accounts/`）**：邮箱 + 密码 + 公开昵称（`display_name`）注册、邮件验证链接确认（本地默认零外部密钥 `filebased.EmailBackend` 落盘，线上生产通过阿里云邮件推送 `smtpdm.aliyun.com:465` SSL 真实发信）、密码重置、CSRF `POST` 退出登录、统一登录入口 `/accounts/login/`（收拢自定义后台入口并严格校验站内 `next` 回跳）及当前会话查询接口 `GET /api/me/`。
   2. **札记动态评论与权限系统（`site/server/comments/`）**：支持未登录访客直发（`author = NULL`，固定展示为「未登录用户」）与已验证账号署名发言、服务端 `ALLOW_GUEST_COMMENTS` 环境变量开关、`before` 游标分页、文件缓存原子限频与蜜罐校验、作者本人删评及站主跨札记全站审核。
   3. **前端札记评论交互组件（`site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`）**：在不改动首页/画廊等既有页面的前提下，于 `/notes/:slug` 正文底部接入评论列表分页、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步与行内二次确认删评。
   4. **独立持久化部署与回退工具链（`site/deploy/`、`site/scripts/vite-local-proxy.mjs`）**：本地 Vite 同源反代，以及与静态站点原子切换目录完全隔离的后端版本发布、SQLite WAL 在线热备、迁移结构安全校验与一键回退脚本。
@@ -63,7 +63,7 @@
 - **同源架构消除跨域复杂度**：本地开发通过 `site/scripts/vite-local-proxy.mjs`（`changeOrigin: false`）将 `/api`、`/accounts`、`/django-static` 与后台前缀转发至本地 Django；线上由同一域名下的 Nginx 反代分流。前后端完全同源，无需放宽 CORS 或降低 `SameSite` Cookie 安全策略。
 - **CDN 防串号与方法兼容**：动态视图中间件与 Nginx 双重写入 `Cache-Control: private, no-store, no-cache, must-revalidate` 与 `Vary: Cookie`；针对阿里云标准版 CDN 仅允许 `GET/POST` 的约束，删评动作采用受 CSRF 保护的 `POST /api/comments/<comment_id>/delete/`，返回 `204 No Content`。
 - **存储型 XSS 零信任渲染**：前端评论组件仅通过 React 纯文本节点渲染 `body` 与 `displayName`，全程不使用 `dangerouslySetInnerHTML`。
-- **静动分离持久化**：前端 `deploy-ecs.yml` 每次仅替换 `/var/www/wangjinghong`；后端代码位于 `/opt/wangjinghong/releases/<id>`，SQLite 数据库、在线热备与本地邮件独立存放在 `/var/lib/wangjinghong/`，静态重发版与后端升级均不会覆盖用户与评论数据。
+- **静动分离持久化与邮件通道解耦**：前端 `deploy-ecs.yml` 每次仅替换 `/var/www/wangjinghong`；后端代码位于 `/opt/wangjinghong/releases/<id>`，SQLite 数据库、在线热备、文件缓存及备用邮件目录独立存放在 `/var/lib/wangjinghong/`，线上发信凭据独立托管于 `/etc/wangjinghong/server.env`（阿里云邮件推送 `smtpdm.aliyun.com:465` SSL，发信子域 `mail.wangjinghong.com`），静态重发版与后端升级均不会覆盖用户、评论数据或发信配置。
 
 ---
 
@@ -168,6 +168,7 @@ node --test scripts/*.test.mjs
 
 - **静态前端**：合入 `main` 分支后由 `.github/workflows/deploy-ecs.yml` 自动构建 `site/dist` 并原子切换至源站 `/var/www/wangjinghong`。
 - **动态后端**：通过 `DEPLOY_HOST=<ECS_HOST> bash site/deploy/publish-server.sh deploy` 独立打包 `site/server/` 发布至 `/opt/wangjinghong/releases/<release_id>`，自动执行 SQLite 热备、非破坏性迁移校验、`collectstatic`、systemd 重启与回环健康探针检查；异常时支持 `publish-server.sh rollback` 一键回退代码与迁移前数据库快照。
+- **生产邮件投递**：因主域名 CNAME 指向阿里云 CDN，线上单独以子域名 `mail.wangjinghong.com` 在腾讯云 DNSPod 配置 SPF、DKIM、DMARC 与 MX 记录，由源站 `/etc/wangjinghong/server.env` 通过阿里云邮件推送 `smtpdm.aliyun.com:465`（SSL，发件地址 `noreply@mail.wangjinghong.com`）真实外发注册验证链接与密码重置邮件。
 
 ### 2. 公网端到端与持久化验收证据（2026-11-24 UTC）
 
@@ -180,3 +181,7 @@ node --test scripts/*.test.mjs
    - 前端构建产物 `/static/Note-D9WIIhg5.js` 上线后，于 `2026-11-24T11:10:36.202247Z` 经公网在 `/notes/cc-source-analysis` 发表持久化验证评论（返回 `id=7`）；
    - 随后依次执行 `systemctl restart wangjinghong-api` 进程重启，以及运行 `publish-server.sh deploy` 切换全新后端发布目录 `20261124T111034Z-b7cd2603`；
    - 使用全新匿名会话请求 `https://www.wangjinghong.com/api/notes/cc-source-analysis/comments/`，准确读回同一条 `id=7`（`createdAt="2026-11-24T11:10:36.202247Z"`）记录；确认持久化无误后，由站主会话执行 `POST /api/comments/7/delete/`（`204`）清理验收测试评论，保持线上公开札记整洁。
+
+### 3. 生产阿里云邮件推送 SMTP 切换与真实收信验证（2026-11-25 UTC）
+
+完成子域名 `mail.wangjinghong.com` 的 SPF、DKIM（1024 位 RSA）、DMARC 与 MX 权威解析核验后，在不改动任何业务代码的情况下将源站 `/etc/wangjinghong/server.env` 切换为 `django.core.mail.backends.smtp.EmailBackend`（`smtpdm.aliyun.com:465` SSL，发件人 `wangjinghong.com <noreply@mail.wangjinghong.com>`）并重启 `wangjinghong-api`；经真实邮箱公网注册实测，验证链接邮件已正常送达。
