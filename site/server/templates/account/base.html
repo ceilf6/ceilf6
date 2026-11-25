@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>{% block head_title %}账户中心{% endblock %} · wangjinghong.com</title>
+  <title>王景宏 · {% block head_title %}账户中心{% endblock %}</title>
   <style>
     :root {
       --bg-void: #0b1226;
@@ -299,17 +299,19 @@
 <body>
   <div class="auth-shell">
     <div class="auth-brand">
-      <a href="/">← 返回首页</a>
+      {% block back_link %}<a href="/">← 返回首页</a>{% endblock %}
       <span>wangjinghong.com</span>
     </div>
     <main class="auth-card">
-      {% if messages %}
-        <ul class="auth-messages" role="status">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% block messages %}
+        {% if messages %}
+          <ul class="auth-messages" role="status">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endblock %}
       {% block content %}{% endblock %}
     </main>
   </div>
