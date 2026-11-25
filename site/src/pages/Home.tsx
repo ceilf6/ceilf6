@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router";
 import { PageTransition } from "../components/PageTransition";
 import { ReadmeCards } from "../components/ReadmeCards";
 import { IcpFooter } from "../components/IcpFooter";
@@ -8,7 +9,7 @@ import { NotesPreview } from "../components/NotesPreview";
 import { startFxProbe } from "../fx/quality";
 import "./Home.css";
 
-/** 五幕长卷:Hero → 四卡 → 证书画廊 → 札记精选 → 页脚。
+/** 五幕长卷:Hero → 四卡 → 证书画廊 → 博客论坛 → 页脚。
     幕间进出场由 initScrollActs 编排——动态 import 把 gsap 挪出主包与 LCP 路径;
     FPS 探针延迟到 LCP 之后再启动。 */
 export default function Home() {
@@ -51,12 +52,16 @@ export default function Home() {
             </div>
           </section>
           <section className="act act-gallery" data-act-reveal>
-            <h2 className="act-title">证书画廊</h2>
+            <h2 className="act-title">
+              <Link to="/awards">
+                证书画廊 <span aria-hidden="true">→</span>
+              </Link>
+            </h2>
             <div className="main-content">
               <WaterfallGallery />
             </div>
           </section>
-          <NotesPreview heading="札记精选" max={6} />
+          <NotesPreview heading="博客论坛" headingTo="/blog" max={6} />
           <IcpFooter />
         </div>
       </div>

@@ -82,6 +82,8 @@ describe("Note 正文加载与评论区挂载边界", () => {
   it("chunk 加载失败渲染错误态,不永久停留「加载中」,且不挂载评论区", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     at("/blog/a");
+    expect(screen.getByRole("link", { name: "← 博客论坛" })).toHaveAttribute("href", "/blog");
+    expect(document.title).toBe("王景宏 · 博客论坛 · 标题a");
     expect(screen.queryByRole("heading", { name: "评论" })).toBeNull();
 
     await settle(() => inflight.get("a")!.reject(new Error("x")));

@@ -1,8 +1,16 @@
-import { Suspense, lazy } from "react";
-import { Navigate, Route, Routes, useLocation, type Location } from "react-router";
+import { Suspense, lazy, useRef } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigationType,
+  type Location,
+} from "react-router";
 import { AnimatePresence } from "framer-motion";
 import { SplashScreen } from "./components/SplashScreen";
 import Home from "./pages/Home";
+import Awards from "./pages/Awards";
 import Blog from "./pages/Blog";
 import Vlog from "./pages/Vlog";
 import Viewer from "./pages/Viewer";
@@ -23,6 +31,7 @@ export function AppRoutes({ location }: { location?: Location }) {
   return (
     <Routes location={location}>
       <Route path="/" element={<Home />} />
+      <Route path="/awards" element={<Awards />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/vlog" element={<Vlog />} />
       <Route path="/viewer" element={<Viewer />} />
@@ -45,10 +54,21 @@ export function AppRoutes({ location }: { location?: Location }) {
 
 export default function App() {
   const location = useLocation();
+  const navigationType = useNavigationType();
+  const latestNavRef = useRef({ navigationType, hash: location.hash });
+  latestNavRef.current = { navigationType, hash: location.hash };
+
   return (
     <>
       <SplashScreen />
-      <AnimatePresence mode="wait">
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => {
+          if (latestNavRef.current.navigationType !== "POP" && !latestNavRef.current.hash) {
+            window.scrollTo(0, 0);
+          }
+        }}
+      >
         <div key={location.pathname} className="route-shell">
           <AppRoutes location={location} />
         </div>

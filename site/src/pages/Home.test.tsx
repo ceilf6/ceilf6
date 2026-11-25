@@ -38,4 +38,25 @@ describe("Home 五幕结构", () => {
     // hero 必须在窗帘层外,否则钉住/覆盖关系不成立
     expect(curtain!.querySelector(".act-hero")).toBeNull();
   });
+  it("两节标题均为 h2 内可跳转链接,指向 /awards 与 /blog,且三处 data-act-reveal 不变", () => {
+    const { container } = wrap();
+    const galleryHeading = screen.getByRole("heading", { level: 2, name: /证书画廊/ });
+    const galleryLink = galleryHeading.querySelector("a");
+    expect(galleryLink).not.toBeNull();
+    expect(galleryLink).toHaveAttribute("href", "/awards");
+    expect(galleryLink).toHaveTextContent(/证书画廊\s*→/);
+
+    const notesHeading = screen.getByRole("heading", { level: 2, name: /博客论坛/ });
+    const notesLink = notesHeading.querySelector("a");
+    expect(notesLink).not.toBeNull();
+    expect(notesLink).toHaveAttribute("href", "/blog");
+    expect(notesLink).toHaveTextContent(/博客论坛\s*→/);
+
+    const reveals = container.querySelectorAll("[data-act-reveal]");
+    expect(reveals).toHaveLength(3);
+    expect(reveals[0]).toHaveClass("act-cards");
+    expect(reveals[1]).toHaveClass("act-gallery");
+    expect(reveals[2]).toHaveClass("act-notes");
+    expect(document.title).toBe("王景宏 · 个人主页");
+  });
 });

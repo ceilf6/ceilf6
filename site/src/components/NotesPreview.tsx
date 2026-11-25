@@ -7,10 +7,12 @@ import "./NotesPreview.css";
     max = 主页精选窗口(列表已按 date 倒序,slice 即取最新);/blog 不传 max 才是全集。 */
 export function NotesPreview({
   heading,
+  headingTo,
   items = notes,
   max,
 }: {
   heading: string;
+  headingTo?: string;
   items?: NoteMeta[];
   max?: number;
 }) {
@@ -18,7 +20,15 @@ export function NotesPreview({
   if (shown.length === 0) return null;
   return (
     <section className="act act-notes" data-act-reveal>
-      <h2 className="act-title">{heading}</h2>
+      <h2 className="act-title">
+        {headingTo ? (
+          <Link to={headingTo}>
+            {heading} <span aria-hidden="true">→</span>
+          </Link>
+        ) : (
+          heading
+        )}
+      </h2>
       <div className="notes-grid">
         {shown.map((n) => (
           <Link key={n.slug} className="note-card" to={`/blog/${n.slug}`}>

@@ -10,6 +10,7 @@ const RESERVED_FRONTEND_ROOTS = new Set([
   "assets",
   "src",
   "node_modules",
+  "awards",
   "blog",
   "vlog",
   "viewer",
