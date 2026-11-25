@@ -18,7 +18,7 @@
 | `/var/lib/wangjinghong/db.sqlite3` | `www-data:www-data` (`0640`) | SQLite WAL 主数据库（含 `-wal`、`-shm`） |
 | `/var/lib/wangjinghong/backups/` | `www-data:www-data` (`0750`，快照 `0600`) | 每次发布及 `--restore-db` 前生成的在线一致性备份（自动按配额清理） |
 | `/var/lib/wangjinghong/cache/` | `www-data:www-data` (`0700`) | Django 文件缓存（跨重启保留登录/注册与接口限流计数） |
-| `/var/lib/wangjinghong/mail/` | `www-data:www-data` (`0700`) | `filebased.EmailBackend` 邮件落盘目录 |
+| `/var/lib/wangjinghong/mail/` | `www-data:www-data` (`0700`) | `filebased.EmailBackend` 备用邮件落盘目录（线上启用阿里云 SMTP 发信时仅保留目录、不落盘新邮件） |
 | `/var/lock/wangjinghong-server-deploy.lock` | `root:root` (`0600`) | 后端独立 `flock` 互斥锁，防止并发发布或回退冲突 |
 
 ---
@@ -42,7 +42,14 @@
    DJANGO_ADMIN_PATH=ops-console/
    SQLITE_PATH=/var/lib/wangjinghong/db.sqlite3
    DJANGO_CACHE_PATH=/var/lib/wangjinghong/cache
-   DJANGO_EMAIL_BACKEND=django.core.mail.backends.filebased.EmailBackend
+   DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+   DJANGO_EMAIL_HOST=smtpdm.aliyun.com
+   DJANGO_EMAIL_PORT=465
+   DJANGO_EMAIL_USE_SSL=true
+   DJANGO_EMAIL_USE_TLS=false
+   DJANGO_EMAIL_HOST_USER=noreply@mail.wangjinghong.com
+   DJANGO_EMAIL_HOST_PASSWORD=<替换为阿里云邮件推送SMTP密码>
+   DJANGO_DEFAULT_FROM_EMAIL="wangjinghong.com <noreply@mail.wangjinghong.com>"
    EMAIL_FILE_PATH=/var/lib/wangjinghong/mail
    ALLOW_GUEST_COMMENTS=true
    EOF
@@ -51,7 +58,7 @@
    )
    ```
 
-   > 若启用外部加密 SMTP 发信，请按 `site/server/.env.example` 方案 B 将 `DJANGO_EMAIL_BACKEND` 切换为 `django.core.mail.backends.smtp.EmailBackend` 并配置 465（SSL）或 587（TLS）凭据。
+   > **发信域名与备选落盘说明**：因主域名 CNAME 指向阿里云 CDN（CNAME 记录不能与 SPF/DKIM 所需的 TXT 记录共存），线上单独使用子域名 `mail.wangjinghong.com` 在腾讯云 DNSPod 配置 SPF、DKIM、DMARC 与 MX 记录，通过阿里云邮件推送 `smtpdm.aliyun.com:465`（SSL，触发邮件）外发注册验证链接与密码重置邮件；含空格的 `DJANGO_DEFAULT_FROM_EMAIL` 须用双引号包裹以兼容 `systemd` `EnvironmentFile` 与 `site/deploy/runtime.py` 语法校验，`<替换为阿里云邮件推送SMTP密码>` 须仅在源站填写且严禁进入版本库。若在无外部 SMTP 凭据的隔离环境演练，可按 `site/server/.env.example` 方案 A 改设 `DJANGO_EMAIL_BACKEND=django.core.mail.backends.filebased.EmailBackend`（邮件落盘至 `/var/lib/wangjinghong/mail`）。
 
 2. **安装 systemd 服务单元**：
 
