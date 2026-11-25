@@ -6,9 +6,149 @@
 
 {% block messages %}{% for _ in messages %}{% endfor %}{% endblock %}
 
+{% block extra_head %}
+  <style>
+    .avatar-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 0.95rem;
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(194, 210, 234, 0.16);
+      background: rgba(8, 14, 30, 0.48);
+    }
+
+    .settings-avatar-preview {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 6px 16px rgba(1, 8, 20, 0.36);
+      transition: background-color 0.16s ease;
+      user-select: none;
+    }
+
+    .avatar-preview-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      min-width: 0;
+    }
+
+    .avatar-preview-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .avatar-preview-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      opacity: 0.88;
+    }
+
+    .avatar-color-fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .avatar-color-fieldset > legend.form-label {
+      margin-bottom: 0.45rem;
+      padding: 0;
+    }
+
+    .avatar-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.52rem;
+    }
+
+    .avatar-swatch-option {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .avatar-swatch-option input[type="radio"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .avatar-swatch-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.48rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: 10px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.84rem;
+      line-height: 1.25;
+      transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .avatar-swatch-option:hover .avatar-swatch-chip {
+      border-color: rgba(255, 192, 105, 0.55);
+    }
+
+    .avatar-swatch-option input[type="radio"]:checked + .avatar-swatch-chip {
+      border-color: var(--accent-gold);
+      background: rgba(255, 192, 105, 0.13);
+      box-shadow: 0 0 0 1px rgba(255, 192, 105, 0.34);
+    }
+
+    .avatar-swatch-option input[type="radio"]:focus-visible + .avatar-swatch-chip {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 2px;
+    }
+
+    .avatar-swatch-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .avatar-swatch-dot--auto {
+      border-style: dashed;
+      border-color: rgba(255, 255, 255, 0.72);
+    }
+
+    .avatar-swatch-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 360px) {
+      .avatar-swatch-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
   <h1>账号设置</h1>
-  <p class="auth-subtitle">修改对外展示的公开昵称；保存后个人会话与历史评论署名将同步更新。</p>
+  <p class="auth-subtitle">修改对外展示的公开昵称与头像底色；保存后个人会话与历史评论署名将同步更新。</p>
 
   {% if saved %}
     <ul class="auth-messages" role="status">
@@ -16,10 +156,158 @@
     </ul>
   {% endif %}
 
+  <div class="avatar-preview-row">
+    <div
+      id="settings-avatar-preview"
+      class="settings-avatar-preview"
+      style="background-color: {{ preview_avatar_color }};"
+      data-auto-color="{{ auto_avatar_color }}"
+      role="img"
+      aria-label="头像预览"
+    >
+      <span id="settings-avatar-initial" class="settings-avatar-initial">{{ avatar_initial }}</span>
+    </div>
+    <div class="avatar-preview-meta">
+      <span class="avatar-preview-title">头像预览</span>
+      <span class="avatar-preview-hint">圆形深色底配白色首字母，全站顶栏同步生效</span>
+    </div>
+  </div>
+
   <form class="auth-form" method="post" action="{% url 'account_settings' %}" novalidate>
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next_url }}">
-    {% include "account/snippets/form_fields.html" with form=form %}
+
+    {% if form.non_field_errors %}
+      <ul class="auth-error-box" role="alert">
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="form-field">
+      <label class="form-label" for="{{ form.display_name.id_for_label }}">{{ form.display_name.label }}</label>
+      {{ form.display_name }}
+      {% if form.display_name.errors %}
+        <ul class="field-errors" role="alert">
+          {% for error in form.display_name.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <fieldset class="form-field avatar-color-fieldset">
+      <legend class="form-label">{{ form.avatar_color.label }}</legend>
+      <div class="avatar-swatch-grid">
+        {% for option in avatar_swatches %}
+          <label class="avatar-swatch-option">
+            <input
+              type="radio"
+              name="avatar_color"
+              value="{{ option.key }}"
+              data-preview-color="{{ option.hex_color }}"
+              {% if option.key == selected_avatar_color %}checked{% endif %}
+            >
+            <span class="avatar-swatch-chip">
+              <span
+                class="avatar-swatch-dot{% if option.is_auto %} avatar-swatch-dot--auto{% endif %}"
+                style="background-color: {{ option.hex_color }};"
+                aria-hidden="true"
+              ></span>
+              <span class="avatar-swatch-label">{{ option.label }}</span>
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+      {% if form.avatar_color.errors %}
+        <ul class="field-errors" role="alert">
+          {% for error in form.avatar_color.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </fieldset>
+
     <button class="btn-primary" type="submit">保存设置</button>
   </form>
+{% endblock %}
+
+{% block extra_body %}
+  <script>
+    (function () {
+      var preview = document.getElementById("settings-avatar-preview");
+      var initialNode = document.getElementById("settings-avatar-initial");
+      var nickInput = document.getElementById("id_display_name");
+      var radios = document.querySelectorAll('input[name="avatar_color"]');
+      if (!preview || !initialNode) return;
+
+      var hexPattern = /^#[0-9a-f]{6}$/i;
+      var fallbackInitial = initialNode.textContent || "?";
+      var autoColor = preview.getAttribute("data-auto-color") || "";
+
+      function isRegionalIndicator(ch) {
+        var cp = ch.codePointAt(0);
+        return cp !== undefined && cp >= 0x1f1e6 && cp <= 0x1f1ff;
+      }
+
+      function isExtender(ch) {
+        var cp = ch.codePointAt(0);
+        if (cp === undefined) return false;
+        if (cp === 0xfe0e || cp === 0xfe0f) return true;
+        if (cp >= 0x1f3fb && cp <= 0x1f3ff) return true;
+        return /^[\p{Mn}\p{Me}\p{Mc}]$/u.test(ch);
+      }
+
+      function computeInitial(raw) {
+        var trimmed = (raw || "").trim();
+        if (!trimmed) return fallbackInitial;
+        var chars = Array.from(trimmed);
+        if (!chars.length) return fallbackInitial;
+        var cluster = chars[0];
+        var i = 1;
+        if (isRegionalIndicator(chars[0]) && i < chars.length && isRegionalIndicator(chars[i])) {
+          cluster += chars[i];
+          i += 1;
+        }
+        while (i < chars.length) {
+          var ch = chars[i];
+          if (ch === "\u200d") {
+            cluster += ch;
+            i += 1;
+            if (i < chars.length) {
+              cluster += chars[i];
+              i += 1;
+            }
+            continue;
+          }
+          if (isExtender(ch)) {
+            cluster += ch;
+            i += 1;
+            continue;
+          }
+          break;
+        }
+        return cluster.toUpperCase();
+      }
+
+      for (var idx = 0; idx < radios.length; idx += 1) {
+        radios[idx].addEventListener("change", function (ev) {
+          var target = ev.currentTarget;
+          var candidate = target.value
+            ? target.getAttribute("data-preview-color")
+            : autoColor;
+          if (candidate && hexPattern.test(candidate)) {
+            preview.style.backgroundColor = candidate;
+          }
+        });
+      }
+
+      if (nickInput) {
+        nickInput.addEventListener("input", function () {
+          initialNode.textContent = computeInitial(nickInput.value);
+        });
+      }
+    })();
+  </script>
 {% endblock %}

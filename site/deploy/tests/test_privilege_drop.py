@@ -17,6 +17,17 @@ from deploy.runtime import DeployConfig, DeployError
 from deploy.tests.helpers import DeploySandbox
 
 
+def _latest_migration(migrations_dir: Path) -> tuple[int, str]:
+    candidates = [
+        (int(prefix), path.stem)
+        for path in migrations_dir.glob("[0-9][0-9][0-9][0-9]_*.py")
+        if (prefix := path.stem.split("_", 1)[0]).isdigit()
+    ]
+    if not candidates:
+        raise AssertionError(f"No numbered migrations found in {migrations_dir}")
+    return max(candidates)
+
+
 class PrivilegeDroppedCollectstaticTests(unittest.TestCase):
     def test_reclaim_tree_to_root_rejects_symlinks_and_hardlinks_without_touching_targets(self) -> None:
         tmp = Path(tempfile.mkdtemp(prefix="reclaim-static-test-"))
@@ -270,10 +281,12 @@ class PrivilegeDroppedCollectstaticTests(unittest.TestCase):
         #     `deploy_release` rejects unsynced M2M rename and restores `v1`, AND if M2M table is
         #     mutated out-of-band, code-only `rollback` ALSO rejects it via `include_auto_created=True`!
         staged_v2_m2m = sbx.clone_staged_server("v2-m2m-break")
-        (staged_v2_m2m / "accounts" / "migrations" / "0004_break_m2m.py").write_text(
+        m2m_mig_dir = staged_v2_m2m / "accounts" / "migrations"
+        max_num, latest_mig_name = _latest_migration(m2m_mig_dir)
+        (m2m_mig_dir / f"{max_num + 1:04d}_break_m2m.py").write_text(
             "from django.db import migrations\n"
             "class Migration(migrations.Migration):\n"
-            "    dependencies = [('accounts', '0003_user_is_comment_admin')]\n"
+            f"    dependencies = [('accounts', {latest_mig_name!r})]\n"
             "    operations = [\n"
             "        migrations.RunSQL(\n"
             "            'ALTER TABLE accounts_user_user_permissions RENAME COLUMN permission_id TO perm_legacy;'\n"
