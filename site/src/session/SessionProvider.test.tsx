@@ -120,6 +120,18 @@ describe("SessionProvider 与 useSession", () => {
       expect(screen.getByTestId("status")).toHaveTextContent("error");
     });
     expect(screen.getByTestId("user")).toHaveTextContent("none");
+
+    // 网络异常（fetch reject）同样降级为 error 且不残留会话
+    vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(
+      new TypeError("Failed to fetch"),
+    );
+    await act(async () => {
+      screen.getByRole("button", { name: "do-refresh" }).click();
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("status")).toHaveTextContent("error");
+    });
+    expect(screen.getByTestId("user")).toHaveTextContent("none");
   });
 
   it("syncSession 直接写入会话、取消在途旧请求并阻止慢响应覆盖，自身绝不发起网络请求", async () => {

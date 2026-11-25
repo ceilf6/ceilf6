@@ -17,7 +17,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 20px;
+  padding: calc(var(--site-header-h) + 32px) 20px 48px;
+}
+
+@media (max-width: 640px) {
+  .stage-viewport {
+    padding: calc(var(--site-header-h) + 24px) 20px 48px;
+  }
 }
 
 /* 旧 blog/vlog 页的 :root 里定义了 --accent-cyan/--accent-amber，而站点令牌（tokens.css，

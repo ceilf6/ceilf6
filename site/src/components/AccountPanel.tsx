@@ -104,6 +104,7 @@ export function AccountPanel({
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pointerDownInsideRef = useRef(false);
 
@@ -137,13 +138,20 @@ export function AccountPanel({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        const root = containerRef.current;
+        const focusInside = Boolean(
+          root && root.contains(document.activeElement),
+        );
+        const shouldRestoreFocus = mode === "pinned" || focusInside;
         clearCloseTimer();
         setMode("closed");
-        triggerRef.current?.focus();
+        if (shouldRestoreFocus) {
+          triggerRef.current?.focus();
+        }
       }
     };
 
-    const handleOutsideDown = (event: MouseEvent | PointerEvent) => {
+    const handleOutsideDown = (event: PointerEvent) => {
       const root = containerRef.current;
       if (!root) return;
       if (event.target instanceof Node && !root.contains(event.target)) {
@@ -154,38 +162,34 @@ export function AccountPanel({
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("pointerdown", handleOutsideDown);
-    document.addEventListener("mousedown", handleOutsideDown);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("pointerdown", handleOutsideDown);
-      document.removeEventListener("mousedown", handleOutsideDown);
     };
-  }, [open]);
+  }, [open, mode]);
 
-  const handleHoverEnter = () => {
+  const handlePointerEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch") return;
     if (!supportsFineHover()) return;
     clearCloseTimer();
     setMode((prev) => (prev === "closed" ? "hover" : prev));
   };
 
-  const handleHoverLeave = () => {
+  const handlePointerLeave = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch") return;
     if (!supportsFineHover()) return;
     clearCloseTimer();
     closeTimerRef.current = setTimeout(() => {
       closeTimerRef.current = null;
+      if (
+        containerRef.current?.contains(document.activeElement) &&
+        panelRef.current?.contains(document.activeElement)
+      ) {
+        return;
+      }
       setMode((prev) => (prev === "hover" ? "closed" : prev));
     }, HOVER_CLOSE_DELAY_MS);
-  };
-
-  const handlePointerEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === "touch") return;
-    handleHoverEnter();
-  };
-
-  const handlePointerLeave = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === "touch") return;
-    handleHoverLeave();
   };
 
   const handleTriggerClick = () => {
@@ -235,12 +239,9 @@ export function AccountPanel({
     <div
       ref={containerRef}
       className="account-disclosure"
-      onMouseEnter={handleHoverEnter}
-      onMouseLeave={handleHoverLeave}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       onPointerDownCapture={markPointerDownInside}
-      onMouseDownCapture={markPointerDownInside}
       onBlur={handleContainerBlur}
     >
       <button
@@ -258,6 +259,7 @@ export function AccountPanel({
       </button>
 
       <div
+        ref={panelRef}
         id="account-panel"
         className="account-panel account-panel-frosted"
         hidden={!open}

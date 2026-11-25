@@ -155,7 +155,7 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(panel).not.toHaveTextContent("站主");
   });
 
-  it("精确指针 hover 展开、移出 150ms 后收起；hover 后点击转为固定展开不误关，再次点击收起", () => {
+  it("精确指针 pointer hover 展开、移出 150ms 后收起；Tab 进面板后移出指针不丢焦点；hover 后点击固定展开", async () => {
     vi.useFakeTimers();
     mockMatchMedia(true);
 
@@ -169,26 +169,50 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     const wrapper = trigger.parentElement!;
     const panel = container.querySelector("#account-panel") as HTMLElement;
 
-    // 移入展开
+    // 仅派发旧 mouseEnter 不应重复触发（统一归口 Pointer 事件）
     fireEvent.mouseEnter(wrapper);
+    expect(panel.hidden).toBe(true);
+
+    // 指针移入展开
+    fireEvent.pointerOver(wrapper, { pointerType: "mouse" });
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(panel.hidden).toBe(false);
 
     // 移出 100ms 内移回：取消关闭定时器
-    fireEvent.mouseLeave(wrapper);
+    fireEvent.pointerOut(wrapper, { pointerType: "mouse" });
     act(() => {
       vi.advanceTimersByTime(100);
     });
     expect(panel.hidden).toBe(false);
 
-    fireEvent.mouseEnter(wrapper);
+    fireEvent.pointerOver(wrapper, { pointerType: "mouse" });
     act(() => {
       vi.advanceTimersByTime(150);
     });
     expect(panel.hidden).toBe(false);
 
-    // 完整移出 150ms 后收起
-    fireEvent.mouseLeave(wrapper);
+    // 悬停展开后若键盘焦点进入面板内部（如退出按钮），移开鼠标超过 150ms 不得自动关闭抢断焦点
+    const logoutBtn = screen.getByRole("button", { name: "退出登录" });
+    logoutBtn.focus();
+    expect(document.activeElement).toBe(logoutBtn);
+    fireEvent.pointerOut(wrapper, { pointerType: "mouse" });
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+    expect(panel.hidden).toBe(false);
+
+    // 焦点真实移出容器（blur 归还到 body）后自动关闭
+    await act(async () => {
+      logoutBtn.blur();
+      await Promise.resolve();
+    });
+    expect(document.activeElement).toBe(document.body);
+    expect(panel.hidden).toBe(true);
+
+    // 重新指针移入 + 完整移出 150ms（焦点不在面板内）后收起
+    fireEvent.pointerOver(wrapper, { pointerType: "mouse" });
+    expect(panel.hidden).toBe(false);
+    fireEvent.pointerOut(wrapper, { pointerType: "mouse" });
     act(() => {
       vi.advanceTimersByTime(150);
     });
@@ -196,14 +220,14 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
 
     // 再次 hover 展开后点击头像按钮：必须转为 pinned 固定展开，不得把面板关掉！
-    fireEvent.mouseEnter(wrapper);
+    fireEvent.pointerOver(wrapper, { pointerType: "mouse" });
     expect(panel.hidden).toBe(false);
     fireEvent.click(trigger);
     expect(panel.hidden).toBe(false);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
 
-    // 处于 pinned 态时，鼠标移出超过 150ms 仍保持展开
-    fireEvent.mouseLeave(wrapper);
+    // 处于 pinned 态时，指针移出超过 150ms 仍保持展开
+    fireEvent.pointerOut(wrapper, { pointerType: "mouse" });
     act(() => {
       vi.advanceTimersByTime(300);
     });
@@ -215,13 +239,14 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("Esc 收起并归还焦点给头像按钮，点击外部收起，点击面板内非聚焦文本不误关", async () => {
-    mockMatchMedia(false);
+  it("Esc 收起：pinned 或焦点在容器内时归还焦点给头像按钮，仅 hover 且焦点在外部输入框时不抢焦点", async () => {
+    mockMatchMedia(true);
     const user = userEvent.setup();
 
     const { container } = render(
       <MemoryRouter>
         <div>
+          <textarea aria-label="外部评论框" />
           <button type="button">外部按钮</button>
           <AccountPanel user={adminUser} csrfToken="csrf-1" nextTarget="/" />
         </div>
@@ -229,12 +254,24 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     );
 
     const trigger = screen.getByRole("button", { name: /账号/ });
+    const wrapper = trigger.parentElement!;
     const panel = container.querySelector("#account-panel") as HTMLElement;
+    const externalInput = screen.getByLabelText("外部评论框");
 
+    // 1) 用户正在外部评论框输入，仅鼠标擦过顶栏触发 hover 展开：按 Esc 收起面板但不抢走外部评论框焦点
+    externalInput.focus();
+    expect(document.activeElement).toBe(externalInput);
+    fireEvent.pointerOver(wrapper, { pointerType: "mouse" });
+    expect(panel.hidden).toBe(false);
+
+    await user.keyboard("{Escape}");
+    expect(panel.hidden).toBe(true);
+    expect(document.activeElement).toBe(externalInput);
+
+    // 2) 点击固定展开（pinned），焦点在退出按钮（或外部）时按 Esc：收起并把焦点归还给头像按钮
     await user.click(trigger);
     expect(panel.hidden).toBe(false);
 
-    // 焦点移入退出按钮后按 Esc：面板收起且焦点回到头像按钮
     const logoutBtn = screen.getByRole("button", { name: "退出登录" });
     logoutBtn.focus();
     expect(document.activeElement).toBe(logoutBtn);
@@ -243,13 +280,12 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(panel.hidden).toBe(true);
     expect(document.activeElement).toBe(trigger);
 
-    // 再次打开：点击面板内昵称文本不应误关面板
+    // 3) 再次打开：点击面板内昵称文本不应误关面板；点击容器外部收起
     await user.click(trigger);
     expect(panel.hidden).toBe(false);
     await user.click(screen.getByText("王景宏"));
     expect(panel.hidden).toBe(false);
 
-    // 点击容器外部：面板收起
     await user.click(screen.getByRole("button", { name: "外部按钮" }));
     expect(panel.hidden).toBe(true);
   });

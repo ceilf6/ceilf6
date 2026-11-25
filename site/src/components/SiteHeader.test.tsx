@@ -15,6 +15,18 @@ const headerCss =
 const globalCss =
   rawGlobalCss ||
   readFileSync(resolve(process.cwd(), "src/styles/global.css"), "utf8");
+const stageCss = readFileSync(
+  resolve(process.cwd(), "src/components/PlatformStage.css"),
+  "utf8",
+);
+const noteCss = readFileSync(
+  resolve(process.cwd(), "src/pages/Note.css"),
+  "utf8",
+);
+const awardsCss = readFileSync(
+  resolve(process.cwd(), "src/pages/Awards.css"),
+  "utf8",
+);
 
 function jsonResponse(payload: unknown, status = 200): Response {
   return new Response(JSON.stringify(payload), {
@@ -98,7 +110,7 @@ describe("SiteHeader 全站顶栏", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
       jsonResponse({ code: "error" }, 500),
     );
-    render(
+    const view500 = render(
       <MemoryRouter initialEntries={["/awards"]}>
         <SessionProvider>
           <SiteHeader />
@@ -110,6 +122,24 @@ describe("SiteHeader 全站顶栏", () => {
     expect(fallbackLogin).toHaveAttribute(
       "href",
       `/accounts/login/?next=${encodeURIComponent("/awards")}`,
+    );
+    view500.unmount();
+
+    // /api/me/ 网络异常（fetch reject）同样降级显示「登录」
+    vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(
+      new TypeError("Failed to fetch"),
+    );
+    render(
+      <MemoryRouter initialEntries={["/vlog"]}>
+        <SessionProvider>
+          <SiteHeader />
+        </SessionProvider>
+      </MemoryRouter>,
+    );
+    const netFallbackLogin = await screen.findByRole("link", { name: "登录" });
+    expect(netFallbackLogin).toHaveAttribute(
+      "href",
+      `/accounts/login/?next=${encodeURIComponent("/vlog")}`,
     );
   });
 
@@ -165,8 +195,16 @@ describe("SiteHeader 全站顶栏", () => {
       </MemoryRouter>,
     );
 
-    fireEvent.click(screen.getByRole("link", { name: "王景宏" }));
+    const brandOnHome = screen.getByRole("link", { name: "王景宏" });
+    fireEvent.click(brandOnHome);
     expect(scrollSpy).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+
+    // Cmd/Ctrl+Click 或中键点击放行默认浏览器新标签行为，不拦截不滚顶
+    scrollSpy.mockClear();
+    fireEvent.click(brandOnHome, { metaKey: true });
+    fireEvent.click(brandOnHome, { ctrlKey: true });
+    fireEvent.click(brandOnHome, { button: 1 });
+    expect(scrollSpy).not.toHaveBeenCalled();
     unmount();
 
     // 2) prefers-reduced-motion: reduce 为真：auto 滚回顶部
@@ -245,6 +283,12 @@ describe("SiteHeader 全站顶栏", () => {
     expect(header).toHaveClass("is-frosted");
     expect(header).not.toHaveClass("is-transparent");
 
+    // 滚回顶部 scrollY = 0：恢复透明态类名
+    window.scrollY = 0;
+    fireEvent.scroll(window);
+    expect(header).toHaveClass("is-transparent");
+    expect(header).not.toHaveClass("is-frosted");
+
     unmount();
 
     // 非主页即使 scrollY === 0 也直接为磨砂底类名
@@ -259,8 +303,12 @@ describe("SiteHeader 全站顶栏", () => {
     );
   });
 
-  it("样式护栏：--site-header-h 桌面 56px / 窄屏 88px，且不给 body/#root/.route-shell/.page-shell 加 padding-top", () => {
+  it("样式护栏：--site-header-h 桌面 56px / 560px 防挤压 / 480px 88px 精确闭合，且顶部留白归属各页面 CSS", () => {
     expect(headerCss).toMatch(/z-index:\s*100\b/);
+    expect(headerCss).toMatch(/@media\s*\(max-width:\s*560px\)/);
+    expect(headerCss).toMatch(
+      /@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*?padding:\s*6px\s+12px\s+7px;/,
+    );
     expect(globalCss).toContain("--site-header-h: 56px;");
     expect(globalCss).toMatch(
       /@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*?--site-header-h:\s*88px;/,
@@ -268,5 +316,10 @@ describe("SiteHeader 全站顶栏", () => {
     expect(globalCss).not.toMatch(
       /(?:^|\n)\s*(?:body|#root|\.route-shell|\.page-shell)\s*\{[^}]*padding-top:/,
     );
+    expect(globalCss).not.toContain(".stage-viewport");
+    expect(globalCss).not.toContain(".note");
+    expect(stageCss).toContain("calc(var(--site-header-h) + 32px)");
+    expect(noteCss).toContain("calc(var(--site-header-h) + 32px)");
+    expect(awardsCss).toContain("calc(var(--site-header-h) + 32px)");
   });
 });

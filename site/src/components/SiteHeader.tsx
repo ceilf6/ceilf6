@@ -53,6 +53,15 @@ export function SiteHeader() {
   const loginHref = `/accounts/login/?next=${encodeURIComponent(nextTarget)}`;
 
   const handleBrandClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
     if (location.pathname !== "/") return;
     event.preventDefault();
     const prefersReducedMotion =

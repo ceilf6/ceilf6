@@ -60,8 +60,9 @@ export default function App() {
   const latestNavRef = useRef({ navigationType, hash: location.hash });
   latestNavRef.current = { navigationType, hash: location.hash };
 
+  const normalizedPath = location.pathname.replace(/\/+$/, "").toLowerCase();
   const hideSiteHeader =
-    location.pathname === "/viewer" || location.pathname === "/viewer.html";
+    normalizedPath === "/viewer" || normalizedPath === "/viewer.html";
 
   return (
     <SessionProvider>

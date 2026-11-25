@@ -181,10 +181,10 @@ describe("跨页滚动复位", () => {
 });
 
 describe("全站顶栏挂载边界与会话同步", () => {
-  it("/viewer 与 /viewer.html 不渲染顶栏，其余路由固定渲染顶栏", () => {
+  it("/viewer、/viewer/ 与 /viewer.html 不渲染顶栏，其余路由固定渲染顶栏", () => {
     sessionStorage.setItem(SPLASH_KEY, "1");
 
-    for (const viewerPath of ["/viewer?img=1", "/viewer.html?img=1"]) {
+    for (const viewerPath of ["/viewer?img=1", "/viewer/?img=1", "/viewer.html?img=1"]) {
       const { unmount } = render(
         <MemoryRouter initialEntries={[viewerPath]}>
           <App />
@@ -459,5 +459,109 @@ describe("全站顶栏挂载边界与会话同步", () => {
       await within(header()).findByRole("button", { name: "账号：王景宏" }),
     ).toBeInTheDocument();
     expect(meCalls).toBe(5);
+  });
+
+  it("停留在 /blog/:slug 时触发跨标签页 visibilitychange 刷新：顶栏与评论区双向同步登录与登出", async () => {
+    sessionStorage.setItem(SPLASH_KEY, "1");
+    let now = 2_000_000;
+    vi.spyOn(Date, "now").mockImplementation(() => now);
+
+    let meCalls = 0;
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url === "/api/me/") {
+        meCalls += 1;
+        // 第 1、2 次（Provider 与 NoteComments 初始挂载）：均为未登录
+        if (meCalls <= 2) {
+          return Promise.resolve(
+            new Response(
+              JSON.stringify({
+                user: null,
+                csrfToken: "csrf-init",
+                guestCommentsAllowed: true,
+              }),
+              { status: 200, headers: { "Content-Type": "application/json" } },
+            ),
+          );
+        }
+        // 第 3 次（超过 10s 切回标签页）：跨标签页已登录为「跨页同步同学」
+        if (meCalls === 3) {
+          return Promise.resolve(
+            new Response(
+              JSON.stringify({
+                user: { id: 18, displayName: "跨页同步同学", isCommentAdmin: false },
+                csrfToken: "csrf-login",
+                guestCommentsAllowed: true,
+              }),
+              { status: 200, headers: { "Content-Type": "application/json" } },
+            ),
+          );
+        }
+        // 第 4 次（再超过 10s 切回标签页）：跨标签页退出登录回到访客
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              user: null,
+              csrfToken: "csrf-logout",
+              guestCommentsAllowed: true,
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } },
+          ),
+        );
+      }
+      if (url.startsWith("/api/notes/")) {
+        return Promise.resolve(
+          new Response(JSON.stringify({ items: [], nextBefore: null }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }),
+        );
+      }
+      return Promise.reject(new Error(`Unexpected test fetch: ${url}`));
+    });
+
+    const { container } = render(
+      <MemoryRouter initialEntries={["/blog/node-event-loop"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    const header = () => container.querySelector<HTMLElement>("header.site-header")!;
+    const commentsSection = () =>
+      container.querySelector<HTMLElement>("section.note-comments")!;
+
+    expect(
+      await screen.findByText("当前未登录，将以「未登录用户」身份直接发表"),
+    ).toBeInTheDocument();
+    expect(within(header()).getByRole("link", { name: "登录" })).toBeInTheDocument();
+    expect(meCalls).toBe(2);
+
+    // 1) 超过 10 秒后切回前台：Provider 刷新为「跨页同步同学」，顶栏与评论区同步更新
+    now += 11_000;
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "visible",
+    });
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    expect(
+      await within(header()).findByRole("button", { name: "账号：跨页同步同学" }),
+    ).toBeInTheDocument();
+    expect(
+      await within(commentsSection()).findByText("跨页同步同学"),
+    ).toBeInTheDocument();
+    expect(meCalls).toBe(3);
+
+    // 2) 再次超过 10 秒后切回前台：Provider 刷新回未登录，顶栏与评论区均同步回访客态
+    now += 11_000;
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    expect(
+      await within(header()).findByRole("link", { name: "登录" }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText("当前未登录，将以「未登录用户」身份直接发表"),
+    ).toBeInTheDocument();
+    expect(meCalls).toBe(4);
   });
 });

@@ -18,10 +18,17 @@ interface NoteCommentsProps {
 type ListStatus = "loading" | "ready" | "error";
 
 export function NoteComments({ slug }: NoteCommentsProps) {
-  const { syncSession } = useSession();
+  const {
+    status: providerStatus,
+    session: providerSession,
+    syncSession,
+  } = useSession();
   const [viewerStatus, setViewerStatus] = useState<ViewerLoadStatus>("loading");
   const [viewer, setViewer] = useState<ViewerSession | null>(null);
   const [viewerReloadSeq, setViewerReloadSeq] = useState(0);
+
+  const lastSyncedRef = useRef<ViewerSession | null>(null);
+  const prevProviderSessionRef = useRef<ViewerSession | null>(providerSession);
 
   const [status, setStatus] = useState<ListStatus>("loading");
   const [items, setItems] = useState<CommentItem[]>([]);
@@ -53,6 +60,8 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         if (ctrl.signal.aborted) return;
         setViewer(session);
         setViewerStatus("ready");
+        lastSyncedRef.current = session;
+        prevProviderSessionRef.current = session;
         syncSession(session);
       })
       .catch((error: unknown) => {
@@ -67,6 +76,20 @@ export function NoteComments({ slug }: NoteCommentsProps) {
       conflictPromiseRef.current = null;
     };
   }, [slug, viewerReloadSeq, syncSession]);
+
+  useEffect(() => {
+    if (
+      providerStatus === "ready" &&
+      providerSession !== null &&
+      providerSession !== prevProviderSessionRef.current
+    ) {
+      prevProviderSessionRef.current = providerSession;
+      if (providerSession !== lastSyncedRef.current) {
+        setViewer(providerSession);
+        setViewerStatus("ready");
+      }
+    }
+  }, [providerStatus, providerSession]);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -125,6 +148,8 @@ export function NoteComments({ slug }: NoteCommentsProps) {
         if (ctrl.signal.aborted) return null;
         setViewer(refreshed);
         setViewerStatus("ready");
+        lastSyncedRef.current = refreshed;
+        prevProviderSessionRef.current = refreshed;
         syncSession(refreshed);
         return refreshed;
       } catch (error: unknown) {

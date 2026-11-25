@@ -3,8 +3,14 @@
   flex: 1;
   width: min(720px, 92vw);
   margin: 0 auto;
-  padding: 48px 0 72px;
+  padding: calc(var(--site-header-h) + 32px) 0 72px;
   color: var(--text-main);
+}
+
+@media (max-width: 640px) {
+  .note {
+    padding-top: calc(var(--site-header-h) + 24px);
+  }
 }
 .note-back {
   color: var(--text-muted);
