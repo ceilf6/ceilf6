@@ -9,7 +9,7 @@ import { useLocation } from "react-router";
 import { isValidAvatarColor, type SessionUser } from "../data/comments";
 
 const HOVER_CLOSE_DELAY_MS = 150;
-const COMBINING_MARK_RE = /^[\p{Mn}\p{Me}]$/u;
+const COMBINING_MARK_RE = /^[\p{Mn}\p{Me}\p{Mc}]$/u;
 
 function isRegionalIndicator(char: string): boolean {
   const cp = char.codePointAt(0);
