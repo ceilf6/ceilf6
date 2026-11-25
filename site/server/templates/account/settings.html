@@ -162,6 +162,7 @@
       class="settings-avatar-preview"
       style="background-color: {{ preview_avatar_color }};"
       data-auto-color="{{ auto_avatar_color }}"
+      role="img"
       aria-label="头像预览"
     >
       <span id="settings-avatar-initial" class="settings-avatar-initial">{{ avatar_initial }}</span>
@@ -255,19 +256,12 @@
         if (cp === undefined) return false;
         if (cp === 0xfe0e || cp === 0xfe0f) return true;
         if (cp >= 0x1f3fb && cp <= 0x1f3ff) return true;
-        return /^[\p{Mn}\p{Me}]$/u.test(ch);
+        return /^[\p{Mn}\p{Me}\p{Mc}]$/u.test(ch);
       }
 
       function computeInitial(raw) {
         var trimmed = (raw || "").trim();
         if (!trimmed) return fallbackInitial;
-        if (typeof Intl !== "undefined" && typeof Intl.Segmenter === "function") {
-          var seg = new Intl.Segmenter("zh", { granularity: "grapheme" });
-          var first = seg.segment(trimmed)[Symbol.iterator]().next();
-          if (!first.done && first.value.segment) {
-            return first.value.segment.toUpperCase();
-          }
-        }
         var chars = Array.from(trimmed);
         if (!chars.length) return fallbackInitial;
         var cluster = chars[0];

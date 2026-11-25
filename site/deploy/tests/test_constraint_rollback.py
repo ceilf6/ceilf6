@@ -319,14 +319,20 @@ class WriteConstraintRollbackTests(unittest.TestCase):
             health_timeout=2.0,
         )
 
-        # Build previous release `v1` without `avatar_color` field or `0004_user_avatar_color` migration
+        # Build previous release `v1` without `avatar_color` field or `>= 0004` migrations
         staged_v1 = sbx.clone_staged_server("v1-pre-avatar")
-        mig_0004 = staged_v1 / "accounts" / "migrations" / "0004_user_avatar_color.py"
+        v1_mig_dir = staged_v1 / "accounts" / "migrations"
+        removed_migs = [
+            mf
+            for mf in sorted(v1_mig_dir.glob("[0-9][0-9][0-9][0-9]_*.py"))
+            if int(mf.name[:4]) >= 4
+        ]
         self.assertTrue(
-            mig_0004.is_file(),
+            any(mf.name == "0004_user_avatar_color.py" for mf in removed_migs),
             "Expected 0004_user_avatar_color.py to exist in current server tree",
         )
-        mig_0004.unlink()
+        for mf in removed_migs:
+            mf.unlink()
 
         v1_models = staged_v1 / "accounts" / "models.py"
         v1_models_src = v1_models.read_text(encoding="utf-8")
@@ -340,6 +346,30 @@ class WriteConstraintRollbackTests(unittest.TestCase):
         v1_models.write_text(v1_models_stripped, encoding="utf-8")
 
         remote_server.deploy_release(cfg, staged_server=staged_v1, release_id="v1")
+        venv_py = sbx.app_root / "shared" / "venv" / "bin" / "python"
+        v1_server_dir = sbx.app_root / "releases" / "v1" / "server"
+        runtime_env, _, _, _ = remote_server.build_runtime_env(
+            remote_server.load_and_validate_env_file(sbx.etc_env),
+            var_dir=sbx.var_dir,
+            app_root=sbx.app_root,
+        )
+        pre_user_proc = subprocess.run(
+            [
+                str(venv_py),
+                str(v1_server_dir / "manage.py"),
+                "ensure_verified_user",
+                "--email",
+                "pre-migration@example.com",
+                "--display-name",
+                "迁移前老读者",
+                "--generate-password",
+            ],
+            cwd=str(v1_server_dir),
+            env=runtime_env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(pre_user_proc.returncode, 0, pre_user_proc.stderr)
         live_comment = sbx.post_guest_comment(
             "cc-source-analysis",
             "迁移前评论：纯代码回退后仍须完整保留",
@@ -353,6 +383,12 @@ class WriteConstraintRollbackTests(unittest.TestCase):
             (sbx.app_root / "current").resolve(),
             (sbx.app_root / "releases" / "v2").resolve(),
         )
+        with contextlib.closing(sqlite3.connect(str(sbx.var_dir / "db.sqlite3"))) as conn:
+            pre_row = conn.execute(
+                "SELECT display_name, avatar_color FROM accounts_user WHERE email = ?",
+                ("pre-migration@example.com",),
+            ).fetchone()
+        self.assertEqual(pre_row, ("迁移前老读者", ""))
 
         # Code-only rollback to `v1` WITHOUT `restore_db` must pass sqlite_ops schema gate!
         remote_server.rollback_release(cfg, to_release="v1")
@@ -363,13 +399,6 @@ class WriteConstraintRollbackTests(unittest.TestCase):
         )
 
         # Under rolled-back `v1` code (whose User model lacks `avatar_color`), creating a new user must succeed!
-        venv_py = sbx.app_root / "shared" / "venv" / "bin" / "python"
-        v1_server_dir = sbx.app_root / "releases" / "v1" / "server"
-        runtime_env, _, _, _ = remote_server.build_runtime_env(
-            remote_server.load_and_validate_env_file(sbx.etc_env),
-            var_dir=sbx.var_dir,
-            app_root=sbx.app_root,
-        )
         create_proc = subprocess.run(
             [
                 str(venv_py),

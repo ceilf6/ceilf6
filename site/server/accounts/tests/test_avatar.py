@@ -102,6 +102,7 @@ class AvatarPaletteAndInitialUnitTests(TestCase):
             ("👨🏽‍❤️‍💋‍👨🏻abc", "👨🏽‍❤️‍💋‍👨🏻"),
             ("1\ufe0f\u20e3abc", "1\ufe0f\u20e3"),
             ("e\u0301", "E\u0301"),
+            ("किरण", "कि"),
             ("ß", "SS"),
             ("用户 #12", "用"),
             ("", "?"),

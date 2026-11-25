@@ -79,7 +79,7 @@ def _is_grapheme_extender(ch: str) -> bool:
         return True
     if 0x1F3FB <= cp <= 0x1F3FF:
         return True
-    return unicodedata.category(ch) in ("Mn", "Me")
+    return unicodedata.category(ch) in ("Mn", "Me", "Mc")
 
 
 def extract_avatar_initial(name: str) -> str:
