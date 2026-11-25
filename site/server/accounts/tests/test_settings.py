@@ -106,9 +106,14 @@ class AccountSettingsTests(TestCase):
         self.assertEqual(settings_page.status_code, 200)
         html = settings_page.content.decode("utf-8")
         self.assertIn('<a href="/blog">← 返回原页面</a>', html)
+        self.assertNotIn(user.email, html)
         next_match = HIDDEN_NEXT_RE.search(html)
         self.assertIsNotNone(next_match)
         self.assertEqual(next_match.group(1), "/blog")
+
+        logout_page = self.client.get("/accounts/logout/")
+        self.assertEqual(logout_page.status_code, 200)
+        self.assertNotIn("成功登录", logout_page.content.decode("utf-8"))
 
     def test_get_echoes_current_display_name_and_renders_single_back_link(
         self,
@@ -386,9 +391,13 @@ class AccountSettingsTests(TestCase):
                 self.assertEqual(parse_qs(parsed.query).get("next"), ["/"])
                 self.assertEqual(parse_qs(parsed.query).get("saved"), ["1"])
 
+                has_control_char = any(
+                    ch in bad_next for ch in ("\x00", "\n", "\r")
+                )
+                raw_qs = "" if has_control_char else f"next={bad_next}"
                 post_query_only = self.client.post(
                     "/accounts/settings/",
-                    QUERY_STRING=f"next={bad_next}" if "\x00" not in bad_next and "\n" not in bad_next and "\r" not in bad_next else "",
+                    QUERY_STRING=raw_qs,
                     data={"display_name": f"安全昵称{idx}"},
                 )
                 self.assertEqual(post_query_only.status_code, 302)
@@ -439,8 +448,7 @@ class AccountSettingsTests(TestCase):
 
         def get_user_with_concurrent_grant(request):  # type: ignore[no-untyped-def]
             loaded_user = real_get_user(request)
-            # Load lazy object into memory with is_comment_admin=False BEFORE DB grant
-            _ = loaded_user.is_authenticated
+            # Simulate concurrent DB grant after user row was fetched into memory
             User.objects.filter(pk=user.pk).update(
                 is_comment_admin=True,
                 is_staff=True,

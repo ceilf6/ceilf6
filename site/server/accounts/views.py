@@ -78,8 +78,7 @@ def _resolve_safe_next_url(request: HttpRequest) -> str:
         raw_next = request.GET.get("next")
 
     if is_safe_internal_redirect_url(raw_next):
-        assert isinstance(raw_next, str)
-        return raw_next
+        return cast(str, raw_next)
     return "/"
 
 
