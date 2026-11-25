@@ -21,13 +21,7 @@ export function NotesPreview({
   return (
     <section className="act act-notes" data-act-reveal>
       <h2 className="act-title">
-        {headingTo ? (
-          <Link to={headingTo}>
-            {heading} <span aria-hidden="true">→</span>
-          </Link>
-        ) : (
-          heading
-        )}
+        {headingTo ? <Link to={headingTo}>{heading}</Link> : heading}
       </h2>
       <div className="notes-grid">
         {shown.map((n) => (

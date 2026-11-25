@@ -2,7 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 48px 0 72px;
+  padding: calc(var(--site-header-h) + 32px) 0 72px;
 }
 
 .awards-title {
@@ -27,7 +27,7 @@
 
 @media (max-width: 640px) {
   .awards-page {
-    padding: 32px 0 56px;
+    padding: calc(var(--site-header-h) + 24px) 0 56px;
   }
 
   .awards-page .main-content {

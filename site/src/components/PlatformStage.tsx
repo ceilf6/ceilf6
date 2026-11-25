@@ -1,13 +1,8 @@
 import { useEffect } from "react";
 import type { CSSProperties } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Link } from "react-router";
 import type { StageData } from "../data/platforms";
 import "./PlatformStage.css";
-
-/** react-router 的 Link 套上 motion，才能进 stagger 队列且不额外包一层 DOM。
-    必须在组件外创建，否则每次渲染都是新组件类型、子树会重挂载。 */
-const MotionLink = motion.create(Link);
 
 /** 旧站靠 .reveal + .d1–.d6 的 animation-delay 排进场顺序，这里换成 stagger 统一发牌：
     容器只负责节拍，子项各自位移淡入，节奏与旧站的 0.05→0.66s 阶梯相近。 */
@@ -96,10 +91,6 @@ export function PlatformStage({
             </motion.a>
           ))}
         </div>
-
-        <MotionLink className="home-link" to="/" variants={item}>
-          <span aria-hidden="true">←</span> 返回主页
-        </MotionLink>
       </motion.main>
     </div>
   );

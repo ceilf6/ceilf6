@@ -1,5 +1,7 @@
 /** 主页 README 卡片区（旧 index.html 的 4 张卡）。
     svg 为 bot 持续更新的部署路径，必须运行时加载、禁止构建期打包。 */
+export const GITHUB_URL = "https://github.com/ceilf6";
+
 export interface ReadmeCard {
   href: string;
   external: boolean;
@@ -9,7 +11,7 @@ export interface ReadmeCard {
 
 export const readmeCards: ReadmeCard[] = [
   {
-    href: "https://github.com/ceilf6",
+    href: GITHUB_URL,
     external: true,
     img: "/assets/github-stats-card.svg",
     alt: "Stats",

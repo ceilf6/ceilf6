@@ -17,7 +17,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 20px;
+  padding: calc(var(--site-header-h) + 32px) 20px 48px;
+}
+
+@media (max-width: 640px) {
+  .stage-viewport {
+    padding: calc(var(--site-header-h) + 24px) 20px 48px;
+  }
 }
 
 /* 旧 blog/vlog 页的 :root 里定义了 --accent-cyan/--accent-amber，而站点令牌（tokens.css，
@@ -228,27 +234,6 @@
   font-size: 0.78rem;
   letter-spacing: 0.2em;
   color: rgba(175, 195, 221, 0.4);
-}
-
-.stage .home-link {
-  margin-top: 40px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
-  text-decoration: none;
-  color: var(--text-muted);
-  transition: color 0.3s ease;
-}
-.stage .home-link:hover,
-.stage .home-link:focus-visible {
-  color: var(--accent-cyan);
-  outline: none;
-}
-.stage .home-link:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 @media (max-width: 600px) {

@@ -53,9 +53,7 @@ export default function Home() {
           </section>
           <section className="act act-gallery" data-act-reveal>
             <h2 className="act-title">
-              <Link to="/awards">
-                证书画廊 <span aria-hidden="true">→</span>
-              </Link>
+              <Link to="/awards">证书画廊</Link>
             </h2>
             <div className="main-content">
               <WaterfallGallery />

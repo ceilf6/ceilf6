@@ -8,7 +8,7 @@ import Vlog from "./Vlog";
 const wrap = (el: ReactElement) => render(<MemoryRouter>{el}</MemoryRouter>);
 
 describe("Blog/Vlog 平台页", () => {
-  it("blog 渲染 LINUX DO 与 CSDN 卡与返回链接", () => {
+  it("blog 渲染 LINUX DO 与 CSDN 卡，且不再渲染冗余页底返回主页链接", () => {
     wrap(<Blog />);
     expect(screen.getByText("看看我的博客")).toBeInTheDocument();
     expect(screen.getByLabelText("前往 LINUX DO 主页")).toHaveAttribute(
@@ -19,7 +19,7 @@ describe("Blog/Vlog 平台页", () => {
       "href",
       "https://blog.csdn.net/2301_78856868",
     );
-    expect(screen.getByText("返回主页").closest("a")).toHaveAttribute("href", "/");
+    expect(screen.queryByText(/返回主页/)).toBeNull();
   });
 
   it("blog 层序:平台卡区(main.stage)在 DOM 顺序上先于站内札记区(act-notes)", () => {
@@ -50,5 +50,6 @@ describe("Blog/Vlog 平台页", () => {
       "href",
       "https://space.bilibili.com/3546602400647622",
     );
+    expect(screen.queryByText(/返回主页/)).toBeNull();
   });
 });

@@ -1,3 +1,13 @@
+:root {
+  --site-header-h: 56px;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --site-header-h: 88px;
+  }
+}
+
 ::selection {
   background: var(--accent-gold);
   color: #0b1226;
@@ -256,4 +266,17 @@ html::after {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 锚点跳转顶栏偏移：覆盖主页各幕、证书画廊及带 id 的章节标题 */
+.act,
+.awards-page,
+h1[id],
+h2[id],
+h3[id],
+h4[id],
+h5[id],
+h6[id],
+section[id] {
+  scroll-margin-top: var(--site-header-h);
 }
