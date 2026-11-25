@@ -120,15 +120,29 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(headerCss).toContain("var(--accent-gold)");
     expect(headerCss).toContain("var(--bg-void)");
 
-    // 点击展开后检查身份标签与 POST 退出表单（第 02 步不含设置链接）
+    // 点击展开后检查身份标签、设置入口与 POST 退出表单（操作项顺序：设置 -> 退出登录）
     fireEvent.click(trigger);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(panel.hidden).toBe(false);
     expect(panel).toHaveTextContent("王景宏");
     expect(panel).toHaveTextContent("站主");
-    expect(screen.queryByRole("link", { name: /设置/ })).toBeNull();
+
+    const settingsLink = screen.getByRole("link", { name: "设置" });
+    expect(settingsLink.tagName).toBe("A");
+    expect(settingsLink).toHaveClass("account-panel-item");
+    expect(settingsLink).toHaveAttribute(
+      "href",
+      `/accounts/settings/?next=${encodeURIComponent("/blog?tag=ai")}`,
+    );
 
     const logoutBtn = screen.getByRole("button", { name: "退出登录" });
+    const focusableItems = Array.from(
+      panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    expect(focusableItems).toEqual([settingsLink, logoutBtn]);
+
     const form = logoutBtn.closest("form")!;
     expect(form).toHaveAttribute("method", "post");
     expect(form).toHaveAttribute(
@@ -303,10 +317,10 @@ describe("AccountPanel Disclosure 面板与交互", () => {
       );
     }
 
-    // 场景 1：独立渲染 AccountPanel（面板后无其他可聚焦元素，Tab 落到 body）
+    // 场景 1：独立渲染 AccountPanel（未传 nextTarget 时默认取 location.pathname + location.search）
     const { container, unmount } = render(
-      <MemoryRouter>
-        <AccountPanel user={adminUser} csrfToken="csrf-1" nextTarget="/" />
+      <MemoryRouter initialEntries={["/blog?page=2"]}>
+        <AccountPanel user={adminUser} csrfToken="csrf-1" />
       </MemoryRouter>,
     );
 
@@ -317,21 +331,65 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     expect(panel.hidden).toBe(false);
     expect(document.activeElement).toBe(trigger);
 
-    // 第 1 次 Tab 进入面板内的「退出登录」按钮，保持展开
+    const settingsLink = screen.getByRole("link", { name: "设置" });
+    expect(settingsLink).toHaveAttribute(
+      "href",
+      `/accounts/settings/?next=${encodeURIComponent("/blog?page=2")}`,
+    );
+
+    // 第 1 次 Tab 进入面板第 1 项「设置」链接，保持展开
+    await user.tab();
+    expect(document.activeElement).toBe(settingsLink);
+    expect(panel.hidden).toBe(false);
+
+    // 第 2 次 Tab 从「设置」切到「退出登录」按钮，保持展开
     await user.tab();
     expect(document.activeElement).toBe(
       screen.getByRole("button", { name: "退出登录" }),
     );
     expect(panel.hidden).toBe(false);
 
-    // 第 2 次 Tab 离开容器最后一项：可靠收起面板
+    // 第 3 次 Tab 离开容器最后一项：可靠收起面板
     await user.tab();
     expect(panel.hidden).toBe(true);
     expect(trigger).toHaveAttribute("aria-expanded", "false");
 
     unmount();
 
-    // 场景 2：路由切换自动收起
+    // 场景 2：面板后存在外部可聚焦元素时，从「设置」Tab 到「退出登录」不收起，再 Tab 到外部元素时收起
+    const withAfter = render(
+      <MemoryRouter initialEntries={["/awards"]}>
+        <AccountPanel user={adminUser} csrfToken="csrf-1" />
+        <button type="button">正文后续按钮</button>
+      </MemoryRouter>,
+    );
+    const triggerAfter = screen.getByRole("button", { name: /账号/ });
+    const panelAfter = withAfter.container.querySelector(
+      "#account-panel",
+    ) as HTMLElement;
+
+    await user.click(triggerAfter);
+    expect(panelAfter.hidden).toBe(false);
+
+    await user.tab();
+    expect(document.activeElement).toBe(screen.getByRole("link", { name: "设置" }));
+    expect(panelAfter.hidden).toBe(false);
+
+    await user.tab();
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "退出登录" }),
+    );
+    expect(panelAfter.hidden).toBe(false);
+
+    await user.tab();
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "正文后续按钮" }),
+    );
+    expect(panelAfter.hidden).toBe(true);
+
+    withAfter.unmount();
+
+    // 场景 3：路由切换自动收起
     const view2 = render(
       <MemoryRouter initialEntries={["/"]}>
         <AccountPanel user={adminUser} csrfToken="csrf-1" nextTarget="/" />
@@ -347,4 +405,90 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     fireEvent.click(screen.getByRole("button", { name: "go-awards" }));
     expect(panel2.hidden).toBe(true);
   });
+
+  it("合法 avatarColor 渲染为头像按钮背景色与白色首字母类名，且 8 色满足 WCAG AA 对比度", () => {
+    const paletteHexes = [
+      "#4F46E5",
+      "#7C3AED",
+      "#0369A1",
+      "#0f766e",
+      "#047857",
+      "#B45309",
+      "#BE123C",
+      "#475569",
+    ];
+
+    function relativeLuminance(hex: string): number {
+      const clean = hex.slice(1);
+      const channels = [0, 2, 4].map((offset) => {
+        const srgb = Number.parseInt(clean.slice(offset, offset + 2), 16) / 255;
+        return srgb <= 0.03928 ? srgb / 12.92 : ((srgb + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+    }
+
+    function contrastRatio(hexA: string, hexB: string): number {
+      const lumA = relativeLuminance(hexA);
+      const lumB = relativeLuminance(hexB);
+      const lighter = Math.max(lumA, lumB);
+      const darker = Math.min(lumA, lumB);
+      return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    // 校验 CSS 原文中 .account-trigger.has-custom-color 声明白色首字母与 .account-panel-item 无下划线规则
+    expect(headerCss).toMatch(
+      /\.account-trigger\.has-custom-color\s*\{[^}]*color:\s*#(?:fff|ffffff)\b/is,
+    );
+    expect(headerCss).toMatch(
+      /\.account-panel-item[^{]*\{[^}]*text-decoration:\s*none\b/s,
+    );
+
+    for (const hex of paletteHexes) {
+      expect(contrastRatio(hex, "#ffffff")).toBeGreaterThanOrEqual(4.5);
+
+      const { unmount } = render(
+        <MemoryRouter>
+          <AccountPanel
+            user={{ ...adminUser, avatarColor: hex }}
+            csrfToken="csrf-color"
+          />
+        </MemoryRouter>,
+      );
+
+      const trigger = screen.getByRole("button", { name: /账号/ });
+      expect(trigger).toHaveClass("account-trigger", "has-custom-color");
+      expect(trigger).toHaveStyle({ backgroundColor: hex });
+      unmount();
+    }
+
+    // 兜底色 #ffc069 配 #0b1226 对比度同样 >= 4.5
+    expect(contrastRatio("#ffc069", "#0b1226")).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it.each([
+    undefined,
+    "",
+    "#fff",
+    "red",
+    "#4F46E5; color:red",
+    "#4F46E5; background:url(x)",
+    "url(javascript:alert(1))",
+  ])(
+    "组件侧二次守卫：avatarColor 为 %j 时回退金底深字兜底样式且 style 属性为空",
+    (badColor) => {
+      render(
+        <MemoryRouter>
+          <AccountPanel
+            user={{ ...adminUser, avatarColor: badColor }}
+            csrfToken="csrf-fallback"
+          />
+        </MemoryRouter>,
+      );
+
+      const trigger = screen.getByRole("button", { name: /账号/ });
+      expect(trigger).toHaveClass("account-trigger");
+      expect(trigger).not.toHaveClass("has-custom-color");
+      expect(trigger.getAttribute("style")).toBeNull();
+    },
+  );
 });

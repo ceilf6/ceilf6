@@ -195,6 +195,11 @@
     box-shadow 0.18s ease;
 }
 
+.account-trigger.has-custom-color {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
 .account-trigger:hover,
 .account-trigger:focus-visible {
   box-shadow: 0 0 0 3px rgba(255, 192, 105, 0.26);
@@ -224,7 +229,7 @@
   border-radius: 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   text-shadow: none;
 }
 
@@ -240,6 +245,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-bottom: 4px;
   padding: 2px 4px 8px;
   border-bottom: 1px solid rgba(255, 214, 166, 0.14);
   font-family: "Noto Sans SC", "PingFang SC", sans-serif;
@@ -274,7 +280,9 @@
   margin: 0;
 }
 
+.account-panel-item,
 .account-logout-btn {
+  display: block;
   width: 100%;
   padding: 7px 10px;
   border-radius: 8px;
@@ -283,7 +291,9 @@
   color: var(--text-muted);
   font-family: "Noto Sans SC", "PingFang SC", sans-serif;
   font-size: 0.84rem;
+  line-height: 1.4;
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   transition:
     color 0.18s ease,
@@ -291,6 +301,8 @@
     border-color 0.18s ease;
 }
 
+.account-panel-item:hover,
+.account-panel-item:focus-visible,
 .account-logout-btn:hover,
 .account-logout-btn:focus-visible {
   color: var(--text-main);
@@ -298,6 +310,7 @@
   border-color: rgba(255, 214, 166, 0.2);
 }
 
+.account-panel-item:focus-visible,
 .account-logout-btn:focus-visible {
   outline: 2px solid var(--accent-gold);
   outline-offset: 1px;

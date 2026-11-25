@@ -6,7 +6,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { useLocation } from "react-router";
-import type { SessionUser } from "../data/comments";
+import { isValidAvatarColor, type SessionUser } from "../data/comments";
 
 const HOVER_CLOSE_DELAY_MS = 150;
 const COMBINING_MARK_RE = /^[\p{Mn}\p{Me}]$/u;
@@ -233,7 +233,13 @@ export function AccountPanel({
 
   const initial = extractAvatarInitial(user.displayName);
   const roleLabel = user.isCommentAdmin ? "站主" : "用户";
-  const logoutAction = `/accounts/logout/?next=${encodeURIComponent(effectiveNext)}`;
+  const validAvatarColor = isValidAvatarColor(user.avatarColor)
+    ? user.avatarColor
+    : undefined;
+  const hasCustomColor = validAvatarColor !== undefined;
+  const encodedNext = encodeURIComponent(effectiveNext);
+  const settingsHref = `/accounts/settings/?next=${encodedNext}`;
+  const logoutAction = `/accounts/logout/?next=${encodedNext}`;
 
   return (
     <div
@@ -247,7 +253,8 @@ export function AccountPanel({
       <button
         ref={triggerRef}
         type="button"
-        className="account-trigger"
+        className={`account-trigger${hasCustomColor ? " has-custom-color" : ""}`}
+        style={hasCustomColor ? { backgroundColor: validAvatarColor } : undefined}
         aria-expanded={open}
         aria-controls="account-panel"
         aria-label={`账号：${user.displayName}`}
@@ -271,6 +278,10 @@ export function AccountPanel({
           </span>
           <span className="account-panel-role">{roleLabel}</span>
         </div>
+
+        <a href={settingsHref} className="account-panel-item">
+          设置
+        </a>
 
         <form
           className="account-logout-form"

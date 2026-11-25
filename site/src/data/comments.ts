@@ -6,6 +6,13 @@ export interface SessionUser {
   id: number;
   displayName: string;
   isCommentAdmin: boolean;
+  avatarColor?: string;
+}
+
+const AVATAR_COLOR_HEX_RE = /^#[0-9a-f]{6}$/i;
+
+export function isValidAvatarColor(value: unknown): value is string {
+  return typeof value === "string" && AVATAR_COLOR_HEX_RE.test(value);
 }
 
 export interface ViewerSession {
@@ -202,6 +209,9 @@ export async function fetchViewerSession(signal?: AbortSignal): Promise<ViewerSe
       id: data.user.id,
       displayName: data.user.displayName,
       isCommentAdmin: data.user.isCommentAdmin,
+      ...(isValidAvatarColor(data.user.avatarColor)
+        ? { avatarColor: data.user.avatarColor }
+        : {}),
     };
   }
 
