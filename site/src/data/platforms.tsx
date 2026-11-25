@@ -28,7 +28,7 @@ export const blogStage: StageData = {
   eyebrow: "ceilf6 · blog",
   headline: "看看我的博客",
   subtitle: "挑一个平台，去读我写的技术文字与折腾笔记",
-  docTitle: "看看我的博客 · ceilf6",
+  docTitle: "王景宏 · 博客论坛",
   platforms: [
     {
       index: "01",
@@ -76,7 +76,7 @@ export const vlogStage: StageData = {
   eyebrow: "ceilf6 · vlog",
   headline: "看看我的视频",
   subtitle: "挑一个平台，去看我最近在拍的东西",
-  docTitle: "看看我的视频 · ceilf6",
+  docTitle: "王景宏 · 项目视频",
   platforms: [
     {
       index: "01",

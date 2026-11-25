@@ -33,11 +33,15 @@ describe("Blog/Vlog 平台页", () => {
     expect(
       stage!.compareDocumentPosition(notesAct!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+    const notesHeading = screen.getByRole("heading", { level: 2, name: "站内札记" });
+    expect(notesHeading.querySelector("a")).toBeNull();
+    expect(document.title).toBe("王景宏 · 博客论坛");
   });
 
   it("vlog 渲染抖音与 Bilibili 卡", () => {
     wrap(<Vlog />);
     expect(screen.getByText("看看我的视频")).toBeInTheDocument();
+    expect(document.title).toBe("王景宏 · 项目视频");
     expect(screen.getByLabelText("前往抖音主页")).toHaveAttribute(
       "href",
       "https://www.douyin.com/user/MS4wLjABAAAA1y3YuKPCNetqkJ0FC20HMHXx7lz_T1pQsgvloOaZn-Y",

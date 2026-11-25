@@ -7,6 +7,7 @@ class ResizeObserverStub {
   disconnect() {}
 }
 globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
+window.scrollTo = () => {};
 
 if (!window.matchMedia) {
   window.matchMedia = (query: string) =>

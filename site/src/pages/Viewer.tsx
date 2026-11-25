@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { awards } from "../data/awards";
 import { useDynamicFavicon } from "../hooks/useDynamicFavicon";
 import { PageTransition } from "../components/PageTransition";
@@ -12,9 +12,20 @@ function parseIndex(raw: string | null): number {
   return n >= 0 && n < awards.length ? n : -1;
 }
 
+/** 仅接受站内画廊来源白名单，防止伪造外站或未知路径开放重定向 */
+function resolveViewerFrom(state: unknown): "/" | "/awards" {
+  if (typeof state === "object" && state !== null && "from" in state) {
+    const from = (state as { from?: unknown }).from;
+    if (from === "/" || from === "/awards") return from;
+  }
+  return "/";
+}
+
 export default function Viewer() {
+  const location = useLocation();
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
+  const fromRef = useRef<"/" | "/awards">(resolveViewerFrom(location.state));
   const index = parseIndex(params.get("img"));
   const award = index >= 0 ? awards[index] : null;
   const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
@@ -22,17 +33,17 @@ export default function Viewer() {
 
   const show = (i: number) => {
     setImgState("loading");
-    setParams({ img: String(i) }, { replace: true }); // 对齐旧站 history.replaceState
+    setParams({ img: String(i) }, { replace: true, state: { from: fromRef.current } });
   };
   // 错误态（index=-1）也可导航：对齐旧站从 currentIndex=-1 出发 prev→末张、next→0
   const prev = () => show(index <= 0 ? awards.length - 1 : index - 1);
   const next = () => show(index >= awards.length - 1 ? 0 : index + 1);
-  const close = () => navigate("/"); // SPA 内关闭 = 回主页（取代旧站 window.close 分支）
+  const close = () => navigate(fromRef.current);
 
   useDynamicFavicon(award);
 
   useEffect(() => {
-    if (award) document.title = `${award.alt} - 查看图片`;
+    document.title = award ? `王景宏 · 证书画廊 · ${award.alt}` : "王景宏 · 证书画廊";
   }, [award]);
 
   // 关键：不带依赖数组、每渲染重绑——react-router v8 非 data-router 模式下

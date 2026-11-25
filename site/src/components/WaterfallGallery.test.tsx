@@ -49,8 +49,16 @@ afterEach(() => {
 });
 
 function ViewerProbe() {
-  const { search } = useLocation();
-  return <div data-testid="viewer-probe">{search}</div>;
+  const { search, state } = useLocation();
+  const from =
+    typeof state === "object" && state !== null && "from" in state
+      ? String((state as { from?: unknown }).from)
+      : "";
+  return (
+    <div data-testid="viewer-probe" data-from={from}>
+      {search}
+    </div>
+  );
 }
 
 // 工厂而非 const：rerender 传同一元素引用会触发 React 相同元素 bailout，
@@ -90,6 +98,33 @@ describe("WaterfallGallery", () => {
     const probe = screen.getByTestId("viewer-probe");
     expect(probe).toBeInTheDocument();
     expect(probe).toHaveTextContent("?img=3");
+    expect(probe).toHaveAttribute("data-from", "/");
+  });
+
+  it("在 /awards 页点击或键盘激活卡片时附带 state.from='/awards'", () => {
+    const { unmount } = render(
+      <MemoryRouter initialEntries={["/awards"]}>
+        <Routes>
+          <Route path="/awards" element={<WaterfallGallery />} />
+          <Route path="/viewer" element={<ViewerProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    fireEvent.click(screen.getByAltText(awards[2].alt));
+    expect(screen.getByTestId("viewer-probe")).toHaveAttribute("data-from", "/awards");
+    unmount();
+
+    render(
+      <MemoryRouter initialEntries={["/awards"]}>
+        <Routes>
+          <Route path="/awards" element={<WaterfallGallery />} />
+          <Route path="/viewer" element={<ViewerProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    const card = screen.getByLabelText(`查看证书：${awards[4].alt}`);
+    fireEvent.keyDown(card, { key: " " });
+    expect(screen.getByTestId("viewer-probe")).toHaveAttribute("data-from", "/awards");
   });
 });
 

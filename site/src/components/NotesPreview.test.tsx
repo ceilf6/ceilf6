@@ -87,4 +87,27 @@ describe("NotesPreview", () => {
     );
     expect(container.querySelectorAll("a.note-card")).toHaveLength(7);
   });
+
+  it("不传 headingTo 时 h2 标题为纯文本无链接", () => {
+    render(
+      <MemoryRouter>
+        <NotesPreview heading="站内札记" items={ITEMS} />
+      </MemoryRouter>,
+    );
+    const h2 = screen.getByRole("heading", { level: 2, name: "站内札记" });
+    expect(h2.querySelector("a")).toBeNull();
+  });
+
+  it("传入 headingTo='/blog' 时 h2 内渲染指向 /blog 的链接与箭头", () => {
+    render(
+      <MemoryRouter>
+        <NotesPreview heading="博客论坛" headingTo="/blog" items={ITEMS} />
+      </MemoryRouter>,
+    );
+    const h2 = screen.getByRole("heading", { level: 2, name: /博客论坛/ });
+    const link = h2.querySelector("a");
+    expect(link).not.toBeNull();
+    expect(link).toHaveAttribute("href", "/blog");
+    expect(link).toHaveTextContent(/博客论坛\s*→/);
+  });
 });

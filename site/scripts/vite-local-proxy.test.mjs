@@ -72,6 +72,7 @@ test("resolveApiOrigin 与 resolveAdminProxyPrefix 支持合法自定义并拒�
     "/",
     "///",
     "/blog/",
+    "/awards/",
     "/api/",
     "/assets/",
     "/src/",
@@ -177,7 +178,7 @@ test(
       const countBeforeSpa = received.length;
 
       // 4. 前端 SPA 路由与同前缀非边界路径（如 /api-docs、/admin-guide）绝不被误转发到 Django
-      for (const spaPath of ["/blog/cc-source-analysis", "/api-docs", "/admin-guide"]) {
+      for (const spaPath of ["/awards", "/blog/cc-source-analysis", "/api-docs", "/admin-guide"]) {
         const htmlRes = await fetch(`${viteBase}${spaPath}`, {
           headers: { Accept: "text/html" },
         });

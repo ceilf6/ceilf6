@@ -19,7 +19,7 @@ export default function Note() {
 
   const title = meta?.title;
   useEffect(() => {
-    if (title) document.title = `${title} · 王景宏札记`;
+    if (title) document.title = `王景宏 · 博客论坛 · ${title}`;
   }, [title]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function Note() {
     <PageTransition testId="page-note">
       <article className="note">
         <header className="note-head">
-          <Link className="note-back" to="/blog">← 札记</Link>
+          <Link className="note-back" to="/blog">← 博客论坛</Link>
           <h1>{meta.title}</h1>
           <p className="note-meta">
             {meta.date}

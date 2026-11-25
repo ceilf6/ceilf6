@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, useNavigate } from "react-router";
+import { SPLASH_KEY } from "./components/SplashScreen";
 import { awards } from "./data/awards";
 import App, { AppRoutes } from "./App";
 
@@ -46,7 +47,9 @@ beforeEach(() => {
   });
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await vi.dynamicImportSettled();
+  sessionStorage.clear();
   vi.restoreAllMocks();
 });
 
@@ -55,7 +58,7 @@ describe("routes", () => {
     at("/");
     expect(screen.getByTestId("page-home")).toBeInTheDocument();
   });
-  it.each(["/blog", "/vlog"])("%s 渲染对应页面", (p) => {
+  it.each(["/blog", "/vlog", "/awards"])("%s 渲染对应页面", (p) => {
     at(p);
     expect(screen.getByTestId(`page-${p.slice(1)}`)).toBeInTheDocument();
   });
@@ -117,5 +120,60 @@ describe("札记路由", () => {
       "href",
       "https://linux.do/t/topic/2481591",
     );
+    const backLink = screen.getByRole("link", { name: "← 博客论坛" });
+    expect(backLink).toHaveAttribute("href", "/blog");
+    expect(document.title).toBe("王景宏 · 博客论坛 · 关于 Harness 的讨论，附冷启动工具");
+  });
+});
+
+describe("跨页滚动复位", () => {
+  function NavControls() {
+    const navigate = useNavigate();
+    return (
+      <div>
+        <button onClick={() => navigate(-1)}>go-back</button>
+        <button onClick={() => navigate("/blog#section")}>go-hash</button>
+      </div>
+    );
+  }
+
+  it("PUSH 跳转无 hash 时在退场动画完成后复位到顶部，POP 与带 #hash 跳转不复位", async () => {
+    sessionStorage.setItem(SPLASH_KEY, "1");
+    const scrollSpy = vi.spyOn(window, "scrollTo");
+
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <NavControls />
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByTestId("page-home")).toBeInTheDocument();
+    scrollSpy.mockClear();
+
+    // 1. 从主页点击「证书画廊」链接进入 /awards（PUSH）→ 退场结束后调用 scrollTo(0, 0)
+    fireEvent.click(screen.getByRole("link", { name: /证书画廊/ }));
+    await waitFor(() => {
+      expect(screen.getByTestId("page-awards")).toBeInTheDocument();
+      expect(scrollSpy).toHaveBeenCalledWith(0, 0);
+    });
+
+    // 2. 浏览器后退（POP）回主页 → 不调用 scrollTo
+    scrollSpy.mockClear();
+    fireEvent.click(screen.getByText("go-back"));
+    await waitFor(() => {
+      expect(screen.getByTestId("page-home")).toBeInTheDocument();
+    });
+    await new Promise((r) => setTimeout(r, 30));
+    expect(scrollSpy).not.toHaveBeenCalled();
+
+    // 3. 跳转到带 #hash 的目标（/blog#section）→ 不调用 scrollTo
+    scrollSpy.mockClear();
+    fireEvent.click(screen.getByText("go-hash"));
+    await waitFor(() => {
+      expect(screen.getByTestId("page-blog")).toBeInTheDocument();
+    });
+    await new Promise((r) => setTimeout(r, 30));
+    expect(scrollSpy).not.toHaveBeenCalled();
   });
 });

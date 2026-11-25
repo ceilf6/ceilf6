@@ -1,0 +1,36 @@
+.awards-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 0 72px;
+}
+
+.awards-title {
+  text-align: center;
+  font-family: "ZCOOL XiaoWei", "KaiTi", serif;
+  font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: 0.12em;
+  text-indent: 0.12em;
+  color: var(--text-main);
+  margin: 0 0 6px;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.36);
+}
+
+.awards-page .main-content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .awards-page {
+    padding: 32px 0 56px;
+  }
+
+  .awards-page .main-content {
+    padding: 0 12px;
+  }
+}

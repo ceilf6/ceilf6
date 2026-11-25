@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { awards, type Award } from "../data/awards";
 import { RippleOverlay } from "../fx/RippleOverlay";
 import "./WaterfallGallery.css";
@@ -12,10 +12,19 @@ type LoadState = "loading" | "loaded" | "error";
     span 由「manifest 尺寸比 × 容器实宽」算出，manifest 恒有缩略图尺寸（P4 测试保证），
     因此不必等 img onload 再用 naturalWidth 兜底重算；窗口 resize 监听换成 ResizeObserver。
     loader 节点常驻，只有文案随状态切换，靠 CSS 淡出（与 ReadmeCards 同款处理）。 */
-function GalleryCard({ award, index }: { award: Award; index: number }) {
+function GalleryCard({
+  award,
+  index,
+  from,
+}: {
+  award: Award;
+  index: number;
+  from: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<LoadState>("loading");
   const navigate = useNavigate();
+  const openViewer = () => navigate(`/viewer?img=${index}`, { state: { from } });
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -39,11 +48,11 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
       tabIndex={0}
       aria-label={`查看证书：${award.alt}`}
       style={{ aspectRatio: `${award.thumbWidth} / ${award.thumbHeight}` }}
-      onClick={() => navigate(`/viewer?img=${index}`)}
+      onClick={openViewer}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          navigate(`/viewer?img=${index}`);
+          openViewer();
         }
       }}
     >
@@ -66,10 +75,11 @@ function GalleryCard({ award, index }: { award: Award; index: number }) {
 
 export function WaterfallGallery() {
   const ref = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
   return (
     <div ref={ref} className="gallery waterfall active">
       {awards.map((a, i) => (
-        <GalleryCard key={a.src} award={a} index={i} />
+        <GalleryCard key={a.src} award={a} index={i} from={pathname} />
       ))}
       <RippleOverlay containerRef={ref} />
     </div>
