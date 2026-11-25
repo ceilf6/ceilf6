@@ -10,6 +10,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Lower
 
+from accounts.avatar import AVATAR_CHOICES
+
 MAX_DISPLAY_NAME_LENGTH = 64
 FORBIDDEN_UNICODE_CATEGORIES = frozenset({"Cc", "Cf", "Cs", "Zl", "Zp"})
 FORBIDDEN_LINK_SUBSTRINGS = ("://", "http:", "https:", "www.")
@@ -55,6 +57,15 @@ class User(AbstractUser):
         "站主评论管理权限",
         default=False,
         help_text="标记该账号具备站主评论治理权限（由 grant_comment_admin 命令显式授予或撤销）。",
+    )
+    avatar_color = models.CharField(
+        "头像底色",
+        max_length=16,
+        blank=True,
+        default="",
+        db_default="",
+        choices=AVATAR_CHOICES,
+        help_text="预设头像底色键名，空字符串表示按账号 ID 自动分配。",
     )
 
     class Meta(AbstractUser.Meta):

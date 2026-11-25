@@ -3,12 +3,26 @@
 from __future__ import annotations
 
 import contextlib
+import re
 import sqlite3
+import subprocess
 import unittest
+from pathlib import Path
 
 from deploy import remote_server
 from deploy.runtime import DeployConfig, DeployError
 from deploy.tests.helpers import DeploySandbox
+
+
+def _latest_migration(migrations_dir: Path) -> tuple[int, str]:
+    candidates = [
+        (int(prefix), path.stem)
+        for path in migrations_dir.glob("[0-9][0-9][0-9][0-9]_*.py")
+        if (prefix := path.stem.split("_", 1)[0]).isdigit()
+    ]
+    if not candidates:
+        raise AssertionError(f"No numbered migrations found in {migrations_dir}")
+    return max(candidates)
 
 
 class WriteConstraintRollbackTests(unittest.TestCase):
@@ -121,11 +135,13 @@ class WriteConstraintRollbackTests(unittest.TestCase):
             ),
             encoding="utf-8",
         )
-        (staged_v2_expr_uniq / "accounts" / "migrations" / "0004_tighten_email_expr_uniq.py").write_text(
+        acc_mig_dir = staged_v2_expr_uniq / "accounts" / "migrations"
+        max_num, latest_mig_name = _latest_migration(acc_mig_dir)
+        (acc_mig_dir / f"{max_num + 1:04d}_tighten_email_expr_uniq.py").write_text(
             "from django.db import migrations, models\n"
             "import django.db.models.functions.text\n"
             "class Migration(migrations.Migration):\n"
-            "    dependencies = [('accounts', '0003_user_is_comment_admin')]\n"
+            f"    dependencies = [('accounts', {latest_mig_name!r})]\n"
             "    operations = [\n"
             "        migrations.RemoveConstraint(\n"
             "            model_name='user',\n"
@@ -283,6 +299,108 @@ class WriteConstraintRollbackTests(unittest.TestCase):
         with contextlib.closing(sqlite3.connect(str(sbx.var_dir / "db.sqlite3"))) as conn:
             raw_email = conn.execute("SELECT email FROM accounts_user WHERE username='raw_case_u'").fetchone()[0]
         self.assertEqual(raw_email, "  MixedCase@Example.COM  ")
+
+    def test_avatar_color_db_default_allows_code_only_rollback_and_old_release_user_writes(
+        self,
+    ) -> None:
+        sbx = DeploySandbox()
+        self.addCleanup(sbx.close)
+
+        cfg = DeployConfig(
+            app_root=sbx.app_root,
+            etc_env=sbx.etc_env,
+            var_dir=sbx.var_dir,
+            lock_file=sbx.lock_file,
+            systemctl_bin=str(sbx.systemctl_bin),
+            health_url=sbx.health_url,
+            keep_releases=10,
+            health_retries=10,
+            health_interval=0.1,
+            health_timeout=2.0,
+        )
+
+        # Build previous release `v1` without `avatar_color` field or `0004_user_avatar_color` migration
+        staged_v1 = sbx.clone_staged_server("v1-pre-avatar")
+        mig_0004 = staged_v1 / "accounts" / "migrations" / "0004_user_avatar_color.py"
+        self.assertTrue(
+            mig_0004.is_file(),
+            "Expected 0004_user_avatar_color.py to exist in current server tree",
+        )
+        mig_0004.unlink()
+
+        v1_models = staged_v1 / "accounts" / "models.py"
+        v1_models_src = v1_models.read_text(encoding="utf-8")
+        v1_models_stripped, removed_count = re.subn(
+            r"\n    avatar_color = models\.CharField\(\n(?:        .*\n)+?    \)\n",
+            "\n",
+            v1_models_src,
+            count=1,
+        )
+        self.assertEqual(removed_count, 1)
+        v1_models.write_text(v1_models_stripped, encoding="utf-8")
+
+        remote_server.deploy_release(cfg, staged_server=staged_v1, release_id="v1")
+        live_comment = sbx.post_guest_comment(
+            "cc-source-analysis",
+            "迁移前评论：纯代码回退后仍须完整保留",
+            client_ipv6="2001:db8::77",
+        )
+
+        # Deploy current release `v2` containing `avatar_color` (with db_default="") + `0004_user_avatar_color`
+        staged_v2 = sbx.clone_staged_server("v2-with-avatar")
+        remote_server.deploy_release(cfg, staged_server=staged_v2, release_id="v2")
+        self.assertEqual(
+            (sbx.app_root / "current").resolve(),
+            (sbx.app_root / "releases" / "v2").resolve(),
+        )
+
+        # Code-only rollback to `v1` WITHOUT `restore_db` must pass sqlite_ops schema gate!
+        remote_server.rollback_release(cfg, to_release="v1")
+        self.assertFalse((sbx.app_root / "shared" / ".maintenance").exists())
+        self.assertEqual(
+            (sbx.app_root / "current").resolve(),
+            (sbx.app_root / "releases" / "v1").resolve(),
+        )
+
+        # Under rolled-back `v1` code (whose User model lacks `avatar_color`), creating a new user must succeed!
+        venv_py = sbx.app_root / "shared" / "venv" / "bin" / "python"
+        v1_server_dir = sbx.app_root / "releases" / "v1" / "server"
+        runtime_env, _, _, _ = remote_server.build_runtime_env(
+            remote_server.load_and_validate_env_file(sbx.etc_env),
+            var_dir=sbx.var_dir,
+            app_root=sbx.app_root,
+        )
+        create_proc = subprocess.run(
+            [
+                str(venv_py),
+                str(v1_server_dir / "manage.py"),
+                "ensure_verified_user",
+                "--email",
+                "v1-after-rollback@example.com",
+                "--display-name",
+                "回退后新注册读者",
+                "--generate-password",
+            ],
+            cwd=str(v1_server_dir),
+            env=runtime_env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            create_proc.returncode,
+            0,
+            f"Creating user on rolled-back v1 failed:\n{create_proc.stdout}\n{create_proc.stderr}",
+        )
+
+        with contextlib.closing(sqlite3.connect(str(sbx.var_dir / "db.sqlite3"))) as conn:
+            row = conn.execute(
+                "SELECT display_name, avatar_color FROM accounts_user WHERE email = ?",
+                ("v1-after-rollback@example.com",),
+            ).fetchone()
+        self.assertEqual(row, ("回退后新注册读者", ""))
+
+        _, _, comments_after = sbx.http_request("/api/notes/cc-source-analysis/comments/")
+        self.assertEqual([c["id"] for c in comments_after["items"]], [live_comment["id"]])
 
 
 if __name__ == "__main__":

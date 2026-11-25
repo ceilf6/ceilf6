@@ -16,6 +16,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import include, path
 
 from accounts.adapter import is_safe_internal_redirect_url
+from accounts.avatar import resolve_avatar_color
 from accounts.models import User
 from accounts.tests.helpers import (
     _PW_KEY,
@@ -443,6 +444,7 @@ class CurrentSessionMeApiTests(TestCase):
                 "id": user_a.pk,
                 "displayName": "读者甲",
                 "isCommentAdmin": False,
+                "avatarColor": resolve_avatar_color(user_a.pk, user_a.avatar_color),
             },
         )
         self.assertEqual(
@@ -451,6 +453,7 @@ class CurrentSessionMeApiTests(TestCase):
                 "id": user_b.pk,
                 "displayName": "站主乙",
                 "isCommentAdmin": True,
+                "avatarColor": resolve_avatar_color(user_b.pk, user_b.avatar_color),
             },
         )
         for raw_text, user_obj in (

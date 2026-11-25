@@ -46,7 +46,10 @@ class AccountSettingsTests(TestCase):
     ) -> None:
         self.assertFalse(issubclass(ProfileSettingsForm, HoneypotFormMixin))
         form = ProfileSettingsForm()
-        self.assertEqual(list(form.fields.keys()), ["display_name"])
+        self.assertEqual(
+            list(form.fields.keys()),
+            ["display_name", "avatar_color"],
+        )
         field = form.fields["display_name"]
         signup_field = AccountSignupForm().fields["display_name"]
         self.assertEqual(field.max_length, MAX_DISPLAY_NAME_LENGTH)

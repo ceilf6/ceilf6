@@ -13,6 +13,7 @@ from django.db import IntegrityError, transaction
 from django.forms.utils import ErrorDict
 from django.http import HttpRequest
 
+from accounts.avatar import AVATAR_CHOICES
 from accounts.models import (
     MAX_DISPLAY_NAME_LENGTH,
     User,
@@ -185,9 +186,18 @@ class AccountSignupForm(HoneypotFormMixin, SignupForm):
 
 
 class ProfileSettingsForm(forms.Form):
-    """Authenticated account settings form for updating public nickname."""
+    """Authenticated account settings form for updating public nickname and avatar color."""
 
     display_name = _build_display_name_field()
+    avatar_color = forms.ChoiceField(
+        label="头像底色",
+        choices=AVATAR_CHOICES,
+        required=False,
+        initial="",
+        error_messages={
+            "invalid_choice": "请选择预设的头像底色。",
+        },
+    )
 
     def clean_display_name(self) -> str:
         return _clean_display_name_value(self)
