@@ -76,10 +76,9 @@ class AccountResetPasswordForm(HoneypotFormMixin, ResetPasswordForm):
     field_order = ["email", HONEYPOT_FIELD_NAME]
 
 
-class AccountSignupForm(HoneypotFormMixin, SignupForm):
-    """Signup form requiring a safe public nickname isolated from private email."""
-
-    display_name = forms.CharField(
+def _build_display_name_field() -> forms.CharField:
+    """Create the shared public nickname field used across signup and settings."""
+    return forms.CharField(
         label="公开昵称",
         max_length=MAX_DISPLAY_NAME_LENGTH,
         required=True,
@@ -97,6 +96,22 @@ class AccountSignupForm(HoneypotFormMixin, SignupForm):
             }
         ),
     )
+
+
+def _clean_display_name_value(form: forms.BaseForm) -> str:
+    cleaned = normalize_display_name(form.cleaned_data.get("display_name"))
+    if not cleaned:
+        raise forms.ValidationError(
+            form.fields["display_name"].error_messages["required"]
+        )
+    validate_safe_display_name(cleaned)
+    return cleaned
+
+
+class AccountSignupForm(HoneypotFormMixin, SignupForm):
+    """Signup form requiring a safe public nickname isolated from private email."""
+
+    display_name = _build_display_name_field()
 
     field_order = [
         "display_name",
@@ -124,13 +139,7 @@ class AccountSignupForm(HoneypotFormMixin, SignupForm):
             self.fields["password2"].widget.attrs["placeholder"] = "请再次输入登录密码"
 
     def clean_display_name(self) -> str:
-        cleaned = normalize_display_name(self.cleaned_data.get("display_name"))
-        if not cleaned:
-            raise forms.ValidationError(
-                self.fields["display_name"].error_messages["required"]
-            )
-        validate_safe_display_name(cleaned)
-        return cleaned
+        return _clean_display_name_value(self)
 
     def validate_unique_email(self, value: str) -> str:
         email = super().validate_unique_email(value)
@@ -173,3 +182,12 @@ class AccountSignupForm(HoneypotFormMixin, SignupForm):
             )
             self.account_already_exists = True
             return super().try_save(request)
+
+
+class ProfileSettingsForm(forms.Form):
+    """Authenticated account settings form for updating public nickname."""
+
+    display_name = _build_display_name_field()
+
+    def clean_display_name(self) -> str:
+        return _clean_display_name_value(self)

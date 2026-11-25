@@ -1,0 +1,25 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}账号设置{% endblock %}
+
+{% block back_link %}<a href="{{ next_url }}">← 返回原页面</a>{% endblock %}
+
+{% block messages %}{% endblock %}
+
+{% block content %}
+  <h1>账号设置</h1>
+  <p class="auth-subtitle">修改对外展示的公开昵称；保存后个人会话与历史评论署名将同步更新。</p>
+
+  {% if saved %}
+    <ul class="auth-messages" role="status">
+      <li>已保存</li>
+    </ul>
+  {% endif %}
+
+  <form class="auth-form" method="post" action="{% url 'account_settings' %}" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next_url }}">
+    {% include "account/snippets/form_fields.html" with form=form %}
+    <button class="btn-primary" type="submit">保存设置</button>
+  </form>
+{% endblock %}
