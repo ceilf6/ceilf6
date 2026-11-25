@@ -27,7 +27,7 @@ const TWO_ITEMS = [
 ];
 
 describe("NotesPreview", () => {
-  it("渲染标题、来源徽标与 /notes/:slug 链接", () => {
+  it("渲染标题、来源徽标与 /blog/:slug 链接", () => {
     render(
       <MemoryRouter>
         <NotesPreview heading="札记精选" items={ITEMS} />
@@ -35,7 +35,7 @@ describe("NotesPreview", () => {
     );
     expect(screen.getByText("札记精选")).toBeInTheDocument();
     expect(screen.getByText("LinuxDo")).toBeInTheDocument();
-    expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/notes/a");
+    expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/blog/a");
   });
 
   it("空列表渲染 null(文章未落地前站点与现状一致)", () => {
@@ -54,8 +54,8 @@ describe("NotesPreview", () => {
       </MemoryRouter>,
     );
     expect(container.querySelectorAll("a.note-card")).toHaveLength(2);
-    expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/notes/a");
-    expect(screen.getByText("文章乙").closest("a")).toHaveAttribute("href", "/notes/b");
+    expect(screen.getByText("文章甲").closest("a")).toHaveAttribute("href", "/blog/a");
+    expect(screen.getByText("文章乙").closest("a")).toHaveAttribute("href", "/blog/b");
   });
 
   // 主页精选窗口:items 按数据层契约已日期倒序,max 截取即取最新;/blog 不传 max 才是全集

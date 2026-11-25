@@ -66,11 +66,12 @@ test("resolveApiOrigin 与 resolveAdminProxyPrefix 支持合法自定义并拒�
     assert.throws(() => resolveApiOrigin(badOrigin));
   }
 
+  assert.equal(resolveAdminProxyPrefix("/notes/"), "/notes");
+
   for (const badAdmin of [
     "/",
     "///",
     "/blog/",
-    "/notes/",
     "/api/",
     "/assets/",
     "/src/",
@@ -165,7 +166,7 @@ test(
 
       // 3. /accounts/*、/django-static/*、/admin/* 同样转发到后端
       for (const backendPath of [
-        "/accounts/login/?next=%2Fnotes%2Fcc-source-analysis",
+        "/accounts/login/?next=%2Fblog%2Fcc-source-analysis",
         "/django-static/admin/css/base.css",
         "/admin/login/",
       ]) {
@@ -176,7 +177,7 @@ test(
       const countBeforeSpa = received.length;
 
       // 4. 前端 SPA 路由与同前缀非边界路径（如 /api-docs、/admin-guide）绝不被误转发到 Django
-      for (const spaPath of ["/notes/cc-source-analysis", "/api-docs", "/admin-guide"]) {
+      for (const spaPath of ["/blog/cc-source-analysis", "/api-docs", "/admin-guide"]) {
         const htmlRes = await fetch(`${viteBase}${spaPath}`, {
           headers: { Accept: "text/html" },
         });

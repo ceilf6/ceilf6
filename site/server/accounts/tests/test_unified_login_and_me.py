@@ -42,8 +42,8 @@ class UnifiedLoginAndRedirectSecurityTests(TestCase):
     ) -> None:
         valid_paths = (
             "/",
-            "/notes/cc-source-analysis",
-            "/notes/cc-source-analysis?tab=comments#c-42",
+            "/blog/cc-source-analysis",
+            "/blog/cc-source-analysis?tab=comments#c-42",
             f"/{settings.DJANGO_ADMIN_PATH}accounts/user/",
         )
         for valid in valid_paths:
@@ -53,9 +53,9 @@ class UnifiedLoginAndRedirectSecurityTests(TestCase):
         malicious_targets = (
             "",
             "   ",
-            " /notes/leading-space",
+            " /blog/leading-space",
             "https://evil.example/phish",
-            "http://127.0.0.1/notes/cross-host",
+            "http://127.0.0.1/blog/cross-host",
             "http://localhost/admin/",
             "//evil.example/phish",
             "///evil.example/phish",
@@ -64,8 +64,8 @@ class UnifiedLoginAndRedirectSecurityTests(TestCase):
             "javascript:alert(1)",
             "JavaScript:alert(1)",
             "data:text/html,<script>alert(1)</script>",
-            "notes/relative-without-slash",
-            "/notes\r\nLocation: https://evil.example",
+            "blog/relative-without-slash",
+            "/blog\r\nLocation: https://evil.example",
         )
         for bad in malicious_targets:
             with self.subTest(bad=repr(bad)):
@@ -82,23 +82,23 @@ class UnifiedLoginAndRedirectSecurityTests(TestCase):
 
         # Valid internal next on /accounts/login/ returns user to original article
         valid_login = self.client.post(
-            "/accounts/login/?next=/notes/cc-source-analysis",
+            "/accounts/login/?next=/blog/cc-source-analysis",
             data=build_login_data(
                 user.email,
                 pw_a,
-                next_url="/notes/cc-source-analysis",
+                next_url="/blog/cc-source-analysis",
             ),
         )
         self.assertEqual(valid_login.status_code, 302)
-        self.assertEqual(valid_login["Location"], "/notes/cc-source-analysis")
+        self.assertEqual(valid_login["Location"], "/blog/cc-source-analysis")
 
         # Valid internal next on /accounts/logout/ returns user to safe path
         valid_logout = self.client.post(
             "/accounts/logout/",
-            data={"next": "/notes/cc-source-analysis"},
+            data={"next": "/blog/cc-source-analysis"},
         )
         self.assertEqual(valid_logout.status_code, 302)
-        self.assertEqual(valid_logout["Location"], "/notes/cc-source-analysis")
+        self.assertEqual(valid_logout["Location"], "/blog/cc-source-analysis")
 
         evil_vectors = (
             "https://evil.example/steal",

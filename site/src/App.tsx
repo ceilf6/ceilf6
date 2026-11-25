@@ -27,7 +27,7 @@ export function AppRoutes({ location }: { location?: Location }) {
       <Route path="/vlog" element={<Vlog />} />
       <Route path="/viewer" element={<Viewer />} />
       <Route
-        path="/notes/:slug"
+        path="/blog/:slug"
         element={
           <Suspense fallback={<div className="route-loading" aria-hidden="true" />}>
             <Note />

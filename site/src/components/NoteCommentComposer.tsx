@@ -56,7 +56,7 @@ export function NoteCommentComposer({
     };
   }, [slug]);
 
-  const notePath = `/notes/${encodeURIComponent(slug)}`;
+  const notePath = `/blog/${encodeURIComponent(slug)}`;
   const nextQuery = encodeURIComponent(notePath);
   const loginHref = `/accounts/login/?next=${nextQuery}`;
   const signupHref = `/accounts/signup/?next=${nextQuery}`;

@@ -9,11 +9,11 @@
 为如实区分本人既有个人主页沉淀与课程期间新增的全栈动态开发工作，边界说明如下：
 
 - **既有静态基线（非本次作业新增）**：
-  - 首页个人名片、获奖证书瀑布流画廊（`/viewer`）、Vlog 页（`/vlog`）、构建期编译静态 Markdown 的技术札记阅读页（`/blog`、`/notes/:slug`），以及仓库根目录服务于 GitHub 个人主页的统计卡片流水线（`README.md`、`stats/`、`assets/`）。
+  - 首页个人名片、获奖证书瀑布流画廊（`/viewer`）、Vlog 页（`/vlog`）、构建期编译静态 Markdown 的技术札记阅读页（`/blog`、`/blog/:slug`），以及仓库根目录服务于 GitHub 个人主页的统计卡片流水线（`README.md`、`stats/`、`assets/`）。
 - **本次作业 1 新增全栈动态能力（全部位于 `site/` 内）**：
   1. **账号与身份认证系统（`site/server/accounts/`）**：邮箱 + 密码 + 公开昵称（`display_name`）注册、零外部密钥的文件邮件验证（`filebased.EmailBackend`，生产可选加密 SMTP）、密码重置、CSRF `POST` 退出登录、统一登录入口 `/accounts/login/`（收拢自定义后台入口并严格校验站内 `next` 回跳）及当前会话查询接口 `GET /api/me/`。
   2. **札记动态评论与权限系统（`site/server/comments/`）**：支持未登录访客直发（`author = NULL`，固定展示为「未登录用户」）与已验证账号署名发言、服务端 `ALLOW_GUEST_COMMENTS` 环境变量开关、`before` 游标分页、文件缓存原子限频与蜜罐校验、作者本人删评及站主跨札记全站审核。
-  3. **前端札记评论交互组件（`site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`）**：在不改动首页/画廊等既有页面的前提下，于 `/notes/:slug` 正文底部接入评论列表分页、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步与行内二次确认删评。
+  3. **前端札记评论交互组件（`site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`）**：在不改动首页/画廊等既有页面的前提下，于 `/blog/:slug` 正文底部接入评论列表分页、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步与行内二次确认删评。
   4. **独立持久化部署与回退工具链（`site/deploy/`、`site/scripts/vite-local-proxy.mjs`）**：本地 Vite 同源反代，以及与静态站点原子切换目录完全隔离的后端版本发布、SQLite WAL 在线热备、迁移结构安全校验与一键回退脚本。
 
 ---
@@ -29,7 +29,7 @@
 3. **三级删评权限矩阵**：
    - **未登录访客**：无删评按钮，直接请求删评接口返回 `401 authentication_required`。
    - **普通已验证账号**：仅可删除本人发表的账号评论（`204`）；尝试删除访客评论或他人评论均返回 `403 permission_denied`；访问后台管理路径立即返回 `403`（不产生登录重定向死循环）。
-   - **站主管理账号（`is_comment_admin=True`）**：既可在任意 `/notes/:slug` 页面逐条删除访客、普通账号与本人的评论，也可通过同一登录态进入自定义路径 Django Admin 跨札记检索、筛选与批量删除全站评论。
+   - **站主管理账号（`is_comment_admin=True`）**：既可在任意 `/blog/:slug` 页面逐条删除访客、普通账号与本人的评论，也可通过同一登录态进入自定义路径 Django Admin 跨札记检索、筛选与批量删除全站评论。
 
 ---
 
@@ -38,7 +38,7 @@
 ### 1. 请求与持久化链路
 
 ```text
-[浏览器 React 19 SPA (/notes/:slug -> NoteComments)]
+[浏览器 React 19 SPA (/blog/:slug -> NoteComments)]
         │  同源 HTTPS 请求 (Cookie: sessionid, csrftoken + Header: X-CSRFToken)
         ▼
 [阿里云全站加速 CDN (Tengine)]
@@ -46,7 +46,7 @@
         │  注：标准版 CDN 仅透传 GET/POST，故删评接口设计为 POST /api/comments/<id>/delete/
         ▼
 [源站 Nginx 1.24 (同源反向代理)]
-        ├── /、/blog、/notes/*、/static/*  ──► /var/www/wangjinghong (静态构建产物，原子目录切换)
+        ├── /、/blog、/blog/*、/static/*  ──► /var/www/wangjinghong (静态构建产物，原子目录切换)
         └── /api/*、/accounts/*、/<admin>/*、/django-static/*
                 │  强制响应头 Cache-Control: private, no-store, no-cache, must-revalidate
                 ▼
@@ -131,7 +131,7 @@ npm ci
 npm run dev
 ```
 
-浏览器打开终端输出的本地地址（默认 `http://localhost:5173/notes/cc-source-analysis`）：
+浏览器打开终端输出的本地地址（默认 `http://localhost:5173/blog/cc-source-analysis`）：
 
 - **访客直发体验**：未登录状态下直接在底部评论框输入内容点击「发表评论」，即可看到以「未登录用户」身份写入 SQLite 并即时展示；重启 `runserver` 后刷新页面评论依然存在。
 - **自助注册与本地验证信查看**：点击评论区右上角「注册」提交邮箱、公开昵称与密码后，验证邮件会自动写入 `site/server/var/mail/` 目录；打开最新邮件文件中的 `http://localhost:5173/accounts/confirm-email/.../` 链接确认后，即可登录回跳原札记署名发言并删除本人评论。
@@ -145,7 +145,7 @@ npm run dev
 在 `site/` 目录下可执行以下完整验证套件：
 
 ```bash
-# 1. 前端静态检查、类型检查、组件单元测试（25 files / 115 tests）与生产构建
+# 1. 前端静态检查、类型检查、组件单元测试（25 files / 116 tests）与生产构建
 npm run lint
 npm run type-check
 npx vitest run
