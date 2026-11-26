@@ -147,7 +147,7 @@ class AccountSettingsTests(TestCase):
         self.assertEqual(anchors, ["← 返回原页面"])
         self.assertIn('<a href="/blog?tab=latest">← 返回原页面</a>', html)
 
-        # Legacy blank display_name falls back to public_display_name in input
+        # Legacy blank display_name leaves input value empty and shows fallback in placeholder
         legacy_user = User.objects.create_user(
             "u_legacy_blank_nick",
             "legacy-blank-nick@example.com",
@@ -158,7 +158,11 @@ class AccountSettingsTests(TestCase):
         legacy_res = self.client.get("/accounts/settings/")
         self.assertEqual(legacy_res.status_code, 200)
         legacy_html = legacy_res.content.decode("utf-8")
-        self.assertIn(f'value="用户 #{legacy_user.pk}"', legacy_html)
+        self.assertNotIn(f'value="用户 #{legacy_user.pk}"', legacy_html)
+        self.assertIn(
+            f'placeholder="当前显示为：用户 #{legacy_user.pk}"',
+            legacy_html,
+        )
         self.assertEqual(ANCHOR_TAG_RE.findall(legacy_html), ["← 返回原页面"])
         self.assertIn('<a href="/">← 返回原页面</a>', legacy_html)
 
@@ -207,8 +211,15 @@ class AccountSettingsTests(TestCase):
         followed = self.client.get(save_res["Location"])
         self.assertEqual(followed.status_code, 200)
         followed_html = followed.content.decode("utf-8")
+        self.assertIn('class="auth-toasts"', followed_html)
         self.assertIn('role="status"', followed_html)
+        self.assertIn('aria-live="polite"', followed_html)
         self.assertIn("已保存", followed_html)
+        self.assertNotIn("auth-messages", followed_html)
+        self.assertGreater(
+            followed_html.index('class="auth-toasts"'),
+            followed_html.index("</main>"),
+        )
         self.assertIn('value="新署名 👋🏽"', followed_html)
         self.assertIn(
             '<a href="/blog/cc-source-analysis">← 返回原页面</a>',
@@ -597,7 +608,6 @@ class AccountSettingsTests(TestCase):
             "/accounts/password/change/",
             "/accounts/password/reset/",
             "/accounts/password/reset/done/",
-            "/accounts/password/reset/key/done/",
             "/accounts/confirm-email/",
         ):
             with self.subTest(live_route=route):
@@ -607,6 +617,10 @@ class AccountSettingsTests(TestCase):
                 self.assertIn("<title>王景宏 · ", html)
                 self.assertNotIn("· wangjinghong.com", html)
                 self.assertIn("<span>wangjinghong.com</span>", html)
+
+        reset_done_res = self.client.get("/accounts/password/reset/key/done/")
+        self.assertEqual(reset_done_res.status_code, 302)
+        self.assertEqual(reset_done_res["Location"], "/accounts/login/")
 
         # Render remaining standalone templates extending account/base.html
         rf = RequestFactory()

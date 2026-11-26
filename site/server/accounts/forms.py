@@ -199,5 +199,17 @@ class ProfileSettingsForm(forms.Form):
         },
     )
 
+    def __init__(
+        self,
+        *args: Any,
+        current_public_name: str | None = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        if isinstance(current_public_name, str) and current_public_name.strip():
+            self.fields["display_name"].widget.attrs["placeholder"] = (
+                f"当前显示为：{current_public_name.strip()}"
+            )
+
     def clean_display_name(self) -> str:
         return _clean_display_name_value(self)

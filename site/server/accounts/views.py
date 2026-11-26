@@ -91,6 +91,19 @@ def _resolve_safe_next_url(request: HttpRequest) -> str:
     return "/"
 
 
+@require_http_methods(["GET"])
+def password_reset_done_redirect_view(
+    request: HttpRequest,
+) -> HttpResponseRedirect:
+    """Redirect completed password reset directly to login while preserving safe internal next."""
+    login_url = reverse("account_login")
+    raw_next = request.GET.get("next")
+    if is_safe_internal_redirect_url(raw_next):
+        query = urlencode({"next": cast(str, raw_next)})
+        return HttpResponseRedirect(f"{login_url}?{query}")
+    return HttpResponseRedirect(login_url)
+
+
 @require_http_methods(["GET", "POST"])
 @login_required
 def settings_view(request: HttpRequest) -> HttpResponse:
@@ -102,7 +115,10 @@ def settings_view(request: HttpRequest) -> HttpResponse:
     )
 
     if request.method == "POST":
-        form = ProfileSettingsForm(request.POST)
+        form = ProfileSettingsForm(
+            request.POST,
+            current_public_name=user.public_display_name,
+        )
         if form.is_valid():
             cleaned_display_name = form.cleaned_data["display_name"]
             cleaned_avatar_color = form.cleaned_data["avatar_color"]
@@ -120,7 +136,6 @@ def settings_view(request: HttpRequest) -> HttpResponse:
             return HttpResponseRedirect(
                 f"{reverse('account_settings')}?{query}"
             )
-        saved = False
         posted_color = request.POST.get("avatar_color", "")
         selected_avatar_color = (
             posted_color
@@ -130,11 +145,11 @@ def settings_view(request: HttpRequest) -> HttpResponse:
     else:
         form = ProfileSettingsForm(
             initial={
-                "display_name": user.public_display_name,
+                "display_name": user.display_name,
                 "avatar_color": persisted_color,
-            }
+            },
+            current_public_name=user.public_display_name,
         )
-        saved = request.GET.get("saved") == "1"
         selected_avatar_color = persisted_color
 
     return render(
@@ -143,7 +158,6 @@ def settings_view(request: HttpRequest) -> HttpResponse:
         {
             "form": form,
             "next_url": safe_next,
-            "saved": saved,
             "avatar_initial": extract_avatar_initial(user.public_display_name),
             "auto_avatar_color": resolve_avatar_color(user.pk, ""),
             "preview_avatar_color": resolve_avatar_color(
