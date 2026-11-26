@@ -13,6 +13,11 @@ interface NavItem {
 
 const NAV_ITEMS: readonly NavItem[] = [
   {
+    label: "首页",
+    to: "/",
+    matches: (pathname) => pathname === "/",
+  },
+  {
     label: "博客论坛",
     to: "/blog",
     matches: (pathname) => pathname === "/blog" || pathname.startsWith("/blog/"),
@@ -52,7 +57,7 @@ export function SiteHeader() {
   const nextTarget = `${location.pathname}${location.search}`;
   const loginHref = `/accounts/login/?next=${encodeURIComponent(nextTarget)}`;
 
-  const handleBrandClick = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (
       event.metaKey ||
       event.ctrlKey ||
@@ -79,14 +84,6 @@ export function SiteHeader() {
       className={`site-header ${isTransparent ? "is-transparent" : "is-frosted"}`}
     >
       <div className="site-header-inner">
-        <Link
-          to="/"
-          className="site-header-brand"
-          onClick={handleBrandClick}
-        >
-          王景宏
-        </Link>
-
         <nav className="site-header-nav" aria-label="主导航">
           {NAV_ITEMS.map((item) => {
             const active = item.matches(location.pathname);
@@ -96,6 +93,7 @@ export function SiteHeader() {
                 to={item.to}
                 className={`site-header-nav-link${active ? " is-active" : ""}`}
                 aria-current={active ? "page" : undefined}
+                onClick={item.to === "/" ? handleHomeClick : undefined}
               >
                 {item.label}
               </Link>
