@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fetchViewerSession, isValidAvatarColor } from "./comments";
+import { fetchViewerSession, isValidAvatarColor, parseCommentItem } from "./comments";
 
 function jsonResponse(payload: unknown, status = 200): Response {
   return new Response(JSON.stringify(payload), {
@@ -138,4 +138,79 @@ describe("fetchViewerSession 解析可选 avatarColor", () => {
       expect("avatarColor" in session.user!).toBe(false);
     },
   );
+});
+
+describe("parseCommentItem 解析可选 author.avatarColor", () => {
+  it("成员评论带合法 #RRGGBB avatarColor 时保留，缺失或非法时静默丢弃而不使整条评论报错", () => {
+    const valid = parseCommentItem({
+      id: 10,
+      body: "正常评论",
+      createdAt: "2026-11-26T00:00:00Z",
+      canDelete: false,
+      author: {
+        kind: "member",
+        id: 5,
+        displayName: "竹林听雨",
+        avatarColor: "#0F766E",
+      },
+    });
+    expect(valid.author).toEqual({
+      kind: "member",
+      id: 5,
+      displayName: "竹林听雨",
+      avatarColor: "#0F766E",
+    });
+
+    for (const bad of [
+      undefined,
+      null,
+      "",
+      "red",
+      "#fff",
+      "#fff; background:url(x)",
+      42,
+    ]) {
+      const parsed = parseCommentItem({
+        id: 11,
+        body: "兜底测试",
+        createdAt: "2026-11-26T00:00:00Z",
+        canDelete: false,
+        author: {
+          kind: "member",
+          id: 5,
+          displayName: "竹林听雨",
+          ...(bad !== undefined ? { avatarColor: bad } : {}),
+        },
+      });
+      expect(parsed.author).toEqual({
+        kind: "member",
+        id: 5,
+        displayName: "竹林听雨",
+      });
+      expect("avatarColor" in parsed.author).toBe(false);
+    }
+  });
+
+  it("访客评论无论 avatarColor 为 null 还是伪造色值，一律不保留 avatarColor", () => {
+    for (const guestColor of [undefined, null, "#4F46E5", "red"]) {
+      const guest = parseCommentItem({
+        id: 12,
+        body: "访客留言",
+        createdAt: "2026-11-26T00:00:00Z",
+        canDelete: false,
+        author: {
+          kind: "guest",
+          id: null,
+          displayName: "未登录用户",
+          ...(guestColor !== undefined ? { avatarColor: guestColor } : {}),
+        },
+      });
+      expect(guest.author).toEqual({
+        kind: "guest",
+        id: null,
+        displayName: "未登录用户",
+      });
+      expect("avatarColor" in guest.author).toBe(false);
+    }
+  });
 });

@@ -197,11 +197,19 @@
 }
 
 .note-comment-card {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
   border-radius: 12px;
   padding: 16px 18px;
   box-shadow: var(--card-shadow);
+}
+
+.note-comment-main {
+  min-width: 0;
 }
 
 .note-comment-meta {

@@ -1,0 +1,32 @@
+.comment-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.comment-avatar.is-member {
+  background: var(--accent-gold);
+  color: var(--bg-void);
+  border: 1px solid rgba(255, 214, 166, 0.45);
+  font-family: "Noto Sans SC", "Azeret Mono", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.comment-avatar.has-custom-color {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.comment-avatar.is-guest {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  color: var(--text-muted);
+}
