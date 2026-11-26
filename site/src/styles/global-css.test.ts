@@ -1,11 +1,17 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import rawGlobalCss from "./global.css?raw";
 
+function resolveGlobalCssPath(): string {
+  const fromSiteDir = resolve(process.cwd(), "src/styles/global.css");
+  return existsSync(fromSiteDir)
+    ? fromSiteDir
+    : resolve(process.cwd(), "site/src/styles/global.css");
+}
+
 const globalCssSource =
-  rawGlobalCss ||
-  readFileSync(resolve(process.cwd(), "src/styles/global.css"), "utf8");
+  rawGlobalCss || readFileSync(resolveGlobalCssPath(), "utf8");
 
 interface CssRuleBlock {
   prelude: string;
@@ -64,10 +70,10 @@ describe("global.css 根滚动条常驻与窗帘防退化守卫", () => {
     expect(htmlBlocks[0].body).toMatch(/overflow-y:\s*scroll\s*;/);
     expect(htmlBlocks[0].body).toMatch(/overflow-x:\s*hidden\s*;/);
 
-    // 2) 顶层 body 规则不含任何 overflow 声明（防止 body 变成滚动容器破坏首页 sticky 窗帘）
+    // 2) 顶层 body 规则不含任何 overflow / overflow-x / overflow-y 声明（防止 body 变成滚动容器破坏首页 sticky 窗帘）
     const bodyBlocks = topBlocks.filter((b) => b.prelude === "body");
     expect(bodyBlocks).toHaveLength(1);
-    expect(bodyBlocks[0].body).not.toContain("overflow");
+    expect(bodyBlocks[0].body).not.toMatch(/\boverflow(?:-[xy])?\s*:/);
 
     // 3) 自定义 ::-webkit-scrollbar 规则保持存在
     const webkitScrollbarBlocks = topBlocks.filter(
