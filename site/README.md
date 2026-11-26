@@ -12,7 +12,7 @@
   - 首页个人名片与粒子动效长卷（`/`）、获奖证书瀑布流画廊及大图查看器（`/viewer`）、视频外链舞台页（`/vlog`）、构建期编译静态 Markdown 的技术札记阅读页（`/blog`、`/blog/:slug`），以及仓库根目录服务于 GitHub 个人主页的统计卡片流水线（`README.md`、`stats/`、`assets/`）。
 - **本次作业 1 新增全栈动态与全站导航能力（全部收敛在 `site/` 内，仓库根目录 `README.md` 零改动）**：
   1. **账号、身份认证与个人设置系统（`site/server/accounts/`、`site/server/templates/account/`）**：邮箱 + 密码 + 公开昵称（`display_name`）注册（`/accounts/signup/`）、邮件验证链接确认（本地默认零外部密钥 `filebased.EmailBackend` 落盘，线上生产通过阿里云邮件推送 `smtpdm.aliyun.com:465` SSL 真实发信；匿名确认邮箱后跳到登录页并提示「邮箱已确认，请登录。」）、密码重置（重设密码后跳回登录页并显示「密码已更新。」toast）、CSRF `POST /accounts/logout/` 退出登录、统一登录入口 `/accounts/login/`（收拢自定义后台入口并严格校验站内 `next` 回跳）、受登录保护的账号设置页 `GET/POST /accounts/settings/`（支持修改公开昵称与「自动 + 8 种深色调色板」头像底色，含无 JS 服务端首字母预览与 PRG 回跳）及当前会话查询接口 `GET /api/me/`（已登录时输出 `avatarColor`）。
-  2. **全站统一顶栏、证书画廊独立页与会话联动（`site/src/session/SessionProvider.tsx`、`site/src/components/SiteHeader.tsx`、`site/src/components/AccountPanel.tsx`、`site/src/pages/Awards.tsx`）**：在不破坏首页长卷 `sticky` 窗帘与入场动效结构的前提下，为除沉浸式看图页 `/viewer`（及旧直链 `/viewer.html`）外的全站页面接入统一固定顶栏（左侧站名回主页/回顶、「博客论坛 · 项目视频 · 证书画廊」站内导航与当前项高亮、右侧 GitHub 外链与三种登录态账号区），新增证书画廊独立页 `/awards`、主页两节居中标题跳转（`/awards`、`/blog`）、跨页滚动复位、看图页 `/viewer` 来源锁存回跳及全站统一的 `王景宏 · …` 浏览器标签标题规范。
+  2. **全站统一顶栏、证书画廊独立页与会话联动（`site/src/session/SessionProvider.tsx`、`site/src/components/SiteHeader.tsx`、`site/src/components/AccountPanel.tsx`、`site/src/pages/Awards.tsx`）**：在不破坏首页长卷 `sticky` 窗帘与入场动效结构的前提下，为除沉浸式看图页 `/viewer`（及旧直链 `/viewer.html`）外的全站页面接入统一单行固定顶栏（左侧「首页 · 博客论坛 · 项目视频 · 证书画廊」四栏目统一导航与当前项高亮、已在首页点击「首页」平滑回顶，右侧 GitHub 外链与三种登录态账号区），新增证书画廊独立页 `/awards`、主页两节居中标题跳转（`/awards`、`/blog`）、跨页滚动复位、看图页 `/viewer` 来源锁存回跳及全站统一的 `王景宏 · …` 浏览器标签标题规范。
   3. **札记动态评论与权限系统（`site/server/comments/`）**：支持未登录访客直发（`author = NULL`，固定展示为「未登录用户」）与已验证账号署名发言、服务端 `ALLOW_GUEST_COMMENTS` 环境变量开关、`before` 游标分页、文件缓存原子限频与蜜罐校验、作者本人删评及站主跨札记全站审核。
   4. **前端札记评论交互组件（`site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`）**：在 `/blog/:slug` 正文底部接入评论列表游标分页、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步、与全站顶栏 `SessionProvider` 的双向会话身份同步，以及行内二次确认删评。
   5. **独立持久化部署与回退工具链（`site/deploy/`、`site/scripts/vite-local-proxy.mjs`）**：本地 Vite 同源反代（保护 `/`、`/blog`、`/vlog`、`/awards`、`/viewer` 等前端路由前缀不被后台配置误劫持），以及与静态站点原子切换目录完全隔离的后端版本发布、SQLite WAL 在线热备、兼容纯代码回退的迁移结构安全校验与一键回退脚本。
@@ -22,7 +22,7 @@
 ## 二、需求分析与核心业务规则
 
 1. **全站统一顶栏、多栏目导航与浏览器标题规范**：
-   - **顶栏挂载与视觉自适应**：除沉浸式证书看图页 `/viewer`（及旧直链 `/viewer.html`）外，`SiteHeader` 在全站固定置顶（桌面高 `56px`、`≤ 480px` 窄屏自动分为两行高 `88px` 且 375px 视口零横向溢出；主页首屏透明保留粒子背景，滚动 `scrollY > 8` 或处于二级页时切换深色磨砂玻璃底）。左侧「王景宏」点击返回 `/`（已在 `/` 时平滑滚回页顶，`prefers-reduced-motion` 下瞬时回顶），二级栏目页统一通过该入口返回主站；中部站内导航「博客论坛（`/blog` 及 `/blog/:slug`） · 项目视频（`/vlog`） · 证书画廊（`/awards`）」对当前所在栏目设置 `aria-current="page"` 高亮；右侧放置 GitHub 外链（共用 `site/src/data/site.ts` 的 `GITHUB_URL`）与账号状态区。
+   - **顶栏挂载与视觉自适应**：除沉浸式证书看图页 `/viewer`（及旧直链 `/viewer.html`）外，`SiteHeader` 在全站固定置顶（所有视口宽度统一为单行高 `56px`，`≤ 560px` 压缩导航字号与按钮内边距、`≤ 359px` 隐藏顶栏 GitHub 图标留足 `320px` 窄屏余量，全视口零横向溢出且导航点击高度均不低于 `32px`；主页首屏透明保留粒子背景，滚动 `scrollY > 8` 或处于二级页时切换深色磨砂玻璃底）。左侧「首页（`/`，已在 `/` 时平滑滚回页顶，`prefers-reduced-motion` 下瞬时回顶） · 博客论坛（`/blog` 及 `/blog/:slug`） · 项目视频（`/vlog`） · 证书画廊（`/awards`）」四项主导航采用同一样式左对齐连续排列，并对当前所在栏目设置 `aria-current="page"` 高亮，二级栏目页统一通过「首页」返回主站；右侧通过 `margin-left: auto` 放置 GitHub 外链（共用 `site/src/data/site.ts` 的 `GITHUB_URL`）与账号状态区。
    - **三种登录态与 WAI-ARIA Disclosure 账号面板**：会话请求期间渲染等尺寸骨架占位防布局跳动；未登录或 `/api/me/` 请求失败时降级显示带 `next=<pathname+search>` 的原生 `/accounts/login/` 链接；已登录时渲染 32px 首字母圆形头像按钮（优先通过 `Intl.Segmenter` 按字素簇取首字并转大写，无支持环境回退码位扫描并兼容 `Mn`/`Me`/`Mc` 组合符、国旗区域指示符、肤色修饰符及多段 ZWJ Emoji）与常驻 DOM 的 `<div id="account-panel">` Disclosure 面板（显式声明 `#account-panel[hidden] { display: none !important; }`，精确指针设备支持 hover 临时展开与 150 ms 移出收起、点击切换固定展开、`Esc` 收起并归还焦点至头像、点击外部或键盘 Tab 焦点移出容器自动收起）。面板内展示「公开昵称 · 站主/用户」身份标签、带 `next` 的 `/accounts/settings/`「设置」入口，以及携带 `csrfmiddlewaretoken` 与 `next` 的 `POST /accounts/logout/` 退出表单。
    - **全站会话双向同步**：根部 `SessionProvider` 维护 `{ status, session, refresh, syncSession }` 并在后台标签页切回前台（`visibilitychange` 10 秒节流）时自动刷新（后台刷新失败时保留原登录状态）；札记详情页 `NoteComments` 在挂载、重试连接或 `409`/`403` 冲突刷新时调用 `syncSession` 回写顶栏，同时监听 `SessionProvider` 的后台刷新结果反向同步评论区，确保顶栏与评论区始终展示同一身份。
    - **证书画廊独立页、滚动复位与看图来源锁存**：新增 `/awards` 独立页复用 `WaterfallGallery`；主页长卷「证书画廊」与改名后的「博客论坛」两节居中 `<h2>` 标题支持直接点击进入 `/awards` 与 `/blog`；`App.tsx` 在 `AnimatePresence` 退场完成回调（`onExitComplete`）中对非 `POP` 且无 `hash` 的路由跳转复位至页顶（浏览器前进/后退保留原滚动位置）；`Viewer.tsx` 挂载时按站内白名单（`/` 或 `/awards`）锁存 `location.state.from` 并在上下翻页 `replace` 时持续透传，确保多次翻页或页面刷新后关闭仍回到原入口页。全站前后端页面标签标题统一遵循 `王景宏 · <栏目> · <条目>` 格式。
@@ -93,7 +93,7 @@ site/
 │   │   ├── platforms.tsx                 # 博客论坛与项目视频栏目舞台数据及统一标签标题
 │   │   └── comments.ts                   # 同源 API 客户端（/api/me/ 含 avatarColor 校验、评论分页、发评、删评与草稿存储）
 │   ├── components/
-│   │   ├── SiteHeader.tsx                # 全站固定顶栏（站名回顶、三栏目导航高亮、GitHub 外链与三种登录态账号区）
+│   │   ├── SiteHeader.tsx                # 全站单行固定顶栏（左对齐四栏目导航高亮、首页平滑回顶、GitHub 外链与三种登录态账号区）
 │   │   ├── AccountPanel.tsx              # 32px 首字母圆形头像与常驻 DOM 的 WAI-ARIA Disclosure 账号面板
 │   │   ├── NoteComments.tsx              # 札记评论容器（会话双向同步、游标分页状态机、并发冲突合并重拉）
 │   │   ├── NoteCommentComposer.tsx       # 评论发表框（访客/成员身份栏、回跳链接、字数与草稿保护）
@@ -224,3 +224,4 @@ python3 -m unittest discover -s deploy/tests -t .
 
 1. **全站导航、标题规范与 `/awards` 回跳核验**：公网直链与刷新 `/awards` 返回 `200`，375px 窄屏双行顶栏无横向溢出，主页首屏透明顶栏与长卷 `sticky` 窗帘无回归，从 `/awards` 进入 `/viewer` 翻页后关闭准确返回 `/awards`，全站前后端页面 `<title>` 均统一为 `王景宏 · …`。
 2. **账号设置、8 色调色板与无损迁移核验**：经 `publish-server.sh deploy` 在线备份 SQLite 并执行 `0004_user_avatar_color` 迁移后，线上既有账号与历史评论记录完整保留；多独立会话在 `/accounts/settings/` 分别修改公开昵称与预设底色后，`/api/me/` 响应维持 `private, no-store` 零 CDN 串号，顶栏首字母头像、底色及历史评论署名即时同步，验收后测试账号均已恢复原状态。
+3. **顶栏改为单行（2026-11-26 UTC）**：全视口统一为单行 `56px` 顶栏，移除独立站名并将「首页」并入左侧四栏目统一导航（`≤ 560px` 压缩尺寸、`≤ 359px` 隐藏顶栏 GitHub 图标），在 `1280px`–`320px` 多档视口核验单行零横向溢出且导航点击高度不低于 `32px`。
