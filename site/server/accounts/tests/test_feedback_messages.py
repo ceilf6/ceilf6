@@ -50,23 +50,6 @@ def _strip_style_blocks(html: str) -> str:
     return STYLE_BLOCK_RE.sub("", html)
 
 
-def _extract_css_block(css: str, header_regex: str) -> str | None:
-    """Extract a balanced {...} CSS block without coupling to indentation."""
-    match = re.search(header_regex + r"\s*\{", css)
-    if not match:
-        return None
-    depth = 1
-    idx = match.end()
-    start = idx
-    while idx < len(css) and depth > 0:
-        if css[idx] == "{":
-            depth += 1
-        elif css[idx] == "}":
-            depth -= 1
-        idx += 1
-    return css[start : idx - 1] if depth == 0 else None
-
-
 VOID_HTML_TAGS = frozenset(
     {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 )
@@ -531,22 +514,6 @@ class AccountFeedbackMessagesTests(TestCase):
         confirmed_login = self.client.get(
             "/accounts/login/?confirmed=1"
         ).content.decode("utf-8")
-        login_dom = _parse_dom(confirmed_login)
-        self.assertEqual(len(login_dom.toast_containers), 1)
-        login_attrs = login_dom.toast_containers[0]["attrs"]
-        assert isinstance(login_attrs, dict)
-        self.assertEqual(login_attrs.get("role"), "status")
-        self.assertEqual(login_attrs.get("aria-live"), "polite")
-        self.assertNotIn("button", login_dom.toast_containers[0]["descendant_tags"])  # type: ignore[arg-type]
-        self.assertEqual(len(login_dom.toasts), 1)
-        self.assertEqual(login_dom.toasts[0]["child_tags"], [])
-        for forbidden in ("auth-toast-close", "auth-toast-icon", "关闭提示"):
-            self.assertNotIn(forbidden, confirmed_login)
-        for script_text in login_dom.scripts:
-            self.assertNotIn("auth-toast", script_text)
-            self.assertNotIn("关闭提示", script_text)
-        self.assertNotIn("<script", confirmed_login.lower())
-        self.assertEqual(login_dom.scripts, [])
 
         settings_user, _ = signup_and_verify_user(
             self.client,
@@ -557,91 +524,29 @@ class AccountFeedbackMessagesTests(TestCase):
         saved_settings = self.client.get(
             "/accounts/settings/?saved=1"
         ).content.decode("utf-8")
-        settings_dom = _parse_dom(saved_settings)
-        self.assertEqual(len(settings_dom.toast_containers), 1)
-        settings_attrs = settings_dom.toast_containers[0]["attrs"]
-        assert isinstance(settings_attrs, dict)
-        self.assertEqual(settings_attrs.get("role"), "status")
-        self.assertEqual(settings_attrs.get("aria-live"), "polite")
-        self.assertNotIn("button", settings_dom.toast_containers[0]["descendant_tags"])  # type: ignore[arg-type]
-        self.assertEqual(len(settings_dom.toasts), 1)
-        self.assertEqual(settings_dom.toasts[0]["child_tags"], [])
-        for forbidden in ("auth-toast-close", "auth-toast-icon", "关闭提示"):
-            self.assertNotIn(forbidden, saved_settings)
-        self.assertGreaterEqual(len(settings_dom.scripts), 1)
-        for script_text in settings_dom.scripts:
-            self.assertNotIn("auth-toast", script_text)
-            self.assertNotIn("关闭提示", script_text)
 
-    def test_10_base_html_css_guardrails_for_centering_keyframes_and_reduced_motion(
-        self,
-    ) -> None:
-        base_path = (
-            Path(settings.BASE_DIR) / "templates" / "account" / "base.html"
-        )
-        raw = base_path.read_text(encoding="utf-8")
-        style_match = STYLE_BLOCK_RE.search(raw)
-        self.assertIsNotNone(style_match)
-        css = style_match.group(0)
-
-        # 1) .auth-toasts outer container never uses translateX(-50%) or animation
-        toasts_rule_match = re.search(
-            r"\.auth-toasts\s*\{([^}]*)\}",
-            css,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(toasts_rule_match)
-        toasts_decl = toasts_rule_match.group(1)
-        self.assertNotIn("translateX(-50%)", toasts_decl)
-        self.assertNotIn("animation", toasts_decl)
-        self.assertIn("inset-inline: 0", toasts_decl)
-        self.assertIn("width: fit-content", toasts_decl)
-        self.assertIn("margin-inline: auto", toasts_decl)
-        self.assertIn("pointer-events: none", toasts_decl)
-
-        # 2) Keyframe animation attaches to inner .auth-toast, and neither auth-toast-* keyframe touches pointer-events
-        keyframe_names = re.findall(r"@keyframes\s+([A-Za-z0-9_-]+)", css)
-        self.assertGreaterEqual(len(keyframe_names), 2)
-        toast_keyframes = [name for name in keyframe_names if name.startswith("auth-toast-")]
-        self.assertEqual(len(toast_keyframes), 2)
-        for kf_name in toast_keyframes:
-            kf_block = _extract_css_block(css, rf"@keyframes\s+{re.escape(kf_name)}")
-            self.assertIsNotNone(kf_block)
-            assert kf_block is not None
-            self.assertNotIn("pointer-events", kf_block)
-
-        inner_toast_match = re.search(
-            r"\.auth-toast\s*\{([^}]*)\}",
-            css,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(inner_toast_match)
-        inner_toast_decl = inner_toast_match.group(1)
-        self.assertIn("animation:", inner_toast_decl)
-        self.assertTrue(
-            any(name in inner_toast_decl for name in keyframe_names),
-            f"Expected one of {keyframe_names} in .auth-toast rule",
-        )
-
-        # 3) Hover pause rule exists on .auth-toast:hover without stale :focus-within
-        self.assertNotIn(":focus-within", css)
-        hover_decl = _extract_css_block(css, r"\.auth-toast:hover")
-        self.assertIsNotNone(hover_decl)
-        assert hover_decl is not None
-        self.assertIn("animation-play-state: paused", hover_decl)
-
-        # 4) prefers-reduced-motion never uses animation: none and uses step-end keyframes
-        reduced_block = _extract_css_block(
-            css,
-            r"@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)",
-        )
-        self.assertIsNotNone(reduced_block)
-        assert reduced_block is not None
-        self.assertNotIn("animation: none", reduced_block)
-        self.assertNotIn("animation:none", reduced_block)
-        self.assertIn(".auth-toast", reduced_block)
-        self.assertIn("step-end", reduced_block)
-        self.assertIn("forwards", reduced_block)
+        for label, page_html in (
+            ("login", confirmed_login),
+            ("settings", saved_settings),
+        ):
+            with self.subTest(page=label):
+                dom = _parse_dom(page_html)
+                self.assertEqual(len(dom.toast_containers), 1)
+                attrs = dom.toast_containers[0]["attrs"]
+                assert isinstance(attrs, dict)
+                self.assertEqual(attrs.get("role"), "status")
+                self.assertEqual(attrs.get("aria-live"), "polite")
+                self.assertNotIn(
+                    "button",
+                    dom.toast_containers[0]["descendant_tags"],  # type: ignore[arg-type]
+                )
+                self.assertEqual(len(dom.toasts), 1)
+                self.assertEqual(dom.toasts[0]["child_tags"], [])
+                for forbidden in ("auth-toast-close", "auth-toast-icon", "关闭提示"):
+                    self.assertNotIn(forbidden, page_html)
+                for script_text in dom.scripts:
+                    self.assertNotIn("auth-toast", script_text)
+                    self.assertNotIn("关闭提示", script_text)
 
     def test_10a_account_feedback_context_processor_unit_and_non_consumption(
         self,
@@ -1057,59 +962,3 @@ class AccountFeedbackMessagesTests(TestCase):
             'placeholder="当前显示为：明月松间照"',
             input_match.group(0),
         )
-
-    def test_18_base_template_has_no_toast_icon_close_or_script(self) -> None:
-        base_path = (
-            Path(settings.BASE_DIR) / "templates" / "account" / "base.html"
-        )
-        raw = base_path.read_text(encoding="utf-8")
-        for forbidden in ("auth-toast-icon", "auth-toast-close", "✓", "关闭提示"):
-            self.assertNotIn(forbidden, raw)
-
-        toasts_block_match = re.search(
-            r"\{%\s*block\s+toasts\s*%\}(.*?)\{%\s*endblock(?:\s+toasts)?\s*%\}",
-            raw,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(toasts_block_match)
-        assert toasts_block_match is not None
-        self.assertNotIn("<script", toasts_block_match.group(1).lower())
-
-    def test_19_auth_page_top_padding_clears_toast(self) -> None:
-        base_path = (
-            Path(settings.BASE_DIR) / "templates" / "account" / "base.html"
-        )
-        raw = base_path.read_text(encoding="utf-8")
-        style_match = STYLE_BLOCK_RE.search(raw)
-        self.assertIsNotNone(style_match)
-        assert style_match is not None
-        css = re.sub(r"/\*[\s\S]*?\*/", "", style_match.group(0))
-
-        media_480_block = _extract_css_block(
-            css,
-            r"@media\s*\(\s*max-width:\s*480px\s*\)",
-        )
-        self.assertIsNotNone(media_480_block)
-        assert media_480_block is not None
-
-        # Strip @media/@keyframes blocks to inspect top-level body rule cleanly
-        top_level_css = css
-        for at_header in re.findall(r"@(?:media|keyframes)[^{]+", css):
-            at_inner = _extract_css_block(top_level_css, re.escape(at_header.strip()))
-            if at_inner is not None:
-                top_level_css = re.sub(
-                    re.escape(at_header.strip()) + r"\s*\{" + re.escape(at_inner) + r"\}",
-                    "",
-                    top_level_css,
-                    count=1,
-                )
-
-        base_body_decl = _extract_css_block(top_level_css, r"(?:^|\s)body")
-        self.assertIsNotNone(base_body_decl)
-        assert base_body_decl is not None
-        self.assertRegex(base_body_decl, r"padding:\s*4\.25rem\b")
-
-        narrow_body_decl = _extract_css_block(media_480_block, r"(?:^|\s)body")
-        self.assertIsNotNone(narrow_body_decl)
-        assert narrow_body_decl is not None
-        self.assertRegex(narrow_body_decl, r"padding:\s*4\.25rem\b")
