@@ -3,7 +3,7 @@ import { ParticleField } from "../fx/ParticleField";
 import { bioSegments } from "../data/bio";
 import "./Hero.css";
 
-/** 第一幕:姓名 + GitHub bio 原文 + 滚动提示;极光/粒子只是背景层,内容全在 DOM。 */
+/** 第一幕:姓名 + GitHub bio 原文;极光/粒子只是背景层,内容全在 DOM。 */
 export function Hero() {
   return (
     <div className="hero">
@@ -27,7 +27,6 @@ export function Hero() {
           )}
         </p>
       </div>
-      <span className="hero-scroll-hint" aria-hidden="true">↓ 滚动认识我</span>
     </div>
   );
 }
