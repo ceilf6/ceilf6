@@ -8,6 +8,7 @@ from django.db import connection
 from django.test import Client, RequestFactory, TestCase
 from django.test.utils import CaptureQueriesContext
 
+from accounts.avatar import AVATAR_PALETTE, resolve_avatar_color
 from accounts.models import User
 from accounts.tests.helpers import gen_test_credential
 from comments.models import GUEST_DISPLAY_NAME, Comment
@@ -299,11 +300,21 @@ class NoteCommentsListApiTests(TestCase):
         by_id_payload = {it["id"]: it for it in res_anon.json()["items"]}
         self.assertEqual(
             by_id_payload[c_guest.pk]["author"],
-            {"kind": "guest", "id": None, "displayName": GUEST_DISPLAY_NAME},
+            {
+                "kind": "guest",
+                "id": None,
+                "displayName": GUEST_DISPLAY_NAME,
+                "avatarColor": None,
+            },
         )
         self.assertEqual(
             by_id_payload[c_a.pk]["author"],
-            {"kind": "member", "id": user_a.pk, "displayName": "山月读者"},
+            {
+                "kind": "member",
+                "id": user_a.pk,
+                "displayName": "山月读者",
+                "avatarColor": resolve_avatar_color(user_a.pk, user_a.avatar_color),
+            },
         )
         expected_blank_fallback = f"用户 #{user_b_blank_name.pk}"
         self.assertEqual(
@@ -312,12 +323,19 @@ class NoteCommentsListApiTests(TestCase):
                 "kind": "member",
                 "id": user_b_blank_name.pk,
                 "displayName": expected_blank_fallback,
+                "avatarColor": AVATAR_PALETTE[
+                    user_b_blank_name.pk % len(AVATAR_PALETTE)
+                ].hex_color,
             },
         )
-        # Verify /api/me/ and comments list emit identical public_display_name fallback
+        # Verify /api/me/ and comments list emit identical public_display_name & avatarColor
         me_b_json = client_b.get("/api/me/").json()
         self.assertEqual(
             me_b_json["user"]["displayName"], expected_blank_fallback
+        )
+        self.assertEqual(
+            me_b_json["user"]["avatarColor"],
+            by_id_payload[c_b.pk]["author"]["avatarColor"],
         )
 
         self.assertEqual(
@@ -368,3 +386,63 @@ class NoteCommentsListApiTests(TestCase):
                 c_guest.pk: False,
             },
         )
+
+    def test_avatar_color_preset_auto_update_zero_n_plus_one_and_zero_key_leak(
+        self,
+    ) -> None:
+        slug = "node-event-loop"
+        url = f"/api/notes/{slug}/comments/"
+
+        authors = [
+            User.objects.create_user(
+                f"u_av_q_{idx}",
+                f"av-query-{idx}@example.com",
+                f"PassWord!2026#{idx}",
+                display_name=f"评论者{idx}",
+                avatar_color=AVATAR_PALETTE[idx % len(AVATAR_PALETTE)].key
+                if idx % 2 == 0
+                else "",
+            )
+            for idx in range(20)
+        ]
+        for idx, author in enumerate(authors):
+            Comment.objects.create(
+                note_slug=slug,
+                author=author,
+                body=f"N+1 查询基线核验评论 #{idx}",
+            )
+
+        # Baseline on origin/main: 1 query for anonymous client, 3 queries for authenticated client
+        anon_client = Client()
+        with self.assertNumQueries(1):
+            anon_res = anon_client.get(url)
+        self.assertEqual(anon_res.status_code, 200)
+        raw_text = anon_res.content.decode("utf-8")
+        self.assertNotIn("@", raw_text)
+        self.assertNotIn("email", raw_text)
+        self.assertNotIn("avatar_color", raw_text)
+
+        items = anon_res.json()["items"]
+        self.assertEqual(len(items), 20)
+        # Returned newest-first (idx 19 down to 0)
+        for item, expected_user in zip(items, reversed(authors), strict=True):
+            expected_hex = (
+                resolve_avatar_color(expected_user.pk, expected_user.avatar_color)
+                if expected_user.avatar_color
+                else AVATAR_PALETTE[expected_user.pk % len(AVATAR_PALETTE)].hex_color
+            )
+            self.assertEqual(item["author"]["avatarColor"], expected_hex)
+
+        auth_client = Client()
+        auth_client.force_login(authors[0])
+        with self.assertNumQueries(3):
+            auth_res = auth_client.get(url)
+        self.assertEqual(auth_res.status_code, 200)
+
+        # Updating author's avatar_color immediately reflects on subsequent list request
+        latest_author = authors[-1]
+        latest_author.avatar_color = "rose"
+        latest_author.save(update_fields=["avatar_color"])
+        updated_items = anon_client.get(url).json()["items"]
+        self.assertEqual(updated_items[0]["author"]["id"], latest_author.pk)
+        self.assertEqual(updated_items[0]["author"]["avatarColor"], "#BE123C")

@@ -16,6 +16,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
 
+from accounts.avatar import AVATAR_PALETTE, resolve_avatar_color
 from accounts.models import User
 from accounts.tests.helpers import build_login_data, gen_test_credential
 from comments.models import GUEST_DISPLAY_NAME, Comment
@@ -172,7 +173,12 @@ class NoteCommentsCreateApiTests(TestCase):
                 "body": "第一行\n第二行",
                 "createdAt": created_json["createdAt"],
                 "canDelete": False,
-                "author": {"kind": "guest", "id": None, "displayName": GUEST_DISPLAY_NAME},
+                "author": {
+                    "kind": "guest",
+                    "id": None,
+                    "displayName": GUEST_DISPLAY_NAME,
+                    "avatarColor": None,
+                },
             },
         )
         self.assertRegex(created_json["createdAt"], ISO_UTC_Z_RE)
@@ -215,7 +221,39 @@ class NoteCommentsCreateApiTests(TestCase):
 
         payload = created.json()
         self.assertIs(payload["canDelete"], True)
-        self.assertEqual(payload["author"], {"kind": "member", "id": member.pk, "displayName": "竹林听雨"})
+        self.assertEqual(
+            payload["author"],
+            {
+                "kind": "member",
+                "id": member.pk,
+                "displayName": "竹林听雨",
+                "avatarColor": AVATAR_PALETTE[member.pk % len(AVATAR_PALETTE)].hex_color,
+            },
+        )
+        self.assertEqual(
+            payload["author"]["avatarColor"],
+            member_client.get("/api/me/").json()["user"]["avatarColor"],
+        )
+
+        # Member with explicit preset color emits chosen hex on POST & GET and never leaks avatar_color key
+        member.avatar_color = "teal"
+        member.save(update_fields=["avatar_color"])
+        cache.clear()
+        colored_created = self._post_json(
+            member_client,
+            {"body": "预设底色发言", "expectedAuthorKind": "member"},
+            csrf_token=member_csrf,
+        )
+        self.assertEqual(colored_created.status_code, 201)
+        colored_raw = colored_created.content.decode("utf-8")
+        self.assertNotIn("avatar_color", colored_raw)
+        self.assertNotIn("teal", colored_raw)
+        self.assertNotIn("@", colored_raw)
+        self.assertEqual(
+            colored_created.json()["author"]["avatarColor"],
+            resolve_avatar_color(member.pk, "teal"),
+        )
+        self.assertEqual(colored_created.json()["author"]["avatarColor"], "#0F766E")
 
         self.assertIs(Client().get(COMMENTS_URL).json()["items"][0]["canDelete"], False)
         other_client = Client()
