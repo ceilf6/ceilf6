@@ -104,30 +104,141 @@
       margin-bottom: 1.15rem;
     }
 
-    .auth-messages,
     .auth-error-box {
       list-style: none;
       margin-bottom: 1.15rem;
       padding: 0.75rem 0.95rem;
       border-radius: 10px;
       font-size: 0.88rem;
-    }
-
-    .auth-messages {
-      background: var(--info-bg);
-      border: 1px solid var(--info-border);
-      color: var(--text-main);
-    }
-
-    .auth-error-box {
       background: var(--danger-bg);
       border: 1px solid var(--danger-border);
       color: var(--danger-text);
     }
 
-    .auth-messages li + li,
     .auth-error-box li + li {
       margin-top: 0.35rem;
+    }
+
+    .auth-toasts {
+      position: fixed;
+      top: 16px;
+      inset-inline: 0;
+      width: fit-content;
+      max-width: calc(100vw - 32px);
+      margin-inline: auto;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .auth-toast {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      max-width: 100%;
+      padding: 0.62rem 0.72rem 0.62rem 0.9rem;
+      border-radius: 12px;
+      background: rgba(13, 22, 44, 0.92);
+      border: 1px solid var(--info-border);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      pointer-events: auto;
+      animation: auth-toast-lifecycle 4.5s ease forwards;
+    }
+
+    .auth-toast:hover,
+    .auth-toast:focus-within {
+      animation-play-state: paused;
+    }
+
+    .auth-toast[hidden] {
+      display: none !important;
+    }
+
+    .auth-toast-icon {
+      color: var(--accent-gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .auth-toast-text {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .auth-toast-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin-left: 0.15rem;
+      padding: 0;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1;
+      font-family: inherit;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .auth-toast-close:hover,
+    .auth-toast-close:focus-visible {
+      color: var(--accent-gold);
+      background: rgba(255, 192, 105, 0.14);
+    }
+
+    .auth-toast-close:focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 1px;
+    }
+
+    @keyframes auth-toast-lifecycle {
+      0% {
+        opacity: 0;
+        transform: translateY(-8px);
+        visibility: visible;
+      }
+      4.44%,
+      93.33% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-4px);
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    @keyframes auth-toast-reduced-lifecycle {
+      0% {
+        opacity: 1;
+        visibility: visible;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .auth-toast {
+        animation: auth-toast-reduced-lifecycle 4.5s step-end forwards;
+      }
     }
 
     .auth-form {
@@ -304,10 +415,10 @@
     </div>
     <main class="auth-card">
       {% block messages %}
-        {% if messages %}
-          <ul class="auth-messages" role="status">
-            {% for message in messages %}
-              <li>{{ message }}</li>
+        {% if account_alerts %}
+          <ul class="auth-error-box" role="alert">
+            {% for alert in account_alerts %}
+              <li>{{ alert }}</li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -315,6 +426,25 @@
       {% block content %}{% endblock %}
     </main>
   </div>
+  {% block toasts %}
+    {% if account_toasts %}
+      <div class="auth-toasts" role="status" aria-live="polite">
+        {% for toast in account_toasts %}
+          <div class="auth-toast">
+            <span class="auth-toast-icon" aria-hidden="true">✓</span>
+            <span class="auth-toast-text">{{ toast }}</span>
+            <button type="button" class="auth-toast-close" aria-label="关闭提示">×</button>
+          </div>
+        {% endfor %}
+      </div>
+      <script>
+        document.querySelector(".auth-toasts")?.addEventListener("click", function (ev) {
+          var btn = ev.target && ev.target.closest ? ev.target.closest(".auth-toast-close") : null;
+          if (btn) btn.closest(".auth-toast").hidden = true;
+        });
+      </script>
+    {% endif %}
+  {% endblock %}
   {% block extra_body %}{% endblock %}
 </body>
 </html>

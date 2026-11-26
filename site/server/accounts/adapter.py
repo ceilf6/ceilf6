@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from allauth.account.adapter import DefaultAccountAdapter
 from django.contrib.auth import get_user_model
@@ -42,6 +42,16 @@ def is_safe_internal_redirect_url(url: str | None) -> bool:
     return url_has_allowed_host_and_scheme(url, allowed_hosts=set())
 
 
+SUPPRESSED_MESSAGE_TEMPLATES: frozenset[str] = frozenset(
+    {
+        "account/messages/logged_in.txt",
+        "account/messages/logged_out.txt",
+        "account/messages/email_confirmation_sent.txt",
+        "account/messages/email_confirmed.txt",
+    }
+)
+
+
 class AccountAdapter(DefaultAccountAdapter):
     """Adapter enforcing lowercase emails, opaque usernames, and strict internal redirects."""
 
@@ -57,6 +67,26 @@ class AccountAdapter(DefaultAccountAdapter):
         "too_many_login_attempts": "登录尝试次数过多，请稍后再试。",
         "unverified_primary_email": "请先完成邮箱验证后再登录。",
     }
+
+    def add_message(
+        self,
+        request: HttpRequest,
+        level: int,
+        message_template: str | None = None,
+        message_context: dict[str, Any] | None = None,
+        extra_tags: str = "",
+        message: str | None = None,
+    ) -> None:
+        if message_template in SUPPRESSED_MESSAGE_TEMPLATES:
+            return
+        super().add_message(
+            request,
+            level,
+            message_template=message_template,
+            message_context=message_context,
+            extra_tags=extra_tags,
+            message=message,
+        )
 
     def is_safe_url(self, url: str) -> bool:
         return is_safe_internal_redirect_url(url)

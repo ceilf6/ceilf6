@@ -123,7 +123,9 @@ class EmailAccountFlowTests(TestCase):
 
                 confirm_post = self.client.post(confirm_path)
                 self.assertEqual(confirm_post.status_code, 302)
-                self.assertEqual(confirm_post["Location"], "/accounts/login/")
+                self.assertEqual(
+                    confirm_post["Location"], "/accounts/login/?confirmed=1"
+                )
                 email_row.refresh_from_db()
                 self.assertTrue(email_row.verified)
 
