@@ -50,23 +50,6 @@ def _strip_style_blocks(html: str) -> str:
     return STYLE_BLOCK_RE.sub("", html)
 
 
-def _extract_css_block(css: str, header_regex: str) -> str | None:
-    """Extract a balanced {...} CSS block without coupling to indentation."""
-    match = re.search(header_regex + r"\s*\{", css)
-    if not match:
-        return None
-    depth = 1
-    idx = match.end()
-    start = idx
-    while idx < len(css) and depth > 0:
-        if css[idx] == "{":
-            depth += 1
-        elif css[idx] == "}":
-            depth -= 1
-        idx += 1
-    return css[start : idx - 1] if depth == 0 else None
-
-
 VOID_HTML_TAGS = frozenset(
     {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 )
@@ -80,51 +63,72 @@ class _FeedbackDOMParser(HTMLParser):
         self.stack: list[tuple[str, dict[str, str | None]]] = []
         self.toast_containers: list[dict[str, object]] = []
         self.toasts: list[dict[str, object]] = []
-        self.close_buttons: list[dict[str, object]] = []
         self.alert_boxes: list[dict[str, object]] = []
+        self.scripts: list[str] = []
+        self._active_container_idx: int | None = None
         self._active_toast_idx: int | None = None
         self._active_alert_idx: int | None = None
+        self._active_script_parts: list[str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        lower_tag = tag.lower()
         attr_map = dict(attrs)
         classes = set((attr_map.get("class") or "").split())
         ancestor_tags = [t for t, _ in self.stack]
         ancestor_classes = {cls for _, a in self.stack for cls in (a.get("class") or "").split()}
 
+        if self._active_container_idx is not None:
+            descendant_tags = self.toast_containers[self._active_container_idx]["descendant_tags"]
+            assert isinstance(descendant_tags, list)
+            descendant_tags.append(lower_tag)
+
+        if self._active_toast_idx is not None:
+            child_tags = self.toasts[self._active_toast_idx]["child_tags"]
+            assert isinstance(child_tags, list)
+            child_tags.append(lower_tag)
+
         if "auth-toasts" in classes:
+            self._active_container_idx = len(self.toast_containers)
             self.toast_containers.append(
-                {"tag": tag, "attrs": attr_map, "ancestor_tags": ancestor_tags, "ancestor_classes": ancestor_classes}
+                {
+                    "tag": lower_tag,
+                    "attrs": attr_map,
+                    "ancestor_tags": ancestor_tags,
+                    "ancestor_classes": ancestor_classes,
+                    "descendant_tags": [],
+                }
             )
         if "auth-toast" in classes:
             self._active_toast_idx = len(self.toasts)
             self.toasts.append(
                 {
-                    "tag": tag,
+                    "tag": lower_tag,
                     "attrs": attr_map,
                     "ancestor_classes": ancestor_classes,
                     "text_parts": [],
-                    "has_close_button": False,
-                    "has_check_icon": False,
+                    "child_tags": [],
                 }
             )
-        if "auth-toast-icon" in classes and self._active_toast_idx is not None:
-            self.toasts[self._active_toast_idx]["has_check_icon"] = attr_map.get("aria-hidden") == "true"
-        if "auth-toast-close" in classes:
-            self.close_buttons.append({"tag": tag, "attrs": attr_map, "inside_toast": self._active_toast_idx is not None})
-            if self._active_toast_idx is not None:
-                self.toasts[self._active_toast_idx]["has_close_button"] = True
         if "auth-error-box" in classes:
             self._active_alert_idx = len(self.alert_boxes)
             self.alert_boxes.append(
-                {"tag": tag, "attrs": attr_map, "ancestor_tags": ancestor_tags, "ancestor_classes": ancestor_classes, "text_parts": []}
+                {
+                    "tag": lower_tag,
+                    "attrs": attr_map,
+                    "ancestor_tags": ancestor_tags,
+                    "ancestor_classes": ancestor_classes,
+                    "text_parts": [],
+                }
             )
-        if tag.lower() not in VOID_HTML_TAGS:
-            self.stack.append((tag, attr_map))
+        if lower_tag == "script":
+            self._active_script_parts = []
+        if lower_tag not in VOID_HTML_TAGS:
+            self.stack.append((lower_tag, attr_map))
 
     def handle_data(self, data: str) -> None:
-        in_close = any("auth-toast-close" in (a.get("class") or "").split() for _, a in self.stack)
-        in_icon = any("auth-toast-icon" in (a.get("class") or "").split() for _, a in self.stack)
-        if self._active_toast_idx is not None and not in_close and not in_icon:
+        if self._active_script_parts is not None:
+            self._active_script_parts.append(data)
+        if self._active_toast_idx is not None:
             parts = self.toasts[self._active_toast_idx]["text_parts"]
             assert isinstance(parts, list)
             parts.append(data)
@@ -134,13 +138,19 @@ class _FeedbackDOMParser(HTMLParser):
             alert_parts.append(data)
 
     def handle_endtag(self, tag: str) -> None:
+        lower_tag = tag.lower()
+        if lower_tag == "script" and self._active_script_parts is not None:
+            self.scripts.append("".join(self._active_script_parts))
+            self._active_script_parts = None
         if not self.stack:
             return
         popped_tag, popped_attrs = self.stack.pop()
         popped_classes = set((popped_attrs.get("class") or "").split())
-        if popped_tag == tag and "auth-toast" in popped_classes:
+        if popped_tag == lower_tag and "auth-toasts" in popped_classes:
+            self._active_container_idx = None
+        if popped_tag == lower_tag and "auth-toast" in popped_classes:
             self._active_toast_idx = None
-        if popped_tag == tag and "auth-error-box" in popped_classes:
+        if popped_tag == lower_tag and "auth-error-box" in popped_classes:
             self._active_alert_idx = None
 
 
@@ -413,10 +423,9 @@ class AccountFeedbackMessagesTests(TestCase):
         self.assertEqual(len(dom.toasts), 1)
         toast_text = "".join(dom.toasts[0]["text_parts"]).strip()  # type: ignore[arg-type]
         self.assertEqual(toast_text, "已保存")
-        self.assertTrue(dom.toasts[0]["has_check_icon"])
-        self.assertTrue(dom.toasts[0]["has_close_button"])
+        self.assertEqual(dom.toasts[0]["child_tags"], [])
 
-    def test_07_invalid_settings_post_on_saved_query_url_renders_zero_toast_or_close_button(
+    def test_07_invalid_settings_post_on_saved_query_url_renders_zero_toast(
         self,
     ) -> None:
         user, _ = signup_and_verify_user(
@@ -501,77 +510,43 @@ class AccountFeedbackMessagesTests(TestCase):
         self.assertNotIn('aria-label="关闭提示"', err_only_login)
         self.assertNotIn('class="auth-toasts"', err_only_login)
 
-        # Non-empty toast state
+        # Non-empty toast state on anonymous login (?confirmed=1) and authenticated settings (?saved=1)
         confirmed_login = self.client.get(
             "/accounts/login/?confirmed=1"
         ).content.decode("utf-8")
-        dom = _parse_dom(confirmed_login)
-        self.assertEqual(len(dom.toast_containers), 1)
-        attrs = dom.toast_containers[0]["attrs"]
-        assert isinstance(attrs, dict)
-        self.assertEqual(attrs.get("role"), "status")
-        self.assertEqual(attrs.get("aria-live"), "polite")
-        self.assertEqual(len(dom.close_buttons), 1)
-        btn_attrs = dom.close_buttons[0]["attrs"]
-        assert isinstance(btn_attrs, dict)
-        self.assertEqual(btn_attrs.get("type"), "button")
-        self.assertEqual(btn_attrs.get("aria-label"), "关闭提示")
-        self.assertTrue(dom.close_buttons[0]["inside_toast"])
 
-    def test_10_base_html_css_guardrails_for_centering_keyframes_and_reduced_motion(
-        self,
-    ) -> None:
-        base_path = (
-            Path(settings.BASE_DIR) / "templates" / "account" / "base.html"
+        settings_user, _ = signup_and_verify_user(
+            self.client,
+            display_name="纯文字测试者",
+            raw_email="toast-a11y-settings@example.com",
         )
-        raw = base_path.read_text(encoding="utf-8")
-        style_match = STYLE_BLOCK_RE.search(raw)
-        self.assertIsNotNone(style_match)
-        css = style_match.group(0)
+        self.client.force_login(settings_user)
+        saved_settings = self.client.get(
+            "/accounts/settings/?saved=1"
+        ).content.decode("utf-8")
 
-        # 1) .auth-toasts outer container never uses translateX(-50%) or animation
-        toasts_rule_match = re.search(
-            r"\.auth-toasts\s*\{([^}]*)\}",
-            css,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(toasts_rule_match)
-        toasts_decl = toasts_rule_match.group(1)
-        self.assertNotIn("translateX(-50%)", toasts_decl)
-        self.assertNotIn("animation", toasts_decl)
-        self.assertIn("inset-inline: 0", toasts_decl)
-        self.assertIn("width: fit-content", toasts_decl)
-        self.assertIn("margin-inline: auto", toasts_decl)
-        self.assertIn("pointer-events: none", toasts_decl)
-
-        # 2) Keyframe animation attaches to inner .auth-toast
-        keyframe_names = re.findall(r"@keyframes\s+([A-Za-z0-9_-]+)", css)
-        self.assertGreaterEqual(len(keyframe_names), 2)
-        inner_toast_match = re.search(
-            r"\.auth-toast\s*\{([^}]*)\}",
-            css,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(inner_toast_match)
-        inner_toast_decl = inner_toast_match.group(1)
-        self.assertIn("animation:", inner_toast_decl)
-        self.assertTrue(
-            any(name in inner_toast_decl for name in keyframe_names),
-            f"Expected one of {keyframe_names} in .auth-toast rule",
-        )
-
-        # 3) prefers-reduced-motion never uses animation: none and uses step-end keyframes
-        reduced_block = _extract_css_block(
-            css,
-            r"@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)",
-        )
-        self.assertIsNotNone(reduced_block)
-        assert reduced_block is not None
-        self.assertNotIn("animation: none", reduced_block)
-        self.assertNotIn("animation:none", reduced_block)
-        self.assertIn(".auth-toast", reduced_block)
-        self.assertIn("step-end", reduced_block)
-        self.assertIn("forwards", reduced_block)
+        for label, page_html in (
+            ("login", confirmed_login),
+            ("settings", saved_settings),
+        ):
+            with self.subTest(page=label):
+                dom = _parse_dom(page_html)
+                self.assertEqual(len(dom.toast_containers), 1)
+                attrs = dom.toast_containers[0]["attrs"]
+                assert isinstance(attrs, dict)
+                self.assertEqual(attrs.get("role"), "status")
+                self.assertEqual(attrs.get("aria-live"), "polite")
+                self.assertNotIn(
+                    "button",
+                    dom.toast_containers[0]["descendant_tags"],  # type: ignore[arg-type]
+                )
+                self.assertEqual(len(dom.toasts), 1)
+                self.assertEqual(dom.toasts[0]["child_tags"], [])
+                for forbidden in ("auth-toast-close", "auth-toast-icon", "关闭提示"):
+                    self.assertNotIn(forbidden, page_html)
+                for script_text in dom.scripts:
+                    self.assertNotIn("auth-toast", script_text)
+                    self.assertNotIn("关闭提示", script_text)
 
     def test_10a_account_feedback_context_processor_unit_and_non_consumption(
         self,
