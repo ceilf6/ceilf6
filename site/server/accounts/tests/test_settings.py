@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from django.test import Client, RequestFactory, TestCase
 from django.test.utils import CaptureQueriesContext
 
+from accounts.avatar import resolve_avatar_color
 from accounts.forms import (
     AccountSignupForm,
     HoneypotFormMixin,
@@ -190,6 +191,7 @@ class AccountSettingsTests(TestCase):
                 "kind": "member",
                 "id": user.pk,
                 "displayName": "旧时署名",
+                "avatarColor": resolve_avatar_color(user.pk, user.avatar_color),
             },
         )
 

@@ -8,6 +8,7 @@ from typing import Any
 
 from allauth.account.models import EmailAddress
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import RequestDataTooBig, ValidationError
 from django.http import HttpRequest, HttpResponse, JsonResponse, RawPostDataException
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -29,6 +30,11 @@ REQUIRED_CREATE_KEYS = frozenset({"body", "expectedAuthorKind"})
 VALID_AUTHOR_KINDS = frozenset({"guest", "member"})
 FORBIDDEN_BODY_CATEGORIES = frozenset({"Cc", "Cf", "Cs", "Zl", "Zp"})
 ALLOWED_EMOJI_JOINERS = frozenset({"\u200d", "\ufe0e", "\ufe0f"})
+_AUTHOR_ONLY_FIELDS: tuple[str, ...] = (
+    ("author__id", "author__display_name", "author__avatar_color")
+    if any(f.name == "avatar_color" for f in get_user_model()._meta.local_fields)
+    else ("author__id", "author__display_name")
+)
 
 
 def _parse_before_cursor(request: HttpRequest) -> tuple[int | None, bool]:
@@ -167,8 +173,7 @@ def _list_note_comments_view(request: HttpRequest, slug: str) -> JsonResponse:
             "author_id",
             "body",
             "created_at",
-            "author__id",
-            "author__display_name",
+            *_AUTHOR_ONLY_FIELDS,
         )
         .order_by("-pk")
     )

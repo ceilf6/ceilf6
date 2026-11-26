@@ -7,6 +7,7 @@ from typing import Any
 
 from django.utils import timezone
 
+from accounts.avatar import resolve_avatar_color
 from comments.models import GUEST_DISPLAY_NAME, Comment
 from comments.permissions import can_delete_comment
 
@@ -27,6 +28,7 @@ def serialize_comment_author(comment: Comment) -> dict[str, Any]:
             "kind": "guest",
             "id": None,
             "displayName": GUEST_DISPLAY_NAME,
+            "avatarColor": None,
         }
 
     author = comment.author
@@ -35,6 +37,9 @@ def serialize_comment_author(comment: Comment) -> dict[str, Any]:
         "kind": "member",
         "id": author.pk,
         "displayName": author.public_display_name,
+        "avatarColor": resolve_avatar_color(
+            author.pk, getattr(author, "avatar_color", "")
+        ),
     }
 
 
