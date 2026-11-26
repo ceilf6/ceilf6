@@ -28,6 +28,17 @@ const awardsCss = readFileSync(
   "utf8",
 );
 
+function findClosingBrace(css: string, openBraceIdx: number): number {
+  let depth = 1;
+  let j = openBraceIdx + 1;
+  while (j < css.length && depth > 0) {
+    if (css[j] === "{") depth += 1;
+    else if (css[j] === "}") depth -= 1;
+    j += 1;
+  }
+  return depth === 0 ? j - 1 : -1;
+}
+
 function stripMediaBlocks(css: string): string {
   let out = "";
   let i = 0;
@@ -40,14 +51,9 @@ function stripMediaBlocks(css: string): string {
     out += css.slice(i, mediaIdx);
     const openBrace = css.indexOf("{", mediaIdx);
     if (openBrace === -1) break;
-    let depth = 1;
-    let j = openBrace + 1;
-    while (j < css.length && depth > 0) {
-      if (css[j] === "{") depth += 1;
-      else if (css[j] === "}") depth -= 1;
-      j += 1;
-    }
-    i = j;
+    const closeBrace = findClosingBrace(css, openBrace);
+    if (closeBrace === -1) break;
+    i = closeBrace + 1;
   }
   return out;
 }
@@ -57,14 +63,8 @@ function extractMediaBlock(css: string, headerRegex: RegExp): string | null {
   if (!match) return null;
   const openBrace = css.indexOf("{", match.index);
   if (openBrace === -1) return null;
-  let depth = 1;
-  let j = openBrace + 1;
-  while (j < css.length && depth > 0) {
-    if (css[j] === "{") depth += 1;
-    else if (css[j] === "}") depth -= 1;
-    j += 1;
-  }
-  return depth === 0 ? css.slice(openBrace + 1, j - 1) : null;
+  const closeBrace = findClosingBrace(css, openBrace);
+  return closeBrace === -1 ? null : css.slice(openBrace + 1, closeBrace);
 }
 
 function jsonResponse(payload: unknown, status = 200): Response {
@@ -263,10 +263,12 @@ describe("SiteHeader 全站单行顶栏", () => {
     expect(scrollSpy).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
     expect(screen.getByTestId("loc-key").textContent).toBe(initialKey);
 
-    // 修饰键（metaKey / ctrlKey）或中键点击放行，不拦截
+    // 修饰键（metaKey / ctrlKey / shiftKey / altKey）或中键点击放行，不拦截
     scrollSpy.mockClear();
     fireEvent.click(homeOnHome, { metaKey: true });
     fireEvent.click(homeOnHome, { ctrlKey: true });
+    fireEvent.click(homeOnHome, { shiftKey: true });
+    fireEvent.click(homeOnHome, { altKey: true });
     fireEvent.click(homeOnHome, { button: 1 });
     expect(scrollSpy).not.toHaveBeenCalled();
     unmount();
@@ -412,7 +414,12 @@ describe("SiteHeader 全站单行顶栏", () => {
       /(?:^|\n)html\s*\{[^}]*(?<![-\w])text-size-adjust:\s*100%/s,
     );
 
-    // 6) 二级页顶部留白仍使用 var(--site-header-h)
+    // 6) 顶部留白仍归属各页面 CSS，global.css 不对根容器设全局 padding-top
+    expect(globalCss).not.toMatch(
+      /(?:^|\n)\s*(?:body|#root|\.route-shell|\.page-shell)\s*\{[^}]*padding-top:/,
+    );
+    expect(globalCss).not.toContain(".stage-viewport");
+    expect(globalCss).not.toContain(".note");
     expect(stageCss).toContain("calc(var(--site-header-h) + 32px)");
     expect(noteCss).toContain("calc(var(--site-header-h) + 32px)");
     expect(awardsCss).toContain("calc(var(--site-header-h) + 32px)");
