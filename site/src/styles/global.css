@@ -43,6 +43,11 @@ html {
   background: var(--page-background);
   background-attachment: fixed;
   background-color: var(--bg-void);
+  /* 一直显示滚动条（2026-11-26 站主决定）：长短页滚动条有无不一，切页横向跳 10px。
+     overflow-x 必须从 body 挪到这里：html 一旦设了 overflow，body 的 overflow 就不再传给视口，
+     body 自身会变成滚动容器，首页 .act-hero 的 sticky 窗帘随之失效（实测首幕被滚走）。 */
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
@@ -53,7 +58,6 @@ body {
   flex-direction: column;
   position: relative;
   isolation: isolate;
-  overflow-x: hidden;
   font-family:
     "Azeret Mono", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
     sans-serif;
@@ -275,4 +279,10 @@ h5[id],
 h6[id],
 section[id] {
   scroll-margin-top: var(--site-header-h);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: rgba(194, 210, 234, 0.3) var(--bg-void);
+  }
 }
