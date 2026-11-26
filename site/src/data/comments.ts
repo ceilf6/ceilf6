@@ -1,3 +1,7 @@
+import { isValidAvatarColor } from "./avatar";
+
+export { isValidAvatarColor };
+
 export const MAX_COMMENT_BODY_LENGTH = 1000;
 
 const DRAFT_STORAGE_PREFIX = "wangjinghong:note-comment-draft:";
@@ -7,12 +11,6 @@ export interface SessionUser {
   displayName: string;
   isCommentAdmin: boolean;
   avatarColor?: string;
-}
-
-const AVATAR_COLOR_HEX_RE = /^#[0-9a-f]{6}$/i;
-
-export function isValidAvatarColor(value: unknown): value is string {
-  return typeof value === "string" && AVATAR_COLOR_HEX_RE.test(value);
 }
 
 export interface ViewerSession {
@@ -27,6 +25,7 @@ export interface CommentAuthor {
   kind: CommentAuthorKind;
   id: number | null;
   displayName: string;
+  avatarColor?: string;
 }
 
 export interface CommentItem {
@@ -182,6 +181,9 @@ export function parseCommentItem(raw: unknown): CommentItem {
       kind,
       id: author.id as number | null,
       displayName: author.displayName,
+      ...(kind === "member" && isValidAvatarColor(author.avatarColor)
+        ? { avatarColor: author.avatarColor }
+        : {}),
     },
   };
 }

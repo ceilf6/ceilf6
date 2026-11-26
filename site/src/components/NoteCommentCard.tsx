@@ -6,6 +6,7 @@ import {
   type CommentItem,
   type ViewerSession,
 } from "../data/comments";
+import { CommentAvatar } from "./CommentAvatar";
 import type { ViewerLoadStatus } from "./NoteCommentComposer";
 
 const SHANGHAI_TIME_FORMATTER = new Intl.DateTimeFormat("zh-CN", {
@@ -140,63 +141,66 @@ export function NoteCommentCard({
 
   return (
     <li className="note-comment-card">
-      <div className="note-comment-meta">
-        <span className="note-comment-author" data-author-kind={item.author.kind}>
-          {item.author.displayName}
-        </span>
-        {item.author.kind === "guest" ? (
-          <span className="note-comment-badge">访客</span>
-        ) : null}
-        <time className="note-comment-time" dateTime={item.createdAt}>
-          {formatCommentTime(item.createdAt)}
-        </time>
+      <CommentAvatar author={item.author} />
+      <div className="note-comment-main">
+        <div className="note-comment-meta">
+          <span className="note-comment-author" data-author-kind={item.author.kind}>
+            {item.author.displayName}
+          </span>
+          {item.author.kind === "guest" ? (
+            <span className="note-comment-badge">访客</span>
+          ) : null}
+          <time className="note-comment-time" dateTime={item.createdAt}>
+            {formatCommentTime(item.createdAt)}
+          </time>
 
-        {canDelete ? (
-          confirming ? (
-            <span className="note-comment-delete-confirm">
-              <span className="note-comment-delete-prompt">确认删除？</span>
+          {canDelete ? (
+            confirming ? (
+              <span className="note-comment-delete-confirm">
+                <span className="note-comment-delete-prompt">确认删除？</span>
+                <button
+                  type="button"
+                  className="note-comment-danger-btn"
+                  onClick={handleConfirmDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? "正在删除…" : "确认删除"}
+                </button>
+                <button
+                  type="button"
+                  className="note-comment-cancel-btn"
+                  onClick={() => {
+                    setConfirming(false);
+                    setDeleteError(null);
+                  }}
+                  disabled={deleting}
+                >
+                  取消
+                </button>
+              </span>
+            ) : (
               <button
                 type="button"
-                className="note-comment-danger-btn"
-                onClick={handleConfirmDelete}
-                disabled={deleting}
-              >
-                {deleting ? "正在删除…" : "确认删除"}
-              </button>
-              <button
-                type="button"
-                className="note-comment-cancel-btn"
+                className="note-comment-delete-trigger"
                 onClick={() => {
-                  setConfirming(false);
+                  setConfirming(true);
                   setDeleteError(null);
                 }}
-                disabled={deleting}
               >
-                取消
+                删除
               </button>
-            </span>
-          ) : (
-            <button
-              type="button"
-              className="note-comment-delete-trigger"
-              onClick={() => {
-                setConfirming(true);
-                setDeleteError(null);
-              }}
-            >
-              删除
-            </button>
-          )
+            )
+          ) : null}
+        </div>
+
+        <p className="note-comment-body">{item.body}</p>
+
+        {deleteError ? (
+          <p className="note-comment-delete-error" role="alert">
+            {deleteError}
+          </p>
         ) : null}
       </div>
-
-      <p className="note-comment-body">{item.body}</p>
-
-      {deleteError ? (
-        <p className="note-comment-delete-error" role="alert">
-          {deleteError}
-        </p>
-      ) : null}
     </li>
   );
 }

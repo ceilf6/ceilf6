@@ -100,7 +100,13 @@ describe("NoteComments 列表、分页与异常隔离", () => {
     expect(screen.getByText("2026-11-24 17:05")).toBeInTheDocument();
     expect(container.querySelector("script")).toBeNull();
     expect(container.querySelector("img")).toBeNull();
-    expect(container.querySelector("svg")).toBeNull();
+    expect(container.querySelector("svg[onload]")).toBeNull();
+    expect(container.querySelector(".note-comment-main svg")).toBeNull();
+    expect(
+      Array.from(container.querySelectorAll("svg")).every((el) =>
+        Boolean(el.closest(".comment-avatar.is-guest")),
+      ),
+    ).toBe(true);
   });
 
   it("基于 nextBefore 游标追加下一页评论并在末尾隐藏分页按钮", async () => {

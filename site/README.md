@@ -14,7 +14,7 @@
   1. **账号、身份认证与个人设置系统（`site/server/accounts/`、`site/server/templates/account/`）**：邮箱 + 密码 + 公开昵称（`display_name`）注册（`/accounts/signup/`）、邮件验证链接确认（本地默认零外部密钥 `filebased.EmailBackend` 落盘，线上生产通过阿里云邮件推送 `smtpdm.aliyun.com:465` SSL 真实发信；匿名确认邮箱后跳到登录页并提示「邮箱已确认，请登录。」）、密码重置（重设密码后跳回登录页并显示「密码已更新。」toast）、CSRF `POST /accounts/logout/` 退出登录、统一登录入口 `/accounts/login/`（收拢自定义后台入口并严格校验站内 `next` 回跳）、受登录保护的账号设置页 `GET/POST /accounts/settings/`（支持修改公开昵称与「自动 + 8 种深色调色板」头像底色，含无 JS 服务端首字母预览与 PRG 回跳）及当前会话查询接口 `GET /api/me/`（已登录时输出 `avatarColor`）。
   2. **全站统一顶栏、证书画廊独立页与会话联动（`site/src/session/SessionProvider.tsx`、`site/src/components/SiteHeader.tsx`、`site/src/components/AccountPanel.tsx`、`site/src/pages/Awards.tsx`）**：在不破坏首页长卷 `sticky` 窗帘与入场动效结构的前提下，为除沉浸式看图页 `/viewer`（及旧直链 `/viewer.html`）外的全站页面接入统一单行固定顶栏（左侧「首页 · 博客论坛 · 项目视频 · 证书画廊」四栏目统一导航与当前项高亮、已在首页点击「首页」平滑回顶，右侧 GitHub 外链与三种登录态账号区），新增证书画廊独立页 `/awards`、主页两节居中标题跳转（`/awards`、`/blog`）、跨页滚动复位、看图页 `/viewer` 来源锁存回跳及全站统一的 `王景宏 · …` 浏览器标签标题规范。
   3. **札记动态评论与权限系统（`site/server/comments/`）**：支持未登录访客直发（`author = NULL`，固定展示为「未登录用户」，`author.avatarColor` 为 `null`）与已验证账号署名发言（`author.avatarColor` 与 `/api/me/` 同源输出 `#RRGGBB` 头像底色）、服务端 `ALLOW_GUEST_COMMENTS` 环境变量开关、`before` 游标分页、文件缓存原子限频与蜜罐校验、作者本人删评及站主跨札记全站审核。
-  4. **前端札记评论交互组件（`site/src/data/comments.ts`、`site/src/components/NoteComment*.tsx`）**：在 `/blog/:slug` 正文底部接入评论列表游标分页、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步、与全站顶栏 `SessionProvider` 的双向会话身份同步，以及行内二次确认删评。
+  4. **前端札记评论交互组件（`site/src/data/avatar.ts`、`site/src/data/comments.ts`、`site/src/components/CommentAvatar.tsx`、`site/src/components/NoteComment*.tsx`）**：在 `/blog/:slug` 正文底部接入评论列表游标分页、每条评论左侧 `28px` 评论者头像（已注册成员显示与顶栏一致的首字母和底色，访客显示统一的灰色人形图标）、纯文本防 XSS 渲染、访客/成员发表、按札记隔离的 `sessionStorage` 草稿保护、跨标签页登录/CSRF 轮换自动同步、与全站顶栏 `SessionProvider` 的双向会话身份同步，以及行内二次确认删评。
   5. **独立持久化部署与回退工具链（`site/deploy/`、`site/scripts/vite-local-proxy.mjs`）**：本地 Vite 同源反代（保护 `/`、`/blog`、`/vlog`、`/awards`、`/viewer` 等前端路由前缀不被后台配置误劫持），以及与静态站点原子切换目录完全隔离的后端版本发布、SQLite WAL 在线热备、兼容纯代码回退的迁移结构安全校验与一键回退脚本。
 
 ---
@@ -90,14 +90,16 @@ site/
 │   │   └── SessionProvider.tsx           # 全站会话上下文（/api/me/ 拉取、visibilitychange 节流刷新与 syncSession 双向同步）
 │   ├── data/
 │   │   ├── site.ts                       # 站级共享常量（GITHUB_URL 等）
+│   │   ├── avatar.ts                     # 顶栏与评论区共享的首字母字素提取与 avatarColor 十六进制色值校验
 │   │   ├── platforms.tsx                 # 博客论坛与项目视频栏目舞台数据及统一标签标题
-│   │   └── comments.ts                   # 同源 API 客户端（/api/me/ 含 avatarColor 校验、评论分页、发评、删评与草稿存储）
+│   │   └── comments.ts                   # 同源 API 客户端（/api/me/ 与评论 author.avatarColor 校验、分页、发评、删评与草稿存储）
 │   ├── components/
 │   │   ├── SiteHeader.tsx                # 全站单行固定顶栏（左对齐四栏目导航高亮、首页平滑回顶、GitHub 外链与三种登录态账号区）
 │   │   ├── AccountPanel.tsx              # 32px 首字母圆形头像与常驻 DOM 的 WAI-ARIA Disclosure 账号面板
+│   │   ├── CommentAvatar.tsx             # 28px 评论者装饰头像组件（成员首字母配色 + 访客人形图标，配 CommentAvatar.css）
 │   │   ├── NoteComments.tsx              # 札记评论容器（会话双向同步、游标分页状态机、并发冲突合并重拉）
 │   │   ├── NoteCommentComposer.tsx       # 评论发表框（访客/成员身份栏、回跳链接、字数与草稿保护）
-│   │   ├── NoteCommentCard.tsx           # 单条评论卡片（纯文本渲染、权限判定与行内二次确认删评）
+│   │   ├── NoteCommentCard.tsx           # 单条评论卡片（左头像右正文两列防溢出网格、纯文本渲染、权限判定与二次确认删评）
 │   │   ├── WaterfallGallery.tsx          # 获奖证书瀑布流画廊（携带 state.from 跳转看图页）
 │   │   ├── NotesPreview.tsx              # 札记列表卡片组件（支持主页可点击居中标题与栏目页静态标题）
 │   │   └── PlatformStage.tsx             # 二级外链平台舞台组件
@@ -163,7 +165,7 @@ npm run dev
 浏览器打开终端输出的本地地址（默认 `http://localhost:5173/` 或 `http://localhost:5173/blog/cc-source-analysis`）：
 
 - **全站顶栏三种状态与 `/awards` 画廊体验**：在首页 `/`、`/blog`、`/vlog`、`/awards` 顶部均可看到统一顶栏（加载态骨架 → 未登录态右侧显示带当前路径 `next` 的「登录」入口）；从首页点击「证书画廊」标题或顶栏导航进入 `/awards`，点开任意证书进入沉浸式 `/viewer`（此时顶栏自动隐藏），翻页后关闭仍准确返回 `/awards`。
-- **顶栏登录、账号设置（`/accounts/settings/`）改名选色与退出体验**：在任意页面点击顶栏右上角「登录」，使用上一步创建的 `admin@local.test` 登录后自动回跳原页面，顶栏右侧切换为 32px 首字母圆形头像；悬停或点击头像展开面板，点击「设置」进入 `/accounts/settings/` 修改公开昵称并从「自动 + 8 种深色调色板」中选择头像底色，保存后顶部出现「已保存」toast，点击「← 返回原页面」，可见顶栏头像首字母与底色、评论框身份栏及该账号全部历史评论署名即时同步更新；再次展开面板点击「退出登录」（`POST /accounts/logout/`）即可回到原页面并恢复未登录「登录」状态。
+- **顶栏登录、账号设置（`/accounts/settings/`）改名选色与退出体验**：在任意页面点击顶栏右上角「登录」，使用上一步创建的 `admin@local.test` 登录后自动回跳原页面，顶栏右侧切换为 32px 首字母圆形头像；悬停或点击头像展开面板，点击「设置」进入 `/accounts/settings/` 修改公开昵称并从「自动 + 8 种深色调色板」中选择头像底色，保存后顶部出现「已保存」toast，点击「← 返回原页面」，可见顶栏头像首字母与底色、评论框身份栏及该账号全部历史评论署名即时同步更新，历史评论的头像底色随之同步；再次展开面板点击「退出登录」（`POST /accounts/logout/`）即可回到原页面并恢复未登录「登录」状态。
 - **访客直发体验**：未登录状态下在 `/blog/cc-source-analysis` 底部评论框输入内容点击「发表评论」，即可看到以「未登录用户」身份写入 SQLite 并即时展示；重启 `runserver` 后刷新页面评论依然存在。
 - **自助注册与本地验证信查看**：点击登录页或评论区「注册」提交邮箱、公开昵称与密码后，验证邮件会自动写入 `site/server/var/mail/` 目录；打开最新邮件文件中的 `http://localhost:5173/accounts/confirm-email/.../` 链接确认后自动跳回登录页并显示「邮箱已确认，请登录。」toast，登录后即可回跳原页面署名发言并删除本人评论。
 - **站主全站管理体验**：使用 `admin@local.test` 登录后，可在任意札记页逐条删除访客或成员评论，也可访问 `http://localhost:5173/admin/` 进入后台跨札记检索管理。
@@ -176,13 +178,13 @@ npm run dev
 在 `site/` 目录下可执行以下完整验证套件：
 
 ```bash
-# 1. 前端静态检查、类型检查、组件单元测试（30 files / 221 tests）与生产构建
+# 1. 前端静态检查、类型检查、组件单元测试与生产构建
 npm run lint
 npm run type-check
 npx vitest run
 npm run build
 
-# 2. 后端 Django 配置检查、迁移一致性校验与单元/集成测试（105 tests）
+# 2. 后端 Django 配置检查、迁移一致性校验与单元/集成测试
 .venv/bin/python server/manage.py check
 .venv/bin/python server/manage.py makemigrations --check --dry-run
 .venv/bin/python server/manage.py test --verbosity 2
