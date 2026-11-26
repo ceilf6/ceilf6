@@ -440,7 +440,9 @@
       <script>
         document.querySelector(".auth-toasts")?.addEventListener("click", function (ev) {
           var btn = ev.target && ev.target.closest ? ev.target.closest(".auth-toast-close") : null;
-          if (btn) btn.closest(".auth-toast").hidden = true;
+          if (!btn) return;
+          if (document.activeElement === btn) btn.blur();
+          btn.closest(".auth-toast").hidden = true;
         });
       </script>
     {% endif %}

@@ -16,7 +16,8 @@ from django.contrib.sessions.backends.db import SessionStore
 from django.core import mail
 from django.core.cache import cache
 from django.http import HttpRequest
-from django.test import Client, RequestFactory, TestCase
+from django.template.loader import render_to_string
+from django.test import Client, RequestFactory, TestCase, override_settings
 from django.urls import resolve
 
 from accounts.forms import AccountSignupForm, ProfileSettingsForm
@@ -49,23 +50,25 @@ def _strip_style_blocks(html: str) -> str:
     return STYLE_BLOCK_RE.sub("", html)
 
 
+def _extract_css_block(css: str, header_regex: str) -> str | None:
+    """Extract a balanced {...} CSS block without coupling to indentation."""
+    match = re.search(header_regex + r"\s*\{", css)
+    if not match:
+        return None
+    depth = 1
+    idx = match.end()
+    start = idx
+    while idx < len(css) and depth > 0:
+        if css[idx] == "{":
+            depth += 1
+        elif css[idx] == "}":
+            depth -= 1
+        idx += 1
+    return css[start : idx - 1] if depth == 0 else None
+
+
 VOID_HTML_TAGS = frozenset(
-    {
-        "area",
-        "base",
-        "br",
-        "col",
-        "embed",
-        "hr",
-        "img",
-        "input",
-        "link",
-        "meta",
-        "param",
-        "source",
-        "track",
-        "wbr",
-    }
+    {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 )
 
 
@@ -82,26 +85,15 @@ class _FeedbackDOMParser(HTMLParser):
         self._active_toast_idx: int | None = None
         self._active_alert_idx: int | None = None
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attr_map = dict(attrs)
         classes = set((attr_map.get("class") or "").split())
         ancestor_tags = [t for t, _ in self.stack]
-        ancestor_classes = {
-            cls
-            for _, a in self.stack
-            for cls in (a.get("class") or "").split()
-        }
+        ancestor_classes = {cls for _, a in self.stack for cls in (a.get("class") or "").split()}
 
         if "auth-toasts" in classes:
             self.toast_containers.append(
-                {
-                    "tag": tag,
-                    "attrs": attr_map,
-                    "ancestor_tags": ancestor_tags,
-                    "ancestor_classes": ancestor_classes,
-                }
+                {"tag": tag, "attrs": attr_map, "ancestor_tags": ancestor_tags, "ancestor_classes": ancestor_classes}
             )
         if "auth-toast" in classes:
             self._active_toast_idx = len(self.toasts)
@@ -116,56 +108,28 @@ class _FeedbackDOMParser(HTMLParser):
                 }
             )
         if "auth-toast-icon" in classes and self._active_toast_idx is not None:
-            self.toasts[self._active_toast_idx]["has_check_icon"] = (
-                attr_map.get("aria-hidden") == "true"
-            )
+            self.toasts[self._active_toast_idx]["has_check_icon"] = attr_map.get("aria-hidden") == "true"
         if "auth-toast-close" in classes:
-            self.close_buttons.append(
-                {
-                    "tag": tag,
-                    "attrs": attr_map,
-                    "inside_toast": self._active_toast_idx is not None,
-                }
-            )
+            self.close_buttons.append({"tag": tag, "attrs": attr_map, "inside_toast": self._active_toast_idx is not None})
             if self._active_toast_idx is not None:
                 self.toasts[self._active_toast_idx]["has_close_button"] = True
-
         if "auth-error-box" in classes:
             self._active_alert_idx = len(self.alert_boxes)
             self.alert_boxes.append(
-                {
-                    "tag": tag,
-                    "attrs": attr_map,
-                    "ancestor_tags": ancestor_tags,
-                    "ancestor_classes": ancestor_classes,
-                    "text_parts": [],
-                }
+                {"tag": tag, "attrs": attr_map, "ancestor_tags": ancestor_tags, "ancestor_classes": ancestor_classes, "text_parts": []}
             )
-
         if tag.lower() not in VOID_HTML_TAGS:
             self.stack.append((tag, attr_map))
 
     def handle_data(self, data: str) -> None:
-        in_close_btn = any(
-            "auth-toast-close" in (a.get("class") or "").split()
-            for _, a in self.stack
-        )
-        in_icon = any(
-            "auth-toast-icon" in (a.get("class") or "").split()
-            for _, a in self.stack
-        )
-        if (
-            self._active_toast_idx is not None
-            and not in_close_btn
-            and not in_icon
-        ):
+        in_close = any("auth-toast-close" in (a.get("class") or "").split() for _, a in self.stack)
+        in_icon = any("auth-toast-icon" in (a.get("class") or "").split() for _, a in self.stack)
+        if self._active_toast_idx is not None and not in_close and not in_icon:
             parts = self.toasts[self._active_toast_idx]["text_parts"]
             assert isinstance(parts, list)
             parts.append(data)
         if self._active_alert_idx is not None:
-            alert_parts = self.alert_boxes[self._active_alert_idx][
-                "text_parts"
-            ]
+            alert_parts = self.alert_boxes[self._active_alert_idx]["text_parts"]
             assert isinstance(alert_parts, list)
             alert_parts.append(data)
 
@@ -597,13 +561,12 @@ class AccountFeedbackMessagesTests(TestCase):
         )
 
         # 3) prefers-reduced-motion never uses animation: none and uses step-end keyframes
-        reduced_match = re.search(
-            r"@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)\s*\{(.*?)\n    \}",
+        reduced_block = _extract_css_block(
             css,
-            re.DOTALL,
+            r"@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)",
         )
-        self.assertIsNotNone(reduced_match)
-        reduced_block = reduced_match.group(1)
+        self.assertIsNotNone(reduced_block)
+        assert reduced_block is not None
         self.assertNotIn("animation: none", reduced_block)
         self.assertNotIn("animation:none", reduced_block)
         self.assertIn(".auth-toast", reduced_block)
@@ -685,6 +648,22 @@ class AccountFeedbackMessagesTests(TestCase):
             {"account_toasts": [], "account_alerts": []},
         )
 
+        # Lazy evaluation: rendering non-HTML message/email templates on /accounts/ never consumes queued messages
+        lazy_req = rf.post("/accounts/password/reset/")
+        lazy_storage = _attach_session_and_messages(lazy_req)
+        messages.success(lazy_req, "操作已完成。")
+        rendered_txt = render_to_string(
+            "account/messages/password_changed.txt",
+            {},
+            request=lazy_req,
+        )
+        self.assertEqual(rendered_txt.strip(), "密码已更新。")
+        self.assertFalse(lazy_storage.used)
+        self.assertEqual(
+            [str(m) for m in messages.get_messages(lazy_req)],
+            ["操作已完成。"],
+        )
+
     # --- Group 3: Items 11-14 (Password reset redirect & toast, email confirm toast) ---
 
     def test_11_password_reset_flow_lands_on_login_with_single_toast_and_password_change_matches(
@@ -740,17 +719,18 @@ class AccountFeedbackMessagesTests(TestCase):
         self.assertEqual(login_res.status_code, 302)
         self.assertEqual(login_res["Location"], "/")
 
-        # Authenticated password change also renders the unified "密码已更新。" toast
+        # Authenticated password change (even with ACCOUNT_EMAIL_NOTIFICATIONS=True) renders the toast
         third_pw = gen_test_credential()
-        change_res = self.client.post(
-            "/accounts/password/change/",
-            data={
-                "oldpassword": new_pw,
-                _PW1_KEY: third_pw,
-                _PW2_KEY: third_pw,
-            },
-            follow=True,
-        )
+        with override_settings(ACCOUNT_EMAIL_NOTIFICATIONS=True):
+            change_res = self.client.post(
+                "/accounts/password/change/",
+                data={
+                    "oldpassword": new_pw,
+                    _PW1_KEY: third_pw,
+                    _PW2_KEY: third_pw,
+                },
+                follow=True,
+            )
         self.assertEqual(change_res.status_code, 200)
         change_dom = _parse_dom(change_res.content.decode("utf-8"))
         change_toasts = [
@@ -759,6 +739,21 @@ class AccountFeedbackMessagesTests(TestCase):
         ]
         self.assertEqual(change_toasts, ["密码已更新。"])
         self.assertNotEqual(old_pw, third_pw)
+
+        # Pre-existing queued message survives POST /accounts/password/reset/ mail rendering
+        self.client.logout()
+        _seed_client_messages(self.client, [(messages.SUCCESS, "操作已完成。")])
+        self.assertEqual(
+            self.client.post(
+                "/accounts/password/reset/",
+                data={"email": user.email},
+            ).status_code,
+            302,
+        )
+        reset_done_html = self.client.get(
+            "/accounts/password/reset/done/"
+        ).content.decode("utf-8")
+        self.assertIn("操作已完成。", reset_done_html)
 
     def test_12_password_reset_done_endpoint_redirects_get_validates_next_and_405s_post(
         self,
@@ -812,18 +807,15 @@ class AccountFeedbackMessagesTests(TestCase):
         target_needle = "password_reset_from_key_done.html"
         this_file = Path(__file__).resolve()
         skip_dirs = {".venv", "node_modules", "dist", "__pycache__", "var", "staticfiles"}
+        text_suffixes = {".py", ".html", ".txt", ".md", ".ts", ".tsx", ".js", ".mjs", ".css", ".sh", ".json"}
 
         offending: list[str] = []
         for path in site_root.rglob("*"):
             if any(part in skip_dirs for part in path.parts):
                 continue
-            if not path.is_file() or path.resolve() == this_file:
+            if not path.is_file() or path.suffix not in text_suffixes or path.resolve() == this_file:
                 continue
-            try:
-                content = path.read_text(encoding="utf-8")
-            except UnicodeDecodeError:
-                continue
-            if target_needle in content:
+            if target_needle in path.read_text(encoding="utf-8"):
                 offending.append(str(path.relative_to(site_root)))
 
         self.assertEqual(offending, [])
@@ -867,6 +859,32 @@ class AccountFeedbackMessagesTests(TestCase):
         plain_login = self.client.get("/accounts/login/").content.decode("utf-8")
         self.assertNotIn("邮箱已确认，请登录。", plain_login)
         self.assertNotIn('class="auth-toasts"', plain_login)
+
+        # Failed confirmation (email already verified by another user) never shows confirmed=1 toast
+        rival_user = User.objects.create_user(
+            "u_rival_14", "rival-temp@example.com", gen_test_credential()
+        )
+        stale_email = EmailAddress.objects.create(
+            user=rival_user, email="anon-confirm@example.com", verified=False
+        )
+        stale_key = get_emailconfirmation_model()(stale_email).key
+        conflict_res = self.client.post(
+            f"/accounts/confirm-email/{stale_key}/", follow=True
+        )
+        self.assertEqual(
+            conflict_res.redirect_chain, [("/accounts/login/", 302)]
+        )
+        conflict_html = conflict_res.content.decode("utf-8")
+        self.assertNotIn("邮箱已确认，请登录。", conflict_html)
+        self.assertNotIn("anon-confirm@example.com", conflict_html)
+        self.assertNotIn("@", _strip_style_blocks(conflict_html))
+        conflict_dom = _parse_dom(conflict_html)
+        self.assertEqual(conflict_dom.toasts, [])
+        self.assertEqual(len(conflict_dom.alert_boxes), 1)
+        self.assertIn(
+            "该邮箱地址已被其他账号验证",
+            "".join(conflict_dom.alert_boxes[0]["text_parts"]),  # type: ignore[arg-type]
+        )
 
     # --- Group 4: Items 15-17 (Settings blank nickname initial & placeholder) ---
 

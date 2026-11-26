@@ -4,13 +4,12 @@ from __future__ import annotations
 
 from django.contrib import messages
 from django.http import HttpRequest
+from django.utils.functional import SimpleLazyObject
 
 
-def account_feedback(request: HttpRequest) -> dict[str, list[str]]:
-    """Filter and split messages for /accounts/ routes without consuming messages elsewhere."""
-    if not request.path.startswith("/accounts/"):
-        return {}
-
+def _resolve_account_feedback(
+    request: HttpRequest,
+) -> tuple[list[str], list[str]]:
     account_toasts: list[str] = []
     account_alerts: list[str] = []
 
@@ -33,7 +32,23 @@ def account_feedback(request: HttpRequest) -> dict[str, list[str]]:
         ):
             account_toasts.append("邮箱已确认，请登录。")
 
+    return account_toasts, account_alerts
+
+
+def account_feedback(request: HttpRequest) -> dict[str, object]:
+    """Lazily filter and split messages for /accounts/ HTML pages without premature consumption."""
+    if not request.path.startswith("/accounts/"):
+        return {}
+
+    resolved: tuple[list[str], list[str]] | None = None
+
+    def _ensure_resolved() -> tuple[list[str], list[str]]:
+        nonlocal resolved
+        if resolved is None:
+            resolved = _resolve_account_feedback(request)
+        return resolved
+
     return {
-        "account_toasts": account_toasts,
-        "account_alerts": account_alerts,
+        "account_toasts": SimpleLazyObject(lambda: _ensure_resolved()[0]),
+        "account_alerts": SimpleLazyObject(lambda: _ensure_resolved()[1]),
     }

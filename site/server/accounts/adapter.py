@@ -9,11 +9,13 @@ from allauth.account.adapter import DefaultAccountAdapter
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.http import HttpRequest
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 
 from accounts.models import normalize_display_name
 
 if TYPE_CHECKING:
+    from allauth.account.models import EmailAddress
     from django.forms import BaseForm
 
 
@@ -87,6 +89,15 @@ class AccountAdapter(DefaultAccountAdapter):
             extra_tags=extra_tags,
             message=message,
         )
+
+    def get_email_verification_redirect_url(
+        self, email_address: EmailAddress
+    ) -> str:
+        if not getattr(email_address, "verified", False):
+            if self.request.user.is_authenticated:
+                return reverse("account_settings")
+            return reverse("account_login")
+        return super().get_email_verification_redirect_url(email_address)
 
     def is_safe_url(self, url: str) -> bool:
         return is_safe_internal_redirect_url(url)
