@@ -45,7 +45,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   const requestSeqRef = useRef(0);
   const activeCtrlRef = useRef<AbortController | null>(null);
-  const lastFetchedAtRef = useRef<number>(Date.now());
+  const lastFetchedAtRef = useRef<number>(0);
+  const hasReadySessionRef = useRef(false);
 
   const refresh = useCallback(async (): Promise<ViewerSession | null> => {
     const seq = requestSeqRef.current + 1;
@@ -60,6 +61,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (seq !== requestSeqRef.current || ctrl.signal.aborted) {
         return null;
       }
+      hasReadySessionRef.current = true;
       lastFetchedAtRef.current = Date.now();
       setSession(next);
       setStatus("ready");
@@ -68,8 +70,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (seq !== requestSeqRef.current || isAbortLike(error, ctrl.signal)) {
         return null;
       }
-      setSession(null);
-      setStatus("error");
+      if (!hasReadySessionRef.current) {
+        setSession(null);
+        setStatus("error");
+      }
       return null;
     } finally {
       if (activeCtrlRef.current === ctrl) {
@@ -82,6 +86,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     requestSeqRef.current += 1;
     activeCtrlRef.current?.abort();
     activeCtrlRef.current = null;
+    hasReadySessionRef.current = true;
     lastFetchedAtRef.current = Date.now();
     setSession(nextSession);
     setStatus("ready");
