@@ -52,7 +52,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.1rem;
+      padding: 4.25rem 1.1rem 2rem;
     }
 
     .auth-shell {
@@ -134,11 +134,8 @@
     }
 
     .auth-toast {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
       max-width: 100%;
-      padding: 0.62rem 0.72rem 0.62rem 0.9rem;
+      padding: 0.62rem 1.1rem;
       border-radius: 12px;
       background: rgba(13, 22, 44, 0.92);
       border: 1px solid var(--info-border);
@@ -148,59 +145,14 @@
       color: var(--text-main);
       font-size: 0.88rem;
       line-height: 1.45;
+      text-align: center;
+      overflow-wrap: anywhere;
       pointer-events: auto;
       animation: auth-toast-lifecycle 4.5s ease forwards;
     }
 
-    .auth-toast:hover,
-    .auth-toast:focus-within {
+    .auth-toast:hover {
       animation-play-state: paused;
-    }
-
-    .auth-toast[hidden] {
-      display: none !important;
-    }
-
-    .auth-toast-icon {
-      color: var(--accent-gold);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .auth-toast-text {
-      min-width: 0;
-      overflow-wrap: anywhere;
-    }
-
-    .auth-toast-close {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      margin-left: 0.15rem;
-      padding: 0;
-      border: 0;
-      border-radius: 6px;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1;
-      font-family: inherit;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: color 0.15s ease, background-color 0.15s ease;
-    }
-
-    .auth-toast-close:hover,
-    .auth-toast-close:focus-visible {
-      color: var(--accent-gold);
-      background: rgba(255, 192, 105, 0.14);
-    }
-
-    .auth-toast-close:focus-visible {
-      outline: 2px solid var(--accent-gold);
-      outline-offset: 1px;
     }
 
     @keyframes auth-toast-lifecycle {
@@ -219,7 +171,6 @@
         opacity: 0;
         transform: translateY(-4px);
         visibility: hidden;
-        pointer-events: none;
       }
     }
 
@@ -231,7 +182,6 @@
       100% {
         opacity: 0;
         visibility: hidden;
-        pointer-events: none;
       }
     }
 
@@ -396,7 +346,7 @@
 
     @media (max-width: 480px) {
       body {
-        padding: 1.2rem 0.85rem;
+        padding: 4.25rem 0.85rem 1.2rem;
       }
 
       .auth-card {
@@ -430,21 +380,9 @@
     {% if account_toasts %}
       <div class="auth-toasts" role="status" aria-live="polite">
         {% for toast in account_toasts %}
-          <div class="auth-toast">
-            <span class="auth-toast-icon" aria-hidden="true">✓</span>
-            <span class="auth-toast-text">{{ toast }}</span>
-            <button type="button" class="auth-toast-close" aria-label="关闭提示">×</button>
-          </div>
+          <div class="auth-toast">{{ toast }}</div>
         {% endfor %}
       </div>
-      <script>
-        document.querySelector(".auth-toasts")?.addEventListener("click", function (ev) {
-          var btn = ev.target && ev.target.closest ? ev.target.closest(".auth-toast-close") : null;
-          if (!btn) return;
-          if (document.activeElement === btn) btn.blur();
-          btn.closest(".auth-toast").hidden = true;
-        });
-      </script>
     {% endif %}
   {% endblock %}
   {% block extra_body %}{% endblock %}
