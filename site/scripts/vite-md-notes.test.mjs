@@ -192,3 +192,27 @@ test("以 .. 开头的普通文件名不算越界:/notes/..draft.webp 缺失照�
   writeFileSync(md, "---\ntitle: 点\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/..draft.webp)");
   assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
 });
+
+test("已识别格式但文件损坏(截断的 PNG)→ 构建期 fail loud,不当作不支持格式放过", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "q"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "q", "bad.png"), pngHeader(10, 10).subarray(0, 12));
+  const md = join(dir, "q.md");
+  writeFileSync(md, "---\ntitle: 损\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/q/bad.png)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/q/bad.png"),
+  );
+});
+
+test("图片路径含非法百分号编码 → 报错带札记路径与图片地址", () => {
+  const md = join(notesDir(), "r.md");
+  writeFileSync(md, "---\ntitle: 码\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/100%.webp)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/100%.webp"),
+  );
+});

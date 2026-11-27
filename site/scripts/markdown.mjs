@@ -32,8 +32,11 @@ const HR = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
     写入 width/height 让浏览器预留版面、避免加载时跳动。图片块(单图/gallery)另带
     宽高比 --r:gallery 按 --r 分配 flex 宽度,使宽高比不同的图并排时同一行等高;
     单图据此限高,长截图不至于撑满一屏。 */
+// 宽高须为正数才算已知尺寸:损坏文件头读出 0 会让 --r 变成 Infinity/NaN
+const validSize = (s) => (s && s.width > 0 && s.height > 0 ? s : null);
+
 function imgTag(alt, src, opts, inBlock = false) {
-  const size = opts.imageSize?.(src) ?? null;
+  const size = validSize(opts.imageSize?.(src));
   let attrs = `alt="${esc(alt)}" src="${esc(src)}"`;
   if (size) {
     attrs += ` width="${size.width}" height="${size.height}"`;
@@ -48,7 +51,7 @@ function imageBlock(lines, opts) {
     return `<figure class="note-figure">${imgTag(imgs[0][1], imgs[0][2], opts, true)}</figure>`;
   }
   // 按宽高比分配宽度才能保证等高:组内有任一图取不到尺寸(外链/SVG)就不并排,逐张单图块
-  if (!imgs.every((m) => opts.imageSize?.(m[2]))) {
+  if (!imgs.every((m) => validSize(opts.imageSize?.(m[2])))) {
     return imgs
       .map((m) => `<figure class="note-figure">${imgTag(m[1], m[2], opts, true)}</figure>`)
       .join("\n");

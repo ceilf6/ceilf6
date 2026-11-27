@@ -172,3 +172,12 @@ test("compileNote = frontmatter + html", () => {
   assert.equal(meta.title, "甲");
   assert.equal(html, "<h2>见</h2>");
 });
+
+test("尺寸为 0 视为未知:不写宽高与 --r(防 Infinity/NaN),多图组也不并排", () => {
+  const imageSize = (src) => (src === "z.png" ? { width: 100, height: 0 } : { width: 400, height: 300 });
+  assert.equal(
+    mdToHtml("![零](z.png)", { imageSize }),
+    '<figure class="note-figure"><img alt="零" src="z.png" loading="lazy"></figure>',
+  );
+  assert.ok(!mdToHtml("![甲](a.png)\n![零](z.png)", { imageSize }).includes("note-gallery"));
+});

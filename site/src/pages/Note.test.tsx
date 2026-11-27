@@ -215,4 +215,13 @@ describe("Note 配图点击放大", () => {
     fireEvent.click(toggle);
     expect(screen.getByRole("dialog")).not.toHaveClass("is-full");
   });
+
+  it("空 alt 的配图:放大入口与弹层都有兜底的可访问名称", async () => {
+    at("/blog/a");
+    await settle(() =>
+      inflight.get("a")!.resolve('<figure class="note-figure"><img alt="" src="/e.webp"></figure>'),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "查看大图" }));
+    expect(screen.getByRole("dialog", { name: "查看配图" })).toBeInTheDocument();
+  });
 });

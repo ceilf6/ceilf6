@@ -84,7 +84,7 @@ export default function Note() {
       // 放大入口:可聚焦 + 按钮角色 + 描述操作的名称,屏幕阅读器能知道这张图可以点开
       img.tabIndex = 0;
       img.setAttribute("role", "button");
-      img.setAttribute("aria-label", `查看大图：${img.alt}`);
+      img.setAttribute("aria-label", img.alt ? `查看大图：${img.alt}` : "查看大图");
     });
   }, [bodyHtml]);
 
@@ -152,7 +152,7 @@ export default function Note() {
             className={`note-zoom${zoom.full ? " is-full" : ""}`}
             role="dialog"
             aria-modal="true"
-            aria-label={zoom.alt}
+            aria-label={zoom.alt || "查看配图"}
             ref={dialogRef}
             onClick={closeZoom}
           >

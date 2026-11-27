@@ -18,7 +18,12 @@ function publicImageSize(file) {
   const publicDir = file.replace(/\/content\/notes\/[^/]+\.md$/, "/public");
   return (src) => {
     if (!src.startsWith("/") || src.startsWith("//")) return null;
-    const pathname = decodeURI(src.split(/[?#]/)[0]);
+    let pathname;
+    try {
+      pathname = decodeURI(src.split(/[?#]/)[0]);
+    } catch {
+      throw new Error(`md-notes: ${file} 引用的图片路径编码非法: ${src}`);
+    }
     const target = resolve(publicDir, `.${pathname}`);
     if (!inside(publicDir, target)) {
       throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
@@ -40,8 +45,13 @@ function publicImageSize(file) {
     const buf = readFileSync(real); // 读取错误照常抛出,只放过下面的格式识别失败
     try {
       return readImageSize(buf);
-    } catch {
-      return null; // 读取器不支持的格式(如 SVG)不写尺寸,照常输出
+    } catch (err) {
+      // 只有读取器明确不认识的格式(如 SVG)才不写尺寸、照常输出;
+      // 已识别格式却解析失败(文件截断/损坏)说明上线后会是断图,构建失败
+      if (err instanceof Error && err.message === "Unsupported image format") return null;
+      throw new Error(`md-notes: ${file} 引用的站内图片无法解析(文件可能损坏): ${src}`, {
+        cause: err,
+      });
     }
   };
 }
