@@ -88,7 +88,8 @@ function pngHeader(width, height) {
   buf.write("IHDR", 12, "ascii");
   buf.writeUInt32BE(width, 16);
   buf.writeUInt32BE(height, 20);
-  return buf;
+  // 结尾补 IEND 块:读取器会校验文件是否完整
+  return Buffer.concat([buf, Buffer.from("0000000049454e44ae426082", "hex")]);
 }
 
 test("站内图片:从 <site>/public 读取尺寸写入 width/height,gallery 带 --r", () => {

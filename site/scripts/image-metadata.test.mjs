@@ -78,3 +78,26 @@ test("readImageSize 区分未知格式与已识别但截断的文件", () => {
   // GIF 头不全
   assert.throws(() => readImageSize(Buffer.from("GIF89a\x01")), /Corrupt GIF/);
 });
+
+test("readImageSize 拒绝头部完好但数据缺失的文件(尾部/声明长度校验)", () => {
+  // WebP:VP8X 头完整(1600×1200),RIFF 声明总长远大于实际字节数
+  const vp8x = Buffer.alloc(30);
+  vp8x.write("RIFF", 0, "ascii");
+  vp8x.writeUInt32LE(219712, 4);
+  vp8x.write("WEBPVP8X", 8, "ascii");
+  vp8x.writeUIntLE(1599, 24, 3);
+  vp8x.writeUIntLE(1199, 27, 3);
+  assert.throws(() => readImageSize(vp8x), /Corrupt WebP/);
+  // 声明长度与实际一致时照常读出尺寸
+  vp8x.writeUInt32LE(22, 4);
+  assert.deepEqual(readImageSize(vp8x), { width: 1600, height: 1200 });
+  // PNG:IHDR 完整但缺 IEND
+  const png = Buffer.alloc(33);
+  Buffer.from("89504e470d0a1a0a0000000d49484452", "hex").copy(png, 0);
+  png.writeUInt32BE(10, 16);
+  png.writeUInt32BE(20, 20);
+  assert.throws(() => readImageSize(png), /Corrupt PNG/);
+  // JPEG:SOF 完整但没有以 EOI(FFD9)结尾
+  const jpeg = Buffer.from("ffd8ffc0001108000a001403012200021101031101ffda", "hex");
+  assert.throws(() => readImageSize(jpeg), /Corrupt JPEG/);
+});

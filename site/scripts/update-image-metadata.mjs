@@ -17,6 +17,8 @@ function readPngSize(buffer) {
   const pngSignature = "89504e470d0a1a0a";
   if (buffer.subarray(0, 8).toString("hex") !== pngSignature) return null;
   if (buffer.length < 24) throw corrupt("PNG");
+  // 完整的 PNG 以 IEND 块收尾(4 字节长度 + "IEND" + 4 字节 CRC)
+  if (buffer.subarray(-8, -4).toString("ascii") !== "IEND") throw corrupt("PNG");
 
   return {
     width: buffer.readUInt32BE(16),
@@ -58,6 +60,10 @@ function readJpegSize(buffer) {
 
     if (isStartOfFrame) {
       if (offset + 7 > buffer.length) throw corrupt("JPEG");
+      // 完整的 JPEG 以 EOI(FFD9)收尾;个别编码器会在末尾补 0x00,先去掉
+      let end = buffer.length;
+      while (end > 0 && buffer[end - 1] === 0x00) end -= 1;
+      if (end < 2 || buffer[end - 2] !== 0xff || buffer[end - 1] !== 0xd9) throw corrupt("JPEG");
       return {
         width: buffer.readUInt16BE(offset + 5),
         height: buffer.readUInt16BE(offset + 3),
@@ -83,6 +89,8 @@ function readWebpSize(buffer) {
   // 各分支读取的最远字节:VP8X 到 30、VP8L 到 25、VP8 到 30;不足即截断
   const need = { VP8X: 30, VP8L: 25, "VP8 ": 30 }[chunkType];
   if (!need || buffer.length < need) throw corrupt("WebP");
+  // RIFF 头声明的数据长度(不含开头 8 字节)超出实际字节数:文件后半截缺失
+  if (buffer.readUInt32LE(4) + 8 > buffer.length) throw corrupt("WebP");
   if (chunkType === "VP8X") {
     return {
       width: readUint24LE(buffer, 24) + 1,
