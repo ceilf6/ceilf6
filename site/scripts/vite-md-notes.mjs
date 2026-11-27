@@ -1,11 +1,12 @@
-import { existsSync, readFileSync, realpathSync } from "node:fs";
-import { isAbsolute, relative, resolve } from "node:path";
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { compileNote } from "./markdown.mjs";
 import { readImageSize } from "./update-image-metadata.mjs";
 
 const inside = (root, p) => {
   const r = relative(root, p);
-  return r !== "" && !r.startsWith("..") && !isAbsolute(r);
+  // 按完整路径段判断:..draft.webp 是普通文件名,不是上级目录
+  return r !== "" && r !== ".." && !r.startsWith(`..${sep}`) && !isAbsolute(r);
 };
 
 /** 站内绝对路径图片 → 读 <site>/public 下的文件头取尺寸;外链返回 null 不写尺寸。
@@ -33,8 +34,12 @@ function publicImageSize(file) {
     if (!inside(realpathSync(publicDir), real)) {
       throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
     }
+    if (!statSync(real).isFile()) {
+      throw new Error(`md-notes: ${file} 引用的站内图片不是文件: ${src}`);
+    }
+    const buf = readFileSync(real); // 读取错误照常抛出,只放过下面的格式识别失败
     try {
-      return readImageSize(readFileSync(real));
+      return readImageSize(buf);
     } catch {
       return null; // 读取器不支持的格式(如 SVG)不写尺寸,照常输出
     }

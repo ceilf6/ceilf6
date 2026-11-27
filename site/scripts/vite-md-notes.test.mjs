@@ -176,3 +176,19 @@ test("缺图判定按规范化路径:/assets/../notes/缺图 同样构建失败"
   writeFileSync(md, "---\ntitle: 绕\ndate: 2026-11-27\nsummary: s\n---\n![x](/assets/../notes/no-such.webp)");
   assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
 });
+
+test("图片地址误指目录 → 构建期 fail loud(读取错误不被吞掉)", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public", "notes", "dir"), { recursive: true });
+  const md = join(dir, "o.md");
+  writeFileSync(md, "---\ntitle: 目\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/dir)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("/notes/dir"));
+});
+
+test("以 .. 开头的普通文件名不算越界:/notes/..draft.webp 缺失照样报缺图", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public", "notes"), { recursive: true });
+  const md = join(dir, "p.md");
+  writeFileSync(md, "---\ntitle: 点\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/..draft.webp)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
+});

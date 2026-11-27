@@ -203,14 +203,13 @@ describe("Note 配图点击放大", () => {
     await ready();
     fireEvent.click(screen.getByAltText("甲"));
     const dialog = screen.getByRole("dialog", { name: "甲" });
-    const toggle = screen.getByRole("button", { name: "查看原尺寸" });
+    const toggle = screen.getByRole("button", { name: "原尺寸" });
     expect(toggle).toHaveAttribute("aria-pressed", "false");
     expect(toggle.querySelector("img")).toHaveAttribute("src", "/a.webp");
     fireEvent.click(toggle);
     expect(dialog).toHaveClass("is-full");
-    const back = screen.getByRole("button", { name: "适应屏幕" });
-    expect(back).toHaveAttribute("aria-pressed", "true");
-    fireEvent.click(back);
+    expect(screen.getByRole("button", { name: "原尺寸" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(toggle);
     expect(screen.getByRole("dialog")).not.toHaveClass("is-full");
   });
 });

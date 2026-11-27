@@ -159,7 +159,7 @@ export default function Note() {
               type="button"
               className="note-zoom-toggle"
               aria-pressed={zoom.full}
-              aria-label={zoom.full ? "适应屏幕" : "查看原尺寸"}
+              aria-label="原尺寸"
               onClick={(e) => {
                 e.stopPropagation();
                 setZoom((z) => z && { ...z, full: !z.full });
