@@ -12,18 +12,18 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 ## 一、走出课堂
 
-![上海大学图书馆书香谷的穹顶](/notes/one-step-at-a-time/01-library-dome.webp)
+![上海大学图书馆书香谷的穹顶](/notes/student/01-library-dome.webp)
 
 大一刚进校时其实很迷茫，并不知道未来要往哪个方向走。按照培养计划，每天的课表都排得满满当当，但真正能学进去的东西却很有限，坐在教室里看着时间一点点消耗在听老师念 PPT 上，总觉得心里发慌。
 
 于是我索性走出课堂，能逃的课基本都逃了，一头扎进图书馆去学自己真正想学的、觉得有用的东西。
 
-![大一穿着西装站在中欧工程技术学院的背景墙前](/notes/one-step-at-a-time/02-utseus-suit.webp)
-![中欧新“声”荣誉证书与水晶奖杯](/notes/one-step-at-a-time/03-xinsheng-award.webp)
+![大一穿着西装站在中欧工程技术学院的背景墙前](/notes/student/02-utseus-suit.webp)
+![中欧新“声”荣誉证书与水晶奖杯](/notes/student/03-xinsheng-award.webp)
 
 那一年我也试着按大学生的常规路径折腾过：穿上略显生涩的正装参加学院评选，拿到了大学里的第一个奖项「中欧新“声”」——虽然只是院级荣誉、外部认可度或许没那么高，但在评选过程中确实从身边许多优秀的同学身上学到了很多。
 
-![SmartFruit 大创项目立项信息：从校级升到国家级](/notes/one-step-at-a-time/04-smartfruit-project.webp)
+![SmartFruit 大创项目立项信息：从校级升到国家级](/notes/student/04-smartfruit-project.webp)
 
 同时，我还拉上几个朋友组队立项，去打大学生创新创业竞赛。项目起初很顺利，一路从校级升到了国家级；可越往后走，我越发觉这类比赛有些偏离「实事求是」——比起把东西踏踏实实做出来，赛场上往往更看重**资源**与**汇报**……那种悬浮感让我越来越笃定：这样的校园生活，不是我想要的。
 
@@ -31,8 +31,8 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 ## 二、纯粹的快乐与第一次走出校园
 
-![证书墙](/notes/one-step-at-a-time/05-certificates.webp)
-![天梯赛「华山剑侠」队伍的机位纸条](/notes/one-step-at-a-time/06-ladder-seat-slip.webp)
+![证书墙](/notes/student/05-certificates.webp)
+![天梯赛「华山剑侠」队伍的机位纸条](/notes/student/06-ladder-seat-slip.webp)
 
 大二时，我靠着此前自学的底子通过了学校 ACM 集训队的选拔。现在回想起来，**那依然是我在大学里最快乐、最纯粹的一段时光**。每天都能沉浸在自己真正想做的事情上，把问题拆解成严密的算法逻辑、敲下代码、看着测试通过——那种纯粹靠思维解决问题的确定感，第一次让我看清了未来的方向。
 
@@ -40,7 +40,7 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 有了前两年的沉淀与认清边界后的清醒，大二春季学期一考完期末，我便决定走出校园去真实的工业界看看。起初对工程场景的知识几乎一窍不通，基本是边面试、边复盘、边现学，就这样闭关啃了一个月，最终收到了第一份实习——七牛云的 offer。
 
-![在七牛云会议室白板上画的分享模块设计](/notes/one-step-at-a-time/07-qiniu-whiteboard.webp)
+![在七牛云会议室白板上画的分享模块设计](/notes/student/07-qiniu-whiteboard.webp)
 
 在七牛云的那段日子每天都很开心：认识了一群合得来的好朋友，手头的工作可以 easy handle，每天还有 300 大洋进账，算是我推开工程世界大门最轻松愉快的一站。
 
@@ -48,7 +48,7 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 ## 三、双城奔波与 AI 初潮
 
-![美团工牌与黄色挂绳](/notes/one-step-at-a-time/08-meituan-badge.webp)
+![美团工牌与黄色挂绳](/notes/student/08-meituan-badge.webp)
 
 七牛的项目接近尾声时，我拿到了美团的 offer。大三秋季学期刚开学，我便飞往成都壹号大厦，参与美团内部财务系统的重构。
 
@@ -58,15 +58,15 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 更要命的是成都的饮食习惯和江浙沪实在不太一样，红油重辣之下，刚去那段时间几乎每天都在蹿稀……万幸的是在组里又遇到了一群极好的伙伴，白天一起干活摸鱼，晚上跟着 mentor 玩桌游、唱 KTV 或者去 98 小酌，硬是把异乡的紧绷熬成了热闹的烟火气。直到学校临近期末，我才在考前一周办了离职，乘夜航飞回上海速成课程应付考试。
 
-![期末前从成都夜航飞回上海](/notes/one-step-at-a-time/09-night-flight.webp)
+![期末前从成都夜航飞回上海](/notes/student/09-night-flight.webp)
 
 考完试回到老家，正好撞上 AI 开始大举「侵入」软件工程的初期。难得没有了学业与工作的纷扰，我窝在家里读了大量资料，密集写了一批开源工具与博客分享，GitHub 主页也是在那个冬天慢慢攒起来的。
 
-![那个冬天慢慢攒起来的 GitHub 主页](/notes/one-step-at-a-time/10-github-profile.webp)
+![那个冬天慢慢攒起来的 GitHub 主页](/notes/student/10-github-profile.webp)
 
 春节过后重新找实习，我一边面试一边啃 Chromium、Vue 等底层源码，越往深处学越发觉自己知道得太少，压力也随之大了起来。万幸那段时间跟爸妈待在一起，每天都能出门爬爬山、跟着家里人出去透透气，把紧绷的情绪一点点抚平。
 
-![和爸妈出门爬山时遇到的山雾凉亭与小狗](/notes/one-step-at-a-time/11-misty-pavilion.webp)
+![和爸妈出门爬山时遇到的山雾凉亭与小狗](/notes/student/11-misty-pavilion.webp)
 
 也是在这段边啃底层、边高频使用模型的日子里，我对 AI 在工程场景里的表现力有了切身体会：**在我看来，当大模型拥有足够充分的上下文，再配以恰当的 Harness 工程约束时，它在不少具体实现上的能力已经超过人了；人类继续深入学习，更多是为了自我价值的实现，以及在关键节点对大模型做纠偏。** 想明白这一点后，我把重心明显往 AI 工程化方向倾斜，也像当初打算法竞赛一样，重新去做自己真正想探索的事。
 
@@ -78,12 +78,12 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 ## 四、宇宙厂的五个月：301 亿 Token 与缩圈的寒意
 
-![网易游戏雷火实习录用通知书](/notes/one-step-at-a-time/12-netease-offer.webp)
-![字节跳动入职欢迎邮件](/notes/one-step-at-a-time/13-bytedance-offer.webp)
+![网易游戏雷火实习录用通知书](/notes/student/12-netease-offer.webp)
+![字节跳动入职欢迎邮件](/notes/student/13-bytedance-offer.webp)
 
 考完出来继续找暑期实习，手里留下了网易雷火和字节跳动两个 offer。彼时大家都管字节叫「宇宙厂」、国内第一梯队大厂，我便顺理成章地选了字节；只是从今年秋招最终开奖的情况倒推，网易反而比字节厚道不少——当然，这都是后话了。
 
-![拼多多提前批的面试邀请邮件](/notes/one-step-at-a-time/14-pdd-mails.webp)
+![拼多多提前批的面试邀请邮件](/notes/student/14-pdd-mails.webp)
 
 刚进字节时恰逢 27 届秋招提前批开启，起初我还边干活边面试，顺手拿到了拼多多提前批的 OC，但最终没走到意向书：一方面当时完全没想到今年行情会冷成这样，随口按前两年本科生的高档报了期望薪资，HR 就没再往下推进；另一方面 `11-11-6` 的作息确实不是人干的，我自己也不想再去争取。考虑到手里的 ByteIntern 本就是可转正实习，我索性停掉了外面的面试，全身心扑进组内工作里。
 
@@ -93,26 +93,26 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 翻看往届同学的转正文档大多是二三十个 MR，再加上 1-on-1 时 leader 也曾给过挺 solid 的评价，我一度以为留用已是稳操胜券。然而十月入秋，风向陡变，「缩圈」的寒意席卷而来，甚至传出大比例缩减名额的小道消息，落到最后便是无奈的没有 HC。
 
-![飞书主页：lastday 与 301.4 亿 token](/notes/one-step-at-a-time/15-lark-profile.webp)
-![离职时和良哥的聊天](/notes/one-step-at-a-time/16-mentor-chat.webp)
+![飞书主页：lastday 与 301.4 亿 token](/notes/student/15-lark-profile.webp)
+![离职时和良哥的聊天](/notes/student/16-mentor-chat.webp)
 
-![字节健身房累计 36 次自主训练](/notes/one-step-at-a-time/17-gym-checkins.webp)
-![字节工牌](/notes/one-step-at-a-time/18-bytedance-badge.webp)
+![字节健身房累计 36 次自主训练](/notes/student/17-gym-checkins.webp)
+![字节工牌](/notes/student/18-bytedance-badge.webp)
 
 于是只得收拾工位离职。说没有失落肯定是假的，但在这五个月里攒下的技术沉淀、跑过的 301 亿 Token、36 次健身房打卡，还有良哥与同事们一路的指导和认可，都是实打实留在身上的东西，剩下的也只能感慨一句缘分使然。
 
 离职前两天路过楼下，正巧撞见母校来访的签到立牌，上面写着「走进字节 · 走进企业 AI 化」。站在牌子前看了一眼，心里多少有些微妙的宿命感——一群人正满怀憧憬地走进企业看 AI 浪潮，而在这场浪潮一线折腾了小半年的我，正准备交还工牌转身赶往下一程。
 
-![母校来访的签到立牌：走进字节，走进企业 AI 化](/notes/one-step-at-a-time/19-sign-in-board.webp)
+![母校来访的签到立牌：走进字节，走进企业 AI 化](/notes/student/19-sign-in-board.webp)
 
 ---
 
 ## 五、终场哨前的突围
 
-![科大讯飞 2027 届校园招聘录用意向书](/notes/one-step-at-a-time/20-iflytek-offer.webp)
-![秋招末期和 HR 的沟通记录](/notes/one-step-at-a-time/21-hr-chat.webp)
+![科大讯飞 2027 届校园招聘录用意向书](/notes/student/20-iflytek-offer.webp)
+![秋招末期和 HR 的沟通记录](/notes/student/21-hr-chat.webp)
 
-![科大讯飞 Agent 研发工程师（Harness 方向）投递记录](/notes/one-step-at-a-time/22-iflytek-delivery.webp)
+![科大讯飞 Agent 研发工程师（Harness 方向）投递记录](/notes/student/22-iflytek-delivery.webp)
 
 没有退路，还得重返秋招战场。
 
@@ -124,7 +124,7 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 平心而论，今年的行情确实比往年冷清太多，连「毁意向」这种往届罕见的事在今年都层出不穷。时代大势面前，个体能做的更多是顺势而为；也正如爸妈常叮嘱我的那样——**身体永远是第一位**。这阵子我把规律健身养成了习惯，闲暇时也做些自己真正感兴趣的事：我一直挺喜欢音乐，最近捣鼓了一首 AI 音乐《雪化之前》（发在了[汽水音乐](https://qishui.douyin.com/s/i4eayCM7/)），感兴趣的 uu 欢迎一起来听听、交流呀～
 
-![汽水音乐主页](/notes/one-step-at-a-time/23-qishui-profile.webp)
+![汽水音乐主页](/notes/student/23-qishui-profile.webp)
 
 回想当初辅导员在群里发保研通知时，我也曾动过请假回校投递的念头，毕竟手里的竞赛奖项按规则是可以加分的；但最终我还是放弃了。今年的行情着实让我有些后怕：往年所谓「大小年」，无非是前一年超发了 offer 导致次年收紧，起码已经发出去的约不会轻易反悔；可今年连当季的 offer 都在成片失守。与其去赌三年后的牌桌，不如趁现在先出来积累真实的行业历练、边走边看清未来的趋势，或许等哪天想明白了再继续深造也不迟。
 
@@ -134,13 +134,13 @@ summary: 逃课泡图书馆、ACM 集训队、七牛美团字节三段实习、�
 
 ## 六、尾声
 
-![高中时在红旗下呐喊的我](/notes/one-step-at-a-time/24-highschool-flag.webp)
+![高中时在红旗下呐喊的我](/notes/student/24-highschool-flag.webp)
 
 这几年每逢压力大到喘不过气的时候，我总会想：要是能回到以前就好了。
 
 好笑的是，高中明明曾是我当时最讨厌的一段时光——每天永远睡不醒的觉，还有扑面而来的学业压力。可现在回头看，那时候的世界简单到只需要做好学习这一件事，更重要的是身边有一群朝夕相处、一起长大的伙伴。只是时代奔流向前从不驻足，当年的少年们早已散在天南海北各有一番天地，如今还在常联系的，也只剩包兄一人了。
 
-![高二暑假常去跑步的溪边林荫跑道](/notes/one-step-at-a-time/25-creek-trail.webp)
+![高二暑假常去跑步的溪边林荫跑道](/notes/student/25-creek-trail.webp)
 
 我还常常想起高二的那个暑假。爸妈收走了我所有的电子设备，起初我以为没了娱乐、断了和朋友的联系肯定会度日如年；后来却惊喜地发现，**没有信息洪流持续输入的日子原来如此松弛惬意**——每天翻翻闲书、去溪边的绿荫跑道跑跑步、回家遛遛小狗，心一下子就静了下来。
 

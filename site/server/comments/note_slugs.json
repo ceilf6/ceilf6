@@ -6,7 +6,7 @@
   "harness-cold-start",
   "harness-thread-board",
   "node-event-loop",
-  "one-step-at-a-time",
+  "student",
   "study4examagent",
   "v8-gc-source"
 ]
