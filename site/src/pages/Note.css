@@ -56,7 +56,40 @@
   padding: 2px 0 2px 16px;
   opacity: 0.9;
 }
-.note-body img { max-width: 100%; border-radius: 10px; }
+.note-body img { max-width: 100%; height: auto; border-radius: 10px; }
+.note-body hr {
+  border: none;
+  height: 1px;
+  width: 40%;
+  margin: 40px auto;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  opacity: 0.55;
+}
+
+/* 图片块:width/height 属性预留版面,--r(宽高比)由构建期写入。
+   单图限高 72vh:按 --r 反推宽度,长截图收窄居中而不是撑满一屏。 */
+.note-figure { margin: 24px 0; }
+.note-figure img {
+  display: block;
+  margin: 0 auto;
+  width: min(100%, calc(72vh * var(--r, 100)));
+}
+/* 并排:flex-grow 取宽高比,各图宽度与 --r 成正比 → 同一行等高 */
+.note-gallery {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 24px 0;
+}
+.note-gallery img {
+  flex: var(--r, 1) 1 0;
+  min-width: 0;
+}
+/* 手机:并排组一律改单列,每张沿用单图的限高规则(读者多在手机上看,小图并排看不清) */
+@media (max-width: 640px) {
+  .note-gallery { flex-direction: column; align-items: center; gap: 14px; }
+  .note-gallery img { flex: none; width: min(100%, calc(72vh * var(--r, 100))); }
+}
 .note-foot {
   margin-top: 44px;
   padding-top: 18px;
@@ -67,3 +100,67 @@
 .note-foot a { color: var(--accent-gold); }
 .note-loading { color: var(--text-muted); padding: 40px 0; }
 .note-error { color: var(--text-muted); padding: 40px 0; }
+
+/* 配图点击放大:正文图可点/可聚焦;遮罩任意处、关闭按钮或 Esc 关闭 */
+.note-body img { cursor: zoom-in; }
+.note-body img:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
+.note-body a img { cursor: pointer; }
+.note-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  overflow: auto;
+  padding: 56px 16px 44px;
+  background: rgba(4, 8, 18, 0.94);
+  cursor: zoom-out;
+  animation: note-zoom-in 0.18s ease-out;
+}
+/* 弹层内图片包在切换按钮里(键盘可达)。margin:auto 居中;
+   原尺寸超出视口时从左上起排、可平移,不会被裁掉一半 */
+.note-zoom-toggle {
+  display: block;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.note-zoom-toggle img {
+  display: block;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 100px);
+  object-fit: contain;
+  border-radius: 6px;
+}
+.note-zoom-toggle:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 4px; }
+.note-zoom.is-full .note-zoom-toggle { cursor: zoom-out; }
+.note-zoom.is-full .note-zoom-toggle img { max-width: none; max-height: none; }
+.note-zoom-close {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--panel-border);
+  border-radius: 50%;
+  background: rgba(13, 22, 44, 0.8);
+  color: var(--text-main);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.note-zoom-close:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+.note-zoom-hint {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  margin: 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+@keyframes note-zoom-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .note-zoom { animation: none; } }

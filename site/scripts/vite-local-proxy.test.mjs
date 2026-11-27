@@ -66,13 +66,14 @@ test("resolveApiOrigin 与 resolveAdminProxyPrefix 支持合法自定义并拒�
     assert.throws(() => resolveApiOrigin(badOrigin));
   }
 
-  assert.equal(resolveAdminProxyPrefix("/notes/"), "/notes");
+  assert.equal(resolveAdminProxyPrefix("/control-room/"), "/control-room");
 
   for (const badAdmin of [
     "/",
     "///",
     "/blog/",
     "/awards/",
+    "/notes/",
     "/api/",
     "/assets/",
     "/src/",

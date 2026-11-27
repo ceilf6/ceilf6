@@ -1,5 +1,65 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { compileNote } from "./markdown.mjs";
+import { readImageDisplaySize } from "./update-image-metadata.mjs";
+
+const inside = (root, p) => {
+  const r = relative(root, p);
+  // 按完整路径段判断:..draft.webp 是普通文件名,不是上级目录
+  return r !== "" && r !== ".." && !r.startsWith(`..${sep}`) && !isAbsolute(r);
+};
+
+/** 站内绝对路径图片 → 读 <site>/public 下的文件头取尺寸;外链返回 null 不写尺寸。
+    - 解析后(含符号链接)须仍在 public 内,否则构建失败:札记不能让构建读到发布目录之外;
+    - /notes/ 是札记配图的约定目录,缺图即构建失败(断图不能静默上线);
+      其余站内路径(如构建期另行打包的 /assets/)在 public 里找不到时不写尺寸、照常输出;
+    - 尺寸读取器不认识的格式(SVG 等)不写尺寸,不阻断构建。 */
+function publicImageSize(file) {
+  const publicDir = file.replace(/\/content\/notes\/[^/]+\.md$/, "/public");
+  return (src) => {
+    if (!src.startsWith("/") || src.startsWith("//")) return null;
+    let pathname;
+    try {
+      // 先去掉查询串与片段,再逐段解码:%23(#)、%3F(?) 这类在 decodeURI 下会保留原样
+      pathname = src
+        .split(/[?#]/)[0]
+        .split("/")
+        .map((seg) => decodeURIComponent(seg))
+        .join("/");
+    } catch {
+      throw new Error(`md-notes: ${file} 引用的图片路径编码非法: ${src}`);
+    }
+    const target = resolve(publicDir, `.${pathname}`);
+    if (!inside(publicDir, target)) {
+      throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
+    }
+    if (!existsSync(target)) {
+      // 按规范化后的目标判定(/assets/../notes/x 与 /notes/x 是同一资源)
+      if (inside(resolve(publicDir, "notes"), target)) {
+        throw new Error(`md-notes: ${file} 引用的站内图片不存在: ${src}`);
+      }
+      return null;
+    }
+    const real = realpathSync(target);
+    if (!inside(realpathSync(publicDir), real)) {
+      throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
+    }
+    if (!statSync(real).isFile()) {
+      throw new Error(`md-notes: ${file} 引用的站内图片不是文件: ${src}`);
+    }
+    const buf = readFileSync(real); // 读取错误照常抛出,只放过下面的格式识别失败
+    try {
+      return readImageDisplaySize(buf);
+    } catch (err) {
+      // 只有读取器明确不认识的格式(如 SVG)才不写尺寸、照常输出;
+      // 已识别格式却解析失败(文件截断/损坏)说明上线后会是断图,构建失败
+      if (err instanceof Error && err.message === "Unsupported image format") return null;
+      throw new Error(`md-notes: ${file} 引用的站内图片无法解析(文件可能损坏): ${src}`, {
+        cause: err,
+      });
+    }
+  };
+}
 
 /** /content/notes/*.md → `export const meta / html` 纯导出模块。
     同一 md 服务两个模块 id:裸 id 出 meta+html 双导出(懒加载分包消费),
@@ -13,7 +73,9 @@ export function mdNotes() {
     load(id) {
       const [file, query] = id.split("?");
       if (!/\/content\/notes\/[^/]+\.md$/.test(file)) return null;
-      const { meta, html } = compileNote(readFileSync(file, "utf8"));
+      const { meta, html } = compileNote(readFileSync(file, "utf8"), {
+        imageSize: publicImageSize(file),
+      });
       // compileNote 永不 throw(无/未闭合 frontmatter 时 meta={}),这里是构建期
       // 唯一能拦住「页面标题渲染 undefined」的地方——必填键缺失即 fail loud,
       // 两个分支都过守卫:坏 md 不能因先被 ?meta 消费而漏检。

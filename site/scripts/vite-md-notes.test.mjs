@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
 import { mdNotes } from "./vite-md-notes.mjs";
@@ -78,4 +78,193 @@ test("缺必填 frontmatter 键 → 构建期 fail loud,报错含文件路径", 
 
 test("非 notes 路径不接管", () => {
   assert.equal(mdNotes().load("/x/README.md"), null);
+});
+
+// 最小 PNG 头:签名 + IHDR(宽高各 4 字节大端),足够尺寸读取器识别
+function pngHeader(width, height) {
+  // 签名 8 + 长度 4 + "IHDR" 4 + 数据 13(宽 4、高 4、其余 5)+ CRC 4 = 33 字节
+  const buf = Buffer.alloc(33);
+  Buffer.from("89504e470d0a1a0a", "hex").copy(buf, 0);
+  buf.writeUInt32BE(13, 8);
+  buf.write("IHDR", 12, "ascii");
+  buf.writeUInt32BE(width, 16);
+  buf.writeUInt32BE(height, 20);
+  // 结尾补 IEND 块:读取器会校验文件是否完整
+  return Buffer.concat([buf, Buffer.from("0000000049454e44ae426082", "hex")]);
+}
+
+test("站内图片:从 <site>/public 读取尺寸写入 width/height,gallery 带 --r", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "g"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "g", "a.png"), pngHeader(1600, 1200));
+  writeFileSync(join(site, "public", "notes", "g", "b.png"), pngHeader(900, 1200));
+  const md = join(dir, "g.md");
+  writeFileSync(
+    md,
+    "---\ntitle: 图\ndate: 2026-11-27\nsummary: s\n---\n![甲](/notes/g/a.png)\n![乙](/notes/g/b.png)",
+  );
+  const { code } = mdNotes().load(posix(md));
+  const html = JSON.parse(code.split("export const html = ")[1].replace(/;\s*$/, ""));
+  assert.equal(
+    html,
+    '<figure class="note-gallery">'
+      + '<img alt="甲" src="/notes/g/a.png" width="1600" height="1200" style="--r:1.3333" loading="lazy">'
+      + '<img alt="乙" src="/notes/g/b.png" width="900" height="1200" style="--r:0.75" loading="lazy">'
+      + "</figure>",
+  );
+});
+
+test("站内图片缺失 → 构建期 fail loud,报错含文件路径与图片路径", () => {
+  const md = join(notesDir(), "h.md");
+  writeFileSync(md, "---\ntitle: 缺\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/none/x.webp)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/none/x.webp"),
+  );
+});
+
+test("外链图片不读本地文件、不写尺寸", () => {
+  const md = join(notesDir(), "i.md");
+  writeFileSync(md, "---\ntitle: 外\ndate: 2026-11-27\nsummary: s\n---\n![x](https://a.b/x.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"https://a.b/x.png\\" loading=\\"lazy\\"'));
+});
+
+test("图片路径越出 public(../)→ 构建期 fail loud,不读外部文件", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public"), { recursive: true });
+  writeFileSync(join(site, "secret.png"), pngHeader(10, 10));
+  const md = join(dir, "j.md");
+  writeFileSync(md, "---\ntitle: 越\ndate: 2026-11-27\nsummary: s\n---\n![x](/../secret.png)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("/../secret.png"));
+});
+
+test("/notes/ 之外的站内路径(如构建期打包的 /assets/)缺失时不报错、不写尺寸", () => {
+  const md = join(notesDir(), "k.md");
+  writeFileSync(md, "---\ntitle: 资\ndate: 2026-11-27\nsummary: s\n---\n![x](/assets/Profile.jpg)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"/assets/Profile.jpg\\" loading=\\"lazy\\"'));
+});
+
+test("public 内的符号链接指向外部文件 → 构建期 fail loud", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "l"), { recursive: true });
+  writeFileSync(join(site, "outside.png"), pngHeader(10, 10));
+  symlinkSync(join(site, "outside.png"), join(site, "public", "notes", "l", "a.png"));
+  const md = join(dir, "l.md");
+  writeFileSync(md, "---\ntitle: 链\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/l/a.png)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("越出 public"));
+});
+
+test("尺寸读取器不支持的格式(如 SVG)不报错、不写尺寸", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public"), { recursive: true });
+  writeFileSync(join(site, "public", "chart.svg"), '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>');
+  const md = join(dir, "m.md");
+  writeFileSync(md, "---\ntitle: 矢\ndate: 2026-11-27\nsummary: s\n---\n![x](/chart.svg)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"/chart.svg\\" loading=\\"lazy\\"'));
+});
+
+test("缺图判定按规范化路径:/assets/../notes/缺图 同样构建失败", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public"), { recursive: true });
+  const md = join(dir, "n.md");
+  writeFileSync(md, "---\ntitle: 绕\ndate: 2026-11-27\nsummary: s\n---\n![x](/assets/../notes/no-such.webp)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
+});
+
+test("图片地址误指目录 → 构建期 fail loud(读取错误不被吞掉)", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public", "notes", "dir"), { recursive: true });
+  const md = join(dir, "o.md");
+  writeFileSync(md, "---\ntitle: 目\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/dir)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("/notes/dir"));
+});
+
+test("以 .. 开头的普通文件名不算越界:/notes/..draft.webp 缺失照样报缺图", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public", "notes"), { recursive: true });
+  const md = join(dir, "p.md");
+  writeFileSync(md, "---\ntitle: 点\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/..draft.webp)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
+});
+
+test("已识别格式但文件损坏(截断的 PNG)→ 构建期 fail loud,不当作不支持格式放过", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "q"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "q", "bad.png"), pngHeader(10, 10).subarray(0, 12));
+  const md = join(dir, "q.md");
+  writeFileSync(md, "---\ntitle: 损\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/q/bad.png)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/q/bad.png"),
+  );
+});
+
+test("图片路径含非法百分号编码 → 报错带札记路径与图片地址", () => {
+  const md = join(notesDir(), "r.md");
+  writeFileSync(md, "---\ntitle: 码\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/100%.webp)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/100%.webp"),
+  );
+});
+
+test("截断的 JPEG / WebP 配图 → 构建期 fail loud", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "t"), { recursive: true });
+  writeFileSync(
+    join(site, "public", "notes", "t", "a.jpg"),
+    Buffer.from("ffd8ffe000104a46494600010100000100010000", "hex"),
+  );
+  writeFileSync(
+    join(site, "public", "notes", "t", "b.webp"),
+    Buffer.concat([Buffer.from("RIFF"), Buffer.alloc(4), Buffer.from("WEBPVP8X")]),
+  );
+  for (const name of ["a.jpg", "b.webp"]) {
+    const md = join(dir, `t-${name}.md`);
+    writeFileSync(md, `---\ntitle: 截\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/t/${name})`);
+    assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes(`/notes/t/${name}`));
+  }
+});
+
+test("文件名含 # 等需转义字符:/notes/u/C%23.webp 按逐段解码找到 C#.webp", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "u"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "u", "C#.png"), pngHeader(30, 20));
+  const md = join(dir, "u.md");
+  writeFileSync(md, "---\ntitle: 井\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/u/C%23.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('width=\\"30\\" height=\\"20\\"'));
+});
+
+test("带 EXIF 旋转(方向 6)的竖拍 JPEG 进图组时按显示方向写宽高比", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "v"), { recursive: true });
+  const app1 = Buffer.from(
+    "ffe10022457869660000" + "4d4d002a00000008" + "0001" + "01120003000000010006" + "0000" + "00000000",
+    "hex",
+  );
+  const sof = Buffer.from("ffc00011080320" + "04b0" + "03012200021101031101", "hex"); // 编码 1200×800
+  writeFileSync(
+    join(site, "public", "notes", "v", "p.jpg"),
+    Buffer.concat([Buffer.from("ffd8", "hex"), app1, sof, Buffer.from("ffd9", "hex")]),
+  );
+  writeFileSync(join(site, "public", "notes", "v", "s.png"), pngHeader(500, 500));
+  const md = join(dir, "v.md");
+  writeFileSync(md, "---\ntitle: 转\ndate: 2026-11-27\nsummary: s\n---\n![竖](/notes/v/p.jpg)\n![方](/notes/v/s.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('width=\\"800\\" height=\\"1200\\" style=\\"--r:0.6667\\"'));
 });

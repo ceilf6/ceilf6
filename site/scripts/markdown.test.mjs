@@ -57,7 +57,14 @@ test("strong/em 不渗入链接与图片标记", () => {
     mdToHtml("[x](https://a.b/*p*)"),
     '<p><a href="https://a.b/*p*" target="_blank" rel="noopener noreferrer">x</a></p>',
   );
-  assert.equal(mdToHtml("![a*b](c)"), '<p><img alt="a*b" src="c" loading="lazy"></p>');
+  assert.equal(
+    mdToHtml("![a*b](c)"),
+    '<figure class="note-figure"><img alt="a*b" src="c" loading="lazy"></figure>',
+  );
+  assert.equal(
+    mdToHtml("看 ![a*b](c) *x*"),
+    '<p>看 <img alt="a*b" src="c" loading="lazy"> <em>x</em></p>',
+  );
 });
 
 test("链接文本内的 strong 正常解析", () => {
@@ -71,8 +78,80 @@ test("引用块多行合并", () => {
   assert.equal(mdToHtml("> 甲\n> 乙"), "<blockquote><p>甲 乙</p></blockquote>");
 });
 
-test("图片:标准段落包裹", () => {
-  assert.equal(mdToHtml("![图](x.png)"), '<p><img alt="图" src="x.png" loading="lazy"></p>');
+test("只含单张图片的段落 → figure 图片块(不包 p)", () => {
+  assert.equal(
+    mdToHtml("![图](x.png)"),
+    '<figure class="note-figure"><img alt="图" src="x.png" loading="lazy"></figure>',
+  );
+});
+
+test("图文混排段落保持行内 img", () => {
+  assert.equal(
+    mdToHtml("前 ![图](x.png) 后"),
+    '<p>前 <img alt="图" src="x.png" loading="lazy"> 后</p>',
+  );
+});
+
+test("连续多张图片(同行或分行)且尺寸齐全 → 并排 gallery", () => {
+  const imageSize = () => ({ width: 400, height: 300 });
+  const img = (alt, src) =>
+    `<img alt="${alt}" src="${src}" width="400" height="300" style="--r:1.3333" loading="lazy">`;
+  const html = `<figure class="note-gallery">${img("甲", "a.webp")}${img("乙", "b.webp")}</figure>`;
+  assert.equal(mdToHtml("![甲](a.webp)\n![乙](b.webp)", { imageSize }), html);
+  assert.equal(mdToHtml("![甲](a.webp) ![乙](b.webp)", { imageSize }), html);
+});
+
+test("多图组里有尺寸未知的图(外链/SVG)→ 不并排,逐张输出单图块", () => {
+  assert.equal(
+    mdToHtml("![甲](a.webp)\n![乙](b.webp)"),
+    '<figure class="note-figure"><img alt="甲" src="a.webp" loading="lazy"></figure>\n'
+      + '<figure class="note-figure"><img alt="乙" src="b.webp" loading="lazy"></figure>',
+  );
+});
+
+test("空行分隔的图片各成一块,不合并", () => {
+  assert.equal(
+    mdToHtml("![甲](a.webp)\n\n![乙](b.webp)"),
+    '<figure class="note-figure"><img alt="甲" src="a.webp" loading="lazy"></figure>\n'
+      + '<figure class="note-figure"><img alt="乙" src="b.webp" loading="lazy"></figure>',
+  );
+});
+
+test("imageSize 解析器:写入 width/height,图片块(单图/gallery)带宽高比 --r,行内图不带", () => {
+  const sizes = { "/a.webp": { width: 1600, height: 1200 }, "/b.webp": { width: 900, height: 1200 } };
+  const imageSize = (src) => sizes[src] ?? null;
+  assert.equal(
+    mdToHtml("![甲](/a.webp)", { imageSize }),
+    '<figure class="note-figure"><img alt="甲" src="/a.webp" width="1600" height="1200" style="--r:1.3333" loading="lazy"></figure>',
+  );
+  assert.equal(
+    mdToHtml("看 ![甲](/a.webp)", { imageSize }),
+    '<p>看 <img alt="甲" src="/a.webp" width="1600" height="1200" loading="lazy"></p>',
+  );
+  assert.equal(
+    mdToHtml("![甲](/a.webp)\n![乙](/b.webp)", { imageSize }),
+    '<figure class="note-gallery">'
+      + '<img alt="甲" src="/a.webp" width="1600" height="1200" style="--r:1.3333" loading="lazy">'
+      + '<img alt="乙" src="/b.webp" width="900" height="1200" style="--r:0.75" loading="lazy">'
+      + "</figure>",
+  );
+});
+
+test("图片行与文字行同段(无空行分隔)仍是混排段落,不拆块", () => {
+  assert.equal(
+    mdToHtml("文字\n![图](x.png)\n后文"),
+    '<p>文字 <img alt="图" src="x.png" loading="lazy"> 后文</p>',
+  );
+  assert.equal(
+    mdToHtml("![图](x.png)\n后文"),
+    '<p><img alt="图" src="x.png" loading="lazy"> 后文</p>',
+  );
+});
+
+test("单独一行 --- / *** 输出分隔线,且打断段落", () => {
+  assert.equal(mdToHtml("甲\n\n---\n\n乙"), "<p>甲</p>\n<hr>\n<p>乙</p>");
+  assert.equal(mdToHtml("甲\n***\n乙"), "<p>甲</p>\n<hr>\n<p>乙</p>");
+  assert.equal(mdToHtml("- 项"), "<ul><li>项</li></ul>");
 });
 
 test("行内 code 不二次解析其它行内语法", () => {
@@ -92,4 +171,13 @@ test("compileNote = frontmatter + html", () => {
   const { meta, html } = compileNote("---\ntitle: 甲\n---\n# 见");
   assert.equal(meta.title, "甲");
   assert.equal(html, "<h2>见</h2>");
+});
+
+test("尺寸为 0 视为未知:不写宽高与 --r(防 Infinity/NaN),多图组也不并排", () => {
+  const imageSize = (src) => (src === "z.png" ? { width: 100, height: 0 } : { width: 400, height: 300 });
+  assert.equal(
+    mdToHtml("![零](z.png)", { imageSize }),
+    '<figure class="note-figure"><img alt="零" src="z.png" loading="lazy"></figure>',
+  );
+  assert.ok(!mdToHtml("![甲](a.png)\n![零](z.png)", { imageSize }).includes("note-gallery"));
 });

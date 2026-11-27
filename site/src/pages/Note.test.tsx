@@ -147,3 +147,81 @@ describe("Note 正文加载与评论区挂载边界", () => {
     expect(screen.getByText("独立可读的正文A")).toBeInTheDocument();
   });
 });
+
+describe("Note 配图点击放大", () => {
+  const ready = async () => {
+    at("/blog/a");
+    await settle(() =>
+      inflight.get("a")!.resolve(
+        '<figure class="note-gallery"><img alt="甲" src="/a.webp"><img alt="乙" src="/b.webp"></figure>'
+          + '<p>正文 <a href="https://x.y"><img alt="链图" src="/l.webp"></a></p>',
+      ),
+    );
+  };
+
+  it("点击正文配图打开全屏查看,Esc 关闭", async () => {
+    await ready();
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(screen.getByAltText("乙"));
+    const dialog = screen.getByRole("dialog", { name: "乙" });
+    expect(dialog.querySelector("img")).toHaveAttribute("src", "/b.webp");
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("点击遮罩任意处关闭;点击正文文字或链接内的图片不打开", async () => {
+    await ready();
+    fireEvent.click(screen.getByText(/正文/));
+    fireEvent.click(screen.getByAltText("链图"));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(screen.getByAltText("甲"));
+    fireEvent.click(screen.getByRole("dialog"));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("键盘可达:配图可聚焦,Enter 打开后焦点进关闭按钮、背景 inert,关闭后焦点回到原图", async () => {
+    await ready();
+    const img = screen.getByAltText("甲");
+    expect(img).toHaveAttribute("tabindex", "0");
+    // 辅助技术可识别的放大入口:按钮角色 + 描述操作的名称;链接图片保持原样
+    expect(screen.getByRole("button", { name: "查看大图：甲" })).toBe(img);
+    expect(screen.getByAltText("链图")).not.toHaveAttribute("tabindex");
+    expect(screen.getByAltText("链图")).not.toHaveAttribute("role");
+    img.focus();
+    fireEvent.keyDown(img, { key: "Enter" });
+    const close = screen.getByRole("button", { name: "关闭" });
+    expect(close).toHaveFocus();
+    // 背景整体 inert:焦点无论如何(含点击图片后落到 body)都无法 Tab 回遮罩后方
+    const dialog = screen.getByRole("dialog");
+    const background = [...document.body.children].filter((el) => !el.contains(dialog));
+    expect(background.length).toBeGreaterThan(0);
+    background.forEach((el) => expect(el).toHaveAttribute("inert"));
+    fireEvent.click(close);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    background.forEach((el) => expect(el).not.toHaveAttribute("inert"));
+    expect(img).toHaveFocus();
+  });
+
+  it("原尺寸切换是可聚焦按钮(鼠标点击与键盘均可),不关闭弹层", async () => {
+    await ready();
+    fireEvent.click(screen.getByAltText("甲"));
+    const dialog = screen.getByRole("dialog", { name: "甲" });
+    const toggle = screen.getByRole("button", { name: "原尺寸" });
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+    expect(toggle.querySelector("img")).toHaveAttribute("src", "/a.webp");
+    fireEvent.click(toggle);
+    expect(dialog).toHaveClass("is-full");
+    expect(screen.getByRole("button", { name: "原尺寸" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(toggle);
+    expect(screen.getByRole("dialog")).not.toHaveClass("is-full");
+  });
+
+  it("空 alt 的配图:放大入口与弹层都有兜底的可访问名称", async () => {
+    at("/blog/a");
+    await settle(() =>
+      inflight.get("a")!.resolve('<figure class="note-figure"><img alt="" src="/e.webp"></figure>'),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "查看大图" }));
+    expect(screen.getByRole("dialog", { name: "查看配图" })).toBeInTheDocument();
+  });
+});

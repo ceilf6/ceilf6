@@ -23,7 +23,43 @@ const esc = (s) =>
 const NUL = String.fromCharCode(0);
 const PLACEHOLDER = new RegExp(`${NUL}(\\d+)${NUL}`, "g");
 
-function inline(s) {
+// 图片块:整段(空行之间)每行都只由图片构成时不包 p,输出 figure;单图 note-figure,多图 note-gallery。
+const IMAGE = /!\[([^\]]*)\]\(([^)\s]+)\)/g;
+const IMAGE_LINE = /^\s*(?:!\[[^\]]*\]\([^)\s]+\)\s*)+$/;
+const HR = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
+
+/** imageSize(src) → {width,height} | null:构建期由插件注入(读 public/ 文件头),
+    写入 width/height 让浏览器预留版面、避免加载时跳动。图片块(单图/gallery)另带
+    宽高比 --r:gallery 按 --r 分配 flex 宽度,使宽高比不同的图并排时同一行等高;
+    单图据此限高,长截图不至于撑满一屏。 */
+// 宽高须为正数才算已知尺寸:损坏文件头读出 0 会让 --r 变成 Infinity/NaN
+const validSize = (s) => (s && s.width > 0 && s.height > 0 ? s : null);
+
+function imgTag(alt, src, opts, inBlock = false) {
+  const size = validSize(opts.imageSize?.(src));
+  let attrs = `alt="${esc(alt)}" src="${esc(src)}"`;
+  if (size) {
+    attrs += ` width="${size.width}" height="${size.height}"`;
+    if (inBlock) attrs += ` style="--r:${Number((size.width / size.height).toFixed(4))}"`;
+  }
+  return `<img ${attrs} loading="lazy">`;
+}
+
+function imageBlock(lines, opts) {
+  const imgs = [...lines.join(" ").matchAll(IMAGE)];
+  if (imgs.length === 1) {
+    return `<figure class="note-figure">${imgTag(imgs[0][1], imgs[0][2], opts, true)}</figure>`;
+  }
+  // 按宽高比分配宽度才能保证等高:组内有任一图取不到尺寸(外链/SVG)就不并排,逐张单图块
+  if (!imgs.every((m) => validSize(opts.imageSize?.(m[2])))) {
+    return imgs
+      .map((m) => `<figure class="note-figure">${imgTag(m[1], m[2], opts, true)}</figure>`)
+      .join("\n");
+  }
+  return `<figure class="note-gallery">${imgs.map((m) => imgTag(m[1], m[2], opts, true)).join("")}</figure>`;
+}
+
+function inline(s, opts = {}) {
   // 行内原子(code/img/link)统一抽成占位符:已生成的标记若留在原文流里,
   // 后跑的 strong/em 会跨标签边界配对(href/alt 里的 * 也会被撕开)。
   // 进料先剔除杂散 NUL,保证占位符定界唯一、回填循环不空转。
@@ -34,9 +70,7 @@ function inline(s) {
     t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>");
   s = s
     .replace(/`([^`]+)`/g, (_, c) => stash(`<code>${esc(c)}</code>`))
-    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
-      stash(`<img alt="${esc(alt)}" src="${esc(src)}" loading="lazy">`),
-    )
+    .replace(IMAGE, (_, alt, src) => stash(imgTag(alt, src, opts)))
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) =>
       // 链接文本自身要吃 strong/em(如 [**a**](b)),href 保持原样
       stash(
@@ -49,7 +83,7 @@ function inline(s) {
   return s;
 }
 
-export function mdToHtml(md) {
+export function mdToHtml(md, opts = {}) {
   const lines = md.replace(/\r\n/g, "\n").split("\n");
   const out = [];
   let i = 0;
@@ -67,7 +101,12 @@ export function mdToHtml(md) {
     if (h) {
       // 文内标题降一级:文章页 h1 归 frontmatter title
       const lv = h[1].length + 1;
-      out.push(`<h${lv}>${inline(h[2])}</h${lv}>`);
+      out.push(`<h${lv}>${inline(h[2], opts)}</h${lv}>`);
+      i++;
+      continue;
+    }
+    if (HR.test(line)) {
+      out.push("<hr>");
       i++;
       continue;
     }
@@ -75,13 +114,13 @@ export function mdToHtml(md) {
       const items = [];
       while (i < lines.length && /^\s*[-*]\s+/.test(lines[i]))
         items.push(lines[i++].replace(/^\s*[-*]\s+/, ""));
-      out.push(`<ul>${items.map((t) => `<li>${inline(t)}</li>`).join("")}</ul>`);
+      out.push(`<ul>${items.map((t) => `<li>${inline(t, opts)}</li>`).join("")}</ul>`);
       continue;
     }
     if (/^>\s?/.test(line)) {
       const buf = [];
       while (i < lines.length && /^>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^>\s?/, ""));
-      out.push(`<blockquote><p>${inline(buf.join(" "))}</p></blockquote>`);
+      out.push(`<blockquote><p>${inline(buf.join(" "), opts)}</p></blockquote>`);
       continue;
     }
     if (line.trim() === "") {
@@ -93,15 +132,21 @@ export function mdToHtml(md) {
     while (
       i < lines.length &&
       lines[i].trim() !== "" &&
-      !/^(#{1,3})\s|^\s*[-*]\s|^>|^```/.test(lines[i])
+      !/^(#{1,3})\s|^\s*[-*]\s|^>|^```/.test(lines[i]) &&
+      !HR.test(lines[i])
     )
       buf.push(lines[i++]);
-    out.push(`<p>${inline(buf.join(" "))}</p>`);
+    // 先收完整段再判定:整段每行都只有图片才成图片块,图文同段保持混排段落
+    out.push(
+      buf.every((l) => IMAGE_LINE.test(l))
+        ? imageBlock(buf, opts)
+        : `<p>${inline(buf.join(" "), opts)}</p>`,
+    );
   }
   return out.join("\n");
 }
 
-export function compileNote(src) {
+export function compileNote(src, opts = {}) {
   const { meta, body } = parseFrontmatter(src);
-  return { meta, html: mdToHtml(body) };
+  return { meta, html: mdToHtml(body, opts) };
 }
