@@ -216,3 +216,22 @@ test("图片路径含非法百分号编码 → 报错带札记路径与图片地
     (err) => err.message.includes(id) && err.message.includes("/notes/100%.webp"),
   );
 });
+
+test("截断的 JPEG / WebP 配图 → 构建期 fail loud", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "t"), { recursive: true });
+  writeFileSync(
+    join(site, "public", "notes", "t", "a.jpg"),
+    Buffer.from("ffd8ffe000104a46494600010100000100010000", "hex"),
+  );
+  writeFileSync(
+    join(site, "public", "notes", "t", "b.webp"),
+    Buffer.concat([Buffer.from("RIFF"), Buffer.alloc(4), Buffer.from("WEBPVP8X")]),
+  );
+  for (const name of ["a.jpg", "b.webp"]) {
+    const md = join(dir, `t-${name}.md`);
+    writeFileSync(md, `---\ntitle: 截\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/t/${name})`);
+    assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes(`/notes/t/${name}`));
+  }
+});

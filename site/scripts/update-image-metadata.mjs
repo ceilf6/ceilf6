@@ -4,6 +4,11 @@ import { pathToFileURL } from "node:url";
 const publicRoot = new URL("../public/", import.meta.url);
 const awardsFile = new URL("../src/data/awards.json", import.meta.url);
 
+// 签名已识别但数据不全:与「不认识的格式」区分开,调用方可据此判定为损坏文件
+function corrupt(format) {
+  return new Error(`Corrupt ${format} image`);
+}
+
 function readUint24LE(buffer, offset) {
   return buffer[offset] | (buffer[offset + 1] << 8) | (buffer[offset + 2] << 16);
 }
@@ -11,6 +16,7 @@ function readUint24LE(buffer, offset) {
 function readPngSize(buffer) {
   const pngSignature = "89504e470d0a1a0a";
   if (buffer.subarray(0, 8).toString("hex") !== pngSignature) return null;
+  if (buffer.length < 24) throw corrupt("PNG");
 
   return {
     width: buffer.readUInt32BE(16),
@@ -21,6 +27,7 @@ function readPngSize(buffer) {
 function readGifSize(buffer) {
   const signature = buffer.subarray(0, 6).toString("ascii");
   if (signature !== "GIF87a" && signature !== "GIF89a") return null;
+  if (buffer.length < 10) throw corrupt("GIF");
 
   return {
     width: buffer.readUInt16LE(6),
@@ -50,6 +57,7 @@ function readJpegSize(buffer) {
       (marker >= 0xcd && marker <= 0xcf);
 
     if (isStartOfFrame) {
+      if (offset + 7 > buffer.length) throw corrupt("JPEG");
       return {
         width: buffer.readUInt16BE(offset + 5),
         height: buffer.readUInt16BE(offset + 3),
@@ -59,7 +67,8 @@ function readJpegSize(buffer) {
     offset += segmentLength;
   }
 
-  return null;
+  // SOI 已识别,却在找到尺寸帧(SOF)之前结束:文件截断或损坏
+  throw corrupt("JPEG");
 }
 
 function readWebpSize(buffer) {
@@ -71,6 +80,9 @@ function readWebpSize(buffer) {
   }
 
   const chunkType = buffer.subarray(12, 16).toString("ascii");
+  // 各分支读取的最远字节:VP8X 到 30、VP8L 到 25、VP8 到 30;不足即截断
+  const need = { VP8X: 30, VP8L: 25, "VP8 ": 30 }[chunkType];
+  if (!need || buffer.length < need) throw corrupt("WebP");
   if (chunkType === "VP8X") {
     return {
       width: readUint24LE(buffer, 24) + 1,
