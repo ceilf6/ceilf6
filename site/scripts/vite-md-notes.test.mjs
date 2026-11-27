@@ -82,7 +82,8 @@ test("非 notes 路径不接管", () => {
 
 // 最小 PNG 头:签名 + IHDR(宽高各 4 字节大端),足够尺寸读取器识别
 function pngHeader(width, height) {
-  const buf = Buffer.alloc(24);
+  // 签名 8 + 长度 4 + "IHDR" 4 + 数据 13(宽 4、高 4、其余 5)+ CRC 4 = 33 字节
+  const buf = Buffer.alloc(33);
   Buffer.from("89504e470d0a1a0a", "hex").copy(buf, 0);
   buf.writeUInt32BE(13, 8);
   buf.write("IHDR", 12, "ascii");

@@ -94,6 +94,13 @@ test("readImageSize 拒绝头部完好但数据缺失的文件(尾部/声明长�
   // 声明长度与实际一致时照常读出尺寸
   vp8x.writeUInt32LE(22, 4);
   assert.deepEqual(readImageSize(vp8x), { width: 1600, height: 1200 });
+  // PNG:IHDR 声明 13 字节、实际只有宽高 8 字节就接上 IEND(首块不完整)
+  const shortIhdr = Buffer.concat([
+    Buffer.from("89504e470d0a1a0a0000000d49484452", "hex"),
+    Buffer.from("0000000a00000014", "hex"),
+    Buffer.from("0000000049454e44ae426082", "hex"),
+  ]);
+  assert.throws(() => readImageSize(shortIhdr), /Corrupt PNG/);
   // PNG:IHDR 完整但缺 IEND
   const png = Buffer.alloc(33);
   Buffer.from("89504e470d0a1a0a0000000d49484452", "hex").copy(png, 0);

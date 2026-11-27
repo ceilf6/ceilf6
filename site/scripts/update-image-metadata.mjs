@@ -16,9 +16,28 @@ function readUint24LE(buffer, offset) {
 function readPngSize(buffer) {
   const pngSignature = "89504e470d0a1a0a";
   if (buffer.subarray(0, 8).toString("hex") !== pngSignature) return null;
-  if (buffer.length < 24) throw corrupt("PNG");
-  // 完整的 PNG 以 IEND 块收尾(4 字节长度 + "IEND" + 4 字节 CRC)
-  if (buffer.subarray(-8, -4).toString("ascii") !== "IEND") throw corrupt("PNG");
+  // 首块须是完整的 IHDR:4 字节长度(=13) + "IHDR" + 13 字节数据 + 4 字节 CRC,共到第 33 字节
+  if (
+    buffer.length < 33 ||
+    buffer.readUInt32BE(8) !== 13 ||
+    buffer.toString("ascii", 12, 16) !== "IHDR"
+  ) {
+    throw corrupt("PNG");
+  }
+  // 遍历块结构(只读块头,不解压):每块 4 字节长度 + 4 字节类型 + 数据 + 4 字节 CRC 都须落在文件内,
+  // 且以 IEND 收尾——首块残缺、中途截断、缺少收尾都会在这里暴露
+  let chunk = 8;
+  let ended = false;
+  while (chunk + 12 <= buffer.length) {
+    const next = chunk + 12 + buffer.readUInt32BE(chunk);
+    if (next > buffer.length) throw corrupt("PNG");
+    if (buffer.toString("ascii", chunk + 4, chunk + 8) === "IEND") {
+      ended = true;
+      break;
+    }
+    chunk = next;
+  }
+  if (!ended) throw corrupt("PNG");
 
   return {
     width: buffer.readUInt32BE(16),
