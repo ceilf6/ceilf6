@@ -133,3 +133,25 @@ test("readImageDisplaySize:JPEG EXIF 方向 5–8 交换宽高(按显示方向),
   // 共用的 readImageSize(awards 元数据)保持编码尺寸,不受影响
   assert.deepEqual(readImageSize(exifJpeg(1200, 800, 6)), { width: 1200, height: 800 });
 });
+
+test("readImageSize:文件头里宽高为 0 或 SOF 段声明过短都按损坏处理", () => {
+  // JPEG:SOF0 段声明长度 2,只有长度字段,宽高字段落在段外
+  const shortSof = Buffer.from("ffd8ffc000024455223322ffd9", "hex");
+  assert.throws(() => readImageSize(shortSof), /Corrupt JPEG/);
+  // WebP:VP8X 头完整、长度一致,但宽度字段编码为 0(实际宽 = 字段 + 1,这里用 VP8 分支构造 0 宽)
+  const vp8 = Buffer.alloc(30);
+  vp8.write("RIFF", 0, "ascii");
+  vp8.writeUInt32LE(22, 4);
+  vp8.write("WEBPVP8 ", 8, "ascii");
+  vp8.writeUInt16LE(0, 26);
+  vp8.writeUInt16LE(1200, 28);
+  assert.throws(() => readImageSize(vp8), /Corrupt/);
+  // PNG:IHDR 宽为 0
+  const png = Buffer.concat([
+    Buffer.from("89504e470d0a1a0a0000000d49484452", "hex"),
+    Buffer.from("00000000000000140806000000", "hex"),
+    Buffer.alloc(4),
+    Buffer.from("0000000049454e44ae426082", "hex"),
+  ]);
+  assert.throws(() => readImageSize(png), /Corrupt/);
+});

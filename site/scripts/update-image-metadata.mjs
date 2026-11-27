@@ -79,7 +79,8 @@ function readJpegSize(buffer) {
       (marker >= 0xcd && marker <= 0xcf);
 
     if (isStartOfFrame) {
-      if (offset + 7 > buffer.length) throw corrupt("JPEG");
+      // SOF 段头 = 长度 2 + 精度 1 + 高 2 + 宽 2 + 分量数 1:声明长度装不下就是损坏,不能越界去读后面的字节
+      if (segmentLength < 8 || offset + 7 > buffer.length) throw corrupt("JPEG");
       // 完整的 JPEG 以 EOI(FFD9)收尾;个别编码器会在末尾补 0x00,先去掉
       let end = buffer.length;
       while (end > 0 && buffer[end - 1] === 0x00) end -= 1;
@@ -145,6 +146,10 @@ export function readImageSize(buffer) {
 
   if (!size) {
     throw new Error("Unsupported image format");
+  }
+  // 格式已识别但文件头里的宽高为 0:同样是损坏,不能当作「尺寸未知」放行
+  if (!(size.width > 0 && size.height > 0)) {
+    throw new Error("Corrupt image: zero width or height");
   }
 
   return size;
