@@ -1,18 +1,37 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
+import { isAbsolute, relative, resolve } from "node:path";
 import { compileNote } from "./markdown.mjs";
 import { readImageSize } from "./update-image-metadata.mjs";
 
-/** 站内绝对路径图片(/notes/x/a.webp)→ 读 <site>/public 下的文件头取尺寸;
-    外链返回 null 不写尺寸。站内图缺失即构建失败:断图不能静默上线。 */
+const inside = (root, p) => {
+  const r = relative(root, p);
+  return r !== "" && !r.startsWith("..") && !isAbsolute(r);
+};
+
+/** 站内绝对路径图片 → 读 <site>/public 下的文件头取尺寸;外链返回 null 不写尺寸。
+    - 解析后(含符号链接)须仍在 public 内,否则构建失败:札记不能让构建读到发布目录之外;
+    - /notes/ 是札记配图的约定目录,缺图即构建失败(断图不能静默上线);
+      其余站内路径(如构建期另行打包的 /assets/)在 public 里找不到时不写尺寸、照常输出。 */
 function publicImageSize(file) {
   const publicDir = file.replace(/\/content\/notes\/[^/]+\.md$/, "/public");
   return (src) => {
     if (!src.startsWith("/") || src.startsWith("//")) return null;
-    const path = publicDir + decodeURI(src.split(/[?#]/)[0]);
-    if (!existsSync(path)) {
-      throw new Error(`md-notes: ${file} 引用的站内图片不存在: ${src}`);
+    const pathname = decodeURI(src.split(/[?#]/)[0]);
+    const target = resolve(publicDir, `.${pathname}`);
+    if (!inside(publicDir, target)) {
+      throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
     }
-    return readImageSize(readFileSync(path));
+    if (!existsSync(target)) {
+      if (pathname.startsWith("/notes/")) {
+        throw new Error(`md-notes: ${file} 引用的站内图片不存在: ${src}`);
+      }
+      return null;
+    }
+    const real = realpathSync(target);
+    if (!inside(realpathSync(publicDir), real)) {
+      throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
+    }
+    return readImageSize(readFileSync(real));
   };
 }
 

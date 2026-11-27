@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
 import { mdNotes } from "./vite-md-notes.mjs";
@@ -128,4 +128,32 @@ test("外链图片不读本地文件、不写尺寸", () => {
   writeFileSync(md, "---\ntitle: 外\ndate: 2026-11-27\nsummary: s\n---\n![x](https://a.b/x.png)");
   const { code } = mdNotes().load(posix(md));
   assert.ok(code.includes('src=\\"https://a.b/x.png\\" loading=\\"lazy\\"'));
+});
+
+test("图片路径越出 public(../)→ 构建期 fail loud,不读外部文件", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public"), { recursive: true });
+  writeFileSync(join(site, "secret.png"), pngHeader(10, 10));
+  const md = join(dir, "j.md");
+  writeFileSync(md, "---\ntitle: 越\ndate: 2026-11-27\nsummary: s\n---\n![x](/../secret.png)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("/../secret.png"));
+});
+
+test("/notes/ 之外的站内路径(如构建期打包的 /assets/)缺失时不报错、不写尺寸", () => {
+  const md = join(notesDir(), "k.md");
+  writeFileSync(md, "---\ntitle: 资\ndate: 2026-11-27\nsummary: s\n---\n![x](/assets/Profile.jpg)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"/assets/Profile.jpg\\" loading=\\"lazy\\"'));
+});
+
+test("public 内的符号链接指向外部文件 → 构建期 fail loud", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "l"), { recursive: true });
+  writeFileSync(join(site, "outside.png"), pngHeader(10, 10));
+  symlinkSync(join(site, "outside.png"), join(site, "public", "notes", "l", "a.png"));
+  const md = join(dir, "l.md");
+  writeFileSync(md, "---\ntitle: 链\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/l/a.png)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("越出 public"));
 });
