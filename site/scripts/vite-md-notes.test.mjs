@@ -247,3 +247,23 @@ test("文件名含 # 等需转义字符:/notes/u/C%23.webp 按逐段解码找到
   const { code } = mdNotes().load(posix(md));
   assert.ok(code.includes('width=\\"30\\" height=\\"20\\"'));
 });
+
+test("带 EXIF 旋转(方向 6)的竖拍 JPEG 进图组时按显示方向写宽高比", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "v"), { recursive: true });
+  const app1 = Buffer.from(
+    "ffe10022457869660000" + "4d4d002a00000008" + "0001" + "01120003000000010006" + "0000" + "00000000",
+    "hex",
+  );
+  const sof = Buffer.from("ffc00011080320" + "04b0" + "03012200021101031101", "hex"); // 编码 1200×800
+  writeFileSync(
+    join(site, "public", "notes", "v", "p.jpg"),
+    Buffer.concat([Buffer.from("ffd8", "hex"), app1, sof, Buffer.from("ffd9", "hex")]),
+  );
+  writeFileSync(join(site, "public", "notes", "v", "s.png"), pngHeader(500, 500));
+  const md = join(dir, "v.md");
+  writeFileSync(md, "---\ntitle: 转\ndate: 2026-11-27\nsummary: s\n---\n![竖](/notes/v/p.jpg)\n![方](/notes/v/s.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('width=\\"800\\" height=\\"1200\\" style=\\"--r:0.6667\\"'));
+});

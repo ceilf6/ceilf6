@@ -131,6 +131,53 @@ export function readImageSize(buffer) {
   return size;
 }
 
+// EXIF Orientation(IFD0 的 0x0112 标签);读不到时按 1(不旋转)处理
+function exifOrientation(tiff) {
+  if (tiff.length < 8) return 1;
+  const order = tiff.toString("ascii", 0, 2);
+  if (order !== "II" && order !== "MM") return 1;
+  const le = order === "II";
+  const u16 = (o) => (le ? tiff.readUInt16LE(o) : tiff.readUInt16BE(o));
+  const u32 = (o) => (le ? tiff.readUInt32LE(o) : tiff.readUInt32BE(o));
+  const ifd = u32(4);
+  if (ifd + 2 > tiff.length) return 1;
+  const count = u16(ifd);
+  for (let i = 0; i < count; i += 1) {
+    const entry = ifd + 2 + i * 12;
+    if (entry + 12 > tiff.length) return 1;
+    if (u16(entry) === 0x0112) return u16(entry + 8);
+  }
+  return 1;
+}
+
+function readJpegOrientation(buffer) {
+  if (buffer[0] !== 0xff || buffer[1] !== 0xd8) return 1;
+  let offset = 2;
+  while (offset + 4 <= buffer.length) {
+    while (buffer[offset] === 0xff) offset += 1;
+    const marker = buffer[offset];
+    offset += 1;
+    if (marker === 0xd9 || marker === 0xda) break;
+    const segmentLength = buffer.readUInt16BE(offset);
+    if (segmentLength < 2 || offset + segmentLength > buffer.length) break;
+    if (marker === 0xe1 && buffer.toString("latin1", offset + 2, offset + 8) === "Exif\0\0") {
+      return exifOrientation(buffer.subarray(offset + 8, offset + segmentLength));
+    }
+    offset += segmentLength;
+  }
+  return 1;
+}
+
+/** 按浏览器实际显示方向的尺寸:JPEG 的 EXIF 方向为 5–8(旋转 90°/270°)时交换宽高。
+    札记构建据此写宽高比,竖拍照片放进并排组才能等高;awards 元数据仍用编码尺寸 readImageSize。 */
+export function readImageDisplaySize(buffer) {
+  const size = readImageSize(buffer);
+  const orientation = readJpegOrientation(buffer);
+  return orientation >= 5 && orientation <= 8
+    ? { width: size.height, height: size.width }
+    : size;
+}
+
 export function readImageSizeFromFile(fileUrl) {
   return readImageSize(readFileSync(fileUrl));
 }

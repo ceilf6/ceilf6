@@ -6,6 +6,7 @@ import {
   applyImageMetadata,
   formatAwards,
   loadAwards,
+  readImageDisplaySize,
   readImageSize,
   readImageSizeFromFile,
   resolvePublicUrl,
@@ -102,4 +103,26 @@ test("readImageSize 拒绝头部完好但数据缺失的文件(尾部/声明长�
   // JPEG:SOF 完整但没有以 EOI(FFD9)结尾
   const jpeg = Buffer.from("ffd8ffc0001108000a001403012200021101031101ffda", "hex");
   assert.throws(() => readImageSize(jpeg), /Corrupt JPEG/);
+});
+
+// 最小 JPEG:SOI + APP1(Exif,IFD0 只有 Orientation)+ SOF0(width×height)+ EOI
+function exifJpeg(width, height, orientation) {
+  const app1 = Buffer.from(
+    "ffe10022" + "457869660000" + "4d4d002a00000008" + "0001" + "011200030000000100" +
+      orientation.toString(16).padStart(2, "0") + "0000" + "00000000",
+    "hex",
+  );
+  const sof = Buffer.from("ffc0001108" + "0000" + "0000" + "03012200021101031101", "hex");
+  sof.writeUInt16BE(height, 5);
+  sof.writeUInt16BE(width, 7);
+  return Buffer.concat([Buffer.from("ffd8", "hex"), app1, sof, Buffer.from("ffd9", "hex")]);
+}
+
+test("readImageDisplaySize:JPEG EXIF 方向 5–8 交换宽高(按显示方向),其余格式与方向不变", () => {
+  assert.deepEqual(readImageDisplaySize(exifJpeg(1200, 800, 6)), { width: 800, height: 1200 });
+  assert.deepEqual(readImageDisplaySize(exifJpeg(1200, 800, 8)), { width: 800, height: 1200 });
+  assert.deepEqual(readImageDisplaySize(exifJpeg(1200, 800, 1)), { width: 1200, height: 800 });
+  assert.deepEqual(readImageDisplaySize(exifJpeg(1200, 800, 3)), { width: 1200, height: 800 });
+  // 共用的 readImageSize(awards 元数据)保持编码尺寸,不受影响
+  assert.deepEqual(readImageSize(exifJpeg(1200, 800, 6)), { width: 1200, height: 800 });
 });
