@@ -23,7 +23,7 @@ const esc = (s) =>
 const NUL = String.fromCharCode(0);
 const PLACEHOLDER = new RegExp(`${NUL}(\\d+)${NUL}`, "g");
 
-// 图片块:整行只由图片构成(可多张、可分多行)时不走段落,输出 figure。
+// 图片块:整段(空行之间)每行都只由图片构成时不包 p,输出 figure;单图 note-figure,多图 note-gallery。
 const IMAGE = /!\[([^\]]*)\]\(([^)\s]+)\)/g;
 const IMAGE_LINE = /^\s*(?:!\[[^\]]*\]\([^)\s]+\)\s*)+$/;
 const HR = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
@@ -101,12 +101,6 @@ export function mdToHtml(md, opts = {}) {
       i++;
       continue;
     }
-    if (IMAGE_LINE.test(line)) {
-      const buf = [];
-      while (i < lines.length && IMAGE_LINE.test(lines[i])) buf.push(lines[i++]);
-      out.push(imageBlock(buf, opts));
-      continue;
-    }
     if (/^\s*[-*]\s+/.test(line)) {
       const items = [];
       while (i < lines.length && /^\s*[-*]\s+/.test(lines[i]))
@@ -130,11 +124,15 @@ export function mdToHtml(md, opts = {}) {
       i < lines.length &&
       lines[i].trim() !== "" &&
       !/^(#{1,3})\s|^\s*[-*]\s|^>|^```/.test(lines[i]) &&
-      !HR.test(lines[i]) &&
-      !IMAGE_LINE.test(lines[i])
+      !HR.test(lines[i])
     )
       buf.push(lines[i++]);
-    out.push(`<p>${inline(buf.join(" "), opts)}</p>`);
+    // 先收完整段再判定:整段每行都只有图片才成图片块,图文同段保持混排段落
+    out.push(
+      buf.every((l) => IMAGE_LINE.test(l))
+        ? imageBlock(buf, opts)
+        : `<p>${inline(buf.join(" "), opts)}</p>`,
+    );
   }
   return out.join("\n");
 }

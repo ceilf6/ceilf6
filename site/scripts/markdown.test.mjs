@@ -130,10 +130,14 @@ test("imageSize 解析器:写入 width/height,图片块(单图/gallery)带宽高
   );
 });
 
-test("图片块打断段落:文字行后紧跟图片行时分开输出", () => {
+test("图片行与文字行同段(无空行分隔)仍是混排段落,不拆块", () => {
   assert.equal(
-    mdToHtml("文字\n![图](x.png)"),
-    '<p>文字</p>\n<figure class="note-figure"><img alt="图" src="x.png" loading="lazy"></figure>',
+    mdToHtml("文字\n![图](x.png)\n后文"),
+    '<p>文字 <img alt="图" src="x.png" loading="lazy"> 后文</p>',
+  );
+  assert.equal(
+    mdToHtml("![图](x.png)\n后文"),
+    '<p><img alt="图" src="x.png" loading="lazy"> 后文</p>',
   );
 });
 
