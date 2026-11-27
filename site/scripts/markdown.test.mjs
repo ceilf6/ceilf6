@@ -92,13 +92,21 @@ test("图文混排段落保持行内 img", () => {
   );
 });
 
-test("连续多张图片(同行或分行)→ 并排 gallery", () => {
-  const html = '<figure class="note-gallery">'
-    + '<img alt="甲" src="a.webp" loading="lazy">'
-    + '<img alt="乙" src="b.webp" loading="lazy">'
-    + "</figure>";
-  assert.equal(mdToHtml("![甲](a.webp)\n![乙](b.webp)"), html);
-  assert.equal(mdToHtml("![甲](a.webp) ![乙](b.webp)"), html);
+test("连续多张图片(同行或分行)且尺寸齐全 → 并排 gallery", () => {
+  const imageSize = () => ({ width: 400, height: 300 });
+  const img = (alt, src) =>
+    `<img alt="${alt}" src="${src}" width="400" height="300" style="--r:1.3333" loading="lazy">`;
+  const html = `<figure class="note-gallery">${img("甲", "a.webp")}${img("乙", "b.webp")}</figure>`;
+  assert.equal(mdToHtml("![甲](a.webp)\n![乙](b.webp)", { imageSize }), html);
+  assert.equal(mdToHtml("![甲](a.webp) ![乙](b.webp)", { imageSize }), html);
+});
+
+test("多图组里有尺寸未知的图(外链/SVG)→ 不并排,逐张输出单图块", () => {
+  assert.equal(
+    mdToHtml("![甲](a.webp)\n![乙](b.webp)"),
+    '<figure class="note-figure"><img alt="甲" src="a.webp" loading="lazy"></figure>\n'
+      + '<figure class="note-figure"><img alt="乙" src="b.webp" loading="lazy"></figure>',
+  );
 });
 
 test("空行分隔的图片各成一块,不合并", () => {
@@ -121,11 +129,10 @@ test("imageSize 解析器:写入 width/height,图片块(单图/gallery)带宽高
     '<p>看 <img alt="甲" src="/a.webp" width="1600" height="1200" loading="lazy"></p>',
   );
   assert.equal(
-    mdToHtml("![甲](/a.webp)\n![乙](/b.webp)\n![丙](/c.webp)", { imageSize }),
+    mdToHtml("![甲](/a.webp)\n![乙](/b.webp)", { imageSize }),
     '<figure class="note-gallery">'
       + '<img alt="甲" src="/a.webp" width="1600" height="1200" style="--r:1.3333" loading="lazy">'
       + '<img alt="乙" src="/b.webp" width="900" height="1200" style="--r:0.75" loading="lazy">'
-      + '<img alt="丙" src="/c.webp" loading="lazy">'
       + "</figure>",
   );
 });

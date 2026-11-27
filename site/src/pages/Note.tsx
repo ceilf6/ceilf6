@@ -80,7 +80,11 @@ export default function Note() {
   const bodyInner = useMemo(() => ({ __html: bodyHtml ?? "" }), [bodyHtml]);
   useEffect(() => {
     bodyRef.current?.querySelectorAll("img").forEach((img) => {
-      if (zoomable(img)) img.tabIndex = 0;
+      if (!zoomable(img)) return;
+      // 放大入口:可聚焦 + 按钮角色 + 描述操作的名称,屏幕阅读器能知道这张图可以点开
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.setAttribute("aria-label", `查看大图：${img.alt}`);
     });
   }, [bodyHtml]);
 

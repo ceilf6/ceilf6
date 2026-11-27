@@ -183,7 +183,10 @@ describe("Note 配图点击放大", () => {
     await ready();
     const img = screen.getByAltText("甲");
     expect(img).toHaveAttribute("tabindex", "0");
+    // 辅助技术可识别的放大入口:按钮角色 + 描述操作的名称;链接图片保持原样
+    expect(screen.getByRole("button", { name: "查看大图：甲" })).toBe(img);
     expect(screen.getByAltText("链图")).not.toHaveAttribute("tabindex");
+    expect(screen.getByAltText("链图")).not.toHaveAttribute("role");
     img.focus();
     fireEvent.keyDown(img, { key: "Enter" });
     const close = screen.getByRole("button", { name: "关闭" });

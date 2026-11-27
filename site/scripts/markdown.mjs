@@ -47,6 +47,12 @@ function imageBlock(lines, opts) {
   if (imgs.length === 1) {
     return `<figure class="note-figure">${imgTag(imgs[0][1], imgs[0][2], opts, true)}</figure>`;
   }
+  // 按宽高比分配宽度才能保证等高:组内有任一图取不到尺寸(外链/SVG)就不并排,逐张单图块
+  if (!imgs.every((m) => opts.imageSize?.(m[2]))) {
+    return imgs
+      .map((m) => `<figure class="note-figure">${imgTag(m[1], m[2], opts, true)}</figure>`)
+      .join("\n");
+  }
   return `<figure class="note-gallery">${imgs.map((m) => imgTag(m[1], m[2], opts, true)).join("")}</figure>`;
 }
 
