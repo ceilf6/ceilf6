@@ -11,7 +11,8 @@ const inside = (root, p) => {
 /** 站内绝对路径图片 → 读 <site>/public 下的文件头取尺寸;外链返回 null 不写尺寸。
     - 解析后(含符号链接)须仍在 public 内,否则构建失败:札记不能让构建读到发布目录之外;
     - /notes/ 是札记配图的约定目录,缺图即构建失败(断图不能静默上线);
-      其余站内路径(如构建期另行打包的 /assets/)在 public 里找不到时不写尺寸、照常输出。 */
+      其余站内路径(如构建期另行打包的 /assets/)在 public 里找不到时不写尺寸、照常输出;
+    - 尺寸读取器不认识的格式(SVG 等)不写尺寸,不阻断构建。 */
 function publicImageSize(file) {
   const publicDir = file.replace(/\/content\/notes\/[^/]+\.md$/, "/public");
   return (src) => {
@@ -22,7 +23,8 @@ function publicImageSize(file) {
       throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
     }
     if (!existsSync(target)) {
-      if (pathname.startsWith("/notes/")) {
+      // 按规范化后的目标判定(/assets/../notes/x 与 /notes/x 是同一资源)
+      if (inside(resolve(publicDir, "notes"), target)) {
         throw new Error(`md-notes: ${file} 引用的站内图片不存在: ${src}`);
       }
       return null;
@@ -31,7 +33,11 @@ function publicImageSize(file) {
     if (!inside(realpathSync(publicDir), real)) {
       throw new Error(`md-notes: ${file} 引用的图片路径越出 public: ${src}`);
     }
-    return readImageSize(readFileSync(real));
+    try {
+      return readImageSize(readFileSync(real));
+    } catch {
+      return null; // 读取器不支持的格式(如 SVG)不写尺寸,照常输出
+    }
   };
 }
 

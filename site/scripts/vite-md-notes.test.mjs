@@ -157,3 +157,22 @@ test("public 内的符号链接指向外部文件 → 构建期 fail loud", () =
   writeFileSync(md, "---\ntitle: 链\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/l/a.png)");
   assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("越出 public"));
 });
+
+test("尺寸读取器不支持的格式(如 SVG)不报错、不写尺寸", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public"), { recursive: true });
+  writeFileSync(join(site, "public", "chart.svg"), '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>');
+  const md = join(dir, "m.md");
+  writeFileSync(md, "---\ntitle: 矢\ndate: 2026-11-27\nsummary: s\n---\n![x](/chart.svg)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"/chart.svg\\" loading=\\"lazy\\"'));
+});
+
+test("缺图判定按规范化路径:/assets/../notes/缺图 同样构建失败", () => {
+  const dir = notesDir();
+  mkdirSync(join(dir, "..", "..", "public"), { recursive: true });
+  const md = join(dir, "n.md");
+  writeFileSync(md, "---\ntitle: 绕\ndate: 2026-11-27\nsummary: s\n---\n![x](/assets/../notes/no-such.webp)");
+  assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes("不存在"));
+});

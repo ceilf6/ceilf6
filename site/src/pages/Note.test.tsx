@@ -179,7 +179,7 @@ describe("Note 配图点击放大", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  it("键盘可达:配图可聚焦,Enter 打开后焦点进关闭按钮且 Tab 不外溢,关闭后焦点回到原图", async () => {
+  it("键盘可达:配图可聚焦,Enter 打开后焦点进关闭按钮、背景 inert,关闭后焦点回到原图", async () => {
     await ready();
     const img = screen.getByAltText("甲");
     expect(img).toHaveAttribute("tabindex", "0");
@@ -187,24 +187,30 @@ describe("Note 配图点击放大", () => {
     img.focus();
     fireEvent.keyDown(img, { key: "Enter" });
     const close = screen.getByRole("button", { name: "关闭" });
-    expect(img.isConnected).toBe(true); // 弹层开合等重渲染不得重建正文 DOM
     expect(close).toHaveFocus();
-    fireEvent.keyDown(close, { key: "Tab" });
-    expect(close).toHaveFocus();
+    // 背景整体 inert:焦点无论如何(含点击图片后落到 body)都无法 Tab 回遮罩后方
+    const dialog = screen.getByRole("dialog");
+    const background = [...document.body.children].filter((el) => !el.contains(dialog));
+    expect(background.length).toBeGreaterThan(0);
+    background.forEach((el) => expect(el).toHaveAttribute("inert"));
     fireEvent.click(close);
     expect(screen.queryByRole("dialog")).toBeNull();
+    background.forEach((el) => expect(el).not.toHaveAttribute("inert"));
     expect(img).toHaveFocus();
   });
 
-  it("点击弹层内图片切换原尺寸(可平移查看小字),不关闭弹层", async () => {
+  it("原尺寸切换是可聚焦按钮(鼠标点击与键盘均可),不关闭弹层", async () => {
     await ready();
     fireEvent.click(screen.getByAltText("甲"));
     const dialog = screen.getByRole("dialog", { name: "甲" });
-    const big = dialog.querySelector("img")!;
-    expect(dialog).not.toHaveClass("is-full");
-    fireEvent.click(big);
-    expect(screen.getByRole("dialog")).toHaveClass("is-full");
-    fireEvent.click(big);
+    const toggle = screen.getByRole("button", { name: "查看原尺寸" });
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+    expect(toggle.querySelector("img")).toHaveAttribute("src", "/a.webp");
+    fireEvent.click(toggle);
+    expect(dialog).toHaveClass("is-full");
+    const back = screen.getByRole("button", { name: "适应屏幕" });
+    expect(back).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(back);
     expect(screen.getByRole("dialog")).not.toHaveClass("is-full");
   });
 });

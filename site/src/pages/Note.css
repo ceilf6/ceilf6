@@ -116,16 +116,26 @@
   cursor: zoom-out;
   animation: note-zoom-in 0.18s ease-out;
 }
-/* margin:auto 居中;原尺寸超出视口时从左上起排、可平移,不会被裁掉一半 */
-.note-zoom img {
+/* 弹层内图片包在切换按钮里(键盘可达)。margin:auto 居中;
+   原尺寸超出视口时从左上起排、可平移,不会被裁掉一半 */
+.note-zoom-toggle {
+  display: block;
   margin: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: zoom-in;
 }
-.note-zoom.is-full img { max-width: none; max-height: none; cursor: zoom-out; }
+.note-zoom-toggle img {
+  display: block;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 100px);
+  object-fit: contain;
+  border-radius: 6px;
+}
+.note-zoom-toggle:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 4px; }
+.note-zoom.is-full .note-zoom-toggle { cursor: zoom-out; }
+.note-zoom.is-full .note-zoom-toggle img { max-width: none; max-height: none; }
 .note-zoom-close {
   position: fixed;
   top: 12px;

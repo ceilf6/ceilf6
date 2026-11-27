@@ -23,6 +23,7 @@ export default function Note() {
   const bodyRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const title = meta?.title;
   useEffect(() => {
@@ -45,20 +46,28 @@ export default function Note() {
     };
   }, [slug]);
 
-  const closeZoom = () => {
-    setZoom(null);
-    triggerRef.current?.focus(); // 焦点回到触发的配图
-  };
+  const closeZoom = () => setZoom(null);
   const closeZoomRef = useRef(closeZoom);
   closeZoomRef.current = closeZoom;
 
   const zoomOpen = zoom !== null;
   useEffect(() => {
     if (!zoomOpen) return;
+    // 背景整体 inert:点击图片后焦点即使落到 body,Tab 也只能在弹层内移动
+    const background = [...document.body.children].filter(
+      (el) => !el.contains(dialogRef.current) && !el.hasAttribute("inert"),
+    );
+    background.forEach((el) => el.setAttribute("inert", ""));
     closeRef.current?.focus();
     const onKey = (e: globalThis.KeyboardEvent) => e.key === "Escape" && closeZoomRef.current();
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      background.forEach((el) => el.removeAttribute("inert"));
+      // 解除 inert 后背景才可聚焦,回焦放在这里;切文章时原图已卸载则跳过
+      const trigger = triggerRef.current;
+      if (trigger?.isConnected) trigger.focus();
+    };
   }, [zoomOpen]);
 
   // 正文是构建期 HTML 串,img 不是 React 节点:事件委托 + 挂载后补 tabindex 让键盘可达。
@@ -140,21 +149,24 @@ export default function Note() {
             role="dialog"
             aria-modal="true"
             aria-label={zoom.alt}
+            ref={dialogRef}
             onClick={closeZoom}
-            // 弹层内唯一可聚焦的是关闭按钮:Tab 不外溢到遮罩后方
-            onKeyDown={(e) => e.key === "Tab" && e.preventDefault()}
           >
             <button ref={closeRef} type="button" className="note-zoom-close" aria-label="关闭">
               ×
             </button>
-            <img
-              src={zoom.src}
-              alt={zoom.alt}
+            <button
+              type="button"
+              className="note-zoom-toggle"
+              aria-pressed={zoom.full}
+              aria-label={zoom.full ? "适应屏幕" : "查看原尺寸"}
               onClick={(e) => {
                 e.stopPropagation();
                 setZoom((z) => z && { ...z, full: !z.full });
               }}
-            />
+            >
+              <img src={zoom.src} alt={zoom.alt} />
+            </button>
             <p className="note-zoom-hint">轻点图片切换原尺寸 · 点空白处关闭</p>
           </div>,
           document.body,
