@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
+import { createPortal } from "react-dom";
 import { Link, Navigate, useParams } from "react-router";
 import { loadNoteHtml, notes } from "../data/notes";
 import { NoteComments } from "../components/NoteComments";
@@ -16,6 +17,8 @@ export default function Note() {
   const { slug = "" } = useParams();
   const meta = notes.find((n) => n.slug === slug);
   const [body, setBody] = useState<NoteBody>("loading");
+  /** 正文配图全屏查看:并排小图与长截图在手机上可点开看清;slug 切换即收起 */
+  const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
 
   const title = meta?.title;
   useEffect(() => {
@@ -25,6 +28,7 @@ export default function Note() {
   useEffect(() => {
     let alive = true;
     setBody("loading"); // slug 切换即重置,不依赖 App 层 key 重挂载
+    setZoom(null);
     const p = loadNoteHtml(slug);
     if (p) {
       p.then(
@@ -36,6 +40,20 @@ export default function Note() {
       alive = false;
     };
   }, [slug]);
+
+  useEffect(() => {
+    if (!zoom) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setZoom(null);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [zoom]);
+
+  // 事件委托:正文是构建期 HTML 串,img 不是 React 节点
+  const onBodyClick = (e: MouseEvent<HTMLDivElement>) => {
+    const t = e.target;
+    if (t instanceof HTMLImageElement)
+      setZoom({ src: t.getAttribute("src") ?? "", alt: t.alt });
+  };
 
   if (!meta) return <Navigate to="/blog" replace />;
 
@@ -54,7 +72,11 @@ export default function Note() {
         </header>
         {/* 正文为本人撰写、私仓审查签字后构建期编译的静态串:无用户输入,无注入面 */}
         {activeBody !== "loading" && activeBody.status === "ready" ? (
-          <div className="note-body" dangerouslySetInnerHTML={{ __html: activeBody.html }} />
+          <div
+            className="note-body"
+            onClick={onBodyClick}
+            dangerouslySetInnerHTML={{ __html: activeBody.html }}
+          />
         ) : activeBody !== "loading" && activeBody.status === "error" ? (
           <p className="note-error">正文加载失败,请刷新重试</p>
         ) : (
@@ -73,6 +95,21 @@ export default function Note() {
           <NoteComments slug={slug} />
         )}
       </article>
+      {/* portal 到 body:PageTransition 的 transform 会建层叠上下文,
+          留在树内时 fixed 遮罩压不过全站顶栏 */}
+      {zoom &&
+        createPortal(
+          <div
+            className="note-zoom"
+            role="dialog"
+            aria-modal="true"
+            aria-label={zoom.alt}
+            onClick={() => setZoom(null)}
+          >
+            <img src={zoom.src} alt={zoom.alt} />
+          </div>,
+          document.body,
+        )}
     </PageTransition>
   );
 }

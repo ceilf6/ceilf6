@@ -147,3 +147,33 @@ describe("Note 正文加载与评论区挂载边界", () => {
     expect(screen.getByText("独立可读的正文A")).toBeInTheDocument();
   });
 });
+
+describe("Note 配图点击放大", () => {
+  const ready = async () => {
+    at("/blog/a");
+    await settle(() =>
+      inflight.get("a")!.resolve(
+        '<figure class="note-gallery"><img alt="甲" src="/a.webp"><img alt="乙" src="/b.webp"></figure><p>正文</p>',
+      ),
+    );
+  };
+
+  it("点击正文配图打开全屏查看,Esc 关闭", async () => {
+    await ready();
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(screen.getByAltText("乙"));
+    const dialog = screen.getByRole("dialog", { name: "乙" });
+    expect(dialog.querySelector("img")).toHaveAttribute("src", "/b.webp");
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("点击遮罩任意处关闭;点击正文文字不打开", async () => {
+    await ready();
+    fireEvent.click(screen.getByText("正文"));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(screen.getByAltText("甲"));
+    fireEvent.click(screen.getByRole("dialog"));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+});

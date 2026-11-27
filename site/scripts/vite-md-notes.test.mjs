@@ -79,3 +79,53 @@ test("缺必填 frontmatter 键 → 构建期 fail loud,报错含文件路径", 
 test("非 notes 路径不接管", () => {
   assert.equal(mdNotes().load("/x/README.md"), null);
 });
+
+// 最小 PNG 头:签名 + IHDR(宽高各 4 字节大端),足够尺寸读取器识别
+function pngHeader(width, height) {
+  const buf = Buffer.alloc(24);
+  Buffer.from("89504e470d0a1a0a", "hex").copy(buf, 0);
+  buf.writeUInt32BE(13, 8);
+  buf.write("IHDR", 12, "ascii");
+  buf.writeUInt32BE(width, 16);
+  buf.writeUInt32BE(height, 20);
+  return buf;
+}
+
+test("站内图片:从 <site>/public 读取尺寸写入 width/height,gallery 带 --r", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "g"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "g", "a.png"), pngHeader(1600, 1200));
+  writeFileSync(join(site, "public", "notes", "g", "b.png"), pngHeader(900, 1200));
+  const md = join(dir, "g.md");
+  writeFileSync(
+    md,
+    "---\ntitle: 图\ndate: 2026-11-27\nsummary: s\n---\n![甲](/notes/g/a.png)\n![乙](/notes/g/b.png)",
+  );
+  const { code } = mdNotes().load(posix(md));
+  const html = JSON.parse(code.split("export const html = ")[1].replace(/;\s*$/, ""));
+  assert.equal(
+    html,
+    '<figure class="note-gallery">'
+      + '<img alt="甲" src="/notes/g/a.png" width="1600" height="1200" style="--r:1.3333" loading="lazy">'
+      + '<img alt="乙" src="/notes/g/b.png" width="900" height="1200" style="--r:0.75" loading="lazy">'
+      + "</figure>",
+  );
+});
+
+test("站内图片缺失 → 构建期 fail loud,报错含文件路径与图片路径", () => {
+  const md = join(notesDir(), "h.md");
+  writeFileSync(md, "---\ntitle: 缺\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/none/x.webp)");
+  const id = posix(md);
+  assert.throws(
+    () => mdNotes().load(id),
+    (err) => err.message.includes(id) && err.message.includes("/notes/none/x.webp"),
+  );
+});
+
+test("外链图片不读本地文件、不写尺寸", () => {
+  const md = join(notesDir(), "i.md");
+  writeFileSync(md, "---\ntitle: 外\ndate: 2026-11-27\nsummary: s\n---\n![x](https://a.b/x.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('src=\\"https://a.b/x.png\\" loading=\\"lazy\\"'));
+});

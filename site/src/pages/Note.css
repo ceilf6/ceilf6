@@ -56,7 +56,41 @@
   padding: 2px 0 2px 16px;
   opacity: 0.9;
 }
-.note-body img { max-width: 100%; border-radius: 10px; }
+.note-body img { max-width: 100%; height: auto; border-radius: 10px; }
+.note-body hr {
+  border: none;
+  height: 1px;
+  width: 40%;
+  margin: 40px auto;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  opacity: 0.55;
+}
+
+/* 图片块:width/height 属性预留版面,--r(宽高比)由构建期写入。
+   单图限高 72vh:按 --r 反推宽度,长截图收窄居中而不是撑满一屏。 */
+.note-figure { margin: 24px 0; }
+.note-figure img {
+  display: block;
+  margin: 0 auto;
+  width: min(100%, calc(72vh * var(--r, 100)));
+}
+/* 并排:flex-grow 取宽高比,各图宽度与 --r 成正比 → 同一行等高 */
+.note-gallery {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 24px 0;
+}
+.note-gallery img {
+  flex: var(--r, 1) 1 0;
+  min-width: 0;
+}
+/* 手机:三张及以上改为两列折行,避免每张被挤成一条细缝 */
+@media (max-width: 640px) {
+  .note-gallery { gap: 8px; }
+  .note-gallery:has(> img:nth-child(3)) { flex-wrap: wrap; }
+  .note-gallery:has(> img:nth-child(3)) img { flex: 1 1 calc(50% - 4px); }
+}
 .note-foot {
   margin-top: 44px;
   padding-top: 18px;
@@ -67,3 +101,26 @@
 .note-foot a { color: var(--accent-gold); }
 .note-loading { color: var(--text-muted); padding: 40px 0; }
 .note-error { color: var(--text-muted); padding: 40px 0; }
+
+/* 配图点击放大:正文图可点,遮罩任意处或 Esc 关闭 */
+.note-body img { cursor: zoom-in; }
+.note-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(4, 8, 18, 0.92);
+  cursor: zoom-out;
+  animation: note-zoom-in 0.18s ease-out;
+}
+.note-zoom img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+@keyframes note-zoom-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .note-zoom { animation: none; } }

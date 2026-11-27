@@ -1,5 +1,20 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { compileNote } from "./markdown.mjs";
+import { readImageSize } from "./update-image-metadata.mjs";
+
+/** 站内绝对路径图片(/notes/x/a.webp)→ 读 <site>/public 下的文件头取尺寸;
+    外链返回 null 不写尺寸。站内图缺失即构建失败:断图不能静默上线。 */
+function publicImageSize(file) {
+  const publicDir = file.replace(/\/content\/notes\/[^/]+\.md$/, "/public");
+  return (src) => {
+    if (!src.startsWith("/") || src.startsWith("//")) return null;
+    const path = publicDir + decodeURI(src.split(/[?#]/)[0]);
+    if (!existsSync(path)) {
+      throw new Error(`md-notes: ${file} 引用的站内图片不存在: ${src}`);
+    }
+    return readImageSize(readFileSync(path));
+  };
+}
 
 /** /content/notes/*.md → `export const meta / html` 纯导出模块。
     同一 md 服务两个模块 id:裸 id 出 meta+html 双导出(懒加载分包消费),
@@ -13,7 +28,9 @@ export function mdNotes() {
     load(id) {
       const [file, query] = id.split("?");
       if (!/\/content\/notes\/[^/]+\.md$/.test(file)) return null;
-      const { meta, html } = compileNote(readFileSync(file, "utf8"));
+      const { meta, html } = compileNote(readFileSync(file, "utf8"), {
+        imageSize: publicImageSize(file),
+      });
       // compileNote 永不 throw(无/未闭合 frontmatter 时 meta={}),这里是构建期
       // 唯一能拦住「页面标题渲染 undefined」的地方——必填键缺失即 fail loud,
       // 两个分支都过守卫:坏 md 不能因先被 ?meta 消费而漏检。
