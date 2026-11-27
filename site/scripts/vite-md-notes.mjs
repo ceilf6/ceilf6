@@ -20,7 +20,12 @@ function publicImageSize(file) {
     if (!src.startsWith("/") || src.startsWith("//")) return null;
     let pathname;
     try {
-      pathname = decodeURI(src.split(/[?#]/)[0]);
+      // 先去掉查询串与片段,再逐段解码:%23(#)、%3F(?) 这类在 decodeURI 下会保留原样
+      pathname = src
+        .split(/[?#]/)[0]
+        .split("/")
+        .map((seg) => decodeURIComponent(seg))
+        .join("/");
     } catch {
       throw new Error(`md-notes: ${file} 引用的图片路径编码非法: ${src}`);
     }

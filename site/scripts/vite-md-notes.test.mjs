@@ -236,3 +236,14 @@ test("截断的 JPEG / WebP 配图 → 构建期 fail loud", () => {
     assert.throws(() => mdNotes().load(posix(md)), (err) => err.message.includes(`/notes/t/${name}`));
   }
 });
+
+test("文件名含 # 等需转义字符:/notes/u/C%23.webp 按逐段解码找到 C#.webp", () => {
+  const dir = notesDir();
+  const site = join(dir, "..", "..");
+  mkdirSync(join(site, "public", "notes", "u"), { recursive: true });
+  writeFileSync(join(site, "public", "notes", "u", "C#.png"), pngHeader(30, 20));
+  const md = join(dir, "u.md");
+  writeFileSync(md, "---\ntitle: 井\ndate: 2026-11-27\nsummary: s\n---\n![x](/notes/u/C%23.png)");
+  const { code } = mdNotes().load(posix(md));
+  assert.ok(code.includes('width=\\"30\\" height=\\"20\\"'));
+});

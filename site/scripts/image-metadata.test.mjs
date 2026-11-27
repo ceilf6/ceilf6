@@ -77,6 +77,8 @@ test("readImageSize 区分未知格式与已识别但截断的文件", () => {
   assert.throws(() => readImageSize(webp), /Corrupt WebP/);
   // GIF 头不全
   assert.throws(() => readImageSize(Buffer.from("GIF89a\x01")), /Corrupt GIF/);
+  // GIF 逻辑屏幕描述符共 13 字节:只有签名 + 宽高(10 字节)也算截断
+  assert.throws(() => readImageSize(Buffer.from("47494638396101000100", "hex")), /Corrupt GIF/);
 });
 
 test("readImageSize 拒绝头部完好但数据缺失的文件(尾部/声明长度校验)", () => {

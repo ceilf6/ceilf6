@@ -29,7 +29,8 @@ function readPngSize(buffer) {
 function readGifSize(buffer) {
   const signature = buffer.subarray(0, 6).toString("ascii");
   if (signature !== "GIF87a" && signature !== "GIF89a") return null;
-  if (buffer.length < 10) throw corrupt("GIF");
+  // 头部 = 6 字节签名 + 7 字节逻辑屏幕描述符
+  if (buffer.length < 13) throw corrupt("GIF");
 
   return {
     width: buffer.readUInt16LE(6),
