@@ -46,6 +46,7 @@
   /* 复合变量 */
   --panel-bg: rgba(var(--panel-rgb), 0.56);
   --panel-border: rgba(var(--accent-gold-pale-rgb), 0.2);
+  --card-index-fg: rgba(var(--text-faint-rgb), 0.4);
   --card-shadow:
     0 1px 2px rgba(var(--shadow-rgb), 0.4),
     0 18px 38px rgba(var(--shadow-rgb), 0.36);

@@ -62,9 +62,18 @@ const ALL_COLOR_FN_RE =
 const NAMED_COLOR_RE =
   /(?:^|[\s,(/:])(white|black|red|green|blue|yellow|orange|purple|pink|cyan|magenta|gold|gray|grey|silver|maroon|olive|lime|aqua|teal|navy|fuchsia|crimson|coral|salmon|khaki|violet|indigo|ivory|beige|wheat|tan|peru|chocolate|firebrick|darkred|darkblue|darkgreen|darkslategray|slategray|lightgray|dimgray|rebeccapurple|hotpink|tomato|dodgerblue|skyblue|steelblue|royalblue|midnightblue|forestgreen|seagreen|turquoise|aquamarine|lavender|plum|orchid|sienna|brown)(?=$|[\s,!);\n])/gi;
 
-/** 全局无宿主限定的伪元素选择器（会直接作用到灯箱内部节点及其滚动条/选区） */
+/** 全局无宿主限定的伪元素选择器（含 :hover 等伪类后缀，会直接作用到灯箱内部节点及其滚动条/选区） */
 const GLOBAL_PSEUDO_ELEMENT_RE =
-  /^::(?:selection|-webkit-scrollbar(?:-[a-z-]+)?)$/i;
+  /^::(?:selection|-webkit-scrollbar(?:-[a-z-]+)?)(?::[a-z-]+(?:\([^)]*\))?)*$/i;
+
+/** :root 必须声明的复合颜色变量集合（防止漏定义复合令牌而在组件中散落硬编码透明度） */
+const REQUIRED_ROOT_COMPOSITES = [
+  "--panel-bg",
+  "--panel-border",
+  "--card-shadow",
+  "--page-background",
+  "--card-index-fg",
+] as const;
 
 interface CssDeclaration {
   file: string;
@@ -630,6 +639,17 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       }
     }
 
+    const rootRule = tokensEntry.rules.find(
+      (r) => r.selector === ":root" && r.atRule === null,
+    );
+    expect(rootRule).toBeDefined();
+    const rootDefinedNames = new Set(rootRule!.declarations.map((d) => d.prop));
+    for (const reqName of REQUIRED_ROOT_COMPOSITES) {
+      if (!rootDefinedNames.has(reqName)) {
+        violations.push(`${TOKENS_REL_PATH} 的 :root 缺少必需的复合变量声明: ${reqName}`);
+      }
+    }
+
     expect(rootChannelCount).toBeGreaterThanOrEqual(26);
     expect(violations).toEqual([]);
   });
@@ -843,5 +863,6 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
     expect(allBranchesInLockedScope(".outside, .viewer-screen .nav-btn")).toBe(false);
     expect(anyBranchAffectsLockedScope(".outside, .viewer-screen .nav-btn")).toBe(true);
     expect(anyBranchAffectsLockedScope("::-webkit-scrollbar-thumb")).toBe(true);
+    expect(anyBranchAffectsLockedScope("::-webkit-scrollbar-thumb:hover")).toBe(true);
   });
 });

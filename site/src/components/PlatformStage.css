@@ -226,7 +226,7 @@
   right: 24px;
   font-size: 0.78rem;
   letter-spacing: 0.2em;
-  color: rgba(var(--text-faint-rgb), 0.4);
+  color: var(--card-index-fg);
 }
 
 @media (max-width: 600px) {
