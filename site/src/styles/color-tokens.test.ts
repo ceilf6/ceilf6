@@ -14,8 +14,15 @@ const SRC_DIR = resolve(SITE_DIR, "src");
 const SCRIPTS_DIR = resolve(SITE_DIR, "scripts");
 const TOKENS_REL_PATH = "src/styles/tokens.css";
 
-/** 局部锁定为午夜蓝的灯箱作用域前缀（只允许其中的中性白/黑字面量豁免） */
-const LOCKED_SCOPE_PREFIXES = [".viewer-screen", ".note-zoom"] as const;
+/** 局部锁定为午夜蓝的灯箱根选择器及 Note.css 灯箱内部扁平子元素类名 */
+const LOCKED_ROOT_SELECTORS = [".viewer-screen", ".note-zoom"] as const;
+const LOCKED_CHILD_CLASS_PREFIXES = [
+  ".viewer-screen",
+  ".note-zoom",
+  ".note-zoom-toggle",
+  ".note-zoom-close",
+  ".note-zoom-hint",
+] as const;
 
 /** D 类豁免：压在用户自选 8 色深色头像底色上的固定白色文字与半透白边 */
 const AVATAR_CUSTOM_COLOR_EXEMPTIONS: Readonly<Record<string, ReadonlySet<string>>> = {
@@ -42,6 +49,22 @@ const RUNTIME_WRITTEN: Readonly<Record<string, string>> = {
   "--gy": "src/fx/tilt.ts",
   "--r": "scripts/markdown.mjs",
 };
+
+/** 合法的通道颜色函数调用：仅允许 rgb(var(--x-rgb)) 或 rgba(var(--x-rgb), alpha)，禁止在 var() 内塞字面量回退 */
+const VALID_TOKEN_RGB_CALL_RE =
+  /^rgba?\(\s*var\(--[a-z0-9-]+-rgb\)\s*(?:,\s*(?:0|1|0?\.\d+|1\.0+)\s*)?\)$/i;
+
+/** 所有 CSS 颜色函数名（含 Color 4 的 hwb / lab / lch / oklch / oklab / color / color-mix） */
+const ALL_COLOR_FN_RE =
+  /\b(?:rgba?|hsla?|hwb|lab|lch|oklch|oklab|color|color-mix)\s*\(/gi;
+
+/** 常见 CSS 命名色关键字（不含 transparent / currentColor / inherit / none 等非具体色值关键字） */
+const NAMED_COLOR_RE =
+  /(?:^|[\s,(/:])(white|black|red|green|blue|yellow|orange|purple|pink|cyan|magenta|gold|gray|grey|silver|maroon|olive|lime|aqua|teal|navy|fuchsia|crimson|coral|salmon|khaki|violet|indigo|ivory|beige|wheat|tan|peru|chocolate|firebrick|darkred|darkblue|darkgreen|darkslategray|slategray|lightgray|dimgray|rebeccapurple|hotpink|tomato|dodgerblue|skyblue|steelblue|royalblue|midnightblue|forestgreen|seagreen|turquoise|aquamarine|lavender|plum|orchid|sienna|brown)(?=$|[\s,!);\n])/gi;
+
+/** 全局无宿主限定的伪元素选择器（会直接作用到灯箱内部节点及其滚动条/选区） */
+const GLOBAL_PSEUDO_ELEMENT_RE =
+  /^::(?:selection|-webkit-scrollbar(?:-[a-z-]+)?)$/i;
 
 interface CssDeclaration {
   file: string;
@@ -154,6 +177,13 @@ function parseDeclarations(
     const raw = body.slice(segStart, segEnd);
     const trimmed = raw.trim();
     if (!trimmed) return;
+    const unquoted = stripQuotedStrings(raw);
+    if (unquoted.includes("{") || unquoted.includes("}")) {
+      const line = lineNumberAt(lineStarts, bodyOffset + segStart);
+      throw new Error(
+        `${file}:${line} (${selector}) 出现未预期的嵌套块，请改为扁平选择器规则以保证颜色门禁完整扫描`,
+      );
+    }
     const colonIdx = raw.indexOf(":");
     if (colonIdx === -1) return;
     const prop = raw.slice(0, colonIdx).trim();
@@ -196,6 +226,42 @@ function parseDeclarations(
   return decls;
 }
 
+/** 引号与括号感知地查找下一个顶层 `{` 或语句型 at-rule 的 `;` */
+function findNextRuleBoundary(
+  css: string,
+  fromIdx: number,
+): { kind: "block" | "statement"; index: number } | null {
+  let inQuote: string | null = null;
+  let parenDepth = 0;
+  let bracketDepth = 0;
+  for (let i = fromIdx; i < css.length; i += 1) {
+    const ch = css[i];
+    if (inQuote) {
+      if (ch === "\\" && i + 1 < css.length) {
+        i += 1;
+        continue;
+      }
+      if (ch === inQuote) inQuote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      inQuote = ch;
+    } else if (ch === "(") {
+      parenDepth += 1;
+    } else if (ch === ")" && parenDepth > 0) {
+      parenDepth -= 1;
+    } else if (ch === "[") {
+      bracketDepth += 1;
+    } else if (ch === "]" && bracketDepth > 0) {
+      bracketDepth -= 1;
+    } else if (parenDepth === 0 && bracketDepth === 0) {
+      if (ch === "{") return { kind: "block", index: i };
+      if (ch === ";") return { kind: "statement", index: i };
+    }
+  }
+  return null;
+}
+
 function parseCssRules(
   css: string,
   baseOffset: number,
@@ -206,8 +272,14 @@ function parseCssRules(
   const rules: CssRule[] = [];
   let i = 0;
   while (i < css.length) {
-    const openIdx = css.indexOf("{", i);
-    if (openIdx === -1) break;
+    const boundary = findNextRuleBoundary(css, i);
+    if (!boundary) break;
+    if (boundary.kind === "statement") {
+      // 跳过 @import / @charset / @layer base; 等以分号结尾的语句型 at-rule
+      i = boundary.index + 1;
+      continue;
+    }
+    const openIdx = boundary.index;
     const rawPrelude = css.slice(i, openIdx);
     const leadWs = rawPrelude.length - rawPrelude.trimStart().length;
     const preludeOffset = baseOffset + i + leadWs;
@@ -237,7 +309,7 @@ function parseCssRules(
     const inner = css.slice(openIdx + 1, j - 1);
     const innerOffset = baseOffset + openIdx + 1;
 
-    if (/^@(?:media|supports|layer|container)\b/i.test(prelude)) {
+    if (/^@(?:media|supports|layer|container|scope|starting-style)\b/i.test(prelude)) {
       const nextAt = atRule ? `${atRule} > ${prelude}` : prelude;
       rules.push(...parseCssRules(inner, innerOffset, file, nextAt, lineStarts));
     } else if (/^@keyframes\b/i.test(prelude)) {
@@ -266,7 +338,10 @@ function parseCssRules(
 /** 提取括号匹配的完整函数调用（如 `rgba(255, 255, 255, 0.2)` 或 `rgb(var(--x-rgb))`） */
 function extractFunctionCalls(value: string, fnRegex: RegExp): string[] {
   const matches: string[] = [];
-  const re = new RegExp(fnRegex.source, fnRegex.flags.includes("g") ? fnRegex.flags : `${fnRegex.flags}g`);
+  const re = new RegExp(
+    fnRegex.source,
+    fnRegex.flags.includes("g") ? fnRegex.flags : `${fnRegex.flags}g`,
+  );
   let m: RegExpExecArray | null;
   while ((m = re.exec(value)) !== null) {
     const start = m.index;
@@ -312,7 +387,7 @@ function stripQuotedStrings(value: string): string {
   return out;
 }
 
-function findColorLiteralsInValue(rawValue: string): string[] {
+export function findColorLiteralsInValue(rawValue: string): string[] {
   const unquoted = stripQuotedStrings(rawValue);
   const literals: string[] = [];
 
@@ -320,14 +395,13 @@ function findColorLiteralsInValue(rawValue: string): string[] {
     literals.push(m[0]);
   }
 
-  for (const call of extractFunctionCalls(unquoted, /\b(?:rgba?|hsla?|oklch|oklab|color)\s*\(/gi)) {
-    const inner = call.slice(call.indexOf("(") + 1, -1).trimStart();
-    if (!inner.startsWith("var(")) {
+  for (const call of extractFunctionCalls(unquoted, ALL_COLOR_FN_RE)) {
+    if (!VALID_TOKEN_RGB_CALL_RE.test(call)) {
       literals.push(call);
     }
   }
 
-  for (const m of unquoted.matchAll(/(?:^|[\s,(/:])(white|black)(?=$|[\s,!);\n])/gi)) {
+  for (const m of unquoted.matchAll(NAMED_COLOR_RE)) {
     literals.push(m[1]);
   }
 
@@ -338,7 +412,7 @@ function isNeutralWhiteLiteral(literal: string): boolean {
   const norm = literal.trim().toLowerCase().replace(/\s+/g, "");
   if (norm === "#fff" || norm === "#ffffff" || norm === "white") return true;
   if (norm === "rgb(255,255,255)") return true;
-  return /^rgba\(255,255,255,(?:0|1|0?\.\d+)\)$/.test(norm);
+  return /^rgba\(255,255,255,(?:0|1|0?\.\d+|1\.0+)\)$/.test(norm);
 }
 
 function isNeutralWhiteOrBlackLiteral(literal: string): boolean {
@@ -346,16 +420,26 @@ function isNeutralWhiteOrBlackLiteral(literal: string): boolean {
   const norm = literal.trim().toLowerCase().replace(/\s+/g, "");
   if (norm === "#000" || norm === "#000000" || norm === "black") return true;
   if (norm === "rgb(0,0,0)") return true;
-  return /^rgba\(0,0,0,(?:0|1|0?\.\d+)\)$/.test(norm);
+  return /^rgba\(0,0,0,(?:0|1|0?\.\d+|1\.0+)\)$/.test(norm);
 }
 
 function splitSelectorList(selector: string): string[] {
   const parts: string[] = [];
   let start = 0;
   let depth = 0;
+  let inQuote: string | null = null;
   for (let i = 0; i < selector.length; i += 1) {
     const ch = selector[i];
-    if (ch === "(" || ch === "[") depth += 1;
+    if (inQuote) {
+      if (ch === "\\" && i + 1 < selector.length) {
+        i += 1;
+        continue;
+      }
+      if (ch === inQuote) inQuote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") inQuote = ch;
+    else if (ch === "(" || ch === "[") depth += 1;
     else if ((ch === ")" || ch === "]") && depth > 0) depth -= 1;
     else if (ch === "," && depth === 0) {
       parts.push(selector.slice(start, i).trim());
@@ -366,18 +450,53 @@ function splitSelectorList(selector: string): string[] {
   return parts.filter(Boolean);
 }
 
-function isSelectorInLockedScope(selector: string): boolean {
+function hasTopLevelSiblingCombinator(branch: string): boolean {
+  let depth = 0;
+  let inQuote: string | null = null;
+  for (let i = 0; i < branch.length; i += 1) {
+    const ch = branch[i];
+    if (inQuote) {
+      if (ch === "\\" && i + 1 < branch.length) {
+        i += 1;
+        continue;
+      }
+      if (ch === inQuote) inQuote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") inQuote = ch;
+    else if (ch === "(" || ch === "[") depth += 1;
+    else if ((ch === ")" || ch === "]") && depth > 0) depth -= 1;
+    else if (depth === 0 && (ch === "+" || ch === "~")) return true;
+  }
+  return false;
+}
+
+/**
+ * 判断单条选择器分支是否严格命中灯箱子树内部：
+ * - 拒绝任何含顶层 `+` / `~` 兄弟组合器的分支（如 `.viewer-screen + .other` 在灯箱外部）；
+ * - 允许 `.viewer-screen`、`.note-zoom` 及其后代/伪类/属性组合，以及 Note.css 中挂载在 `.note-zoom` 内的三个扁平子类名。
+ */
+export function isBranchInLockedScope(branch: string): boolean {
+  if (hasTopLevelSiblingCombinator(branch)) return false;
+  return LOCKED_CHILD_CLASS_PREFIXES.some((prefix) => {
+    if (!branch.startsWith(prefix)) return false;
+    const next = branch[prefix.length];
+    return next === undefined || /[\s.:[>]/.test(next);
+  });
+}
+
+/** 测试 1 使用：逗号选择器的全部分支都落在灯箱内时才允许豁免中性白/黑字面量 */
+export function allBranchesInLockedScope(selector: string): boolean {
   const branches = splitSelectorList(selector);
-  if (branches.length === 0) return false;
-  return branches.every((branch) =>
-    LOCKED_SCOPE_PREFIXES.some((prefix) => {
-      if (!branch.startsWith(prefix)) return false;
-      const next = branch[prefix.length];
-      return (
-        next === undefined ||
-        /[\s.:[>+~]/.test(next)
-      );
-    }),
+  return branches.length > 0 && branches.every(isBranchInLockedScope);
+}
+
+/** 测试 6 使用：只要任一分支命中灯箱内部（或为无宿主限定的全局伪元素），引用的 tokens 变量就必须在锁定块重建 */
+export function anyBranchAffectsLockedScope(selector: string): boolean {
+  const branches = splitSelectorList(selector);
+  return (
+    branches.length > 0 &&
+    branches.some((b) => isBranchInLockedScope(b) || GLOBAL_PSEUDO_ELEMENT_RE.test(b))
   );
 }
 
@@ -405,7 +524,7 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       if (rel === TOKENS_REL_PATH) continue;
 
       for (const rule of rules) {
-        const inLockedScope = isSelectorInLockedScope(rule.selector);
+        const inLockedScope = allBranchesInLockedScope(rule.selector);
         const avatarExemptSelectors = AVATAR_CUSTOM_COLOR_EXEMPTIONS[rel];
         const isAvatarCustomRule =
           avatarExemptSelectors !== undefined &&
@@ -457,36 +576,39 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
     expect(violations).toEqual([]);
   });
 
-  it("3) tokens.css 自身零十六进制、rgb/rgba 首参均为 var(--*-rgb)、且每个 --*-rgb 为 0–255 合法三元组", () => {
+  it("3) tokens.css 自身零十六进制/非 rgb 颜色函数、rgb/rgba 首参均为 var(--*-rgb)、且 :root 的 --*-rgb 为 >=26 个 0–255 三元组", () => {
     const tokensEntry = parsedByFile.get(TOKENS_REL_PATH)!;
     const violations: string[] = [];
+    let rootChannelCount = 0;
 
-    for (const m of tokensEntry.clean.matchAll(/#[0-9a-fA-F]{3,8}(?![0-9a-zA-Z_-])/g)) {
-      const line = lineNumberAt(tokensEntry.lineStarts, m.index ?? 0);
-      violations.push(`${TOKENS_REL_PATH}:${line} 出现十六进制颜色字面量: ${m[0]}`);
-    }
-
-    let channelCount = 0;
     for (const rule of tokensEntry.rules) {
+      const isRootRule = rule.selector === ":root" && rule.atRule === null;
+
       for (const decl of rule.declarations) {
-        for (const m of stripQuotedStrings(decl.value).matchAll(
-          /(?:^|[\s,(/:])(white|black)(?=$|[\s,!);\n])/gi,
-        )) {
+        const unquoted = stripQuotedStrings(decl.value);
+
+        for (const m of unquoted.matchAll(/#[0-9a-fA-F]{3,8}(?![0-9a-zA-Z_-])/g)) {
+          violations.push(
+            `${decl.file}:${decl.line} (${decl.prop}) 出现十六进制颜色字面量: ${m[0]}`,
+          );
+        }
+
+        for (const m of unquoted.matchAll(NAMED_COLOR_RE)) {
           violations.push(
             `${decl.file}:${decl.line} (${decl.prop}) 出现关键字颜色字面量: ${m[1]}`,
           );
         }
 
-        for (const call of extractFunctionCalls(decl.value, /\brgba?\s*\(/gi)) {
-          if (!/^rgba?\(\s*var\(--[a-z0-9-]+-rgb\)\s*(?:,\s*(?:0|1|0?\.\d+)\s*)?\)$/i.test(call)) {
+        for (const call of extractFunctionCalls(unquoted, ALL_COLOR_FN_RE)) {
+          if (!VALID_TOKEN_RGB_CALL_RE.test(call)) {
             violations.push(
-              `${decl.file}:${decl.line} (${decl.prop}) 的 rgb/rgba 调用首参不是 var(--*-rgb): ${call}`,
+              `${decl.file}:${decl.line} (${decl.prop}) 出现非法颜色函数调用（仅允许 rgb/rgba(var(--*-rgb), α)）: ${call}`,
             );
           }
         }
 
         if (decl.prop.endsWith("-rgb")) {
-          channelCount += 1;
+          if (isRootRule) rootChannelCount += 1;
           const tripletMatch = /^(\d{1,3}), (\d{1,3}), (\d{1,3})$/.exec(decl.value);
           if (!tripletMatch) {
             violations.push(
@@ -508,21 +630,34 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       }
     }
 
-    expect(channelCount).toBeGreaterThanOrEqual(26);
+    expect(rootChannelCount).toBeGreaterThanOrEqual(26);
     expect(violations).toEqual([]);
   });
 
-  it("4) 所有 CSS var(--name) 引用均有定义或登记于 RUNTIME_WRITTEN，且反向校验白名单在源码中真实写入", () => {
-    const definedVars = new Set<string>();
+  it("4) 所有 CSS var(--name) 引用均有全局或同文件定义（或登记于 RUNTIME_WRITTEN），且反向校验白名单真实写入", () => {
+    const globalVars = new Set<string>();
+    const fileScopedVars = new Map<string, Set<string>>();
     const varReferences: Array<{ file: string; line: number; name: string }> = [];
 
-    for (const [, { rules }] of parsedByFile.entries()) {
+    for (const [rel, { rules }] of parsedByFile.entries()) {
+      const localSet = new Set<string>();
+      fileScopedVars.set(rel, localSet);
       for (const rule of rules) {
+        const isRootScope =
+          rel === TOKENS_REL_PATH ||
+          rule.selector === ":root" ||
+          rule.selector === "html";
         for (const decl of rule.declarations) {
           if (decl.prop.startsWith("--")) {
-            definedVars.add(decl.prop);
+            if (isRootScope) {
+              globalVars.add(decl.prop);
+            } else {
+              localSet.add(decl.prop);
+            }
           }
-          for (const m of decl.value.matchAll(/var\(\s*(--[a-zA-Z0-9-]+)/g)) {
+          for (const m of stripQuotedStrings(decl.value).matchAll(
+            /var\(\s*(--[a-zA-Z0-9-]+)/g,
+          )) {
             varReferences.push({
               file: decl.file,
               line: decl.line,
@@ -534,11 +669,15 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
     }
 
     const missingRefs = varReferences
-      .filter(({ name }) => !definedVars.has(name) && !(name in RUNTIME_WRITTEN))
+      .filter(({ file, name }) => {
+        if (globalVars.has(name)) return false;
+        if (fileScopedVars.get(file)?.has(name)) return false;
+        return !(name in RUNTIME_WRITTEN);
+      })
       .map(({ file, line, name }) => `${file}:${line} 引用了未定义的变量 ${name}`);
     expect(missingRefs).toEqual([]);
 
-    // 扫描三处写入源反向校验 RUNTIME_WRITTEN 白名单，防止死项残留
+    // 扫描三处非测试源码写入源反向校验 RUNTIME_WRITTEN 白名单，防止死项残留
     const discoveredRuntimeWrites = new Map<string, Set<string>>();
     const recordWrite = (varName: string, relFile: string) => {
       if (!discoveredRuntimeWrites.has(varName)) {
@@ -547,17 +686,26 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       discoveredRuntimeWrites.get(varName)!.add(relFile);
     };
 
-    // (a) src/**/*.tsx 行内样式键 "--x":
-    for (const fullPath of collectFiles(SRC_DIR, (n) => n.endsWith(".tsx"))) {
+    // (a) src/**/*.tsx（排除测试文件）行内样式键 "--x": 或 style.setProperty("--x", ...)
+    for (const fullPath of collectFiles(
+      SRC_DIR,
+      (n) => n.endsWith(".tsx") && !n.endsWith(".test.tsx") && !n.endsWith(".spec.tsx"),
+    )) {
       const rel = toPosixRel(fullPath);
       const content = readFileSync(fullPath, "utf8");
       for (const m of content.matchAll(/["'](--[a-zA-Z0-9-]+)["']\s*:/g)) {
         recordWrite(m[1], rel);
       }
+      for (const m of content.matchAll(/\.setProperty\(\s*["'](--[a-zA-Z0-9-]+)["']/g)) {
+        recordWrite(m[1], rel);
+      }
     }
 
-    // (b) src/**/*.ts style.setProperty("--x", ...)
-    for (const fullPath of collectFiles(SRC_DIR, (n) => n.endsWith(".ts") && !n.endsWith(".test.ts"))) {
+    // (b) src/**/*.ts（排除测试文件）style.setProperty("--x", ...)
+    for (const fullPath of collectFiles(
+      SRC_DIR,
+      (n) => n.endsWith(".ts") && !n.endsWith(".test.ts") && !n.endsWith(".spec.ts"),
+    )) {
       const rel = toPosixRel(fullPath);
       const content = readFileSync(fullPath, "utf8");
       for (const m of content.matchAll(/\.setProperty\(\s*["'](--[a-zA-Z0-9-]+)["']/g)) {
@@ -565,8 +713,11 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       }
     }
 
-    // (c) scripts/*.mjs 构建期拼入 style="--x:..."
-    for (const fullPath of collectFiles(SCRIPTS_DIR, (n) => n.endsWith(".mjs") && !n.endsWith(".test.mjs"))) {
+    // (c) scripts/*.mjs（排除测试文件）构建期拼入 style="--x:..."
+    for (const fullPath of collectFiles(
+      SCRIPTS_DIR,
+      (n) => n.endsWith(".mjs") && !n.endsWith(".test.mjs"),
+    )) {
       const rel = toPosixRel(fullPath);
       const content = readFileSync(fullPath, "utf8");
       for (const m of content.matchAll(/style="[^"]*?(--[a-zA-Z0-9-]+)\s*:/g)) {
@@ -595,9 +746,11 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
     expect(platformCss!.clean).not.toMatch(/--accent-amber\s*:/);
   });
 
-  it("6) 灯箱锁定块（.viewer-screen, .note-zoom）完整覆盖作用域内引用的通道变量与派生变量，且与 :root 午夜蓝基准一致", () => {
+  it("6) 灯箱锁定块（.viewer-screen, .note-zoom）完整覆盖作用域及全局伪元素引用的通道/派生变量并阻断 body 文字色继承", () => {
     const tokensEntry = parsedByFile.get(TOKENS_REL_PATH)!;
-    const rootRule = tokensEntry.rules.find((r) => r.selector === ":root");
+    const rootRule = tokensEntry.rules.find(
+      (r) => r.selector === ":root" && r.atRule === null,
+    );
     expect(rootRule).toBeDefined();
 
     const rootMap = new Map<string, string>();
@@ -606,18 +759,24 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
     }
 
     const lockRule = tokensEntry.rules.find((r) => {
+      if (r.atRule !== null) return false;
       const branches = splitSelectorList(r.selector);
       return (
-        branches.length === LOCKED_SCOPE_PREFIXES.length &&
-        LOCKED_SCOPE_PREFIXES.every((p) => branches.includes(p))
+        branches.length === LOCKED_ROOT_SELECTORS.length &&
+        LOCKED_ROOT_SELECTORS.every((p) => branches.includes(p))
       );
     });
     expect(lockRule).toBeDefined();
 
     const lockMap = new Map<string, string>();
+    let hasExplicitTextMainColor = false;
     for (const d of lockRule!.declarations) {
       if (d.prop.startsWith("--")) lockMap.set(d.prop, d.value);
+      if (d.prop === "color" && d.value === "var(--text-main)") {
+        hasExplicitTextMainColor = true;
+      }
     }
+    expect(hasExplicitTextMainColor).toBe(true);
 
     const lockErrors: string[] = [];
 
@@ -643,15 +802,17 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       }
     }
 
-    // 锁定作用域（.viewer-screen* / .note-zoom*）及全局 ::selection 内出现的每个 tokens.css 变量（含派生变量）都必须在锁定块内重新声明
+    // 锁定作用域（含 .note-zoom-* 扁平子类名）及全局伪元素（::selection / ::-webkit-scrollbar*）使用的每个 tokens 变量都必须在锁定块重建
+    let matchedNoteZoomClose = false;
     for (const [, { rules }] of parsedByFile.entries()) {
       for (const rule of rules) {
-        const affectsLockedScope =
-          isSelectorInLockedScope(rule.selector) || rule.selector === "::selection";
-        if (!affectsLockedScope) continue;
+        if (!anyBranchAffectsLockedScope(rule.selector)) continue;
+        if (rule.selector === ".note-zoom-close") matchedNoteZoomClose = true;
 
         for (const decl of rule.declarations) {
-          for (const m of decl.value.matchAll(/var\(\s*(--[a-zA-Z0-9-]+)/g)) {
+          for (const m of stripQuotedStrings(decl.value).matchAll(
+            /var\(\s*(--[a-zA-Z0-9-]+)/g,
+          )) {
             const varName = m[1];
             if (rootMap.has(varName) && !lockMap.has(varName)) {
               lockErrors.push(
@@ -663,6 +824,24 @@ describe("前端颜色令牌完整性与单点定义守卫（color-tokens）", (
       }
     }
 
+    expect(matchedNoteZoomClose).toBe(true);
     expect(lockErrors).toEqual([]);
+  });
+
+  it("7) 守卫自检：防止 var() 字面量回退、非 rgb 颜色函数、兄弟组合器与多分支选择器绕过", () => {
+    expect(findColorLiteralsInValue("rgba(var(--accent-gold-rgb, 255, 192, 105), 0.5)")).toHaveLength(1);
+    expect(findColorLiteralsInValue("hsl(var(--h), 100%, 50%)")).toHaveLength(1);
+    expect(findColorLiteralsInValue("color-mix(in srgb, var(--accent-gold) 50%, transparent)")).toHaveLength(1);
+    expect(findColorLiteralsInValue("1px solid crimson")).toEqual(["crimson"]);
+    expect(findColorLiteralsInValue("rgba(var(--accent-gold-rgb), 0.5)")).toEqual([]);
+    expect(findColorLiteralsInValue("rgb(var(--accent-gold-rgb))")).toEqual([]);
+
+    expect(isBranchInLockedScope(".note-zoom-close")).toBe(true);
+    expect(isBranchInLockedScope(".note-zoom-toggle:focus-visible")).toBe(true);
+    expect(isBranchInLockedScope(".viewer-screen + .outside")).toBe(false);
+    expect(isBranchInLockedScope(".note-zoom ~ footer")).toBe(false);
+    expect(allBranchesInLockedScope(".outside, .viewer-screen .nav-btn")).toBe(false);
+    expect(anyBranchAffectsLockedScope(".outside, .viewer-screen .nav-btn")).toBe(true);
+    expect(anyBranchAffectsLockedScope("::-webkit-scrollbar-thumb")).toBe(true);
   });
 });
