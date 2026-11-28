@@ -181,7 +181,7 @@ describe("CommentAvatar 与 NoteCommentCard 评论者头像及防溢出布局", 
 
   it("兜底样式与卡片网格护栏：正文含 300 字符无空格连续串时右列具备 min-width: 0 且样式职责分离", () => {
     expect(rawAvatarCss).toContain("var(--accent-gold)");
-    expect(rawAvatarCss).toContain("var(--bg-void)");
+    expect(rawAvatarCss).toContain("var(--on-accent)");
     expect(rawCommentsCss).not.toContain(".comment-avatar");
 
     expect(rawCommentsCss).toMatch(

@@ -11,18 +11,18 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: rgba(238, 244, 255, 0.66);
+  color: rgba(var(--text-soft-rgb), 0.66);
   font-size: 13px;
   letter-spacing: 0;
   background:
     linear-gradient(
       115deg,
-      rgba(255, 255, 255, 0.02) 0%,
-      rgba(255, 192, 105, 0.12) 42%,
-      rgba(191, 145, 243, 0.08) 72%,
-      rgba(255, 255, 255, 0.02) 100%
+      rgba(var(--sheen-rgb), 0.02) 0%,
+      rgba(var(--accent-gold-rgb), 0.12) 42%,
+      rgba(var(--accent-violet-rgb), 0.08) 72%,
+      rgba(var(--sheen-rgb), 0.02) 100%
     ),
-    rgba(13, 22, 44, 0.42);
+    rgba(var(--panel-rgb), 0.42);
   transition: opacity 0.32s ease;
 }
 
@@ -30,10 +30,10 @@
   content: "";
   width: 34px;
   height: 34px;
-  border: 2px solid rgba(238, 244, 255, 0.18);
-  border-top-color: rgba(255, 192, 105, 0.9);
+  border: 2px solid rgba(var(--text-soft-rgb), 0.18);
+  border-top-color: rgba(var(--accent-gold-rgb), 0.9);
   border-radius: 50%;
-  box-shadow: 0 0 24px rgba(255, 192, 105, 0.2);
+  box-shadow: 0 0 24px rgba(var(--accent-gold-rgb), 0.2);
   animation: loaderSpin 0.9s linear infinite;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .readme-card.is-error .readme-card-loader {
-  color: rgba(255, 154, 98, 0.92);
+  color: rgba(var(--accent-dawn-rgb), 0.92);
 }
 
 .readme-card.is-error .readme-card-loader::before {
@@ -72,13 +72,13 @@
   min-width: 0;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid rgba(255, 214, 166, 0.3);
+  border: 1px solid rgba(var(--accent-gold-pale-rgb), 0.3);
   background: linear-gradient(
     160deg,
-    rgba(18, 28, 54, 0.92),
-    rgba(26, 40, 74, 0.68)
+    rgba(var(--card-top-rgb), 0.92),
+    rgba(var(--card-bottom-rgb), 0.68)
   );
-  box-shadow: 0 14px 30px rgba(3, 10, 24, 0.3);
+  box-shadow: 0 14px 30px rgba(var(--shadow-rgb), 0.3);
   /* transform 通道让给 3D tilt(0.18s 快响应);hover 上浮改走独立 translate 通道,
      保留原 0.45s 时长语义——同 PlatformStage.css 的手法 */
   transition:
@@ -105,10 +105,10 @@
 
 .readme-card:hover {
   translate: 0 -4px;
-  border-color: rgba(255, 192, 105, 0.48);
+  border-color: rgba(var(--accent-gold-rgb), 0.48);
   box-shadow:
-    0 18px 34px rgba(3, 10, 24, 0.44),
-    0 0 0 1px rgba(255, 192, 105, 0.38);
+    0 18px 34px rgba(var(--shadow-rgb), 0.44),
+    0 0 0 1px rgba(var(--accent-gold-rgb), 0.38);
 }
 
 .readme-card:hover img {
@@ -150,7 +150,7 @@
   transition: opacity 0.2s;
   background: radial-gradient(
     240px circle at var(--gx, 50%) var(--gy, 50%),
-    rgba(255, 255, 255, 0.14),
+    rgba(var(--sheen-rgb), 0.14),
     transparent 55%
   );
 }
