@@ -44,8 +44,8 @@
     border-color 0.35s ease;
   background: linear-gradient(
     160deg,
-    rgba(18, 28, 54, 0.86),
-    rgba(26, 40, 74, 0.56)
+    rgba(var(--card-top-rgb), 0.86),
+    rgba(var(--card-bottom-rgb), 0.56)
   );
   backdrop-filter: blur(8px) saturate(120%);
   -webkit-backdrop-filter: blur(8px) saturate(120%);
@@ -62,18 +62,18 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: rgba(238, 244, 255, 0.66);
+  color: rgba(var(--text-soft-rgb), 0.66);
   font-size: 13px;
   letter-spacing: 0;
   background:
     linear-gradient(
       115deg,
-      rgba(255, 255, 255, 0.02) 0%,
-      rgba(255, 192, 105, 0.12) 42%,
-      rgba(191, 145, 243, 0.08) 72%,
-      rgba(255, 255, 255, 0.02) 100%
+      rgba(var(--sheen-rgb), 0.02) 0%,
+      rgba(var(--accent-gold-rgb), 0.12) 42%,
+      rgba(var(--accent-violet-rgb), 0.08) 72%,
+      rgba(var(--sheen-rgb), 0.02) 100%
     ),
-    rgba(13, 22, 44, 0.42);
+    rgba(var(--panel-rgb), 0.42);
   transition: opacity 0.32s ease;
 }
 
@@ -81,10 +81,10 @@
   content: "";
   width: 34px;
   height: 34px;
-  border: 2px solid rgba(238, 244, 255, 0.18);
-  border-top-color: rgba(255, 192, 105, 0.9);
+  border: 2px solid rgba(var(--text-soft-rgb), 0.18);
+  border-top-color: rgba(var(--accent-gold-rgb), 0.9);
   border-radius: 50%;
-  box-shadow: 0 0 24px rgba(255, 192, 105, 0.2);
+  box-shadow: 0 0 24px rgba(var(--accent-gold-rgb), 0.2);
   animation: loaderSpin 0.9s linear infinite;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .gallery .card.is-error .card-loader {
-  color: rgba(255, 154, 98, 0.92);
+  color: rgba(var(--accent-dawn-rgb), 0.92);
 }
 
 .gallery .card.is-error .card-loader::before {
@@ -108,7 +108,7 @@
   background: linear-gradient(
     120deg,
     transparent 10%,
-    rgba(255, 255, 255, 0.06) 48%,
+    rgba(var(--sheen-rgb), 0.06) 48%,
     transparent 70%
   );
   transform: translateX(-140%);
@@ -119,10 +119,10 @@
 
 .gallery .card:hover {
   box-shadow:
-    0 2px 3px rgba(1, 8, 20, 0.4),
-    0 24px 48px rgba(2, 8, 20, 0.5),
-    0 0 0 1px rgba(255, 192, 105, 0.42);
-  border-color: rgba(255, 192, 105, 0.5);
+    0 2px 3px rgba(var(--shadow-rgb), 0.4),
+    0 24px 48px rgba(var(--shadow-rgb), 0.5),
+    0 0 0 1px rgba(var(--accent-gold-rgb), 0.42);
+  border-color: rgba(var(--accent-gold-rgb), 0.5);
   translate: 0 -6px;
 }
 

@@ -1,29 +1,68 @@
 :root {
-  --bg-void: #0b1226;
-  --bg-deep: #14224a;
-  --bg-midnight: #1d3057;
-  --text-main: #f5f8ff;
-  --text-muted: #c2d2ea;
-  --accent-gold: #ffc069;
-  --accent-dawn: #ff9a62;
-  --panel-bg: rgba(13, 22, 44, 0.56);
-  --panel-border: rgba(255, 214, 166, 0.2);
+  /* 通道变量：全站前端颜色的唯一真值源 */
+  --bg-void-rgb: 11, 18, 38;
+  --bg-deep-rgb: 20, 34, 74;
+  --bg-midnight-rgb: 29, 48, 87;
+  --bg-ink-rgb: 8, 14, 30;
+  --panel-rgb: 13, 22, 44;
+  --overlay-rgb: 4, 8, 18;
+  --card-top-rgb: 18, 28, 54;
+  --card-bottom-rgb: 26, 40, 74;
+  --shadow-rgb: 1, 8, 20;
+  --text-main-rgb: 245, 248, 255;
+  --text-soft-rgb: 238, 244, 255;
+  --text-muted-rgb: 194, 210, 234;
+  --text-faint-rgb: 175, 195, 221;
+  --accent-gold-rgb: 255, 192, 105;
+  --accent-gold-light-rgb: 255, 207, 135;
+  --accent-gold-pale-rgb: 255, 214, 166;
+  --accent-gold-mist-rgb: 255, 224, 186;
+  --accent-dawn-rgb: 255, 154, 98;
+  --accent-violet-rgb: 191, 145, 243;
+  --accent-cyan-rgb: 87, 227, 207;
+  --accent-amber-rgb: 255, 178, 98;
+  --grid-line-rgb: 226, 199, 161;
+  --sheen-rgb: 255, 255, 255;
+  --text-halo-rgb: 0, 0, 0;
+  --header-halo-rgb: 4, 10, 24;
+  --on-accent-rgb: 11, 18, 38;
+
+  /* 派生不透明色 */
+  --bg-void: rgb(var(--bg-void-rgb));
+  --bg-deep: rgb(var(--bg-deep-rgb));
+  --bg-midnight: rgb(var(--bg-midnight-rgb));
+  --text-main: rgb(var(--text-main-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --accent-gold: rgb(var(--accent-gold-rgb));
+  --accent-gold-light: rgb(var(--accent-gold-light-rgb));
+  --accent-gold-pale: rgb(var(--accent-gold-pale-rgb));
+  --accent-gold-mist: rgb(var(--accent-gold-mist-rgb));
+  --accent-dawn: rgb(var(--accent-dawn-rgb));
+  --accent-violet: rgb(var(--accent-violet-rgb));
+  --accent-cyan: rgb(var(--accent-cyan-rgb));
+  --accent-amber: rgb(var(--accent-amber-rgb));
+  --on-accent: rgb(var(--on-accent-rgb));
+
+  /* 复合变量 */
+  --panel-bg: rgba(var(--panel-rgb), 0.56);
+  --panel-border: rgba(var(--accent-gold-pale-rgb), 0.2);
   --card-shadow:
-    0 1px 2px rgba(1, 8, 20, 0.4), 0 18px 38px rgba(1, 8, 20, 0.36);
+    0 1px 2px rgba(var(--shadow-rgb), 0.4),
+    0 18px 38px rgba(var(--shadow-rgb), 0.36);
   --page-background:
     radial-gradient(
       120% 130% at 8% 6%,
-      rgba(255, 192, 105, 0.28) 0%,
+      rgba(var(--accent-gold-rgb), 0.28) 0%,
       transparent 44%
     ),
     radial-gradient(
       120% 150% at 95% 8%,
-      rgba(191, 145, 243, 0.18) 0%,
+      rgba(var(--accent-violet-rgb), 0.18) 0%,
       transparent 48%
     ),
     radial-gradient(
       90% 120% at 50% 104%,
-      rgba(255, 154, 98, 0.32) 0%,
+      rgba(var(--accent-dawn-rgb), 0.32) 0%,
       transparent 58%
     ),
     linear-gradient(
@@ -32,4 +71,28 @@
       var(--bg-deep) 44%,
       var(--bg-midnight) 100%
     );
+}
+
+/* 灯箱在任何主题下都保持午夜蓝：看奖状原件时浅底会干扰对图片本身的判读。 */
+.viewer-screen,
+.note-zoom {
+  /* ① 通道变量 */
+  --panel-rgb: 13, 22, 44;
+  --overlay-rgb: 4, 8, 18;
+  --text-main-rgb: 245, 248, 255;
+  --text-soft-rgb: 238, 244, 255;
+  --text-muted-rgb: 194, 210, 234;
+  --accent-gold-rgb: 255, 192, 105;
+  --accent-violet-rgb: 191, 145, 243;
+  --accent-gold-pale-rgb: 255, 214, 166;
+  --sheen-rgb: 255, 255, 255;
+  --on-accent-rgb: 11, 18, 38;
+  /* ② 派生变量必须跟着重建一遍，否则子元素继承的是 :root 上算好的主题色 */
+  --text-main: rgb(var(--text-main-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --accent-gold: rgb(var(--accent-gold-rgb));
+  --accent-violet: rgb(var(--accent-violet-rgb));
+  --on-accent: rgb(var(--on-accent-rgb));
+  --panel-bg: rgba(var(--panel-rgb), 0.56);
+  --panel-border: rgba(var(--accent-gold-pale-rgb), 0.2);
 }

@@ -94,7 +94,7 @@
   min-height: 92px;
   border-radius: 10px;
   border: 1px solid var(--panel-border);
-  background: rgba(8, 14, 30, 0.72);
+  background: rgba(var(--bg-ink-rgb), 0.72);
   color: var(--text-main);
   padding: 11px 13px;
   font: inherit;
@@ -330,7 +330,7 @@
 
 .note-comments-btn {
   appearance: none;
-  background: rgba(13, 22, 44, 0.78);
+  background: rgba(var(--panel-rgb), 0.78);
   color: var(--accent-gold);
   border: 1px solid var(--panel-border);
   border-radius: 999px;
@@ -346,7 +346,7 @@
 
 .note-comments-btn:hover:not(:disabled) {
   border-color: var(--accent-gold);
-  background: rgba(20, 34, 74, 0.88);
+  background: rgba(var(--bg-deep-rgb), 0.88);
 }
 
 .note-comments-btn:disabled {

@@ -26,15 +26,8 @@
   }
 }
 
-/* 旧 blog/vlog 页的 :root 里定义了 --accent-cyan/--accent-amber，而站点令牌（tokens.css，
-   取自旧 index.html）只有 --accent-gold/--accent-dawn。这两个变量缺失会让 .headline 的
-   linear-gradient 整条失效——配上 color: transparent 就是标题不可见。故按旧页原值就地补齐，
-   作用域限于本组件，不污染全局令牌。 */
-.stage {
-  --accent-cyan: #57e3cf;
-  --accent-amber: #ffb262;
-}
-
+/* 旧 blog/vlog 页原本就地补齐的 --accent-cyan / --accent-amber 已统一收拢至 tokens.css，
+   与全站色彩令牌同源管理，保证 .headline 标题渐变在各主题下均有效。 */
 .stage {
   width: 100%;
   max-width: 880px;
@@ -63,7 +56,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(86, 227, 207, 0.7)
+    rgba(var(--accent-cyan-rgb), 0.7)
   );
 }
 .stage .eyebrow::before {
@@ -105,7 +98,7 @@
 
 .stage .card {
   --brand: var(--accent-cyan);
-  --brand-rgb: 86, 227, 207;
+  --brand-rgb: var(--accent-cyan-rgb);
   --brand-2-rgb: var(--brand-rgb);
   position: relative;
   isolation: isolate;
@@ -122,8 +115,8 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    0 1px 2px rgba(1, 8, 20, 0.4),
-    0 18px 38px rgba(1, 8, 20, 0.36);
+    0 1px 2px rgba(var(--shadow-rgb), 0.4),
+    0 18px 38px rgba(var(--shadow-rgb), 0.36);
   overflow: hidden;
   transition:
     translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -154,8 +147,8 @@
   translate: 0 -7px;
   border-color: rgba(var(--brand-rgb), 0.62);
   box-shadow:
-    0 1px 2px rgba(1, 8, 20, 0.4),
-    0 26px 54px rgba(1, 8, 20, 0.5),
+    0 1px 2px rgba(var(--shadow-rgb), 0.4),
+    0 26px 54px rgba(var(--shadow-rgb), 0.5),
     0 0 0 1px rgba(var(--brand-rgb), 0.18),
     0 14px 40px rgba(var(--brand-rgb), 0.28);
   outline: none;
@@ -177,7 +170,7 @@
   display: grid;
   place-items: center;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(var(--sheen-rgb), 0.04);
   border: 1px solid rgba(var(--brand-rgb), 0.32);
   transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -233,7 +226,7 @@
   right: 24px;
   font-size: 0.78rem;
   letter-spacing: 0.2em;
-  color: rgba(175, 195, 221, 0.4);
+  color: rgba(var(--text-faint-rgb), 0.4);
 }
 
 @media (max-width: 600px) {

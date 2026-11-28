@@ -73,7 +73,7 @@ describe("AccountPanel Disclosure 面板与交互", () => {
     // 校验 CSS 原文兜底色变量与 #account-panel[hidden] 强隐藏规则
     expect(headerCss).toMatch(/#account-panel\[hidden\]\s*\{[^}]*display:\s*none\s*!important/s);
     expect(headerCss).toContain("var(--accent-gold)");
-    expect(headerCss).toContain("var(--bg-void)");
+    expect(headerCss).toContain("var(--on-accent)");
 
     // 点击展开后检查身份标签、设置入口与 POST 退出表单（操作项顺序：设置 -> 退出登录）
     fireEvent.click(trigger);

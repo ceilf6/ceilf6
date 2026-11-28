@@ -25,7 +25,7 @@
   padding: 48px 22px;
   /* 玻璃面板,与 readme-section 同源体系(评审:radial scrim 在内容盒边缘 α≈0.49 硬截断,
      换纯色+blur 后硬边成为有意的面板边;α0.5 ≥ 原 70% 停点的 0.46,全落点对比度只升不降) */
-  background: rgba(11, 18, 38, 0.5);
+  background: rgba(var(--bg-void-rgb), 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 28px;
@@ -42,7 +42,7 @@
   font-family: "ZCOOL XiaoWei", "KaiTi", serif;
   font-size: clamp(44px, 7vw, 92px);
   letter-spacing: 0.1em;
-  background: linear-gradient(100deg, #ffcf87 10%, var(--accent-dawn) 90%);
+  background: linear-gradient(100deg, var(--accent-gold-light) 10%, var(--accent-dawn) 90%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -57,7 +57,7 @@
 .hero-mention {
   color: var(--accent-gold);
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 192, 105, 0.4);
+  border-bottom: 1px solid rgba(var(--accent-gold-rgb), 0.4);
 }
 .hero-mention:hover { border-bottom-color: var(--accent-gold); }
 .hero-mention:focus-visible {

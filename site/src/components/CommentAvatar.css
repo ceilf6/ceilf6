@@ -13,8 +13,8 @@
 
 .comment-avatar.is-member {
   background: var(--accent-gold);
-  color: var(--bg-void);
-  border: 1px solid rgba(255, 214, 166, 0.45);
+  color: var(--on-accent);
+  border: 1px solid rgba(var(--accent-gold-pale-rgb), 0.45);
   font-family: "Noto Sans SC", "Azeret Mono", sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
